@@ -176,7 +176,15 @@ def interpretar_identify(atributos: dict) -> dict:
     y los colores pueden venir en escala 0–1 (``Raster.Green = 0.345098``).
     """
     plano = {k.split(".", 1)[-1].strip().lower(): v for k, v in atributos.items()}
-    nombre = next((plano[k] for k in ("categoría", "categoria", "class_name", "class_names") if plano.get(k) not in (None, "", "Null")), None)
+    def _es_numero(v) -> bool:
+        try:
+            float(v)
+            return True
+        except (TypeError, ValueError):
+            return False
+    # En 2021 «Categoría» es el alias del código numérico (Classvalue); el nombre está en Class_name.
+    nombre = next((plano[k] for k in ("class_name", "class_names", "categoría", "categoria")
+                   if plano.get(k) not in (None, "", "Null") and not _es_numero(plano.get(k))), None)
     valor = next((plano[k] for k in ("pixel value", "classvalue", "value2", "value") if plano.get(k) not in (None, "", "Null")), None)
     rgb = []
     for canal in ("red", "green", "blue"):

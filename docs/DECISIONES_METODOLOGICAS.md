@@ -58,3 +58,17 @@ a `MT-2026.15` y `MT-2026.17` pertenecían a la interfaz Streamlit y no se migra
   (contrastar con los geoservicios de MiAMBIENTE; no se inventan nombres).
 - Secciones 13 en adelante del prompt maestro (ERI y siguientes), que llegaron
   incompletas.
+
+## Hallazgo del precálculo por subcuenca (2026-11-21)
+
+Con el índice `MT-2026.7` sin cambios, **47 de 54 territorios** (CHCP y 53 subcuencas)
+resultan en prioridad **Alta**, 6 en Media y 1 en Preventiva. Los umbrales de
+activación combinan una superficie absoluta pequeña (p. ej., 0.5 ha de deforestación
+JRC o 0.18 ha de pérdida Hansen) con un porcentaje del área; fueron diseñados para
+predios y polígonos pequeños. En subcuencas de miles de hectáreas el criterio
+absoluto casi siempre se cumple y el índice tiende a saturarse.
+
+No se modificó ninguna fórmula. Para comparar subcuencas entre sí el panel ordena
+por puntaje y muestra superficies y porcentajes reales. Una recalibración de
+umbrales por escala territorial sería una nueva versión del método y requiere
+decisión explícita del equipo.

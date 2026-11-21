@@ -22,6 +22,7 @@ from chcp.catalogos.leyendas_sinia import cargar_catalogo, estados, fuentes, id_
 from chcp.catalogos.reclasificacion_sinia import GRUPOS_DERIVADOS, MASCARAS_FORESTALES, codigos_forestales  # noqa: E402
 
 SALIDA = RAIZ / "docs" / "DICCIONARIO_CAPAS_SINIA.md"
+SALIDA_VALIDACION = RAIZ / "docs" / "VALIDACION_ASSETS_GEE.md"
 AUDITORIA = RAIZ / "docs" / "validacion" / "auditoria_assets_sinia.json"
 ETIQUETA_ESTADO = {
     "verificada_espacialmente": "✅ Verificada (espacial)", "verificada_valor_atributo": "✅ Verificada (atributo)",
@@ -98,6 +99,74 @@ def _seccion(clave: str, ficha: dict, aud: dict) -> str:
     return "\n".join(lineas)
 
 
+def validacion(auditoria: dict) -> str:
+    cat = cargar_catalogo()
+    lineas = [
+        "# Validación de los assets SINIA en Google Earth Engine",
+        "",
+        "> Documento generado por `python scripts/generar_diccionario_sinia.py` a partir de "
+        "`docs/validacion/auditoria_assets_sinia.json` (salida de `scripts/auditar_assets_sinia.py`).",
+        "",
+        f"- **Fecha de la auditoría:** {auditoria.get('fecha', 'pendiente')}",
+        f"- **Proyecto Earth Engine:** `{auditoria.get('proyecto', '—')}` · earthengine-api {auditoria.get('ee_version', '—')}",
+        f"- **Identidad:** credenciales locales del usuario (`earthengine authenticate`). Producción requiere repetir la prueba con la cuenta de servicio.",
+        f"- **AOI de control:** {auditoria.get('aoi_control', '—')} · **inventario:** CHCP completa (no se ejecutan consultas nacionales).",
+        f"- **Correspondencia espacial:** {auditoria.get('puntos_por_codigo', '—')} puntos estratificados por código (semilla 2026) contra {auditoria.get('servicio_rest', '—')}.",
+        "",
+        "## Resumen técnico",
+        "",
+        "| Asset | Tipo | Banda · tipo de dato | Proyección · escala | Códigos en CHCP | Área enmascarada en CHCP | Correspondencia REST | Estado |",
+        "|---|---|---|---|---|---|---|---|",
+    ]
+    detalles = []
+    for clave, ficha in cat.items():
+        aud = (auditoria.get("assets") or {}).get(clave)
+        if not aud:
+            lineas.append(f"| `{ficha['asset']}` | {ficha['tipo']} | — | — | — | — | — | ⏳ Pendiente |")
+            continue
+        meta = aud.get("metadatos") or {}
+        errores = [k for k, v in aud.items() if isinstance(v, dict) and "error" in v]
+        inv = aud.get("inventario_chcp") or {}
+        corr = (aud.get("correspondencia_rest") or {}).get("por_codigo") or {}
+        ok_corr = [c for c, e in corr.items() if e.get("acuerdo_pct", 0) >= 80 and e.get("categoria_mayoritaria")]
+        if meta.get("bandas"):
+            b = meta["bandas"][0]
+            banda = f"`{b['id']}` {(b.get('tipo_dato') or {}).get('precision', '')} 0–{((b.get('tipo_dato') or {}).get('range') or {}).get('max', '?')}"
+            proj = f"{b.get('crs')} · {meta.get('escala_nominal_m')} m"
+        else:
+            vec = aud.get("vector") or {}
+            banda = f"campo `{ficha.get('campo_tematico')}`"
+            proj = (vec.get("proyeccion_geometria") or {}).get("crs", "—")
+        codigos = ", ".join(map(str, inv.get("codigos_presentes") or [])) or (", ".join((aud.get("vector") or {}).get("por_categoria", {}).keys()) or "—")
+        mascara = f"{inv['enmascarado_ha']:,.0f} ha" if inv.get("enmascarado_ha") is not None else "—"
+        rest = f"{len(ok_corr)}/{len(corr)} códigos ≥ 80 %" if corr else ("no aplica" if not ficha.get("capa_rest") else "sin datos")
+        estado = "⚠️ Con errores: " + ", ".join(errores) if errores else "✅ Auditado"
+        lineas.append(f"| `{ficha['asset']}` | {meta.get('tipo', ficha['tipo'])} | {banda} | {proj} | {codigos} | {mascara} | {rest} | {estado} |")
+        if aud.get("areas_aoi_control"):
+            filas = aud["areas_aoi_control"]
+            detalles.append(f"### {ficha['anio']} · {ficha['nombre']} — superficie en {auditoria.get('aoi_control')}\n\n| Código | Categoría | ha |\n|---:|---|---:|\n" +
+                            "\n".join(f"| {f['codigo']} | {_txt(next((x['categoria'] for x in leyenda(clave) if x['codigo'] == f['codigo']), 'sin leyenda'))} | {f['ha']:,.2f} |" for f in filas))
+        vec = aud.get("vector")
+        if vec:
+            motor = vec.get("motor_fragmentacion_aoi_control", {})
+            ref = motor.get("referencia_2026_11_07", {})
+            coincide = all(motor.get(k) == ref.get(k) for k in ("parches", "aristas", "componentes", "superficie_ha"))
+            detalles.append(
+                f"### 2021 · vector institucional\n\n"
+                f"- Entidades: **{vec.get('n_entidades', 0):,}** · campos: {', '.join(vec.get('campos', []))}.\n"
+                f"- Entidades por categoría: {vec.get('por_categoria')}.\n"
+                f"- Tipos de geometría en una muestra de 500 entidades: {vec.get('tipos_geometria_muestra')}. "
+                "Las geometrías no poligonales se descartan en el motor al construir parches.\n"
+                f"- Proyección de las geometrías: {(vec.get('proyeccion_geometria') or {}).get('crs')}.\n"
+                f"- Motor de fragmentación en {auditoria.get('aoi_control')} (500 m, 0 ha, contexto 500 m): "
+                f"{motor.get('parches')} parches, {motor.get('aristas')} aristas, {motor.get('componentes')} componente(s), "
+                f"{motor.get('superficie_ha')} ha → {'**idéntico** a la validación del 2026-11-07' if coincide else '**difiere** de la validación del 2026-11-07'}.")
+    lineas += ["", "## Detalle por asset", "", *detalles, "",
+               "## Hallazgos", "",
+               "Ver la sección de evidencia de cada producto en `docs/DICCIONARIO_CAPAS_SINIA.md`.", ""]
+    return "\n".join(lineas)
+
+
 def main() -> int:
     auditoria = json.loads(AUDITORIA.read_text(encoding="utf-8")) if AUDITORIA.exists() else {}
     cat = cargar_catalogo()
@@ -129,6 +198,7 @@ def main() -> int:
     for clave, ficha in cat.items():
         partes += [_seccion(clave, ficha, (auditoria.get("assets") or {}).get(clave, {})), ""]
     SALIDA.write_text("\n".join(partes), encoding="utf-8")
+    SALIDA_VALIDACION.write_text(validacion(auditoria), encoding="utf-8")
     print(f"Diccionario escrito en {SALIDA}")
     return 0
 

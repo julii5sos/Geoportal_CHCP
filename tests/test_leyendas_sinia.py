@@ -120,3 +120,6 @@ class IdentifyArcGISTests(unittest.TestCase):
         self.assertEqual((r["categoria"], r["valor_servicio"], r["rgb"]), ("Bosque latifoliado mixto maduro", "1", [0, 88, 0]))
         r2 = mod.interpretar_identify({"Classvalue": "27", "Class_name": "Superficie de agua", "Red": "0", "Green": "112", "Blue": "255"})
         self.assertEqual((r2["categoria"], r2["valor_servicio"], r2["rgb"]), ("Superficie de agua", "27", [0, 112, 255]))
+        r3 = mod.interpretar_identify({"UniqueValue.Pixel Value": "1", "Raster.Categoría": "1",
+                                       "Raster.Class_name": "Bosque latifoliado mixto maduro", "Raster.Red": "0", "Raster.Green": "88", "Raster.Blue": "0"})
+        self.assertEqual((r3["categoria"], r3["rgb"]), ("Bosque latifoliado mixto maduro", [0, 88, 0]))
