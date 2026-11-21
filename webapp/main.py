@@ -53,6 +53,7 @@ from chcp.territorio.territorio_busqueda import buscar_territorios, resumen_terr
 
 
 ROOT = Path(__file__).resolve().parent
+PANEL_STATISTICS_PATH = ROOT.parent / "data" / "estadisticas_territoriales.json"
 
 
 def _env_int(name: str, default: int, *, minimum: int, maximum: int) -> int:
@@ -194,11 +195,32 @@ def create_app(*, testing: bool = False) -> Flask:
     @app.get("/panel")
     def panel():
         return render_template(
+            "monitoreo.html",
+            active="panel",
+            project_id=resolver_proyecto_gee(),
+            use_map=True,
+            app_page=True,
+        )
+
+    @app.get("/panel/territorial")
+    def panel_territorial():
+        return render_template(
             "panel.html",
             active="panel",
             project_id=resolver_proyecto_gee(),
             use_map=True,
         )
+
+    @app.get("/api/v1/panel/statistics")
+    def api_panel_statistics():
+        path = PANEL_STATISTICS_PATH
+        if not path.exists():
+            return jsonify(
+                error="Los indicadores del panel aún no se han calculado.",
+                hint="Ejecute: python scripts/precalcular_panel.py",
+            ), 404
+        response = send_file(path, mimetype="application/json", max_age=300)
+        return response
 
     @app.get("/methodology")
     def methodology():

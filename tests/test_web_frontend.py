@@ -24,7 +24,7 @@ class WebFrontendTests(unittest.TestCase):
         self.assertIn("Revisar metodología y datos", html)
 
     def test_territorial_panel_has_real_data_tabs_and_no_prefilled_science(self):
-        html = self.client.get("/panel").get_data(as_text=True)
+        html = self.client.get("/panel/territorial").get_data(as_text=True)
         self.assertIn('id="panel-search"', html)
         self.assertIn('id="panel-map"', html)
         self.assertIn("Concordancia JRC + ESRI", html)
@@ -100,7 +100,7 @@ class WebFrontendTests(unittest.TestCase):
         self.assertIn("map.invalidateSize({pan:false})", javascript)
 
     def test_panel_separates_results_from_methodology_and_has_functional_legend(self):
-        html = self.client.get("/panel").get_data(as_text=True)
+        html = self.client.get("/panel/territorial").get_data(as_text=True)
         javascript = (ROOT / "webapp" / "static" / "js" / "panel.js").read_text(encoding="utf-8")
         self.assertIn("referencia 2025", html)
         self.assertIn('id="panel-theme-layers"', html)
@@ -185,3 +185,21 @@ class InterfazReferenciaTests(unittest.TestCase):
         self.assertIn("result.annual_series", script)
         self.assertIn("Las fuentes no se suman entre sí", script)
         self.assertIn("ANALYSIS_PRODUCTS", script)
+
+
+class PanelMonitoreoTests(unittest.TestCase):
+    def setUp(self):
+        self.client = create_app(testing=True).test_client()
+
+    def test_panel_usa_modelo_de_monitoreo(self):
+        html = self.client.get("/panel").get_data(as_text=True)
+        for marker in ('id="mon-sub"', 'id="mon-tabs"', 'data-tab="sinia"', 'id="mon-map"', "js/monitoreo.js"):
+            self.assertIn(marker, html)
+
+    def test_estadisticas_ausentes_devuelven_instruccion(self):
+        from unittest.mock import patch
+        from pathlib import Path
+        with patch("webapp.main.PANEL_STATISTICS_PATH", Path("/no/existe.json")):
+            response = self.client.get("/api/v1/panel/statistics")
+        self.assertEqual(response.status_code, 404)
+        self.assertIn("precalcular_panel.py", response.get_json()["hint"])
