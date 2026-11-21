@@ -98,7 +98,7 @@ def create_app(*, testing: bool = False) -> Flask:
 
     window_seconds = _env_int("WEB_RATE_LIMIT_WINDOW_SECONDS", 600, minimum=60, maximum=3600)
     analysis_limiter = SlidingWindowRateLimiter(
-        limit=_env_int("WEB_ANALYSIS_RATE_LIMIT", 4, minimum=1, maximum=60),
+        limit=_env_int("WEB_ANALYSIS_RATE_LIMIT", 30, minimum=1, maximum=120),
         window_seconds=window_seconds,
     )
     download_limiter = SlidingWindowRateLimiter(
