@@ -41,3 +41,33 @@ class RutaSiniaTests(unittest.TestCase):
     def test_ruta_rechaza_anio_sin_tres_categorias(self):
         r = self.client.post("/api/v1/official-coverages/sinia", json={"area": {"mode": "basin"}, "years": [2012]})
         self.assertEqual(r.status_code, 400)
+
+
+class CoberturasOficialesTests(unittest.TestCase):
+    def setUp(self):
+        self.client = create_app(testing=True).test_client()
+
+    def test_pagina_y_catalogo_sin_earth_engine(self):
+        html = self.client.get("/coberturas").get_data(as_text=True)
+        for marker in ('id="cob-product"', 'id="cob-legend"', 'id="cob-swipe"', 'id="cob-csv"', "js/coberturas.js"):
+            self.assertIn(marker, html)
+        data = self.client.get("/api/v1/sinia/catalog").get_json()
+        self.assertEqual(len(data["catalog"]), 8)
+        self.assertEqual(len(data["comparability"]), 28)
+        self.assertFalse(any(p["permite_transiciones"] for p in data["comparability"]))
+
+    @patch("webapp.main.run_sinia_statistics", return_value={"kind": "sinia_statistics"})
+    def test_estadisticas_aceptan_uno_o_dos_productos(self, run):
+        ok = self.client.post("/api/v1/sinia/statistics", json={"area": {"mode": "basin"}, "products": ["1992_historico", "2000_historico"]})
+        self.assertEqual(ok.status_code, 200)
+        tres = self.client.post("/api/v1/sinia/statistics", json={"area": {"mode": "basin"}, "products": ["1992_historico", "2000_historico", "2019_general"]})
+        self.assertEqual(tres.status_code, 400)
+        raro = self.client.post("/api/v1/sinia/statistics", json={"area": {"mode": "basin"}, "products": ["projects/x"]})
+        self.assertEqual(raro.status_code, 400)
+
+    def test_estadisticas_separan_nodata_y_codigos_sin_leyenda(self):
+        from chcp.gee.coberturas_sinia import construir_estadisticas
+        r = construir_estadisticas("2012_detallado", [{"codigo": 1, "sum": 10}, {"codigo": 65535, "sum": 2}, {"codigo": 40, "sum": 1}], 20)
+        self.assertEqual(r["classified_ha"], 10)
+        self.assertEqual([(c["code"], c["is_documented_nodata"]) for c in r["codes_without_legend"]], [(40, False), (65535, True)])
+        self.assertEqual(r["derived_groups"][0]["group"], "bosque_natural")

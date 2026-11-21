@@ -22,22 +22,32 @@ de campo.
 chcp/                     Motores científicos (sin dependencia de la interfaz)
   nucleo/                 Índice MT-2026.7, ERI, fragmentación/red, corredores
   territorio/             CHCP, 53 subcuencas y búsqueda territorial
-  catalogos/              Assets SINIA, catálogo multifuente, simbología
+  catalogos/              Assets y leyendas SINIA, reclasificación, comparabilidad
   gee/                    Consultas a Google Earth Engine (proyecto geoportal-513817)
   informes/               Informe técnico PDF y cartografía
 webapp/                   API Flask + interfaz HTML/CSS/JS (Leaflet local)
-data/                     Límites, subcuencas, corredores y puntos críticos
+data/                     Límites, subcuencas, corredores, leyendas SINIA (JSON) e indicadores del panel
 tests/                    Pruebas automatizadas (pytest)
 scripts/                  Verificaciones reproducibles contra Earth Engine
 docs/                     Arquitectura, decisiones y registro histórico
 ```
 
+## Documentos de referencia
+
+| Documento | Contenido |
+|---|---|
+| [docs/REPRODUCIBILIDAD.md](docs/REPRODUCIBILIDAD.md) | Instalación, acceso a Earth Engine y cadena completa para regenerar resultados. |
+| [docs/DICCIONARIO_CAPAS_SINIA.md](docs/DICCIONARIO_CAPAS_SINIA.md) | **Referencia técnica**: una tabla por asset SINIA con códigos, categorías, colores y verificación. |
+| [docs/VALIDACION_ASSETS_GEE.md](docs/VALIDACION_ASSETS_GEE.md) | Auditoría real de los ocho assets en Earth Engine. |
+| [docs/RECLASIFICACION_ECOLOGICA.md](docs/RECLASIFICACION_ECOLOGICA.md) | Grupos derivados y máscaras forestales trazables. |
+| [docs/COMPARABILIDAD_COBERTURAS.md](docs/COMPARABILIDAD_COBERTURAS.md) | Cuándo se pueden comparar productos de distintos años. |
+| [docs/DECISIONES_METODOLOGICAS.md](docs/DECISIONES_METODOLOGICAS.md) | Integración de los repositorios de origen. |
+
 ## Puesta en marcha (Windows, Anaconda)
 
 ```powershell
-conda create -n geoportal python=3.12 -y
-conda activate geoportal
-pip install -r requirements-web.txt
+conda env create -f environment.yml
+conda activate geoportal-chcp
 earthengine authenticate          # una vez; las credenciales quedan fuera del repositorio
 $env:GEE_PROJECT_ID = "geoportal-513817"
 python -m webapp.main             # http://127.0.0.1:8080

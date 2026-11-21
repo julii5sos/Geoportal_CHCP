@@ -89,6 +89,24 @@ class SiniaCoverageRequest(BaseModel):
     years: list[Literal[2019, 2021, 2023]] = Field(default_factory=lambda: [2019, 2021, 2023], min_length=1, max_length=3)
 
 
+SiniaProduct = Literal[
+    "1992_historico", "2000_historico", "2012_binario", "2012_detallado",
+    "2019_general", "2021_general", "2021_detallado", "2023_general",
+]
+
+
+class SiniaStatisticsRequest(BaseModel):
+    area: AreaSelection
+    territory_id: str | None = Field(default=None, max_length=180)
+    products: list[SiniaProduct] = Field(min_length=1, max_length=2)
+
+
+class SiniaTilesRequest(BaseModel):
+    product: SiniaProduct
+    codes: list[int] | None = Field(default=None, max_length=40)
+    view: Literal["original", "derivado"] = "original"
+
+
 class StructuralConnectivityRequest(BaseModel):
     area: AreaSelection
     scenario: Literal["official_2021", "diagnostic_2023"]

@@ -108,3 +108,15 @@ class AplicarAuditoriaTests(unittest.TestCase):
         aud = self._auditoria({"10": {"categoria_mayoritaria": "Pasto", "acuerdo_pct": 90.0, "distribucion": {"Pasto": 9, "Café": 1}}})
         cambios = self.mod.aplicar(aud, self.leyendas, 80, 5)
         self.assertTrue(any("ATENCIÓN" in c for c in cambios))
+
+
+class IdentifyArcGISTests(unittest.TestCase):
+    def test_atributos_con_prefijo_y_colores_0_1(self):
+        spec = importlib.util.spec_from_file_location("auditar", RAIZ / "scripts" / "auditar_assets_sinia.py")
+        mod = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(mod)
+        r = mod.interpretar_identify({"UniqueValue.Pixel Value": "1", "Raster.Red": "0", "Raster.Green": "0.345098",
+                                      "Raster.Blue": "0", "Raster.Categoría": "Bosque latifoliado mixto maduro"})
+        self.assertEqual((r["categoria"], r["valor_servicio"], r["rgb"]), ("Bosque latifoliado mixto maduro", "1", [0, 88, 0]))
+        r2 = mod.interpretar_identify({"Classvalue": "27", "Class_name": "Superficie de agua", "Red": "0", "Green": "112", "Blue": "255"})
+        self.assertEqual((r2["categoria"], r2["valor_servicio"], r2["rgb"]), ("Superficie de agua", "27", [0, 112, 255]))

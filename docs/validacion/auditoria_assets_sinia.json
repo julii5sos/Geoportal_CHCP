@@ -1,0 +1,680 @@
+{
+ "fecha": "2026-11-21T18:29:19",
+ "proyecto": "geoportal-513817",
+ "ee_version": "1.7.53",
+ "aoi_control": "Qda. Bonita",
+ "puntos_por_codigo": 10,
+ "servicio_rest": "https://geoportal.miambiente.gob.pa/server/rest/services/Nodo_Suelos/MapServer",
+ "assets": {
+  "1992_historico": {
+   "asset_id": "projects/geoportal-513817/assets/SINIA_1992_COBERTURA_HISTORICA_RASTER30M",
+   "metadatos": {
+    "tipo": "IMAGE",
+    "tamano_bytes": "994290",
+    "actualizado": "2026-11-07T16:16:02.429658Z",
+    "propiedades": {},
+    "bandas": [
+     {
+      "id": "b1",
+      "tipo_dato": {
+       "precision": "INT",
+       "range": {
+        "max": 255
+       }
+      },
+      "crs": "EPSG:32617",
+      "transformacion": {
+       "scaleX": 30,
+       "translateX": 581550,
+       "scaleY": -30,
+       "translateY": 1065480
+      },
+      "dimensiones": {
+       "width": 4212,
+       "height": 4125
+      }
+     }
+    ],
+    "escala_nominal_m": 30,
+    "extension_wgs84": [
+     [
+      [
+       -80.25916581755487,
+       8.514774244184347
+      ],
+      [
+       -79.10520928977066,
+       8.514774244184347
+      ],
+      [
+       -79.10520928977066,
+       9.63815672135525
+      ],
+      [
+       -80.25916581755487,
+       9.63815672135525
+      ],
+      [
+       -80.25916581755487,
+       8.514774244184347
+      ]
+     ]
+    ],
+    "proyeccion": {
+     "type": "Projection",
+     "crs": "EPSG:32617",
+     "transform": [
+      30,
+      0,
+      581550,
+      0,
+      -30,
+      1065480
+     ]
+    },
+    "tipo_banda_ee": {
+     "b1": {
+      "type": "PixelType",
+      "precision": "int",
+      "min": 0,
+      "max": 255
+     }
+    }
+   },
+   "_segundos": {
+    "metadatos": 0.7,
+    "inventario_chcp": 1.1,
+    "areas_aoi_control": 0.4,
+    "muestras": 1.0,
+    "correspondencia_rest": 28.0,
+    "coherencia_forestal_2021": 1.3
+   },
+   "inventario_chcp": {
+    "enmascarado_ha": 41970.256417443,
+    "histograma_ha": [
+     {
+      "codigo": 1,
+      "sum": 2941.4525586515783
+     },
+     {
+      "codigo": 2,
+      "sum": 45671.641127006515
+     },
+     {
+      "codigo": 3,
+      "sum": 88123.68572230582
+     },
+     {
+      "codigo": 4,
+      "sum": 50070.96978997174
+     },
+     {
+      "codigo": 6,
+      "sum": 30.932838189074946
+     },
+     {
+      "codigo": 7,
+      "sum": 57474.741882128954
+     },
+     {
+      "codigo": 9,
+      "sum": 46406.10855559995
+     },
+     {
+      "codigo": 10,
+      "sum": 8353.90540632532
+     }
+    ],
+    "minmax": {
+     "codigo_max": 10,
+     "codigo_min": 1
+    },
+    "escala_inventario_m": 30.0,
+    "codigos_presentes": [
+     1,
+     2,
+     3,
+     4,
+     6,
+     7,
+     9,
+     10
+    ]
+   },
+   "areas_aoi_control": [
+    {
+     "codigo": 2,
+     "ha": 225.3546
+    },
+    {
+     "codigo": 7,
+     "ha": 190.122
+    },
+    {
+     "codigo": 9,
+     "ha": 77.8906
+    },
+    {
+     "codigo": 10,
+     "ha": 14.489
+    }
+   ],
+   "correspondencia_rest": {
+    "capa_rest": {
+     "id": 4,
+     "tipo": "vector",
+     "campo": "CATEGORIA"
+    },
+    "por_codigo": {
+     "1": {
+      "puntos": 10,
+      "categoria_mayoritaria": "Aguas Interiores",
+      "acuerdo_pct": 100.0,
+      "distribucion": {
+       "Aguas Interiores": 10
+      },
+      "valor_servicio": {}
+     },
+     "2": {
+      "puntos": 10,
+      "categoria_mayoritaria": "Bosque Intervenido",
+      "acuerdo_pct": 100.0,
+      "distribucion": {
+       "Bosque Intervenido": 10
+      },
+      "valor_servicio": {}
+     },
+     "3": {
+      "puntos": 10,
+      "categoria_mayoritaria": "Bosque Maduro",
+      "acuerdo_pct": 100.0,
+      "distribucion": {
+       "Bosque Maduro": 10
+      },
+      "valor_servicio": {}
+     },
+     "4": {
+      "puntos": 10,
+      "categoria_mayoritaria": "Bosque Secundario Maduro",
+      "acuerdo_pct": 100.0,
+      "distribucion": {
+       "Bosque Secundario Maduro": 10
+      },
+      "valor_servicio": {}
+     },
+     "6": {
+      "puntos": 10,
+      "categoria_mayoritaria": "Otros Usos",
+      "acuerdo_pct": 100.0,
+      "distribucion": {
+       "Otros Usos": 10
+      },
+      "valor_servicio": {}
+     },
+     "7": {
+      "puntos": 10,
+      "categoria_mayoritaria": "Rastrojos (Bosque Pionero)",
+      "acuerdo_pct": 100.0,
+      "distribucion": {
+       "Rastrojos (Bosque Pionero)": 10
+      },
+      "valor_servicio": {}
+     },
+     "9": {
+      "puntos": 10,
+      "categoria_mayoritaria": "Uso Agropecuario",
+      "acuerdo_pct": 100.0,
+      "distribucion": {
+       "Uso Agropecuario": 10
+      },
+      "valor_servicio": {}
+     },
+     "10": {
+      "puntos": 10,
+      "categoria_mayoritaria": "Uso Agropecuario de Subsistencia",
+      "acuerdo_pct": 100.0,
+      "distribucion": {
+       "Uso Agropecuario de Subsistencia": 10
+      },
+      "valor_servicio": {}
+     }
+    },
+    "colores_servicio": {},
+    "atributos_ejemplo": null
+   },
+   "coherencia_forestal_2021": {
+    "1": {
+     "puntos": 10,
+     "en_bosque_2021_pct": 30.0
+    },
+    "2": {
+     "puntos": 10,
+     "en_bosque_2021_pct": 90.0
+    },
+    "3": {
+     "puntos": 10,
+     "en_bosque_2021_pct": 100.0
+    },
+    "4": {
+     "puntos": 10,
+     "en_bosque_2021_pct": 100.0
+    },
+    "6": {
+     "puntos": 10,
+     "en_bosque_2021_pct": 40.0
+    },
+    "7": {
+     "puntos": 10,
+     "en_bosque_2021_pct": 70.0
+    },
+    "9": {
+     "puntos": 10,
+     "en_bosque_2021_pct": 0.0
+    },
+    "10": {
+     "puntos": 10,
+     "en_bosque_2021_pct": 30.0
+    }
+   },
+   "n_muestras": 80
+  },
+  "2000_historico": {
+   "asset_id": "projects/geoportal-513817/assets/SINIA_2000_COBERTURA_HISTORICA_RASTER30M",
+   "metadatos": {
+    "tipo": "IMAGE",
+    "tamano_bytes": "1087748",
+    "actualizado": "2026-11-07T16:16:17.992428Z",
+    "propiedades": {},
+    "bandas": [
+     {
+      "id": "b1",
+      "tipo_dato": {
+       "precision": "INT",
+       "range": {
+        "max": 255
+       }
+      },
+      "crs": "EPSG:32617",
+      "transformacion": {
+       "scaleX": 30,
+       "translateX": 581550,
+       "scaleY": -30,
+       "translateY": 1065480
+      },
+      "dimensiones": {
+       "width": 4212,
+       "height": 4125
+      }
+     }
+    ],
+    "escala_nominal_m": 30,
+    "extension_wgs84": [
+     [
+      [
+       -80.25916581755487,
+       8.514774244184347
+      ],
+      [
+       -79.10520928977066,
+       8.514774244184347
+      ],
+      [
+       -79.10520928977066,
+       9.63815672135525
+      ],
+      [
+       -80.25916581755487,
+       9.63815672135525
+      ],
+      [
+       -80.25916581755487,
+       8.514774244184347
+      ]
+     ]
+    ],
+    "proyeccion": {
+     "type": "Projection",
+     "crs": "EPSG:32617",
+     "transform": [
+      30,
+      0,
+      581550,
+      0,
+      -30,
+      1065480
+     ]
+    },
+    "tipo_banda_ee": {
+     "b1": {
+      "type": "PixelType",
+      "precision": "int",
+      "min": 0,
+      "max": 255
+     }
+    }
+   },
+   "_segundos": {
+    "metadatos": 0.8,
+    "inventario_chcp": 0.9,
+    "areas_aoi_control": 0.3,
+    "muestras": 0.7,
+    "correspondencia_rest": 25.5,
+    "coherencia_forestal_2021": 1.3
+   },
+   "inventario_chcp": {
+    "enmascarado_ha": 43430.616980126106,
+    "histograma_ha": [
+     {
+      "codigo": 1,
+      "sum": 402.23411954345704
+     },
+     {
+      "codigo": 2,
+      "sum": 65361.19183938285
+     },
+     {
+      "codigo": 3,
+      "sum": 88953.69433224184
+     },
+     {
+      "codigo": 4,
+      "sum": 51620.78357263666
+     },
+     {
+      "codigo": 6,
+      "sum": 487.5114313753252
+     },
+     {
+      "codigo": 7,
+      "sum": 24779.070417152714
+     },
+     {
+      "codigo": 8,
+      "sum": 27306.895238020876
+     },
+     {
+      "codigo": 9,
+      "sum": 38701.69636713616
+     }
+    ],
+    "minmax": {
+     "codigo_max": 9,
+     "codigo_min": 1
+    },
+    "escala_inventario_m": 30.0,
+    "codigos_presentes": [
+     1,
+     2,
+     3,
+     4,
+     6,
+     7,
+     8,
+     9
+    ]
+   },
+   "areas_aoi_control": [
+    {
+     "codigo": 2,
+     "ha": 203.0476
+    },
+    {
+     "codigo": 3,
+     "ha": 137.8738
+    },
+    {
+     "codigo": 7,
+     "ha": 58.3949
+    },
+    {
+     "codigo": 9,
+     "ha": 108.5399
+    }
+   ],
+   "correspondencia_rest": {
+    "capa_rest": {
+     "id": 3,
+     "tipo": "vector",
+     "campo": "CATEGORIA"
+    },
+    "por_codigo": {
+     "1": {
+      "puntos": 10,
+      "categoria_mayoritaria": "Agua",
+      "acuerdo_pct": 100.0,
+      "distribucion": {
+       "Agua": 10
+      },
+      "valor_servicio": {}
+     },
+     "2": {
+      "puntos": 10,
+      "categoria_mayoritaria": "Bosque Intervenido",
+      "acuerdo_pct": 100.0,
+      "distribucion": {
+       "Bosque Intervenido": 10
+      },
+      "valor_servicio": {}
+     },
+     "3": {
+      "puntos": 10,
+      "categoria_mayoritaria": "Bosque Maduro",
+      "acuerdo_pct": 100.0,
+      "distribucion": {
+       "Bosque Maduro": 10
+      },
+      "valor_servicio": {}
+     },
+     "4": {
+      "puntos": 10,
+      "categoria_mayoritaria": "Bosque Secundario Maduro",
+      "acuerdo_pct": 100.0,
+      "distribucion": {
+       "Bosque Secundario Maduro": 10
+      },
+      "valor_servicio": {}
+     },
+     "6": {
+      "puntos": 10,
+      "categoria_mayoritaria": "Otros Usos",
+      "acuerdo_pct": 100.0,
+      "distribucion": {
+       "Otros Usos": 10
+      },
+      "valor_servicio": {}
+     },
+     "7": {
+      "puntos": 10,
+      "categoria_mayoritaria": "Rastrojos (Bosque Pionero)",
+      "acuerdo_pct": 100.0,
+      "distribucion": {
+       "Rastrojos (Bosque Pionero)": 10
+      },
+      "valor_servicio": {}
+     },
+     "8": {
+      "puntos": 10,
+      "categoria_mayoritaria": "Uso Agropecuario",
+      "acuerdo_pct": 100.0,
+      "distribucion": {
+       "Uso Agropecuario": 10
+      },
+      "valor_servicio": {}
+     },
+     "9": {
+      "puntos": 10,
+      "categoria_mayoritaria": "Uso Agropecuario de Subsistencia",
+      "acuerdo_pct": 100.0,
+      "distribucion": {
+       "Uso Agropecuario de Subsistencia": 10
+      },
+      "valor_servicio": {}
+     }
+    },
+    "colores_servicio": {},
+    "atributos_ejemplo": null
+   },
+   "coherencia_forestal_2021": {
+    "1": {
+     "puntos": 10,
+     "en_bosque_2021_pct": 50.0
+    },
+    "2": {
+     "puntos": 10,
+     "en_bosque_2021_pct": 100.0
+    },
+    "3": {
+     "puntos": 10,
+     "en_bosque_2021_pct": 100.0
+    },
+    "4": {
+     "puntos": 10,
+     "en_bosque_2021_pct": 100.0
+    },
+    "6": {
+     "puntos": 10,
+     "en_bosque_2021_pct": 10.0
+    },
+    "7": {
+     "puntos": 10,
+     "en_bosque_2021_pct": 80.0
+    },
+    "8": {
+     "puntos": 10,
+     "en_bosque_2021_pct": 10.0
+    },
+    "9": {
+     "puntos": 10,
+     "en_bosque_2021_pct": 40.0
+    }
+   },
+   "n_muestras": 80
+  },
+  "2012_binario": {
+   "asset_id": "projects/geoportal-513817/assets/SINIA_2012_BOSQUE_BINARIO_RASTER5M",
+   "metadatos": {
+    "tipo": "IMAGE",
+    "tamano_bytes": "8720414",
+    "actualizado": "2026-11-07T16:28:03.610933Z",
+    "propiedades": {},
+    "bandas": [
+     {
+      "id": "b1",
+      "tipo_dato": {
+       "precision": "INT",
+       "range": {
+        "max": 255
+       }
+      },
+      "crs": "EPSG:32617",
+      "transformacion": {
+       "scaleX": 5,
+       "translateX": 581571.8882000009,
+       "scaleY": -5,
+       "translateY": 1065468.182109693
+      },
+      "dimensiones": {
+       "width": 25262,
+       "height": 24745
+      }
+     }
+    ],
+    "escala_nominal_m": 5,
+    "extension_wgs84": [
+     [
+      [
+       -80.2588530304754,
+       8.515006060594219
+      ],
+      [
+       -79.10557963199751,
+       8.515006060594219
+      ],
+      [
+       -79.10557963199751,
+       9.637937737080021
+      ],
+      [
+       -80.2588530304754,
+       9.637937737080021
+      ],
+      [
+       -80.2588530304754,
+       8.515006060594219
+      ]
+     ]
+    ],
+    "proyeccion": {
+     "type": "Projection",
+     "crs": "EPSG:32617",
+     "transform": [
+      5,
+      0,
+      581571.8882000009,
+      0,
+      -5,
+      1065468.182109693
+     ]
+    },
+    "tipo_banda_ee": {
+     "b1": {
+      "type": "PixelType",
+      "precision": "int",
+      "min": 0,
+      "max": 255
+     }
+    }
+   },
+   "_segundos": {
+    "metadatos": 0.5,
+    "inventario_chcp": 3.2,
+    "areas_aoi_control": 0.4,
+    "muestras": 4.6,
+    "coherencia_forestal_2021": 0.6
+   },
+   "inventario_chcp": {
+    "enmascarado_ha": 0,
+    "histograma_ha": [
+     {
+      "codigo": 1,
+      "sum": 194248.9998019293
+     },
+     {
+      "codigo": 2,
+      "sum": 146795.65726054495
+     }
+    ],
+    "minmax": {
+     "codigo_max": 2,
+     "codigo_min": 1
+    },
+    "escala_inventario_m": 10,
+    "codigos_presentes": [
+     1,
+     2
+    ]
+   },
+   "areas_aoi_control": [
+    {
+     "codigo": 1,
+     "ha": 326.1867
+    },
+    {
+     "codigo": 2,
+     "ha": 181.7045
+    }
+   ],
+   "coherencia_forestal_2021": {
+    "1": {
+     "puntos": 10,
+     "en_bosque_2021_pct": 100.0
+    },
+    "2": {
+     "puntos": 10,
+     "en_bosque_2021_pct": 20.0
+    }
+   },
+   "n_muestras": 20
+  }
+ }
+}

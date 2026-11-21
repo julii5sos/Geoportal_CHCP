@@ -166,10 +166,29 @@ def consultar_rest(capa: dict, lon: float, lat: float, sesion: requests.Session)
     res = r.json().get("results", [])
     if not res:
         return {"categoria": None}
-    attrs = res[0].get("attributes", {})
-    nombre = next((v for k, v in attrs.items() if k.lower() in {"class_name", "class_names", "categoría", "categoria"}), None)
-    return {"categoria": nombre, "valor_servicio": attrs.get("Classvalue") or attrs.get("Value") or attrs.get("Pixel Value"),
-            "rgb": [attrs.get("Red"), attrs.get("Green"), attrs.get("Blue")], "atributos": attrs}
+    return interpretar_identify(res[0].get("attributes", {}))
+
+
+def interpretar_identify(atributos: dict) -> dict:
+    """Normaliza la respuesta ``identify`` de una capa ráster de ArcGIS Server.
+
+    Los nombres llegan con prefijo (``Raster.Categoría``, ``UniqueValue.Pixel Value``)
+    y los colores pueden venir en escala 0–1 (``Raster.Green = 0.345098``).
+    """
+    plano = {k.split(".", 1)[-1].strip().lower(): v for k, v in atributos.items()}
+    nombre = next((plano[k] for k in ("categoría", "categoria", "class_name", "class_names") if plano.get(k) not in (None, "", "Null")), None)
+    valor = next((plano[k] for k in ("pixel value", "classvalue", "value2", "value") if plano.get(k) not in (None, "", "Null")), None)
+    rgb = []
+    for canal in ("red", "green", "blue"):
+        try:
+            rgb.append(float(plano[canal]))
+        except (KeyError, TypeError, ValueError):
+            rgb = []
+            break
+    if rgb and max(rgb) <= 1.0:
+        rgb = [round(c * 255) for c in rgb]
+    return {"categoria": nombre, "valor_servicio": valor, "rgb": [int(round(c)) for c in rgb] if rgb else [None, None, None],
+            "atributos": atributos}
 
 
 def correspondencia(muestras: list, capa: dict, pausa: float) -> dict:

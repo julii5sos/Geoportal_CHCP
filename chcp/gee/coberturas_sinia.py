@@ -114,3 +114,98 @@ def resumir_coberturas_sinia(
         "products": [construir_resumen(a, valores.get(str(a)) or [], area_aoi) for a in anios],
         "comparability_warning": ADVERTENCIA_COMPARABILIDAD,
     }
+
+
+# ---------------------------------------------------------------------------
+# Los ocho productos: superficie por código y teselas con la leyenda única.
+# ---------------------------------------------------------------------------
+from chcp.catalogos.leyendas_sinia import cargar_catalogo, es_oficial, id_asset, leyenda  # noqa: E402
+from chcp.catalogos.reclasificacion_sinia import GRUPOS_DERIVADOS  # noqa: E402
+
+ESCALA_VECTOR_M = 10
+
+
+def imagen_producto(clave: str, ee_module):
+    """Imagen de códigos originales del producto (el vector se rasteriza a 10 m)."""
+    ficha = cargar_catalogo()[clave]
+    filas = leyenda(clave)
+    if ficha["tipo"] == "TABLE":
+        coleccion = ee_module.FeatureCollection(id_asset(clave))
+        imagen = ee_module.Image(0).toByte()
+        for fila in filas:
+            imagen = imagen.paint(coleccion.filter(ee_module.Filter.eq(ficha["campo_tematico"], fila["categoria"])), fila["codigo"])
+        return imagen.selfMask().rename("codigo")
+    imagen = ee_module.Image(id_asset(clave)).select([0], ["codigo"])
+    codigos = [f["codigo"] for f in filas]
+    return imagen.updateMask(imagen.remap(codigos, [1] * len(codigos), 0).eq(1))
+
+
+def escala_producto(clave: str) -> float:
+    return float(cargar_catalogo()[clave].get("resolucion_m") or ESCALA_VECTOR_M)
+
+
+def estadisticas_producto(clave: str, area_geojson: dict[str, Any], *, ee_module) -> dict[str, Any]:
+    geometry = ee_module.Geometry(area_geojson, proj="EPSG:4326", geodesic=False)
+    imagen_cruda = (ee_module.Image(id_asset(clave)).select([0], ["codigo"]) if cargar_catalogo()[clave]["tipo"] == "IMAGE"
+                    else imagen_producto(clave, ee_module))
+    pixel_ha = ee_module.Image.pixelArea().divide(10_000).rename("ha")
+    valores = ee_module.Dictionary({
+        "area_ha": geometry.area(1).divide(10_000),
+        "grupos": pixel_ha.addBands(imagen_cruda).reduceRegion(
+            reducer=ee_module.Reducer.sum().group(groupField=1, groupName="codigo"), geometry=geometry,
+            scale=escala_producto(clave), crs=CRS_AREA, maxPixels=1e10, tileScale=8).get("groups"),
+    }).getInfo()
+    return construir_estadisticas(clave, valores.get("grupos") or [], float(valores.get("area_ha") or 0))
+
+
+def construir_estadisticas(clave: str, grupos: list[dict[str, Any]], area_aoi_ha: float) -> dict[str, Any]:
+    ficha = cargar_catalogo()[clave]
+    filas = {f["codigo"]: f for f in leyenda(clave)}
+    por_codigo = {int(g.get("codigo", 0)): float(g.get("sum") or 0) for g in grupos}
+    documentadas = {c: ha for c, ha in por_codigo.items() if c in filas}
+    sin_leyenda = {c: ha for c, ha in por_codigo.items() if c not in filas}
+    clasificada = sum(documentadas.values())
+    clases = []
+    for codigo, fila in filas.items():
+        ha = documentadas.get(codigo, 0.0)
+        clases.append({
+            "code": codigo, "label": fila["categoria"], "color": fila["color"], "color_source": fila["fuente_color"],
+            "status": fila["estado"], "official": es_oficial(fila), "group": fila["grupo_derivado"],
+            "group_label": GRUPOS_DERIVADOS[fila["grupo_derivado"]]["nombre"], "description": fila.get("descripcion", ""),
+            "area_ha": round(ha, 4), "percentage": round(ha / clasificada * 100, 4) if clasificada else 0.0,
+        })
+    grupos_derivados: dict[str, float] = {}
+    for clase in clases:
+        grupos_derivados[clase["group"]] = grupos_derivados.get(clase["group"], 0.0) + clase["area_ha"]
+    return {
+        "product": clave, "name": ficha["nombre"], "year": ficha["anio"], "asset": id_asset(clave),
+        "source_type": ficha["tipo"], "scale_m": escala_producto(clave),
+        "aoi_area_ha": round(area_aoi_ha, 4), "classified_ha": round(clasificada, 4),
+        "unclassified_or_nodata_ha": round(max(0.0, area_aoi_ha - clasificada - sum(sin_leyenda.values())), 4),
+        "codes_without_legend": [{"code": c, "area_ha": round(ha, 4), "is_documented_nodata": c == ficha.get("nodata")}
+                                 for c, ha in sorted(sin_leyenda.items())],
+        "classes": clases,
+        "derived_groups": [
+            {"group": g, "label": GRUPOS_DERIVADOS[g]["nombre"], "color": GRUPOS_DERIVADOS[g]["color"], "area_ha": round(ha, 4),
+             "percentage": round(ha / clasificada * 100, 4) if clasificada else 0.0}
+            for g, ha in sorted(grupos_derivados.items(), key=lambda kv: -kv[1]) if ha > 0
+        ],
+        "limitations": ficha.get("limitaciones", []),
+    }
+
+
+def teselas_producto(clave: str, *, ee_module, codigos: list[int] | None = None, vista: str = "original") -> dict[str, Any]:
+    filas = leyenda(clave)
+    activos = [f for f in filas if codigos is None or f["codigo"] in set(codigos)]
+    if not activos:
+        raise ValueError("Seleccione al menos una categoría para visualizar.")
+    if vista == "derivado":
+        colores = [GRUPOS_DERIVADOS[f["grupo_derivado"]]["color"] for f in activos]
+    else:
+        colores = [f["color"] for f in activos]
+    imagen = imagen_producto(clave, ee_module)
+    # Remapeo categórico (vecino más cercano): cada código conserva su propio color.
+    indice = imagen.remap([f["codigo"] for f in activos], list(range(1, len(activos) + 1)), 0).selfMask()
+    map_id = indice.getMapId({"min": 1, "max": max(1, len(activos)), "palette": [c.lstrip("#") for c in colores]})
+    return {"product": clave, "tile_url": map_id["tile_fetcher"].url_format, "view": vista,
+            "codes": [f["codigo"] for f in activos]}

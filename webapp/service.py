@@ -44,7 +44,10 @@ from chcp.nucleo.corredores import (
     cargar_corredores,
     cargar_puntos_criticos,
 )
-from chcp.gee.coberturas_sinia import resumir_coberturas_sinia
+from chcp.gee.coberturas_sinia import estadisticas_producto, resumir_coberturas_sinia, teselas_producto
+from chcp.catalogos.comparabilidad_sinia import evaluar_par, matriz_comparabilidad
+from chcp.catalogos.leyendas_sinia import cargar_catalogo, estados, fuentes, leyenda, raiz_assets
+from chcp.catalogos.reclasificacion_sinia import GRUPOS_DERIVADOS, MASCARAS_FORESTALES, codigos_forestales
 from chcp.gee.eri_gee import calcular_eri_geojson
 from chcp.gee.evaluacion_ecologica import ejecutar_evaluacion_ecologica
 from chcp.gee.gee_config import inicializar_earth_engine, resolver_proyecto_gee
@@ -69,6 +72,8 @@ from webapp.models import (
     LayerPreviewRequest,
     OfficialCoverageRequest,
     SiniaCoverageRequest,
+    SiniaStatisticsRequest,
+    SiniaTilesRequest,
     StructuralComparisonRequest,
     StructuralConnectivityRequest,
 )
@@ -588,6 +593,54 @@ def run_sinia_coverages(request: SiniaCoverageRequest) -> dict[str, Any]:
     territory_key = request.territory_id or ResultCache.signature({"geometry": geometry})
     item, cache_hit = _CACHE.run_once(payload, operation, territory_key=territory_key)
     return _public_record(item, cache_hit=cache_hit)
+
+
+def leyendas_version() -> str:
+    import hashlib
+    from chcp.catalogos.leyendas_sinia import ARCHIVO_LEYENDAS
+    return hashlib.sha256(ARCHIVO_LEYENDAS.read_bytes()).hexdigest()[:12]
+
+
+def sinia_catalog_payload() -> dict[str, Any]:
+    """Catálogo, leyendas, grupos y comparabilidad: datos locales, sin Earth Engine."""
+    return {
+        "catalog": cargar_catalogo(),
+        "legends": {clave: leyenda(clave) for clave in cargar_catalogo()},
+        "states": estados(),
+        "groups": GRUPOS_DERIVADOS,
+        "forest_masks": {clave: {**regla, "codes": codigos_forestales(clave), "codes_with_optional": codigos_forestales(clave, incluir_opcionales=True)}
+                         for clave, regla in MASCARAS_FORESTALES.items()},
+        "comparability": matriz_comparabilidad(),
+        "sources": fuentes(),
+        "asset_root": raiz_assets(),
+    }
+
+
+def run_sinia_statistics(request: SiniaStatisticsRequest) -> dict[str, Any]:
+    geometry, area = resolve_area(request.area)
+    products = list(dict.fromkeys(request.products))
+    payload = {"kind": "sinia_statistics", "products": products, "resolved_geometry": geometry,
+               "legend_version": leyendas_version()}
+
+    def operation() -> dict[str, Any]:
+        project = _initialize_ee()
+        stats = [estadisticas_producto(clave, geometry, ee_module=ee) for clave in products]
+        comparison = evaluar_par(*products) if len(products) == 2 else None
+        return {
+            "kind": "sinia_statistics", "project_id": project,
+            "area": {**area, "geometry": geometry},
+            "result": {"products": stats, "comparability": comparison},
+            "warnings": comparison["motivos"] if comparison else [],
+        }
+
+    territory_key = request.territory_id or ResultCache.signature({"geometry": geometry})
+    item, cache_hit = _CACHE.run_once(payload, operation, territory_key=territory_key)
+    return _public_record(item, cache_hit=cache_hit)
+
+
+def run_sinia_tiles(request: SiniaTilesRequest) -> dict[str, Any]:
+    inicializar_earth_engine(ee)
+    return teselas_producto(request.product, ee_module=ee, codigos=request.codes, vista=request.view)
 
 
 def run_evidence(request: EvidenceRequest) -> dict[str, Any]:

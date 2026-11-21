@@ -24,6 +24,8 @@ from webapp.models import (
     LayerPreviewRequest,
     OfficialCoverageRequest,
     SiniaCoverageRequest,
+    SiniaStatisticsRequest,
+    SiniaTilesRequest,
     StructuralComparisonRequest,
     StructuralConnectivityRequest,
 )
@@ -44,6 +46,9 @@ from webapp.service import (
     run_official_coverage,
     run_official_coverage_2021,
     run_sinia_coverages,
+    run_sinia_statistics,
+    run_sinia_tiles,
+    sinia_catalog_payload,
     run_structural_comparison,
     run_structural_connectivity,
     source_catalog,
@@ -201,6 +206,37 @@ def create_app(*, testing: bool = False) -> Flask:
             use_map=True,
             app_page=True,
         )
+
+    @app.get("/coberturas")
+    def coberturas():
+        return render_template("coberturas.html", active="coberturas", project_id=resolver_proyecto_gee(),
+                               use_map=True, app_page=True)
+
+    @app.get("/api/v1/sinia/catalog")
+    def api_sinia_catalog():
+        return jsonify(sinia_catalog_payload())
+
+    @app.post("/api/v1/sinia/statistics")
+    def api_sinia_statistics():
+        return execute_guarded(
+            SiniaStatisticsRequest, run_sinia_statistics,
+            validation_message="Seleccione el área y uno o dos productos SINIA.",
+            failure_message="No se pudieron calcular las superficies SINIA.",
+        )
+
+    @app.post("/api/v1/sinia/tiles")
+    def api_sinia_tiles():
+        try:
+            payload = SiniaTilesRequest.model_validate(request.get_json(silent=True) or {})
+        except ValidationError as exc:
+            return jsonify(error="Solicitud de capa no válida.", details=_validation_details(exc)), 400
+        try:
+            return jsonify(run_sinia_tiles(payload))
+        except ValueError as exc:
+            return jsonify(error=str(exc)), 400
+        except Exception:
+            app.logger.exception("Fallo al preparar teselas SINIA")
+            return jsonify(error="No se pudo preparar la capa en Earth Engine."), 502
 
     @app.get("/panel/territorial")
     def panel_territorial():

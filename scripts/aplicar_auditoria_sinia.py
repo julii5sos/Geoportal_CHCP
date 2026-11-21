@@ -64,7 +64,8 @@ def aplicar(auditoria: dict, leyendas: dict, acuerdo: float, minimo: int) -> lis
                 "categoria": nuevo,
                 "estado": "verificada_espacialmente",
                 "fuente_correspondencia": f"Muestreo espacial vs servicio REST MiAMBIENTE capa {corr['capa_rest']['id']} · {ev['acuerdo_pct']} % de {validos} puntos ({auditoria.get('fecha')})",
-                "evidencia": {"puntos": validos, "acuerdo_pct": ev["acuerdo_pct"], "distribucion": ev.get("distribucion")},
+                "evidencia": {"puntos": validos, "acuerdo_pct": ev["acuerdo_pct"], "distribucion": ev.get("distribucion"),
+                              "valor_pixel_servicio": ev.get("valor_servicio") or None},
             })
             if fila.get("grupo_derivado") == "no_identificado" and fila.get("candidato_leyenda_oficial") and _normalizar(fila["candidato_leyenda_oficial"]).lower() == nuevo.lower():
                 cambios.append(f"{clave} código {codigo}: coincide con el candidato de la leyenda oficial; revisar grupo derivado.")
