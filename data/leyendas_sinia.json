@@ -6,7 +6,8 @@
   "documentada_catalogo_previo": "Leyenda del catálogo previo del proyecto; no contradicha por la auditoría, pendiente de correspondencia espacial.",
   "grupo_documentado_catalogo_previo": "Solo se conoce el grupo (p. ej., bosque natural), no la categoría individual.",
   "leyenda_oficial_sin_correspondencia": "Existe un nombre en la leyenda oficial, pero no se ha probado qué código de píxel le corresponde.",
-  "no_identificado": "Código presente sin categoría documentada; no se asigna significado."
+  "no_identificado": "Código presente sin categoría documentada; no se asigna significado.",
+  "discrepante_con_servicio": "El servicio oficial asigna a este código otra categoría o valor de píxel; no se muestra ningún nombre como oficial hasta resolver la discrepancia."
  },
  "fuentes_color": {
   "MiAMBIENTE": "Color leído de la simbología del servicio oficial.",

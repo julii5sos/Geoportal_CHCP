@@ -123,3 +123,20 @@ class IdentifyArcGISTests(unittest.TestCase):
         r3 = mod.interpretar_identify({"UniqueValue.Pixel Value": "1", "Raster.Categoría": "1",
                                        "Raster.Class_name": "Bosque latifoliado mixto maduro", "Raster.Red": "0", "Raster.Green": "88", "Raster.Blue": "0"})
         self.assertEqual((r3["categoria"], r3["rgb"]), ("Bosque latifoliado mixto maduro", [0, 88, 0]))
+
+
+class DiscrepanciaTests(unittest.TestCase):
+    def test_codigo_que_el_servicio_asigna_a_otro_valor_no_se_verifica(self):
+        spec = importlib.util.spec_from_file_location("aplicar2", RAIZ / "scripts" / "aplicar_auditoria_sinia.py")
+        mod = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(mod)
+        leyendas = copy.deepcopy(json.loads(L.ARCHIVO_LEYENDAS.read_text(encoding="utf-8")))
+        aud = {"fecha": "x", "assets": {"2012_detallado": {"correspondencia_rest": {"capa_rest": {"id": 2, "tipo": "raster"}, "colores_servicio": {},
+               "por_codigo": {"21": {"categoria_mayoritaria": "Superficie de agua", "acuerdo_pct": 90.0, "distribucion": {"Superficie de agua": 9, "Pasto": 1}, "valor_servicio": {"27": 9, "2": 1}},
+                              "26": {"categoria_mayoritaria": "Pasto", "acuerdo_pct": 100.0, "distribucion": {"Pasto": 10}, "valor_servicio": {"26": 10}}}}}}}
+        mod.aplicar(aud, leyendas, 80, 5)
+        filas = {f["codigo"]: f for f in leyendas["leyendas"]["2012_detallado"]}
+        self.assertEqual(filas[21]["estado"], "discrepante_con_servicio")
+        self.assertNotIn("Horticultura", filas[21]["categoria"])
+        self.assertEqual(filas[21]["grupo_derivado"], "no_identificado")
+        self.assertEqual((filas[26]["estado"], filas[26]["categoria"]), ("verificada_espacialmente", "Pasto"))

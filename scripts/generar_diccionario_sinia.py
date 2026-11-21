@@ -28,6 +28,7 @@ ETIQUETA_ESTADO = {
     "verificada_espacialmente": "✅ Verificada (espacial)", "verificada_valor_atributo": "✅ Verificada (atributo)",
     "documentada_catalogo_previo": "📘 Documentada", "grupo_documentado_catalogo_previo": "⚠️ Solo grupo",
     "leyenda_oficial_sin_correspondencia": "⚠️ Sin verificar", "no_identificado": "⛔ No identificado",
+    "discrepante_con_servicio": "⛔ Discrepancia",
 }
 
 

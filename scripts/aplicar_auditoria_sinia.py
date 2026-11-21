@@ -55,10 +55,30 @@ def aplicar(auditoria: dict, leyendas: dict, acuerdo: float, minimo: int) -> lis
             if fila is None:
                 cambios.append(f"{clave} código {codigo}: presente en el asset y ausente de la leyenda (revisar).")
                 continue
-            if not nombre or validos < minimo or ev.get("acuerdo_pct", 0) < acuerdo:
-                cambios.append(f"{clave} código {codigo}: sin evidencia suficiente ({validos} puntos, {ev.get('acuerdo_pct')} % → «{nombre}»); se conserva «{fila['categoria']}».")
+            valores = {k: n for k, n in (ev.get("valor_servicio") or {}).items()}
+            valor_mayor = max(valores.items(), key=lambda kv: kv[1])[0] if valores else None
+            codigo_coincide = valor_mayor is None or str(valor_mayor) == str(codigo)
+            nombre_documentado = _normalizar(fila.get("candidato_leyenda_oficial") or fila["categoria"]).lower()
+            if not nombre or validos < minimo or ev.get("acuerdo_pct", 0) < acuerdo or not codigo_coincide:
+                discrepa = nombre and (_normalizar(nombre).lower() != nombre_documentado or not codigo_coincide) and fila["estado"] != "verificada_espacialmente"
+                if discrepa and validos >= minimo:
+                    fila.update({
+                        "estado": "discrepante_con_servicio",
+                        "categoria": f"Código {codigo} · discrepancia con el servicio oficial",
+                        "fuente_correspondencia": (f"Servicio REST capa {corr['capa_rest']['id']}: mayoría «{nombre}» ({ev.get('acuerdo_pct')} % de {validos} puntos; "
+                                                   f"valor de píxel oficial mayoritario {valor_mayor}). Documentación previa: «{fila.get('candidato_leyenda_oficial') or fila['categoria']}»."),
+                        "evidencia": {"puntos": validos, "acuerdo_pct": ev.get("acuerdo_pct"), "distribucion": ev.get("distribucion"), "valor_pixel_servicio": valores},
+                    })
+                    if fila.get("grupo_derivado") not in {"agua"}:
+                        fila["grupo_derivado"] = "no_identificado"
+                    cambios.append(f"{clave} código {codigo}: DISCREPANCIA — servicio «{nombre}» (valor {valor_mayor}, {ev.get('acuerdo_pct')} %) frente a «{fila.get('candidato_leyenda_oficial')}».")
+                else:
+                    cambios.append(f"{clave} código {codigo}: sin evidencia suficiente ({validos} puntos, {ev.get('acuerdo_pct')} % → «{nombre}»); se conserva «{fila['categoria']}».")
                 continue
             nuevo = _normalizar(nombre)
+            if nuevo.isdigit():
+                cambios.append(f"{clave} código {codigo}: el servicio devolvió solo el valor numérico; falta el nombre (repetir auditoría).")
+                continue
             previo = fila["categoria"]
             fila.update({
                 "categoria": nuevo,
