@@ -83,6 +83,12 @@ class OfficialCoverageRequest(BaseModel):
     territory_id: str | None = Field(default=None, max_length=180)
 
 
+class SiniaCoverageRequest(BaseModel):
+    area: AreaSelection
+    territory_id: str | None = Field(default=None, max_length=180)
+    years: list[Literal[2019, 2021, 2023]] = Field(default_factory=lambda: [2019, 2021, 2023], min_length=1, max_length=3)
+
+
 class StructuralConnectivityRequest(BaseModel):
     area: AreaSelection
     scenario: Literal["official_2021", "diagnostic_2023"]

@@ -44,6 +44,7 @@ from chcp.nucleo.corredores import (
     cargar_corredores,
     cargar_puntos_criticos,
 )
+from chcp.gee.coberturas_sinia import resumir_coberturas_sinia
 from chcp.gee.eri_gee import calcular_eri_geojson
 from chcp.gee.evaluacion_ecologica import ejecutar_evaluacion_ecologica
 from chcp.gee.gee_config import inicializar_earth_engine, resolver_proyecto_gee
@@ -67,6 +68,7 @@ from webapp.models import (
     EvidenceRequest,
     LayerPreviewRequest,
     OfficialCoverageRequest,
+    SiniaCoverageRequest,
     StructuralComparisonRequest,
     StructuralConnectivityRequest,
 )
@@ -556,6 +558,31 @@ def run_official_coverage_2021(request: OfficialCoverageRequest) -> dict[str, An
             "area": {**area, "geometry": geometry},
             "result": result,
             "warnings": result.get("prohibited_interpretations", []),
+        }
+
+    territory_key = request.territory_id or ResultCache.signature({"geometry": geometry})
+    item, cache_hit = _CACHE.run_once(payload, operation, territory_key=territory_key)
+    return _public_record(item, cache_hit=cache_hit)
+
+
+def run_sinia_coverages(request: SiniaCoverageRequest) -> dict[str, Any]:
+    geometry, area = resolve_area(request.area)
+    years = sorted(set(request.years))
+    payload = {
+        "kind": "official_coverages_sinia",
+        "years": years,
+        "resolved_geometry": geometry,
+    }
+
+    def operation() -> dict[str, Any]:
+        project = _initialize_ee()
+        result = resumir_coberturas_sinia(geometry, ee_module=ee, anios=years)
+        return {
+            "kind": "official_coverages_sinia",
+            "project_id": project,
+            "area": {**area, "geometry": geometry},
+            "result": result,
+            "warnings": [result["comparability_warning"]],
         }
 
     territory_key = request.territory_id or ResultCache.signature({"geometry": geometry})

@@ -23,6 +23,7 @@ from webapp.models import (
     EvidenceRequest,
     LayerPreviewRequest,
     OfficialCoverageRequest,
+    SiniaCoverageRequest,
     StructuralComparisonRequest,
     StructuralConnectivityRequest,
 )
@@ -42,6 +43,7 @@ from webapp.service import (
     run_eri,
     run_official_coverage,
     run_official_coverage_2021,
+    run_sinia_coverages,
     run_structural_comparison,
     run_structural_connectivity,
     source_catalog,
@@ -353,6 +355,15 @@ def create_app(*, testing: bool = False) -> Flask:
             run_official_coverage_2021,
             validation_message="Revise el área solicitada.",
             failure_message="No se pudo consultar la cobertura oficial 2021.",
+        )
+
+    @app.post("/api/v1/official-coverages/sinia")
+    def api_sinia_coverages():
+        return execute_guarded(
+            SiniaCoverageRequest,
+            run_sinia_coverages,
+            validation_message="Revise el área y los años solicitados (2019, 2021 o 2023).",
+            failure_message="No se pudieron calcular las superficies SINIA por categoría.",
         )
 
     @app.post("/api/v1/structural-connectivity")

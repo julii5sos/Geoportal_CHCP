@@ -906,6 +906,35 @@
     return `<div class="line-chart"><svg viewBox="0 0 ${width} ${height}" role="img" aria-label="Evolución anual de cambios">${grid}${xLabels}${lines}</svg><ul>${legend}</ul></div>`;
   }
 
+  function siniaProductCard(product) {
+    const rows = product.classes.map((row) => ({label: row.label, value: row.area_ha, color: row.color}));
+    const table = `<table class="scientific-table sinia-table"><thead><tr><th>Categoría</th><th>ha</th><th>%</th></tr></thead><tbody>${product.classes.map((row) => `<tr><td><i class="swatch" style="background:${row.color}"></i>${esc(row.label)}</td><td>${number(row.area_ha,1)}</td><td>${number(row.percentage,1)} %</td></tr>`).join('')}</tbody></table>`;
+    const nodata = product.unclassified_or_nodata_ha > 0.5 ? `<p class="chart-note">Sin clasificar o sin dato: ${hectares(product.unclassified_or_nodata_ha)}.</p>` : '';
+    return `<article class="chart-card sinia-card"><h3>${esc(product.name)}</h3>${donutChart(rows, product.classified_ha)}${table}${nodata}<p class="chart-note">${esc(product.measurement)} ${esc(product.limitation)}</p></article>`;
+  }
+  function renderSiniaCoverages(container, response) {
+    const products = response.result.products;
+    const forestRows = products.map((p) => ({label: String(p.year), value: p.forest_pct, formatted: `${number(p.forest_pct,1)} % · ${hectares(p.forest_ha)}`, color: '#237A4B'}));
+    container.innerHTML = `<div class="kpi-grid sinia-kpis">${products.map((p) => `<div class="kpi">${icon('forest',24)}<div><span>Bosque SINIA ${p.year}</span><b>${hectares(p.forest_ha)}</b><small>${number(p.forest_pct,1)} % del área clasificada</small></div></div>`).join('')}</div>
+      <div class="chart-card"><h3>Bosques y otras tierras boscosas por producto</h3>${barChart(forestRows)}<div class="review-note">${esc(response.result.comparability_warning)}</div></div>
+      <div class="sinia-grid">${products.map(siniaProductCard).join('')}</div>`;
+  }
+  async function loadSiniaCoverages() {
+    const container = $('#sinia-coverages');
+    if (!container || container.dataset.loaded !== 'false') return;
+    container.dataset.loaded = 'loading';
+    container.innerHTML = `<div class="empty-result"><h3>Calculando superficies SINIA…</h3><p>Earth Engine está midiendo las tres categorías de 2019, 2021 y 2023 en este territorio.</p></div>`;
+    try {
+      const response = await api('/api/v1/official-coverages/sinia', {method: 'POST', body: JSON.stringify({area: state.siniaArea || currentAreaRequest(), territory_id: state.territoryId, years: [2019, 2021, 2023]})});
+      renderSiniaCoverages(container, response);
+      container.dataset.loaded = 'true';
+    } catch (error) {
+      container.dataset.loaded = 'false';
+      container.innerHTML = `<div class="empty-result"><h3>No se pudieron calcular las coberturas SINIA</h3><p>${esc(error.message)}</p><button class="btn btn-s" type="button" id="retry-sinia">Reintentar</button></div>`;
+      $('#retry-sinia')?.addEventListener('click', loadSiniaCoverages);
+    }
+  }
+
   const scientificTabLabels = {
     summary: 'Resumen', forest: 'Dinámica del bosque',
     connectivity: 'Conectividad', coverages: 'Coberturas',
@@ -1149,9 +1178,11 @@
     const summaryView = `${kpis}${charts}${changeCards}${meaning}<div class="interpretation"><b>Lectura integrada.</b> ${esc(visit.lectura_integrada || consistency.detalle || '')}</div>`;
     const forestView = `<div class="chart-card"><h3>Aportes reales al índice de indicios</h3>${barChart(signalRows)}<p class="chart-note">Las barras representan aportes al índice, no categorías mutuamente excluyentes de superficie.</p></div><div class="res-sec"><h3>Señales por fuente</h3><div class="metric-grid">${signalCards}</div></div>`;
     const connectivityView = structure ? `<div class="metric-grid">${metric('Bosque oficial 2021',hectares(structure.metricas_clase.area_total_bosque_ha),`${number(structure.metricas_clase.porcentaje_paisaje_bosque,1)} % del territorio`)}${metric('Parches',number(structure.metricas_clase.numero_parches,0),`${number(structure.metricas_clase.area_media_parche_ha,2)} ha de media`)}${metric('Componentes',number(structure.metricas_red.numero_componentes,0),`${number(structure.metricas_red.numero_parches_aislados,0)} aislados`)}${metric('Conexiones',number(structure.metricas_red.numero_aristas,0),`umbral ${number(structure.metricas_red.umbral_m,0)} m`)}</div>${structuralCharts(structure,true)}<div class="interpretation"><b>Qué significa.</b> ${esc(structuralInterpretation(structure.metricas_clase,structure.metricas_red))}</div>` : `<div class="empty-result"><h3>No calculado</h3><p>La preevaluación territorial ya está disponible. Para preparar parches y red seleccione Fragmentación, Conectividad o Análisis integral.</p><button class="btn btn-p" type="button" data-open-analysis>Completar análisis estructural</button></div>`;
-    const coverageView = `<div class="empty-result"><h3>Coberturas oficiales disponibles</h3><p>Active en el panel izquierdo la cartografía SINIA/MiAMBIENTE que desea explorar. Las capas se muestran sin recalcular este resultado y conservan sus leyendas y años reales.</p></div>`;
+    const coverageView = `<div id="sinia-coverages" data-loaded="false"><div class="empty-result"><h3>Superficie por categoría SINIA–MiAMBIENTE</h3><p>Coberturas generales 2019, 2021 y 2023 (tres categorías). Se calculan al abrir esta pestaña.</p></div></div>`;
     const reportView = `<div class="res-sec"><h3>Limitaciones y verificación</h3><ul class="warning-list">${response.warnings.map(item => `<li>${esc(item)}</li>`).join('')}</ul></div><div id="eri-content" class="empty-result"><h3>ERI complementario</h3><p>Se calcula por separado y no altera el índice de indicios.</p><button class="btn btn-s" id="calculate-eri" type="button">Calcular ERI complementario</button></div>`;
     mountScientificViews({summary:summaryView,forest:forestView,connectivity:connectivityView,corridors:corridorResultView(response),coverages:coverageView,report:reportView});
+    state.siniaArea = response.area?.geometry ? {mode: 'draw', geometry: response.area.geometry} : currentAreaRequest();
+    $('[data-result-tab="coverages"]')?.addEventListener('click', loadSiniaCoverages);
     $('#calculate-eri')?.addEventListener('click', calculateEri);
     renderLayers(); renderLegend(); setTimeout(() => map.invalidateSize(),220);
   }
