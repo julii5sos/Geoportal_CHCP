@@ -1,5 +1,5 @@
 {
- "fecha": "2026-11-21T18:29:19",
+ "fecha": "2026-11-21T18:40:08",
  "proyecto": "geoportal-513817",
  "ee_version": "1.7.53",
  "aoi_control": "Qda. Bonita",
@@ -675,6 +675,1755 @@
     }
    },
    "n_muestras": 20
+  },
+  "2012_detallado": {
+   "asset_id": "projects/geoportal-513817/assets/SINIA_2012_USO_SUELO_RASTER5M",
+   "metadatos": {
+    "tipo": "IMAGE",
+    "tamano_bytes": "21954243",
+    "actualizado": "2026-11-07T16:43:05.739833Z",
+    "propiedades": {},
+    "bandas": [
+     {
+      "id": "b1",
+      "tipo_dato": {
+       "precision": "INT",
+       "range": {
+        "max": 65535
+       }
+      },
+      "crs": "EPSG:32617",
+      "transformacion": {
+       "scaleX": 5,
+       "translateX": 581571.8882000009,
+       "scaleY": -5,
+       "translateY": 1065468.182109693
+      },
+      "dimensiones": {
+       "width": 25262,
+       "height": 24745
+      }
+     }
+    ],
+    "escala_nominal_m": 5,
+    "extension_wgs84": [
+     [
+      [
+       -80.2588530304754,
+       8.515006060594219
+      ],
+      [
+       -79.10557963199751,
+       8.515006060594219
+      ],
+      [
+       -79.10557963199751,
+       9.637937737080021
+      ],
+      [
+       -80.2588530304754,
+       9.637937737080021
+      ],
+      [
+       -80.2588530304754,
+       8.515006060594219
+      ]
+     ]
+    ],
+    "proyeccion": {
+     "type": "Projection",
+     "crs": "EPSG:32617",
+     "transform": [
+      5,
+      0,
+      581571.8882000009,
+      0,
+      -5,
+      1065468.182109693
+     ]
+    },
+    "tipo_banda_ee": {
+     "b1": {
+      "type": "PixelType",
+      "precision": "int",
+      "min": 0,
+      "max": 65535
+     }
+    }
+   },
+   "_segundos": {
+    "metadatos": 1.0,
+    "inventario_chcp": 0.6,
+    "areas_aoi_control": 0.4,
+    "muestras": 0.7,
+    "correspondencia_rest": 99.5,
+    "coherencia_forestal_2021": 0.8
+   },
+   "inventario_chcp": {
+    "enmascarado_ha": 0,
+    "histograma_ha": [
+     {
+      "codigo": 1,
+      "sum": 125409.86893925964
+     },
+     {
+      "codigo": 2,
+      "sum": 60477.884970642335
+     },
+     {
+      "codigo": 3,
+      "sum": 64.90402211453903
+     },
+     {
+      "codigo": 4,
+      "sum": 223.82693144665285
+     },
+     {
+      "codigo": 5,
+      "sum": 187.55957637684546
+     },
+     {
+      "codigo": 6,
+      "sum": 473.4499156159698
+     },
+     {
+      "codigo": 7,
+      "sum": 449.8427261175715
+     },
+     {
+      "codigo": 8,
+      "sum": 7576.235425645054
+     },
+     {
+      "codigo": 9,
+      "sum": 3085.3691502737684
+     },
+     {
+      "codigo": 10,
+      "sum": 6067.039478250931
+     },
+     {
+      "codigo": 11,
+      "sum": 642.9011002352795
+     },
+     {
+      "codigo": 12,
+      "sum": 752.8909581210842
+     },
+     {
+      "codigo": 13,
+      "sum": 171.67908800185555
+     },
+     {
+      "codigo": 14,
+      "sum": 2885.0405226625594
+     },
+     {
+      "codigo": 15,
+      "sum": 429.0595625638091
+     },
+     {
+      "codigo": 16,
+      "sum": 31.678172124894083
+     },
+     {
+      "codigo": 17,
+      "sum": 75.56921222085386
+     },
+     {
+      "codigo": 18,
+      "sum": 346.39481978567704
+     },
+     {
+      "codigo": 19,
+      "sum": 84.09566082897113
+     },
+     {
+      "codigo": 20,
+      "sum": 1165.1520522372862
+     },
+     {
+      "codigo": 21,
+      "sum": 309.407791772464
+     },
+     {
+      "codigo": 22,
+      "sum": 281.2838497029295
+     },
+     {
+      "codigo": 23,
+      "sum": 2519.1415302106784
+     },
+     {
+      "codigo": 24,
+      "sum": 52.61774330771949
+     },
+     {
+      "codigo": 25,
+      "sum": 66.42280718179144
+     },
+     {
+      "codigo": 26,
+      "sum": 71744.63319884492
+     },
+     {
+      "codigo": 27,
+      "sum": 45076.54604248006
+     },
+     {
+      "codigo": 28,
+      "sum": 9286.846680362165
+     },
+     {
+      "codigo": 29,
+      "sum": 1087.0393334150365
+     },
+     {
+      "codigo": 30,
+      "sum": 20.2758006729126
+     }
+    ],
+    "minmax": {
+     "codigo_max": 30,
+     "codigo_min": 1
+    },
+    "escala_inventario_m": 10,
+    "codigos_presentes": [
+     1,
+     2,
+     3,
+     4,
+     5,
+     6,
+     7,
+     8,
+     9,
+     10,
+     11,
+     12,
+     13,
+     14,
+     15,
+     16,
+     17,
+     18,
+     19,
+     20,
+     21,
+     22,
+     23,
+     24,
+     25,
+     26,
+     27,
+     28,
+     29,
+     30
+    ]
+   },
+   "areas_aoi_control": [
+    {
+     "codigo": 1,
+     "ha": 6.5268
+    },
+    {
+     "codigo": 2,
+     "ha": 249.9406
+    },
+    {
+     "codigo": 8,
+     "ha": 69.7193
+    },
+    {
+     "codigo": 26,
+     "ha": 160.2881
+    },
+    {
+     "codigo": 28,
+     "ha": 21.4165
+    }
+   ],
+   "correspondencia_rest": {
+    "capa_rest": {
+     "id": 2,
+     "tipo": "raster"
+    },
+    "por_codigo": {
+     "1": {
+      "puntos": 10,
+      "categoria_mayoritaria": "Bosque latifoliado mixto maduro",
+      "acuerdo_pct": 100.0,
+      "distribucion": {
+       "Bosque latifoliado mixto maduro": 10
+      },
+      "valor_servicio": {
+       "1": 10
+      }
+     },
+     "2": {
+      "puntos": 10,
+      "categoria_mayoritaria": "Bosque latifoliado mixto secundario",
+      "acuerdo_pct": 100.0,
+      "distribucion": {
+       "Bosque latifoliado mixto secundario": 10
+      },
+      "valor_servicio": {
+       "2": 10
+      }
+     },
+     "3": {
+      "puntos": 10,
+      "categoria_mayoritaria": "Bosque latifoliado mixto maduro",
+      "acuerdo_pct": 60.0,
+      "distribucion": {
+       "Bosque latifoliado mixto maduro": 6,
+       "Vegetación herbácea": 4
+      },
+      "valor_servicio": {
+       "1": 6,
+       "10": 4
+      }
+     },
+     "4": {
+      "puntos": 10,
+      "categoria_mayoritaria": "Bosque latifoliado mixto secundario",
+      "acuerdo_pct": 70.0,
+      "distribucion": {
+       "Bosque latifoliado mixto secundario": 7,
+       "Rastrojo y vegetación arbustiva": 1,
+       "Bosque plantado de latifoliadas": 1,
+       "Afloramiento rocoso y tierra desnuda": 1
+      },
+      "valor_servicio": {
+       "2": 7,
+       "9": 1,
+       "8": 1,
+       "12": 1
+      }
+     },
+     "5": {
+      "puntos": 10,
+      "categoria_mayoritaria": "Bosque latifoliado mixto secundario",
+      "acuerdo_pct": 40.0,
+      "distribucion": {
+       "Bosque plantado de latifoliadas": 3,
+       "Bosque latifoliado mixto secundario": 4,
+       "Bosque latifoliado mixto maduro": 3
+      },
+      "valor_servicio": {
+       "8": 3,
+       "2": 4,
+       "1": 3
+      }
+     },
+     "6": {
+      "puntos": 10,
+      "categoria_mayoritaria": "Bosque latifoliado mixto secundario",
+      "acuerdo_pct": 70.0,
+      "distribucion": {
+       "Bosque latifoliado mixto secundario": 7,
+       "Vegetación herbácea": 1,
+       "Bosque latifoliado mixto maduro": 2
+      },
+      "valor_servicio": {
+       "2": 7,
+       "10": 1,
+       "1": 2
+      }
+     },
+     "7": {
+      "puntos": 10,
+      "categoria_mayoritaria": "Bosque latifoliado mixto maduro",
+      "acuerdo_pct": 30.0,
+      "distribucion": {
+       "Bosque plantado de coníferas": 1,
+       "Pasto": 1,
+       "Bosque latifoliado mixto maduro": 3,
+       "Rastrojo y vegetación arbustiva": 3,
+       "Bosque plantado de latifoliadas": 2
+      },
+      "valor_servicio": {
+       "7": 1,
+       "26": 1,
+       "1": 3,
+       "9": 3,
+       "8": 2
+      }
+     },
+     "8": {
+      "puntos": 10,
+      "categoria_mayoritaria": "Bosque plantado de latifoliadas",
+      "acuerdo_pct": 90.0,
+      "distribucion": {
+       "Bosque plantado de latifoliadas": 9,
+       "Bosque latifoliado mixto secundario": 1
+      },
+      "valor_servicio": {
+       "8": 9,
+       "2": 1
+      }
+     },
+     "9": {
+      "puntos": 10,
+      "categoria_mayoritaria": "Rastrojo y vegetación arbustiva",
+      "acuerdo_pct": 100.0,
+      "distribucion": {
+       "Rastrojo y vegetación arbustiva": 10
+      },
+      "valor_servicio": {
+       "9": 10
+      }
+     },
+     "10": {
+      "puntos": 10,
+      "categoria_mayoritaria": "Vegetación herbácea",
+      "acuerdo_pct": 100.0,
+      "distribucion": {
+       "Vegetación herbácea": 10
+      },
+      "valor_servicio": {
+       "10": 10
+      }
+     },
+     "11": {
+      "puntos": 10,
+      "categoria_mayoritaria": "Vegetación baja inundable",
+      "acuerdo_pct": 70.0,
+      "distribucion": {
+       "Vegetación herbácea": 2,
+       "Vegetación baja inundable": 7,
+       "Afloramiento rocoso y tierra desnuda": 1
+      },
+      "valor_servicio": {
+       "10": 2,
+       "11": 7,
+       "12": 1
+      }
+     },
+     "12": {
+      "puntos": 10,
+      "categoria_mayoritaria": "Afloramiento rocoso y tierra desnuda",
+      "acuerdo_pct": 90.0,
+      "distribucion": {
+       "Afloramiento rocoso y tierra desnuda": 9,
+       "Bosque plantado de latifoliadas": 1
+      },
+      "valor_servicio": {
+       "12": 9,
+       "8": 1
+      }
+     },
+     "13": {
+      "puntos": 10,
+      "categoria_mayoritaria": "Rastrojo y vegetación arbustiva",
+      "acuerdo_pct": 70.0,
+      "distribucion": {
+       "Rastrojo y vegetación arbustiva": 7,
+       "Bosque latifoliado mixto secundario": 1,
+       "Pasto": 2
+      },
+      "valor_servicio": {
+       "9": 7,
+       "2": 1,
+       "26": 2
+      }
+     },
+     "14": {
+      "puntos": 10,
+      "categoria_mayoritaria": "Pasto",
+      "acuerdo_pct": 40.0,
+      "distribucion": {
+       "Pasto": 4,
+       "Superficie de agua": 2,
+       "Bosque latifoliado mixto maduro": 1,
+       "Bosque latifoliado mixto secundario": 3
+      },
+      "valor_servicio": {
+       "26": 4,
+       "27": 2,
+       "1": 1,
+       "2": 3
+      }
+     },
+     "15": {
+      "puntos": 10,
+      "categoria_mayoritaria": "Área poblada",
+      "acuerdo_pct": 40.0,
+      "distribucion": {
+       "Área poblada": 4,
+       "Superficie de agua": 3,
+       "Bosque latifoliado mixto secundario": 2,
+       "Vegetación baja inundable": 1
+      },
+      "valor_servicio": {
+       "28": 4,
+       "27": 3,
+       "2": 2,
+       "11": 1
+      }
+     },
+     "16": {
+      "puntos": 10,
+      "categoria_mayoritaria": "Infraestructura",
+      "acuerdo_pct": 40.0,
+      "distribucion": {
+       "Infraestructura": 4,
+       "Bosque latifoliado mixto secundario": 2,
+       "Afloramiento rocoso y tierra desnuda": 2,
+       "Superficie de agua": 1,
+       "Pasto": 1
+      },
+      "valor_servicio": {
+       "29": 4,
+       "2": 2,
+       "12": 2,
+       "27": 1,
+       "26": 1
+      }
+     },
+     "17": {
+      "puntos": 10,
+      "categoria_mayoritaria": "Pasto",
+      "acuerdo_pct": 90.0,
+      "distribucion": {
+       "Pasto": 9,
+       "Bosque plantado de latifoliadas": 1
+      },
+      "valor_servicio": {
+       "26": 9,
+       "8": 1
+      }
+     },
+     "18": {
+      "puntos": 10,
+      "categoria_mayoritaria": "Pasto",
+      "acuerdo_pct": 50.0,
+      "distribucion": {
+       "Pasto": 5,
+       "Rastrojo y vegetación arbustiva": 4,
+       "Vegetación herbácea": 1
+      },
+      "valor_servicio": {
+       "26": 5,
+       "9": 4,
+       "10": 1
+      }
+     },
+     "19": {
+      "puntos": 10,
+      "categoria_mayoritaria": "Vegetación herbácea",
+      "acuerdo_pct": 70.0,
+      "distribucion": {
+       "Vegetación herbácea": 7,
+       "Pasto": 2,
+       "Rastrojo y vegetación arbustiva": 1
+      },
+      "valor_servicio": {
+       "10": 7,
+       "26": 2,
+       "9": 1
+      }
+     },
+     "20": {
+      "puntos": 10,
+      "categoria_mayoritaria": "Pasto",
+      "acuerdo_pct": 70.0,
+      "distribucion": {
+       "Pasto": 7,
+       "Bosque latifoliado mixto secundario": 3
+      },
+      "valor_servicio": {
+       "26": 7,
+       "2": 3
+      }
+     },
+     "21": {
+      "puntos": 10,
+      "categoria_mayoritaria": "Superficie de agua",
+      "acuerdo_pct": 90.0,
+      "distribucion": {
+       "Superficie de agua": 9,
+       "Bosque latifoliado mixto secundario": 1
+      },
+      "valor_servicio": {
+       "27": 9,
+       "2": 1
+      }
+     },
+     "22": {
+      "puntos": 10,
+      "categoria_mayoritaria": "Pasto",
+      "acuerdo_pct": 40.0,
+      "distribucion": {
+       "Vegetación baja inundable": 1,
+       "Superficie de agua": 1,
+       "Pasto": 4,
+       "Área poblada": 3,
+       "Rastrojo y vegetación arbustiva": 1
+      },
+      "valor_servicio": {
+       "11": 1,
+       "27": 1,
+       "26": 4,
+       "28": 3,
+       "9": 1
+      }
+     },
+     "23": {
+      "puntos": 10,
+      "categoria_mayoritaria": "Piña",
+      "acuerdo_pct": 100.0,
+      "distribucion": {
+       "Piña": 10
+      },
+      "valor_servicio": {
+       "23": 10
+      }
+     },
+     "24": {
+      "puntos": 10,
+      "categoria_mayoritaria": "Piña",
+      "acuerdo_pct": 70.0,
+      "distribucion": {
+       "Piña": 7,
+       "Área poblada": 2,
+       "Infraestructura": 1
+      },
+      "valor_servicio": {
+       "23": 7,
+       "28": 2,
+       "29": 1
+      }
+     },
+     "25": {
+      "puntos": 10,
+      "categoria_mayoritaria": "Pasto",
+      "acuerdo_pct": 50.0,
+      "distribucion": {
+       "Pasto": 5,
+       "Superficie de agua": 1,
+       "Piña": 4
+      },
+      "valor_servicio": {
+       "26": 5,
+       "27": 1,
+       "23": 4
+      }
+     },
+     "26": {
+      "puntos": 10,
+      "categoria_mayoritaria": "Pasto",
+      "acuerdo_pct": 100.0,
+      "distribucion": {
+       "Pasto": 10
+      },
+      "valor_servicio": {
+       "26": 10
+      }
+     },
+     "27": {
+      "puntos": 10,
+      "categoria_mayoritaria": "Superficie de agua",
+      "acuerdo_pct": 100.0,
+      "distribucion": {
+       "Superficie de agua": 10
+      },
+      "valor_servicio": {
+       "27": 10
+      }
+     },
+     "28": {
+      "puntos": 10,
+      "categoria_mayoritaria": "Área poblada",
+      "acuerdo_pct": 100.0,
+      "distribucion": {
+       "Área poblada": 10
+      },
+      "valor_servicio": {
+       "28": 10
+      }
+     },
+     "29": {
+      "puntos": 10,
+      "categoria_mayoritaria": "Infraestructura",
+      "acuerdo_pct": 100.0,
+      "distribucion": {
+       "Infraestructura": 10
+      },
+      "valor_servicio": {
+       "29": 10
+      }
+     },
+     "30": {
+      "puntos": 10,
+      "categoria_mayoritaria": "Explotación minera",
+      "acuerdo_pct": 100.0,
+      "distribucion": {
+       "Explotación minera": 10
+      },
+      "valor_servicio": {
+       "30": 10
+      }
+     }
+    },
+    "colores_servicio": {
+     "Bosque latifoliado mixto maduro": "0,88,0",
+     "Bosque latifoliado mixto secundario": "0,166,0",
+     "Vegetación herbácea": "218,245,124",
+     "Rastrojo y vegetación arbustiva": "148,217,0",
+     "Bosque plantado de latifoliadas": "84,107,46",
+     "Afloramiento rocoso y tierra desnuda": "141,141,141",
+     "Bosque plantado de coníferas": "19,60,42",
+     "Pasto": "255,255,0",
+     "Vegetación baja inundable": "0,255,166",
+     "Superficie de agua": "128,241,230",
+     "Área poblada": "255,0,0",
+     "Infraestructura": "153,0,0",
+     "Piña": "255,255,168",
+     "Explotación minera": "166,0,204"
+    },
+    "atributos_ejemplo": {
+     "UniqueValue.Pixel Value": "1",
+     "Raster.OBJECTID": "2",
+     "Raster.Count_": "1106480854",
+     "Raster.Red": "0",
+     "Raster.Green": "0.345098",
+     "Raster.Blue": "0",
+     "Raster.Opacity": "1",
+     "Raster.Value2": "1",
+     "Raster.Categoría": "Bosque latifoliado mixto maduro"
+    }
+   },
+   "coherencia_forestal_2021": {
+    "1": {
+     "puntos": 10,
+     "en_bosque_2021_pct": 100.0
+    },
+    "2": {
+     "puntos": 10,
+     "en_bosque_2021_pct": 90.0
+    },
+    "3": {
+     "puntos": 10,
+     "en_bosque_2021_pct": 60.0
+    },
+    "4": {
+     "puntos": 10,
+     "en_bosque_2021_pct": 80.0
+    },
+    "5": {
+     "puntos": 10,
+     "en_bosque_2021_pct": 90.0
+    },
+    "6": {
+     "puntos": 10,
+     "en_bosque_2021_pct": 80.0
+    },
+    "7": {
+     "puntos": 10,
+     "en_bosque_2021_pct": 90.0
+    },
+    "8": {
+     "puntos": 10,
+     "en_bosque_2021_pct": 90.0
+    },
+    "9": {
+     "puntos": 10,
+     "en_bosque_2021_pct": 40.0
+    },
+    "10": {
+     "puntos": 10,
+     "en_bosque_2021_pct": 20.0
+    },
+    "11": {
+     "puntos": 10,
+     "en_bosque_2021_pct": 20.0
+    },
+    "12": {
+     "puntos": 10,
+     "en_bosque_2021_pct": 20.0
+    },
+    "13": {
+     "puntos": 10,
+     "en_bosque_2021_pct": 50.0
+    },
+    "14": {
+     "puntos": 10,
+     "en_bosque_2021_pct": 70.0
+    },
+    "15": {
+     "puntos": 10,
+     "en_bosque_2021_pct": 10.0
+    },
+    "16": {
+     "puntos": 10,
+     "en_bosque_2021_pct": 20.0
+    },
+    "17": {
+     "puntos": 10,
+     "en_bosque_2021_pct": 60.0
+    },
+    "18": {
+     "puntos": 10,
+     "en_bosque_2021_pct": 30.0
+    },
+    "19": {
+     "puntos": 10,
+     "en_bosque_2021_pct": 20.0
+    },
+    "20": {
+     "puntos": 10,
+     "en_bosque_2021_pct": 80.0
+    },
+    "21": {
+     "puntos": 10,
+     "en_bosque_2021_pct": 30.0
+    },
+    "22": {
+     "puntos": 10,
+     "en_bosque_2021_pct": 20.0
+    },
+    "23": {
+     "puntos": 10,
+     "en_bosque_2021_pct": 10.0
+    },
+    "24": {
+     "puntos": 10,
+     "en_bosque_2021_pct": 40.0
+    },
+    "25": {
+     "puntos": 10,
+     "en_bosque_2021_pct": 0.0
+    },
+    "26": {
+     "puntos": 10,
+     "en_bosque_2021_pct": 30.0
+    },
+    "27": {
+     "puntos": 10,
+     "en_bosque_2021_pct": 0.0
+    },
+    "28": {
+     "puntos": 10,
+     "en_bosque_2021_pct": 0.0
+    },
+    "29": {
+     "puntos": 10,
+     "en_bosque_2021_pct": 20.0
+    },
+    "30": {
+     "puntos": 10,
+     "en_bosque_2021_pct": 10.0
+    }
+   },
+   "n_muestras": 300
+  },
+  "2019_general": {
+   "asset_id": "projects/geoportal-513817/assets/SINIA_2019_COBERTURA_GENERAL_RASTER20M",
+   "metadatos": {
+    "tipo": "IMAGE",
+    "tamano_bytes": "1387541",
+    "actualizado": "2026-11-07T16:43:19.048294Z",
+    "propiedades": {},
+    "bandas": [
+     {
+      "id": "b1",
+      "tipo_dato": {
+       "precision": "INT",
+       "range": {
+        "max": 255
+       }
+      },
+      "crs": "EPSG:32617",
+      "transformacion": {
+       "scaleX": 19.799712,
+       "translateX": 581572.4928200003,
+       "scaleY": -19.799712,
+       "translateY": 1065469.7589639993
+      },
+      "dimensiones": {
+       "width": 6380,
+       "height": 6249
+      }
+     }
+    ],
+    "escala_nominal_m": 19.799712,
+    "extension_wgs84": [
+     [
+      [
+       -80.2589148734298,
+       8.514923110704611
+      ],
+      [
+       -79.10539592588898,
+       8.514923110704611
+      ],
+      [
+       -79.10539592588898,
+       9.63801809555761
+      ],
+      [
+       -80.2589148734298,
+       9.63801809555761
+      ],
+      [
+       -80.2589148734298,
+       8.514923110704611
+      ]
+     ]
+    ],
+    "proyeccion": {
+     "type": "Projection",
+     "crs": "EPSG:32617",
+     "transform": [
+      19.799712,
+      0,
+      581572.4928200003,
+      0,
+      -19.799712,
+      1065469.7589639993
+     ]
+    },
+    "tipo_banda_ee": {
+     "b1": {
+      "type": "PixelType",
+      "precision": "int",
+      "min": 0,
+      "max": 255
+     }
+    }
+   },
+   "_segundos": {
+    "metadatos": 0.5,
+    "inventario_chcp": 1.1,
+    "areas_aoi_control": 0.3,
+    "muestras": 1.0,
+    "coherencia_forestal_2021": 0.5
+   },
+   "inventario_chcp": {
+    "enmascarado_ha": 0,
+    "histograma_ha": [
+     {
+      "codigo": 1,
+      "sum": 215769.9178780411
+     },
+     {
+      "codigo": 2,
+      "sum": 83059.03848578573
+     },
+     {
+      "codigo": 3,
+      "sum": 42215.21566047914
+     }
+    ],
+    "minmax": {
+     "codigo_max": 3,
+     "codigo_min": 1
+    },
+    "escala_inventario_m": 19.799712,
+    "codigos_presentes": [
+     1,
+     2,
+     3
+    ]
+   },
+   "areas_aoi_control": [
+    {
+     "codigo": 1,
+     "ha": 403.241
+    },
+    {
+     "codigo": 2,
+     "ha": 104.6286
+    }
+   ],
+   "coherencia_forestal_2021": {
+    "1": {
+     "puntos": 10,
+     "en_bosque_2021_pct": 90.0
+    },
+    "2": {
+     "puntos": 10,
+     "en_bosque_2021_pct": 10.0
+    },
+    "3": {
+     "puntos": 10,
+     "en_bosque_2021_pct": 10.0
+    }
+   },
+   "n_muestras": 30
+  },
+  "2021_general": {
+   "asset_id": "projects/geoportal-513817/assets/SINIA_2021_COBERTURA_GENERAL_VECTOR",
+   "metadatos": {
+    "tipo": "TABLE",
+    "tamano_bytes": "41184179",
+    "actualizado": "2026-11-07T16:15:46.289565Z",
+    "propiedades": {}
+   },
+   "_segundos": {
+    "metadatos": 0.4,
+    "vector": 41.4
+   },
+   "vector": {
+    "campos": [
+     "Area_ha",
+     "Categoria",
+     "ID_PARTE",
+     "system:index"
+    ],
+    "n_entidades": 28288,
+    "por_categoria": {
+     "Aguas Continentales": 4497,
+     "Bosques y Otras Tierras Boscosas": 10994,
+     "Otras Tierras": 12797
+    },
+    "proyeccion_geometria": {
+     "type": "Projection",
+     "crs": "EPSG:4326",
+     "transform": [
+      1,
+      0,
+      0,
+      0,
+      1,
+      0
+     ]
+    },
+    "suma_Area_ha_por_categoria": [
+     {
+      "categoria": "Aguas Continentales",
+      "sum": 47193.641632369436
+     },
+     {
+      "categoria": "Bosques y Otras Tierras Boscosas",
+      "sum": 500373.1177503641
+     },
+     {
+      "categoria": "Otras Tierras",
+      "sum": 276181.5460630005
+     }
+    ],
+    "tipos_geometria_muestra": {
+     "GeometryCollection": 1,
+     "LineString": 1,
+     "MultiPolygon": 3,
+     "Polygon": 495
+    },
+    "areas_aoi_control": {
+     "aoi_area_ha": 509.9985,
+     "total_classified_ha": 509.9985,
+     "unclassified_or_nodata_ha": 0.0,
+     "percentage_denominator": "superficie clasificada por las tres categorías institucionales",
+     "classes": [
+      {
+       "code": 1,
+       "label": "Bosques y Otras Tierras Boscosas",
+       "feature_count": 5,
+       "area_ha": 379.2601,
+       "percentage": 74.3649
+      },
+      {
+       "code": 2,
+       "label": "Otras Tierras",
+       "feature_count": 16,
+       "area_ha": 128.7998,
+       "percentage": 25.2549
+      },
+      {
+       "code": 3,
+       "label": "Aguas Continentales",
+       "feature_count": 1,
+       "area_ha": 1.9387,
+       "percentage": 0.3801
+      }
+     ]
+    },
+    "motor_fragmentacion_aoi_control": {
+     "parametros": {
+      "distancia_m": 500,
+      "area_minima_ha": 0,
+      "contexto_m": 500
+     },
+     "parches": 6,
+     "superficie_ha": 377.6973,
+     "aristas": 9,
+     "componentes": 1,
+     "aislados": 0,
+     "referencia_2026_11_07": {
+      "parches": 6,
+      "aristas": 9,
+      "componentes": 1,
+      "superficie_ha": 377.6973
+     }
+    }
+   }
+  },
+  "2021_detallado": {
+   "asset_id": "projects/geoportal-513817/assets/SINIA_2021_USO_SUELO_RASTER10M",
+   "metadatos": {
+    "tipo": "IMAGE",
+    "tamano_bytes": "7336768",
+    "actualizado": "2026-11-07T16:44:27.382757Z",
+    "propiedades": {},
+    "bandas": [
+     {
+      "id": "b1",
+      "tipo_dato": {
+       "precision": "INT",
+       "range": {
+        "max": 255
+       }
+      },
+      "crs": "EPSG:32617",
+      "transformacion": {
+       "scaleX": 10,
+       "translateX": 581568.5979000004,
+       "scaleY": -10,
+       "translateY": 1065475.6926000006
+      },
+      "dimensiones": {
+       "width": 12631,
+       "height": 12372
+      }
+     }
+    ],
+    "escala_nominal_m": 10,
+    "extension_wgs84": [
+     [
+      [
+       -80.25890543111095,
+       8.51509703699241
+      ],
+      [
+       -79.105586525278,
+       8.51509703699241
+      ],
+      [
+       -79.105586525278,
+       9.638028089590412
+      ],
+      [
+       -80.25890543111095,
+       9.638028089590412
+      ],
+      [
+       -80.25890543111095,
+       8.51509703699241
+      ]
+     ]
+    ],
+    "proyeccion": {
+     "type": "Projection",
+     "crs": "EPSG:32617",
+     "transform": [
+      10,
+      0,
+      581568.5979000004,
+      0,
+      -10,
+      1065475.6926000006
+     ]
+    },
+    "tipo_banda_ee": {
+     "b1": {
+      "type": "PixelType",
+      "precision": "int",
+      "min": 0,
+      "max": 255
+     }
+    }
+   },
+   "_segundos": {
+    "metadatos": 0.9,
+    "inventario_chcp": 0.5,
+    "areas_aoi_control": 0.4,
+    "muestras": 0.6,
+    "correspondencia_rest": 57.1,
+    "coherencia_forestal_2021": 0.5
+   },
+   "inventario_chcp": {
+    "enmascarado_ha": 0,
+    "histograma_ha": [
+     {
+      "codigo": 1,
+      "sum": 123494.32493377713
+     },
+     {
+      "codigo": 2,
+      "sum": 74473.86736733245
+     },
+     {
+      "codigo": 3,
+      "sum": 3.2772551106830687
+     },
+     {
+      "codigo": 7,
+      "sum": 110.96189731787895
+     },
+     {
+      "codigo": 8,
+      "sum": 7734.210208372423
+     },
+     {
+      "codigo": 9,
+      "sum": 2793.14766160836
+     },
+     {
+      "codigo": 10,
+      "sum": 6666.155224308598
+     },
+     {
+      "codigo": 11,
+      "sum": 1490.2904833709706
+     },
+     {
+      "codigo": 12,
+      "sum": 496.6604945788306
+     },
+     {
+      "codigo": 14,
+      "sum": 1423.0811776813346
+     },
+     {
+      "codigo": 23,
+      "sum": 1579.9362391097984
+     },
+     {
+      "codigo": 24,
+      "sum": 10.523153227996831
+     },
+     {
+      "codigo": 25,
+      "sum": 0.48017111434936527
+     },
+     {
+      "codigo": 26,
+      "sum": 66406.90462368175
+     },
+     {
+      "codigo": 27,
+      "sum": 43712.716050013165
+     },
+     {
+      "codigo": 28,
+      "sum": 8813.44893422998
+     },
+     {
+      "codigo": 29,
+      "sum": 1464.4811339948392
+     },
+     {
+      "codigo": 30,
+      "sum": 370.19005363006494
+     }
+    ],
+    "minmax": {
+     "codigo_max": 30,
+     "codigo_min": 1
+    },
+    "escala_inventario_m": 10.0,
+    "codigos_presentes": [
+     1,
+     2,
+     3,
+     7,
+     8,
+     9,
+     10,
+     11,
+     12,
+     14,
+     23,
+     24,
+     25,
+     26,
+     27,
+     28,
+     29,
+     30
+    ]
+   },
+   "areas_aoi_control": [
+    {
+     "codigo": 2,
+     "ha": 317.9737
+    },
+    {
+     "codigo": 8,
+     "ha": 59.7203
+    },
+    {
+     "codigo": 10,
+     "ha": 10.6386
+    },
+    {
+     "codigo": 26,
+     "ha": 105.314
+    },
+    {
+     "codigo": 27,
+     "ha": 1.9313
+    },
+    {
+     "codigo": 28,
+     "ha": 6.8844
+    },
+    {
+     "codigo": 29,
+     "ha": 5.4204
+    }
+   ],
+   "correspondencia_rest": {
+    "capa_rest": {
+     "id": 1,
+     "tipo": "raster"
+    },
+    "por_codigo": {
+     "1": {
+      "puntos": 10,
+      "categoria_mayoritaria": "Bosque latifoliado mixto maduro",
+      "acuerdo_pct": 100.0,
+      "distribucion": {
+       "Bosque latifoliado mixto maduro": 10
+      },
+      "valor_servicio": {
+       "1": 10
+      }
+     },
+     "2": {
+      "puntos": 10,
+      "categoria_mayoritaria": "Bosque latifoliado mixto secundario",
+      "acuerdo_pct": 100.0,
+      "distribucion": {
+       "Bosque latifoliado mixto secundario": 10
+      },
+      "valor_servicio": {
+       "2": 10
+      }
+     },
+     "3": {
+      "puntos": 10,
+      "categoria_mayoritaria": "Bosque de mangle",
+      "acuerdo_pct": 100.0,
+      "distribucion": {
+       "Bosque de mangle": 10
+      },
+      "valor_servicio": {
+       "3": 10
+      }
+     },
+     "7": {
+      "puntos": 10,
+      "categoria_mayoritaria": "Bosque plantado de coníferas",
+      "acuerdo_pct": 100.0,
+      "distribucion": {
+       "Bosque plantado de coníferas": 10
+      },
+      "valor_servicio": {
+       "7": 10
+      }
+     },
+     "8": {
+      "puntos": 10,
+      "categoria_mayoritaria": "Bosque plantado de latifoliadas",
+      "acuerdo_pct": 100.0,
+      "distribucion": {
+       "Bosque plantado de latifoliadas": 10
+      },
+      "valor_servicio": {
+       "8": 10
+      }
+     },
+     "9": {
+      "puntos": 10,
+      "categoria_mayoritaria": "Rastrojo y vegetación arbustiva",
+      "acuerdo_pct": 100.0,
+      "distribucion": {
+       "Rastrojo y vegetación arbustiva": 10
+      },
+      "valor_servicio": {
+       "9": 10
+      }
+     },
+     "10": {
+      "puntos": 10,
+      "categoria_mayoritaria": "Vegetación herbácea",
+      "acuerdo_pct": 100.0,
+      "distribucion": {
+       "Vegetación herbácea": 10
+      },
+      "valor_servicio": {
+       "10": 10
+      }
+     },
+     "11": {
+      "puntos": 10,
+      "categoria_mayoritaria": "Vegetación baja inundable",
+      "acuerdo_pct": 100.0,
+      "distribucion": {
+       "Vegetación baja inundable": 10
+      },
+      "valor_servicio": {
+       "11": 10
+      }
+     },
+     "12": {
+      "puntos": 10,
+      "categoria_mayoritaria": "Afloramiento rocoso y tierra desnuda",
+      "acuerdo_pct": 100.0,
+      "distribucion": {
+       "Afloramiento rocoso y tierra desnuda": 10
+      },
+      "valor_servicio": {
+       "12": 10
+      }
+     },
+     "14": {
+      "puntos": 10,
+      "categoria_mayoritaria": "Café",
+      "acuerdo_pct": 100.0,
+      "distribucion": {
+       "Café": 10
+      },
+      "valor_servicio": {
+       "14": 10
+      }
+     },
+     "23": {
+      "puntos": 10,
+      "categoria_mayoritaria": "Piña",
+      "acuerdo_pct": 100.0,
+      "distribucion": {
+       "Piña": 10
+      },
+      "valor_servicio": {
+       "23": 10
+      }
+     },
+     "24": {
+      "puntos": 10,
+      "categoria_mayoritaria": "Otro cultivo anual",
+      "acuerdo_pct": 100.0,
+      "distribucion": {
+       "Otro cultivo anual": 10
+      },
+      "valor_servicio": {
+       "24": 10
+      }
+     },
+     "25": {
+      "puntos": 10,
+      "categoria_mayoritaria": "Área heterogénea de producción agropecuaria",
+      "acuerdo_pct": 100.0,
+      "distribucion": {
+       "Área heterogénea de producción agropecuaria": 10
+      },
+      "valor_servicio": {
+       "25": 10
+      }
+     },
+     "26": {
+      "puntos": 10,
+      "categoria_mayoritaria": "Pasto",
+      "acuerdo_pct": 100.0,
+      "distribucion": {
+       "Pasto": 10
+      },
+      "valor_servicio": {
+       "26": 10
+      }
+     },
+     "27": {
+      "puntos": 10,
+      "categoria_mayoritaria": "Superficie de agua",
+      "acuerdo_pct": 100.0,
+      "distribucion": {
+       "Superficie de agua": 10
+      },
+      "valor_servicio": {
+       "27": 10
+      }
+     },
+     "28": {
+      "puntos": 10,
+      "categoria_mayoritaria": "Área poblada",
+      "acuerdo_pct": 100.0,
+      "distribucion": {
+       "Área poblada": 10
+      },
+      "valor_servicio": {
+       "28": 10
+      }
+     },
+     "29": {
+      "puntos": 10,
+      "categoria_mayoritaria": "Infraestructura",
+      "acuerdo_pct": 100.0,
+      "distribucion": {
+       "Infraestructura": 10
+      },
+      "valor_servicio": {
+       "29": 10
+      }
+     },
+     "30": {
+      "puntos": 10,
+      "categoria_mayoritaria": "Explotación minera",
+      "acuerdo_pct": 100.0,
+      "distribucion": {
+       "Explotación minera": 10
+      },
+      "valor_servicio": {
+       "30": 10
+      }
+     }
+    },
+    "colores_servicio": {
+     "Bosque latifoliado mixto maduro": "0,88,0",
+     "Bosque latifoliado mixto secundario": "0,166,0",
+     "Bosque de mangle": "104,0,181",
+     "Bosque plantado de coníferas": "19,60,42",
+     "Bosque plantado de latifoliadas": "84,107,46",
+     "Rastrojo y vegetación arbustiva": "148,217,0",
+     "Vegetación herbácea": "218,245,124",
+     "Vegetación baja inundable": "0,255,166",
+     "Afloramiento rocoso y tierra desnuda": "141,141,141",
+     "Café": "66,47,0",
+     "Piña": "255,255,168",
+     "Otro cultivo anual": "255,219,0",
+     "Área heterogénea de producción agropecuaria": "168,121,0",
+     "Pasto": "255,255,0",
+     "Superficie de agua": "128,241,230",
+     "Área poblada": "255,0,0",
+     "Infraestructura": "153,0,0",
+     "Explotación minera": "166,0,204"
+    },
+    "atributos_ejemplo": {
+     "UniqueValue.Pixel Value": "1",
+     "Raster.OID": "0",
+     "Raster.Count": "274911457",
+     "Raster.Categoría": "1",
+     "Raster.Class_name": "Bosque latifoliado mixto maduro",
+     "Raster.Red": "0",
+     "Raster.Green": "88",
+     "Raster.Blue": "0"
+    }
+   },
+   "coherencia_forestal_2021": {
+    "1": {
+     "puntos": 10,
+     "en_bosque_2021_pct": 100.0
+    },
+    "2": {
+     "puntos": 10,
+     "en_bosque_2021_pct": 100.0
+    },
+    "3": {
+     "puntos": 10,
+     "en_bosque_2021_pct": 90.0
+    },
+    "7": {
+     "puntos": 10,
+     "en_bosque_2021_pct": 100.0
+    },
+    "8": {
+     "puntos": 10,
+     "en_bosque_2021_pct": 100.0
+    },
+    "9": {
+     "puntos": 10,
+     "en_bosque_2021_pct": 100.0
+    },
+    "10": {
+     "puntos": 10,
+     "en_bosque_2021_pct": 10.0
+    },
+    "11": {
+     "puntos": 10,
+     "en_bosque_2021_pct": 0.0
+    },
+    "12": {
+     "puntos": 10,
+     "en_bosque_2021_pct": 0.0
+    },
+    "14": {
+     "puntos": 10,
+     "en_bosque_2021_pct": 0.0
+    },
+    "23": {
+     "puntos": 10,
+     "en_bosque_2021_pct": 0.0
+    },
+    "24": {
+     "puntos": 10,
+     "en_bosque_2021_pct": 20.0
+    },
+    "25": {
+     "puntos": 10,
+     "en_bosque_2021_pct": 0.0
+    },
+    "26": {
+     "puntos": 10,
+     "en_bosque_2021_pct": 0.0
+    },
+    "27": {
+     "puntos": 10,
+     "en_bosque_2021_pct": 10.0
+    },
+    "28": {
+     "puntos": 10,
+     "en_bosque_2021_pct": 0.0
+    },
+    "29": {
+     "puntos": 10,
+     "en_bosque_2021_pct": 0.0
+    },
+    "30": {
+     "puntos": 10,
+     "en_bosque_2021_pct": 0.0
+    }
+   },
+   "n_muestras": 180
+  },
+  "2023_general": {
+   "asset_id": "projects/geoportal-513817/assets/SINIA_2023_COBERTURA_GENERAL_RASTER10M",
+   "metadatos": {
+    "tipo": "IMAGE",
+    "tamano_bytes": "35389351",
+    "actualizado": "2026-11-07T16:15:26.661784Z",
+    "propiedades": {},
+    "bandas": [
+     {
+      "id": "b1",
+      "tipo_dato": {
+       "precision": "INT",
+       "range": {
+        "max": 255
+       }
+      },
+      "crs": "EPSG:32617",
+      "transformacion": {
+       "scaleX": 10,
+       "translateX": 273978.5979000004,
+       "scaleY": -10,
+       "translateY": 1066755.6926000006
+      },
+      "dimensiones": {
+       "width": 64969,
+       "height": 27051
+      }
+     }
+    ],
+    "escala_nominal_m": 10,
+    "extension_wgs84": [
+     [
+      [
+       -83.05974629912718,
+       7.187395810761825
+      ],
+      [
+       -77.14128340325868,
+       7.187395810761825
+      ],
+      [
+       -77.14128340325868,
+       9.650388193017271
+      ],
+      [
+       -83.05974629912718,
+       9.650388193017271
+      ],
+      [
+       -83.05974629912718,
+       7.187395810761825
+      ]
+     ]
+    ],
+    "proyeccion": {
+     "type": "Projection",
+     "crs": "EPSG:32617",
+     "transform": [
+      10,
+      0,
+      273978.5979000004,
+      0,
+      -10,
+      1066755.6926000006
+     ]
+    },
+    "tipo_banda_ee": {
+     "b1": {
+      "type": "PixelType",
+      "precision": "int",
+      "min": 0,
+      "max": 255
+     }
+    }
+   },
+   "_segundos": {
+    "metadatos": 0.8,
+    "inventario_chcp": 0.6,
+    "areas_aoi_control": 0.6,
+    "muestras": 0.6,
+    "coherencia_forestal_2021": 0.3
+   },
+   "inventario_chcp": {
+    "enmascarado_ha": 0,
+    "histograma_ha": [
+     {
+      "codigo": 1,
+      "sum": 212481.46211958939
+     },
+     {
+      "codigo": 2,
+      "sum": 85317.26437619071
+     },
+     {
+      "codigo": 3,
+      "sum": 43245.9305666978
+     }
+    ],
+    "minmax": {
+     "codigo_max": 3,
+     "codigo_min": 1
+    },
+    "escala_inventario_m": 10.0,
+    "codigos_presentes": [
+     1,
+     2,
+     3
+    ]
+   },
+   "areas_aoi_control": [
+    {
+     "codigo": 1,
+     "ha": 389.3982
+    },
+    {
+     "codigo": 2,
+     "ha": 116.1941
+    },
+    {
+     "codigo": 3,
+     "ha": 2.2903
+    }
+   ],
+   "coherencia_forestal_2021": {
+    "1": {
+     "puntos": 10,
+     "en_bosque_2021_pct": 100.0
+    },
+    "2": {
+     "puntos": 10,
+     "en_bosque_2021_pct": 10.0
+    },
+    "3": {
+     "puntos": 10,
+     "en_bosque_2021_pct": 0.0
+    }
+   },
+   "n_muestras": 30
   }
  }
 }

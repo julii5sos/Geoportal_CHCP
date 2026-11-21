@@ -30,7 +30,7 @@ class CatalogoTests(unittest.TestCase):
 class CodigosTests(unittest.TestCase):
     def test_codigo_8_distinto_entre_1992_y_2000(self):
         self.assertEqual(L.categoria("1992_historico", 8)["estado"], "no_identificado")
-        self.assertEqual(L.categoria("2000_historico", 8)["categoria"], "Uso agropecuario")
+        self.assertEqual(L.categoria("2000_historico", 8)["categoria"].lower(), "uso agropecuario")
         self.assertNotEqual(L.categoria("1992_historico", 1)["categoria"], L.categoria("2000_historico", 1)["categoria"])
 
     def test_codigos_unicos_y_consecutivos(self):
@@ -45,7 +45,22 @@ class CodigosTests(unittest.TestCase):
             if fila["estado"] != "verificada_espacialmente":
                 self.assertFalse(L.es_oficial(fila))
                 self.assertTrue(fila["categoria"].startswith(f"Código {fila['codigo']}"))
-        self.assertNotEqual(L.categoria("2021_detallado", 14)["categoria"], L.categoria("2012_detallado", 14)["categoria"])
+        # Código 14: «Café» verificado en 2021; en 2012 el servicio lo contradice.
+        self.assertEqual(L.categoria("2021_detallado", 14)["categoria"], "Café")
+        self.assertEqual(L.categoria("2012_detallado", 14)["estado"], "discrepante_con_servicio")
+
+    def test_auditoria_2026_11_21_verifica_los_18_codigos_2021_presentes_en_la_chcp(self):
+        verificados = [f["codigo"] for f in L.leyenda("2021_detallado") if f["estado"] == "verificada_espacialmente"]
+        self.assertEqual(verificados, [1, 2, 3, 7, 8, 9, 10, 11, 12, 14, 23, 24, 25, 26, 27, 28, 29, 30])
+        self.assertEqual(L.categoria("2021_detallado", 26)["categoria"], "Pasto")
+        self.assertEqual(L.categoria("2021_detallado", 27)["color"], "#80F1E6")
+        self.assertIn("MiAMBIENTE", L.categoria("2021_detallado", 27)["fuente_color"])
+
+    def test_discrepancias_2012_no_se_muestran_como_oficiales(self):
+        fila = L.categoria("2012_detallado", 21)
+        self.assertEqual(fila["estado"], "discrepante_con_servicio")
+        self.assertFalse(L.es_oficial(fila))
+        self.assertNotIn("Horticultura", fila["categoria"])
 
     def test_vector_2021_usa_valor_textual_exacto(self):
         self.assertEqual(L.categoria("2021_general", 1)["categoria"], "Bosques y Otras Tierras Boscosas")
@@ -73,8 +88,11 @@ class ReclasificacionTests(unittest.TestCase):
     def test_mascaras_esperadas(self):
         self.assertEqual(codigos_forestales("1992_historico"), [2, 3, 4, 5])
         self.assertEqual(codigos_forestales("2000_historico"), [2, 3, 4, 5])
-        self.assertEqual(codigos_forestales("2012_detallado"), [1, 2, 3, 4, 5, 6])
-        self.assertEqual(codigos_forestales("2012_detallado", incluir_opcionales=True), list(range(1, 9)))
+        # 2012 detallado: los códigos 3–7 resultaron discrepantes con el servicio oficial
+        # (auditoría 2026-11-21) y salen de la máscara hasta resolverse.
+        self.assertEqual(codigos_forestales("2012_detallado"), [1, 2])
+        self.assertEqual(codigos_forestales("2012_detallado", incluir_opcionales=True), [1, 2, 8])
+        self.assertEqual(codigos_forestales("2021_detallado"), [1, 2, 3, 4, 5, 6])
         self.assertEqual(codigos_forestales("2021_general"), [1])
 
 
@@ -97,10 +115,10 @@ class AplicarAuditoriaTests(unittest.TestCase):
         self.assertEqual((fila["categoria"], fila["estado"], fila["color"]), ("Superficie de agua", "verificada_espacialmente", "#0070FF"))
 
     def test_no_verifica_con_poca_evidencia(self):
-        aud = self._auditoria({"14": {"categoria_mayoritaria": "Café", "acuerdo_pct": 60.0,
-                                      "distribucion": {"Café": 6, "Pasto": 4}}})
+        aud = self._auditoria({"4": {"categoria_mayoritaria": "Bosque de orey", "acuerdo_pct": 60.0,
+                                     "distribucion": {"Bosque de orey": 6, "Pasto": 4}}})
         cambios = self.mod.aplicar(aud, self.leyendas, 80, 5)
-        fila = next(f for f in self.leyendas["leyendas"]["2021_detallado"] if f["codigo"] == 14)
+        fila = next(f for f in self.leyendas["leyendas"]["2021_detallado"] if f["codigo"] == 4)
         self.assertNotEqual(fila["estado"], "verificada_espacialmente")
         self.assertTrue(any("sin evidencia suficiente" in c for c in cambios))
 
@@ -140,3 +158,19 @@ class DiscrepanciaTests(unittest.TestCase):
         self.assertNotIn("Horticultura", filas[21]["categoria"])
         self.assertEqual(filas[21]["grupo_derivado"], "no_identificado")
         self.assertEqual((filas[26]["estado"], filas[26]["categoria"]), ("verificada_espacialmente", "Pasto"))
+
+
+class DocumentosGeneradosTests(unittest.TestCase):
+    def test_diccionario_y_validacion_estan_actualizados(self):
+        import tempfile
+        from unittest.mock import patch
+        spec = importlib.util.spec_from_file_location("gen", RAIZ / "scripts" / "generar_diccionario_sinia.py")
+        mod = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(mod)
+        with tempfile.TemporaryDirectory() as tmp:
+            d, v = Path(tmp) / "d.md", Path(tmp) / "v.md"
+            with patch.object(mod, "SALIDA", d), patch.object(mod, "SALIDA_VALIDACION", v):
+                mod.main()
+            self.assertEqual(d.read_text(encoding="utf-8"), (RAIZ / "docs" / "DICCIONARIO_CAPAS_SINIA.md").read_text(encoding="utf-8"),
+                             "Ejecute: python scripts/generar_diccionario_sinia.py")
+            self.assertEqual(v.read_text(encoding="utf-8"), (RAIZ / "docs" / "VALIDACION_ASSETS_GEE.md").read_text(encoding="utf-8"))

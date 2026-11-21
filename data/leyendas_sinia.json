@@ -17,47 +17,79 @@
   "1992_historico": [
    {
     "codigo": 1,
-    "categoria": "Aguas interiores",
+    "categoria": "Aguas Interiores",
     "color": "#BFE9FF",
     "fuente_color": "MiAMBIENTE · renderer REST capa 4",
-    "estado": "documentada_catalogo_previo",
-    "fuente_correspondencia": "catalogo_previo",
+    "estado": "verificada_espacialmente",
+    "fuente_correspondencia": "Muestreo espacial vs servicio REST MiAMBIENTE capa 4 · 100.0 % de 10 puntos (2026-11-21T18:40:08)",
     "grupo_derivado": "agua",
     "descripcion": "Cuerpos de agua continentales.",
-    "candidato_leyenda_oficial": "Aguas Interiores"
+    "candidato_leyenda_oficial": "Aguas Interiores",
+    "evidencia": {
+     "puntos": 10,
+     "acuerdo_pct": 100.0,
+     "distribucion": {
+      "Aguas Interiores": 10
+     },
+     "valor_pixel_servicio": null
+    }
    },
    {
     "codigo": 2,
-    "categoria": "Bosque intervenido",
+    "categoria": "Bosque Intervenido",
     "color": "#A5FF75",
     "fuente_color": "MiAMBIENTE · renderer REST capa 4",
-    "estado": "documentada_catalogo_previo",
-    "fuente_correspondencia": "catalogo_previo",
+    "estado": "verificada_espacialmente",
+    "fuente_correspondencia": "Muestreo espacial vs servicio REST MiAMBIENTE capa 4 · 100.0 % de 10 puntos (2026-11-21T18:40:08)",
     "grupo_derivado": "bosque_secundario",
     "descripcion": "Bosque natural con extracción o alteración visible de su estructura.",
-    "candidato_leyenda_oficial": "Bosque Intervenido"
+    "candidato_leyenda_oficial": "Bosque Intervenido",
+    "evidencia": {
+     "puntos": 10,
+     "acuerdo_pct": 100.0,
+     "distribucion": {
+      "Bosque Intervenido": 10
+     },
+     "valor_pixel_servicio": null
+    }
    },
    {
     "codigo": 3,
-    "categoria": "Bosque maduro",
+    "categoria": "Bosque Maduro",
     "color": "#267300",
     "fuente_color": "MiAMBIENTE · renderer REST capa 4",
-    "estado": "documentada_catalogo_previo",
-    "fuente_correspondencia": "catalogo_previo",
+    "estado": "verificada_espacialmente",
+    "fuente_correspondencia": "Muestreo espacial vs servicio REST MiAMBIENTE capa 4 · 100.0 % de 10 puntos (2026-11-21T18:40:08)",
     "grupo_derivado": "bosque_natural",
     "descripcion": "Bosque natural con estructura y composición poco alteradas.",
-    "candidato_leyenda_oficial": "Bosque Maduro"
+    "candidato_leyenda_oficial": "Bosque Maduro",
+    "evidencia": {
+     "puntos": 10,
+     "acuerdo_pct": 100.0,
+     "distribucion": {
+      "Bosque Maduro": 10
+     },
+     "valor_pixel_servicio": null
+    }
    },
    {
     "codigo": 4,
-    "categoria": "Bosque secundario maduro",
+    "categoria": "Bosque Secundario Maduro",
     "color": "#37A600",
     "fuente_color": "MiAMBIENTE · renderer REST capa 4",
-    "estado": "documentada_catalogo_previo",
-    "fuente_correspondencia": "catalogo_previo",
+    "estado": "verificada_espacialmente",
+    "fuente_correspondencia": "Muestreo espacial vs servicio REST MiAMBIENTE capa 4 · 100.0 % de 10 puntos (2026-11-21T18:40:08)",
     "grupo_derivado": "bosque_secundario",
     "descripcion": "Bosque natural regenerado tras una perturbación, con dosel desarrollado.",
-    "candidato_leyenda_oficial": "Bosque Secundario Maduro"
+    "candidato_leyenda_oficial": "Bosque Secundario Maduro",
+    "evidencia": {
+     "puntos": 10,
+     "acuerdo_pct": 100.0,
+     "distribucion": {
+      "Bosque Secundario Maduro": 10
+     },
+     "valor_pixel_servicio": null
+    }
    },
    {
     "codigo": 5,
@@ -72,25 +104,41 @@
    },
    {
     "codigo": 6,
-    "categoria": "Otros usos",
+    "categoria": "Otros Usos",
     "color": "#808080",
     "fuente_color": "MiAMBIENTE · renderer REST capa 4",
-    "estado": "documentada_catalogo_previo",
-    "fuente_correspondencia": "catalogo_previo",
+    "estado": "verificada_espacialmente",
+    "fuente_correspondencia": "Muestreo espacial vs servicio REST MiAMBIENTE capa 4 · 100.0 % de 10 puntos (2026-11-21T18:40:08)",
     "grupo_derivado": "areas_intervenidas",
     "descripcion": "Usos no forestales ni agropecuarios (poblados, infraestructura u otros).",
-    "candidato_leyenda_oficial": "Otros Usos"
+    "candidato_leyenda_oficial": "Otros Usos",
+    "evidencia": {
+     "puntos": 10,
+     "acuerdo_pct": 100.0,
+     "distribucion": {
+      "Otros Usos": 10
+     },
+     "valor_pixel_servicio": null
+    }
    },
    {
     "codigo": 7,
-    "categoria": "Rastrojos (bosque pionero)",
+    "categoria": "Rastrojos (Bosque Pionero)",
     "color": "#55FF00",
     "fuente_color": "MiAMBIENTE · renderer REST capa 4",
-    "estado": "documentada_catalogo_previo",
-    "fuente_correspondencia": "catalogo_previo",
+    "estado": "verificada_espacialmente",
+    "fuente_correspondencia": "Muestreo espacial vs servicio REST MiAMBIENTE capa 4 · 100.0 % de 10 puntos (2026-11-21T18:40:08)",
     "grupo_derivado": "rastrojo_arbustivo",
     "descripcion": "Vegetación leñosa joven en sucesión temprana tras uso agropecuario.",
-    "candidato_leyenda_oficial": "Rastrojos (Bosque Pionero)"
+    "candidato_leyenda_oficial": "Rastrojos (Bosque Pionero)",
+    "evidencia": {
+     "puntos": 10,
+     "acuerdo_pct": 100.0,
+     "distribucion": {
+      "Rastrojos (Bosque Pionero)": 10
+     },
+     "valor_pixel_servicio": null
+    }
    },
    {
     "codigo": 8,
@@ -104,25 +152,41 @@
    },
    {
     "codigo": 9,
-    "categoria": "Uso agropecuario",
+    "categoria": "Uso Agropecuario",
     "color": "#FFFF00",
     "fuente_color": "MiAMBIENTE · renderer REST capa 4",
-    "estado": "documentada_catalogo_previo",
-    "fuente_correspondencia": "catalogo_previo",
+    "estado": "verificada_espacialmente",
+    "fuente_correspondencia": "Muestreo espacial vs servicio REST MiAMBIENTE capa 4 · 100.0 % de 10 puntos (2026-11-21T18:40:08)",
     "grupo_derivado": "agropecuario_mixto",
     "descripcion": "Áreas de cultivos y pastos sin desagregar.",
-    "candidato_leyenda_oficial": "Uso Agropecuario"
+    "candidato_leyenda_oficial": "Uso Agropecuario",
+    "evidencia": {
+     "puntos": 10,
+     "acuerdo_pct": 100.0,
+     "distribucion": {
+      "Uso Agropecuario": 10
+     },
+     "valor_pixel_servicio": null
+    }
    },
    {
     "codigo": 10,
-    "categoria": "Uso agropecuario de subsistencia",
+    "categoria": "Uso Agropecuario de Subsistencia",
     "color": "#FFEBB0",
     "fuente_color": "MiAMBIENTE · renderer REST capa 4",
-    "estado": "documentada_catalogo_previo",
-    "fuente_correspondencia": "catalogo_previo",
+    "estado": "verificada_espacialmente",
+    "fuente_correspondencia": "Muestreo espacial vs servicio REST MiAMBIENTE capa 4 · 100.0 % de 10 puntos (2026-11-21T18:40:08)",
     "grupo_derivado": "agropecuario_mixto",
     "descripcion": "Mosaico agrícola de pequeña escala para autoconsumo.",
-    "candidato_leyenda_oficial": "Uso Agropecuario de Subsistencia"
+    "candidato_leyenda_oficial": "Uso Agropecuario de Subsistencia",
+    "evidencia": {
+     "puntos": 10,
+     "acuerdo_pct": 100.0,
+     "distribucion": {
+      "Uso Agropecuario de Subsistencia": 10
+     },
+     "valor_pixel_servicio": null
+    }
    },
    {
     "codigo": 11,
@@ -142,44 +206,76 @@
     "categoria": "Agua",
     "color": "#BEE8FF",
     "fuente_color": "MiAMBIENTE · renderer REST capa 3",
-    "estado": "documentada_catalogo_previo",
-    "fuente_correspondencia": "catalogo_previo",
+    "estado": "verificada_espacialmente",
+    "fuente_correspondencia": "Muestreo espacial vs servicio REST MiAMBIENTE capa 3 · 100.0 % de 10 puntos (2026-11-21T18:40:08)",
     "grupo_derivado": "agua",
     "descripcion": "Cuerpos de agua continentales.",
-    "candidato_leyenda_oficial": "Agua"
+    "candidato_leyenda_oficial": "Agua",
+    "evidencia": {
+     "puntos": 10,
+     "acuerdo_pct": 100.0,
+     "distribucion": {
+      "Agua": 10
+     },
+     "valor_pixel_servicio": null
+    }
    },
    {
     "codigo": 2,
-    "categoria": "Bosque intervenido",
+    "categoria": "Bosque Intervenido",
     "color": "#A3FF73",
     "fuente_color": "MiAMBIENTE · renderer REST capa 3",
-    "estado": "documentada_catalogo_previo",
-    "fuente_correspondencia": "catalogo_previo",
+    "estado": "verificada_espacialmente",
+    "fuente_correspondencia": "Muestreo espacial vs servicio REST MiAMBIENTE capa 3 · 100.0 % de 10 puntos (2026-11-21T18:40:08)",
     "grupo_derivado": "bosque_secundario",
     "descripcion": "Bosque natural con extracción o alteración visible de su estructura.",
-    "candidato_leyenda_oficial": "Bosque Intervenido"
+    "candidato_leyenda_oficial": "Bosque Intervenido",
+    "evidencia": {
+     "puntos": 10,
+     "acuerdo_pct": 100.0,
+     "distribucion": {
+      "Bosque Intervenido": 10
+     },
+     "valor_pixel_servicio": null
+    }
    },
    {
     "codigo": 3,
-    "categoria": "Bosque maduro",
+    "categoria": "Bosque Maduro",
     "color": "#267300",
     "fuente_color": "MiAMBIENTE · renderer REST capa 3",
-    "estado": "documentada_catalogo_previo",
-    "fuente_correspondencia": "catalogo_previo",
+    "estado": "verificada_espacialmente",
+    "fuente_correspondencia": "Muestreo espacial vs servicio REST MiAMBIENTE capa 3 · 100.0 % de 10 puntos (2026-11-21T18:40:08)",
     "grupo_derivado": "bosque_natural",
     "descripcion": "Bosque natural con estructura y composición poco alteradas.",
-    "candidato_leyenda_oficial": "Bosque Maduro"
+    "candidato_leyenda_oficial": "Bosque Maduro",
+    "evidencia": {
+     "puntos": 10,
+     "acuerdo_pct": 100.0,
+     "distribucion": {
+      "Bosque Maduro": 10
+     },
+     "valor_pixel_servicio": null
+    }
    },
    {
     "codigo": 4,
-    "categoria": "Bosque secundario maduro",
+    "categoria": "Bosque Secundario Maduro",
     "color": "#38A800",
     "fuente_color": "MiAMBIENTE · renderer REST capa 3",
-    "estado": "documentada_catalogo_previo",
-    "fuente_correspondencia": "catalogo_previo",
+    "estado": "verificada_espacialmente",
+    "fuente_correspondencia": "Muestreo espacial vs servicio REST MiAMBIENTE capa 3 · 100.0 % de 10 puntos (2026-11-21T18:40:08)",
     "grupo_derivado": "bosque_secundario",
     "descripcion": "Bosque natural regenerado tras una perturbación, con dosel desarrollado.",
-    "candidato_leyenda_oficial": "Bosque Secundario Maduro"
+    "candidato_leyenda_oficial": "Bosque Secundario Maduro",
+    "evidencia": {
+     "puntos": 10,
+     "acuerdo_pct": 100.0,
+     "distribucion": {
+      "Bosque Secundario Maduro": 10
+     },
+     "valor_pixel_servicio": null
+    }
    },
    {
     "codigo": 5,
@@ -194,47 +290,79 @@
    },
    {
     "codigo": 6,
-    "categoria": "Otros usos",
+    "categoria": "Otros Usos",
     "color": "#828282",
     "fuente_color": "MiAMBIENTE · renderer REST capa 3",
-    "estado": "documentada_catalogo_previo",
-    "fuente_correspondencia": "catalogo_previo",
+    "estado": "verificada_espacialmente",
+    "fuente_correspondencia": "Muestreo espacial vs servicio REST MiAMBIENTE capa 3 · 100.0 % de 10 puntos (2026-11-21T18:40:08)",
     "grupo_derivado": "areas_intervenidas",
     "descripcion": "Usos no forestales ni agropecuarios (poblados, infraestructura u otros).",
-    "candidato_leyenda_oficial": "Otros Usos"
+    "candidato_leyenda_oficial": "Otros Usos",
+    "evidencia": {
+     "puntos": 10,
+     "acuerdo_pct": 100.0,
+     "distribucion": {
+      "Otros Usos": 10
+     },
+     "valor_pixel_servicio": null
+    }
    },
    {
     "codigo": 7,
-    "categoria": "Rastrojos (bosque pionero)",
+    "categoria": "Rastrojos (Bosque Pionero)",
     "color": "#55FF00",
     "fuente_color": "MiAMBIENTE · renderer REST capa 3",
-    "estado": "documentada_catalogo_previo",
-    "fuente_correspondencia": "catalogo_previo",
+    "estado": "verificada_espacialmente",
+    "fuente_correspondencia": "Muestreo espacial vs servicio REST MiAMBIENTE capa 3 · 100.0 % de 10 puntos (2026-11-21T18:40:08)",
     "grupo_derivado": "rastrojo_arbustivo",
     "descripcion": "Vegetación leñosa joven en sucesión temprana tras uso agropecuario.",
-    "candidato_leyenda_oficial": "Rastrojos (Bosque Pionero)"
+    "candidato_leyenda_oficial": "Rastrojos (Bosque Pionero)",
+    "evidencia": {
+     "puntos": 10,
+     "acuerdo_pct": 100.0,
+     "distribucion": {
+      "Rastrojos (Bosque Pionero)": 10
+     },
+     "valor_pixel_servicio": null
+    }
    },
    {
     "codigo": 8,
-    "categoria": "Uso agropecuario",
+    "categoria": "Uso Agropecuario",
     "color": "#FFFF00",
     "fuente_color": "MiAMBIENTE · renderer REST capa 3",
-    "estado": "documentada_catalogo_previo",
-    "fuente_correspondencia": "catalogo_previo",
+    "estado": "verificada_espacialmente",
+    "fuente_correspondencia": "Muestreo espacial vs servicio REST MiAMBIENTE capa 3 · 100.0 % de 10 puntos (2026-11-21T18:40:08)",
     "grupo_derivado": "agropecuario_mixto",
     "descripcion": "Áreas de cultivos y pastos sin desagregar.",
-    "candidato_leyenda_oficial": "Uso Agropecuario"
+    "candidato_leyenda_oficial": "Uso Agropecuario",
+    "evidencia": {
+     "puntos": 10,
+     "acuerdo_pct": 100.0,
+     "distribucion": {
+      "Uso Agropecuario": 10
+     },
+     "valor_pixel_servicio": null
+    }
    },
    {
     "codigo": 9,
-    "categoria": "Uso agropecuario de subsistencia",
+    "categoria": "Uso Agropecuario de Subsistencia",
     "color": "#FFEBAF",
     "fuente_color": "MiAMBIENTE · renderer REST capa 3",
-    "estado": "documentada_catalogo_previo",
-    "fuente_correspondencia": "catalogo_previo",
+    "estado": "verificada_espacialmente",
+    "fuente_correspondencia": "Muestreo espacial vs servicio REST MiAMBIENTE capa 3 · 100.0 % de 10 puntos (2026-11-21T18:40:08)",
     "grupo_derivado": "agropecuario_mixto",
     "descripcion": "Mosaico agrícola de pequeña escala para autoconsumo.",
-    "candidato_leyenda_oficial": "Uso Agropecuario de Subsistencia"
+    "candidato_leyenda_oficial": "Uso Agropecuario de Subsistencia",
+    "evidencia": {
+     "puntos": 10,
+     "acuerdo_pct": 100.0,
+     "distribucion": {
+      "Uso Agropecuario de Subsistencia": 10
+     },
+     "valor_pixel_servicio": null
+    }
    },
    {
     "codigo": 10,
@@ -274,112 +402,238 @@
    {
     "codigo": 1,
     "categoria": "Bosque latifoliado mixto maduro",
-    "color": "#1B5E20",
-    "fuente_color": "propuesta_geoportal",
-    "estado": "documentada_catalogo_previo",
-    "fuente_correspondencia": "catalogo_previo",
+    "color": "#005800",
+    "fuente_color": "MiAMBIENTE · atributos RGB del servicio REST capa 2",
+    "estado": "verificada_espacialmente",
+    "fuente_correspondencia": "Muestreo espacial vs servicio REST MiAMBIENTE capa 2 · 100.0 % de 10 puntos (2026-11-21T18:40:08)",
     "grupo_derivado": "bosque_natural",
     "descripcion": "",
-    "candidato_leyenda_oficial": "Bosque latifoliado mixto maduro"
+    "candidato_leyenda_oficial": "Bosque latifoliado mixto maduro",
+    "evidencia": {
+     "puntos": 10,
+     "acuerdo_pct": 100.0,
+     "distribucion": {
+      "Bosque latifoliado mixto maduro": 10
+     },
+     "valor_pixel_servicio": {
+      "1": 10
+     }
+    }
    },
    {
     "codigo": 2,
     "categoria": "Bosque latifoliado mixto secundario",
-    "color": "#43A047",
-    "fuente_color": "propuesta_geoportal",
-    "estado": "documentada_catalogo_previo",
-    "fuente_correspondencia": "catalogo_previo",
+    "color": "#00A600",
+    "fuente_color": "MiAMBIENTE · atributos RGB del servicio REST capa 2",
+    "estado": "verificada_espacialmente",
+    "fuente_correspondencia": "Muestreo espacial vs servicio REST MiAMBIENTE capa 2 · 100.0 % de 10 puntos (2026-11-21T18:40:08)",
     "grupo_derivado": "bosque_secundario",
     "descripcion": "",
-    "candidato_leyenda_oficial": "Bosque latifoliado mixto secundario"
+    "candidato_leyenda_oficial": "Bosque latifoliado mixto secundario",
+    "evidencia": {
+     "puntos": 10,
+     "acuerdo_pct": 100.0,
+     "distribucion": {
+      "Bosque latifoliado mixto secundario": 10
+     },
+     "valor_pixel_servicio": {
+      "2": 10
+     }
+    }
    },
    {
     "codigo": 3,
-    "categoria": "Bosque de mangle",
+    "categoria": "Código 3 · discrepancia con el servicio oficial",
     "color": "#6A1B9A",
     "fuente_color": "propuesta_geoportal",
-    "estado": "documentada_catalogo_previo",
-    "fuente_correspondencia": "catalogo_previo",
-    "grupo_derivado": "bosque_natural",
+    "estado": "discrepante_con_servicio",
+    "fuente_correspondencia": "Servicio REST capa 2: mayoría «Bosque latifoliado mixto maduro» (60.0 % de 10 puntos; valor de píxel oficial mayoritario 1). Documentación previa: «Bosque de mangle».",
+    "grupo_derivado": "no_identificado",
     "descripcion": "",
-    "candidato_leyenda_oficial": "Bosque de mangle"
+    "candidato_leyenda_oficial": "Bosque de mangle",
+    "evidencia": {
+     "puntos": 10,
+     "acuerdo_pct": 60.0,
+     "distribucion": {
+      "Bosque latifoliado mixto maduro": 6,
+      "Vegetación herbácea": 4
+     },
+     "valor_pixel_servicio": {
+      "1": 6,
+      "10": 4
+     }
+    }
    },
    {
     "codigo": 4,
-    "categoria": "Bosque de orey",
+    "categoria": "Código 4 · discrepancia con el servicio oficial",
     "color": "#00897B",
     "fuente_color": "propuesta_geoportal",
-    "estado": "documentada_catalogo_previo",
-    "fuente_correspondencia": "catalogo_previo",
-    "grupo_derivado": "bosque_natural",
+    "estado": "discrepante_con_servicio",
+    "fuente_correspondencia": "Servicio REST capa 2: mayoría «Bosque latifoliado mixto secundario» (70.0 % de 10 puntos; valor de píxel oficial mayoritario 2). Documentación previa: «Bosque de orey».",
+    "grupo_derivado": "no_identificado",
     "descripcion": "",
-    "candidato_leyenda_oficial": "Bosque de orey"
+    "candidato_leyenda_oficial": "Bosque de orey",
+    "evidencia": {
+     "puntos": 10,
+     "acuerdo_pct": 70.0,
+     "distribucion": {
+      "Bosque latifoliado mixto secundario": 7,
+      "Rastrojo y vegetación arbustiva": 1,
+      "Bosque plantado de latifoliadas": 1,
+      "Afloramiento rocoso y tierra desnuda": 1
+     },
+     "valor_pixel_servicio": {
+      "2": 7,
+      "9": 1,
+      "8": 1,
+      "12": 1
+     }
+    }
    },
    {
     "codigo": 5,
-    "categoria": "Bosque de cativo",
+    "categoria": "Código 5 · discrepancia con el servicio oficial",
     "color": "#26A69A",
     "fuente_color": "propuesta_geoportal",
-    "estado": "documentada_catalogo_previo",
-    "fuente_correspondencia": "catalogo_previo",
-    "grupo_derivado": "bosque_natural",
+    "estado": "discrepante_con_servicio",
+    "fuente_correspondencia": "Servicio REST capa 2: mayoría «Bosque latifoliado mixto secundario» (40.0 % de 10 puntos; valor de píxel oficial mayoritario 2). Documentación previa: «Bosque de cativo».",
+    "grupo_derivado": "no_identificado",
     "descripcion": "",
-    "candidato_leyenda_oficial": "Bosque de cativo"
+    "candidato_leyenda_oficial": "Bosque de cativo",
+    "evidencia": {
+     "puntos": 10,
+     "acuerdo_pct": 40.0,
+     "distribucion": {
+      "Bosque plantado de latifoliadas": 3,
+      "Bosque latifoliado mixto secundario": 4,
+      "Bosque latifoliado mixto maduro": 3
+     },
+     "valor_pixel_servicio": {
+      "8": 3,
+      "2": 4,
+      "1": 3
+     }
+    }
    },
    {
     "codigo": 6,
-    "categoria": "Bosque de rafia",
+    "categoria": "Código 6 · discrepancia con el servicio oficial",
     "color": "#80CBC4",
     "fuente_color": "propuesta_geoportal",
-    "estado": "documentada_catalogo_previo",
-    "fuente_correspondencia": "catalogo_previo",
-    "grupo_derivado": "bosque_natural",
+    "estado": "discrepante_con_servicio",
+    "fuente_correspondencia": "Servicio REST capa 2: mayoría «Bosque latifoliado mixto secundario» (70.0 % de 10 puntos; valor de píxel oficial mayoritario 2). Documentación previa: «Bosque de rafia».",
+    "grupo_derivado": "no_identificado",
     "descripcion": "",
-    "candidato_leyenda_oficial": "Bosque de rafia"
+    "candidato_leyenda_oficial": "Bosque de rafia",
+    "evidencia": {
+     "puntos": 10,
+     "acuerdo_pct": 70.0,
+     "distribucion": {
+      "Bosque latifoliado mixto secundario": 7,
+      "Vegetación herbácea": 1,
+      "Bosque latifoliado mixto maduro": 2
+     },
+     "valor_pixel_servicio": {
+      "2": 7,
+      "10": 1,
+      "1": 2
+     }
+    }
    },
    {
     "codigo": 7,
-    "categoria": "Bosque plantado de coníferas",
+    "categoria": "Código 7 · discrepancia con el servicio oficial",
     "color": "#33691E",
     "fuente_color": "propuesta_geoportal",
-    "estado": "documentada_catalogo_previo",
-    "fuente_correspondencia": "catalogo_previo",
-    "grupo_derivado": "bosque_plantado",
+    "estado": "discrepante_con_servicio",
+    "fuente_correspondencia": "Servicio REST capa 2: mayoría «Bosque latifoliado mixto maduro» (30.0 % de 10 puntos; valor de píxel oficial mayoritario 1). Documentación previa: «Bosque plantado de coníferas».",
+    "grupo_derivado": "no_identificado",
     "descripcion": "",
-    "candidato_leyenda_oficial": "Bosque plantado de coníferas"
+    "candidato_leyenda_oficial": "Bosque plantado de coníferas",
+    "evidencia": {
+     "puntos": 10,
+     "acuerdo_pct": 30.0,
+     "distribucion": {
+      "Bosque plantado de coníferas": 1,
+      "Pasto": 1,
+      "Bosque latifoliado mixto maduro": 3,
+      "Rastrojo y vegetación arbustiva": 3,
+      "Bosque plantado de latifoliadas": 2
+     },
+     "valor_pixel_servicio": {
+      "7": 1,
+      "26": 1,
+      "1": 3,
+      "9": 3,
+      "8": 2
+     }
+    }
    },
    {
     "codigo": 8,
     "categoria": "Bosque plantado de latifoliadas",
-    "color": "#558B2F",
-    "fuente_color": "propuesta_geoportal",
-    "estado": "documentada_catalogo_previo",
-    "fuente_correspondencia": "catalogo_previo",
+    "color": "#546B2E",
+    "fuente_color": "MiAMBIENTE · atributos RGB del servicio REST capa 2",
+    "estado": "verificada_espacialmente",
+    "fuente_correspondencia": "Muestreo espacial vs servicio REST MiAMBIENTE capa 2 · 90.0 % de 10 puntos (2026-11-21T18:40:08)",
     "grupo_derivado": "bosque_plantado",
     "descripcion": "",
-    "candidato_leyenda_oficial": "Bosque plantado de latifoliadas"
+    "candidato_leyenda_oficial": "Bosque plantado de latifoliadas",
+    "evidencia": {
+     "puntos": 10,
+     "acuerdo_pct": 90.0,
+     "distribucion": {
+      "Bosque plantado de latifoliadas": 9,
+      "Bosque latifoliado mixto secundario": 1
+     },
+     "valor_pixel_servicio": {
+      "8": 9,
+      "2": 1
+     }
+    }
    },
    {
     "codigo": 9,
     "categoria": "Rastrojo y vegetación arbustiva",
-    "color": "#9CCC65",
-    "fuente_color": "propuesta_geoportal",
-    "estado": "documentada_catalogo_previo",
-    "fuente_correspondencia": "catalogo_previo",
+    "color": "#94D900",
+    "fuente_color": "MiAMBIENTE · atributos RGB del servicio REST capa 2",
+    "estado": "verificada_espacialmente",
+    "fuente_correspondencia": "Muestreo espacial vs servicio REST MiAMBIENTE capa 2 · 100.0 % de 10 puntos (2026-11-21T18:40:08)",
     "grupo_derivado": "rastrojo_arbustivo",
     "descripcion": "",
-    "candidato_leyenda_oficial": "Rastrojo y vegetación arbustiva"
+    "candidato_leyenda_oficial": "Rastrojo y vegetación arbustiva",
+    "evidencia": {
+     "puntos": 10,
+     "acuerdo_pct": 100.0,
+     "distribucion": {
+      "Rastrojo y vegetación arbustiva": 10
+     },
+     "valor_pixel_servicio": {
+      "9": 10
+     }
+    }
    },
    {
     "codigo": 10,
     "categoria": "Vegetación herbácea",
-    "color": "#D4E157",
-    "fuente_color": "propuesta_geoportal",
-    "estado": "documentada_catalogo_previo",
-    "fuente_correspondencia": "catalogo_previo",
+    "color": "#DAF57C",
+    "fuente_color": "MiAMBIENTE · atributos RGB del servicio REST capa 2",
+    "estado": "verificada_espacialmente",
+    "fuente_correspondencia": "Muestreo espacial vs servicio REST MiAMBIENTE capa 2 · 100.0 % de 10 puntos (2026-11-21T18:40:08)",
     "grupo_derivado": "otra_vegetacion",
     "descripcion": "",
-    "candidato_leyenda_oficial": "Vegetación herbácea"
+    "candidato_leyenda_oficial": "Vegetación herbácea",
+    "evidencia": {
+     "puntos": 10,
+     "acuerdo_pct": 100.0,
+     "distribucion": {
+      "Vegetación herbácea": 10
+     },
+     "valor_pixel_servicio": {
+      "10": 10
+     }
+    }
    },
    {
     "codigo": 11,
@@ -395,211 +649,457 @@
    {
     "codigo": 12,
     "categoria": "Afloramiento rocoso y tierra desnuda",
-    "color": "#BCAAA4",
-    "fuente_color": "propuesta_geoportal",
-    "estado": "documentada_catalogo_previo",
-    "fuente_correspondencia": "catalogo_previo",
+    "color": "#8D8D8D",
+    "fuente_color": "MiAMBIENTE · atributos RGB del servicio REST capa 2",
+    "estado": "verificada_espacialmente",
+    "fuente_correspondencia": "Muestreo espacial vs servicio REST MiAMBIENTE capa 2 · 90.0 % de 10 puntos (2026-11-21T18:40:08)",
     "grupo_derivado": "areas_abiertas_naturales",
     "descripcion": "",
-    "candidato_leyenda_oficial": "Afloramiento rocoso y tierra desnuda"
+    "candidato_leyenda_oficial": "Afloramiento rocoso y tierra desnuda",
+    "evidencia": {
+     "puntos": 10,
+     "acuerdo_pct": 90.0,
+     "distribucion": {
+      "Afloramiento rocoso y tierra desnuda": 9,
+      "Bosque plantado de latifoliadas": 1
+     },
+     "valor_pixel_servicio": {
+      "12": 9,
+      "8": 1
+     }
+    }
    },
    {
     "codigo": 13,
-    "categoria": "Playa y arenal natural",
+    "categoria": "Código 13 · discrepancia con el servicio oficial",
     "color": "#FFF59D",
     "fuente_color": "propuesta_geoportal",
-    "estado": "documentada_catalogo_previo",
-    "fuente_correspondencia": "catalogo_previo",
-    "grupo_derivado": "areas_abiertas_naturales",
+    "estado": "discrepante_con_servicio",
+    "fuente_correspondencia": "Servicio REST capa 2: mayoría «Rastrojo y vegetación arbustiva» (70.0 % de 10 puntos; valor de píxel oficial mayoritario 9). Documentación previa: «Playa y arenal natural».",
+    "grupo_derivado": "no_identificado",
     "descripcion": "",
-    "candidato_leyenda_oficial": "Playa y arenal natural"
+    "candidato_leyenda_oficial": "Playa y arenal natural",
+    "evidencia": {
+     "puntos": 10,
+     "acuerdo_pct": 70.0,
+     "distribucion": {
+      "Rastrojo y vegetación arbustiva": 7,
+      "Bosque latifoliado mixto secundario": 1,
+      "Pasto": 2
+     },
+     "valor_pixel_servicio": {
+      "9": 7,
+      "2": 1,
+      "26": 2
+     }
+    }
    },
    {
     "codigo": 14,
-    "categoria": "Café",
+    "categoria": "Código 14 · discrepancia con el servicio oficial",
     "color": "#6D4C41",
     "fuente_color": "propuesta_geoportal",
-    "estado": "documentada_catalogo_previo",
-    "fuente_correspondencia": "catalogo_previo",
-    "grupo_derivado": "cultivos",
+    "estado": "discrepante_con_servicio",
+    "fuente_correspondencia": "Servicio REST capa 2: mayoría «Pasto» (40.0 % de 10 puntos; valor de píxel oficial mayoritario 26). Documentación previa: «Café».",
+    "grupo_derivado": "no_identificado",
     "descripcion": "",
-    "candidato_leyenda_oficial": "Café"
+    "candidato_leyenda_oficial": "Café",
+    "evidencia": {
+     "puntos": 10,
+     "acuerdo_pct": 40.0,
+     "distribucion": {
+      "Pasto": 4,
+      "Superficie de agua": 2,
+      "Bosque latifoliado mixto maduro": 1,
+      "Bosque latifoliado mixto secundario": 3
+     },
+     "valor_pixel_servicio": {
+      "26": 4,
+      "27": 2,
+      "1": 1,
+      "2": 3
+     }
+    }
    },
    {
     "codigo": 15,
-    "categoria": "Cítrico",
+    "categoria": "Código 15 · discrepancia con el servicio oficial",
     "color": "#FFB74D",
     "fuente_color": "propuesta_geoportal",
-    "estado": "documentada_catalogo_previo",
-    "fuente_correspondencia": "catalogo_previo",
-    "grupo_derivado": "cultivos",
+    "estado": "discrepante_con_servicio",
+    "fuente_correspondencia": "Servicio REST capa 2: mayoría «Área poblada» (40.0 % de 10 puntos; valor de píxel oficial mayoritario 28). Documentación previa: «Cítrico».",
+    "grupo_derivado": "no_identificado",
     "descripcion": "",
-    "candidato_leyenda_oficial": "Cítrico"
+    "candidato_leyenda_oficial": "Cítrico",
+    "evidencia": {
+     "puntos": 10,
+     "acuerdo_pct": 40.0,
+     "distribucion": {
+      "Área poblada": 4,
+      "Superficie de agua": 3,
+      "Bosque latifoliado mixto secundario": 2,
+      "Vegetación baja inundable": 1
+     },
+     "valor_pixel_servicio": {
+      "28": 4,
+      "27": 3,
+      "2": 2,
+      "11": 1
+     }
+    }
    },
    {
     "codigo": 16,
-    "categoria": "Palma aceitera",
+    "categoria": "Código 16 · discrepancia con el servicio oficial",
     "color": "#F57F17",
     "fuente_color": "propuesta_geoportal",
-    "estado": "documentada_catalogo_previo",
-    "fuente_correspondencia": "catalogo_previo",
-    "grupo_derivado": "cultivos",
+    "estado": "discrepante_con_servicio",
+    "fuente_correspondencia": "Servicio REST capa 2: mayoría «Infraestructura» (40.0 % de 10 puntos; valor de píxel oficial mayoritario 29). Documentación previa: «Palma aceitera».",
+    "grupo_derivado": "no_identificado",
     "descripcion": "",
-    "candidato_leyenda_oficial": "Palma aceitera"
+    "candidato_leyenda_oficial": "Palma aceitera",
+    "evidencia": {
+     "puntos": 10,
+     "acuerdo_pct": 40.0,
+     "distribucion": {
+      "Infraestructura": 4,
+      "Bosque latifoliado mixto secundario": 2,
+      "Afloramiento rocoso y tierra desnuda": 2,
+      "Superficie de agua": 1,
+      "Pasto": 1
+     },
+     "valor_pixel_servicio": {
+      "29": 4,
+      "2": 2,
+      "12": 2,
+      "27": 1,
+      "26": 1
+     }
+    }
    },
    {
     "codigo": 17,
-    "categoria": "Plátano/banano",
+    "categoria": "Código 17 · discrepancia con el servicio oficial",
     "color": "#FDD835",
     "fuente_color": "propuesta_geoportal",
-    "estado": "documentada_catalogo_previo",
-    "fuente_correspondencia": "catalogo_previo",
-    "grupo_derivado": "cultivos",
+    "estado": "discrepante_con_servicio",
+    "fuente_correspondencia": "Servicio REST capa 2: mayoría «Pasto» (90.0 % de 10 puntos; valor de píxel oficial mayoritario 26). Documentación previa: «Plátano/banano».",
+    "grupo_derivado": "no_identificado",
     "descripcion": "",
-    "candidato_leyenda_oficial": "Plátano/banano"
+    "candidato_leyenda_oficial": "Plátano/banano",
+    "evidencia": {
+     "puntos": 10,
+     "acuerdo_pct": 90.0,
+     "distribucion": {
+      "Pasto": 9,
+      "Bosque plantado de latifoliadas": 1
+     },
+     "valor_pixel_servicio": {
+      "26": 9,
+      "8": 1
+     }
+    }
    },
    {
     "codigo": 18,
-    "categoria": "Otro cultivo permanente",
+    "categoria": "Código 18 · discrepancia con el servicio oficial",
     "color": "#FFCC80",
     "fuente_color": "propuesta_geoportal",
-    "estado": "documentada_catalogo_previo",
-    "fuente_correspondencia": "catalogo_previo",
-    "grupo_derivado": "cultivos",
+    "estado": "discrepante_con_servicio",
+    "fuente_correspondencia": "Servicio REST capa 2: mayoría «Pasto» (50.0 % de 10 puntos; valor de píxel oficial mayoritario 26). Documentación previa: «Otro cultivo permanente».",
+    "grupo_derivado": "no_identificado",
     "descripcion": "",
-    "candidato_leyenda_oficial": "Otro cultivo permanente"
+    "candidato_leyenda_oficial": "Otro cultivo permanente",
+    "evidencia": {
+     "puntos": 10,
+     "acuerdo_pct": 50.0,
+     "distribucion": {
+      "Pasto": 5,
+      "Rastrojo y vegetación arbustiva": 4,
+      "Vegetación herbácea": 1
+     },
+     "valor_pixel_servicio": {
+      "26": 5,
+      "9": 4,
+      "10": 1
+     }
+    }
    },
    {
     "codigo": 19,
-    "categoria": "Arroz",
+    "categoria": "Código 19 · discrepancia con el servicio oficial",
     "color": "#E6EE9C",
     "fuente_color": "propuesta_geoportal",
-    "estado": "documentada_catalogo_previo",
-    "fuente_correspondencia": "catalogo_previo",
-    "grupo_derivado": "cultivos",
+    "estado": "discrepante_con_servicio",
+    "fuente_correspondencia": "Servicio REST capa 2: mayoría «Vegetación herbácea» (70.0 % de 10 puntos; valor de píxel oficial mayoritario 10). Documentación previa: «Arroz».",
+    "grupo_derivado": "no_identificado",
     "descripcion": "",
-    "candidato_leyenda_oficial": "Arroz"
+    "candidato_leyenda_oficial": "Arroz",
+    "evidencia": {
+     "puntos": 10,
+     "acuerdo_pct": 70.0,
+     "distribucion": {
+      "Vegetación herbácea": 7,
+      "Pasto": 2,
+      "Rastrojo y vegetación arbustiva": 1
+     },
+     "valor_pixel_servicio": {
+      "10": 7,
+      "26": 2,
+      "9": 1
+     }
+    }
    },
    {
     "codigo": 20,
-    "categoria": "Caña de azúcar",
+    "categoria": "Código 20 · discrepancia con el servicio oficial",
     "color": "#C0CA33",
     "fuente_color": "propuesta_geoportal",
-    "estado": "documentada_catalogo_previo",
-    "fuente_correspondencia": "catalogo_previo",
-    "grupo_derivado": "cultivos",
+    "estado": "discrepante_con_servicio",
+    "fuente_correspondencia": "Servicio REST capa 2: mayoría «Pasto» (70.0 % de 10 puntos; valor de píxel oficial mayoritario 26). Documentación previa: «Caña de azúcar».",
+    "grupo_derivado": "no_identificado",
     "descripcion": "",
-    "candidato_leyenda_oficial": "Caña de azúcar"
+    "candidato_leyenda_oficial": "Caña de azúcar",
+    "evidencia": {
+     "puntos": 10,
+     "acuerdo_pct": 70.0,
+     "distribucion": {
+      "Pasto": 7,
+      "Bosque latifoliado mixto secundario": 3
+     },
+     "valor_pixel_servicio": {
+      "26": 7,
+      "2": 3
+     }
+    }
    },
    {
     "codigo": 21,
-    "categoria": "Horticultura mixta",
+    "categoria": "Código 21 · discrepancia con el servicio oficial",
     "color": "#FFAB91",
     "fuente_color": "propuesta_geoportal",
-    "estado": "documentada_catalogo_previo",
-    "fuente_correspondencia": "catalogo_previo",
-    "grupo_derivado": "cultivos",
+    "estado": "discrepante_con_servicio",
+    "fuente_correspondencia": "Servicio REST capa 2: mayoría «Superficie de agua» (90.0 % de 10 puntos; valor de píxel oficial mayoritario 27). Documentación previa: «Horticultura mixta».",
+    "grupo_derivado": "no_identificado",
     "descripcion": "",
-    "candidato_leyenda_oficial": "Horticultura mixta"
+    "candidato_leyenda_oficial": "Horticultura mixta",
+    "evidencia": {
+     "puntos": 10,
+     "acuerdo_pct": 90.0,
+     "distribucion": {
+      "Superficie de agua": 9,
+      "Bosque latifoliado mixto secundario": 1
+     },
+     "valor_pixel_servicio": {
+      "27": 9,
+      "2": 1
+     }
+    }
    },
    {
     "codigo": 22,
-    "categoria": "Maíz",
+    "categoria": "Código 22 · discrepancia con el servicio oficial",
     "color": "#FFE082",
     "fuente_color": "propuesta_geoportal",
-    "estado": "documentada_catalogo_previo",
-    "fuente_correspondencia": "catalogo_previo",
-    "grupo_derivado": "cultivos",
+    "estado": "discrepante_con_servicio",
+    "fuente_correspondencia": "Servicio REST capa 2: mayoría «Pasto» (40.0 % de 10 puntos; valor de píxel oficial mayoritario 26). Documentación previa: «Maíz».",
+    "grupo_derivado": "no_identificado",
     "descripcion": "",
-    "candidato_leyenda_oficial": "Maíz"
+    "candidato_leyenda_oficial": "Maíz",
+    "evidencia": {
+     "puntos": 10,
+     "acuerdo_pct": 40.0,
+     "distribucion": {
+      "Vegetación baja inundable": 1,
+      "Superficie de agua": 1,
+      "Pasto": 4,
+      "Área poblada": 3,
+      "Rastrojo y vegetación arbustiva": 1
+     },
+     "valor_pixel_servicio": {
+      "11": 1,
+      "27": 1,
+      "26": 4,
+      "28": 3,
+      "9": 1
+     }
+    }
    },
    {
     "codigo": 23,
     "categoria": "Piña",
-    "color": "#FFD54F",
-    "fuente_color": "propuesta_geoportal",
-    "estado": "documentada_catalogo_previo",
-    "fuente_correspondencia": "catalogo_previo",
+    "color": "#FFFFA8",
+    "fuente_color": "MiAMBIENTE · atributos RGB del servicio REST capa 2",
+    "estado": "verificada_espacialmente",
+    "fuente_correspondencia": "Muestreo espacial vs servicio REST MiAMBIENTE capa 2 · 100.0 % de 10 puntos (2026-11-21T18:40:08)",
     "grupo_derivado": "cultivos",
     "descripcion": "",
-    "candidato_leyenda_oficial": "Piña"
+    "candidato_leyenda_oficial": "Piña",
+    "evidencia": {
+     "puntos": 10,
+     "acuerdo_pct": 100.0,
+     "distribucion": {
+      "Piña": 10
+     },
+     "valor_pixel_servicio": {
+      "23": 10
+     }
+    }
    },
    {
     "codigo": 24,
-    "categoria": "Otro cultivo anual",
+    "categoria": "Código 24 · discrepancia con el servicio oficial",
     "color": "#FFE0B2",
     "fuente_color": "propuesta_geoportal",
-    "estado": "documentada_catalogo_previo",
-    "fuente_correspondencia": "catalogo_previo",
-    "grupo_derivado": "cultivos",
+    "estado": "discrepante_con_servicio",
+    "fuente_correspondencia": "Servicio REST capa 2: mayoría «Piña» (70.0 % de 10 puntos; valor de píxel oficial mayoritario 23). Documentación previa: «Otro cultivo anual».",
+    "grupo_derivado": "no_identificado",
     "descripcion": "",
-    "candidato_leyenda_oficial": "Otro cultivo anual"
+    "candidato_leyenda_oficial": "Otro cultivo anual",
+    "evidencia": {
+     "puntos": 10,
+     "acuerdo_pct": 70.0,
+     "distribucion": {
+      "Piña": 7,
+      "Área poblada": 2,
+      "Infraestructura": 1
+     },
+     "valor_pixel_servicio": {
+      "23": 7,
+      "28": 2,
+      "29": 1
+     }
+    }
    },
    {
     "codigo": 25,
-    "categoria": "Área heterogénea de producción agropecuaria",
+    "categoria": "Código 25 · discrepancia con el servicio oficial",
     "color": "#F8BBD0",
     "fuente_color": "propuesta_geoportal",
-    "estado": "documentada_catalogo_previo",
-    "fuente_correspondencia": "catalogo_previo",
-    "grupo_derivado": "agropecuario_mixto",
+    "estado": "discrepante_con_servicio",
+    "fuente_correspondencia": "Servicio REST capa 2: mayoría «Pasto» (50.0 % de 10 puntos; valor de píxel oficial mayoritario 26). Documentación previa: «Área heterogénea de producción agropecuaria».",
+    "grupo_derivado": "no_identificado",
     "descripcion": "",
-    "candidato_leyenda_oficial": "Área heterogénea de producción agropecuaria"
+    "candidato_leyenda_oficial": "Área heterogénea de producción agropecuaria",
+    "evidencia": {
+     "puntos": 10,
+     "acuerdo_pct": 50.0,
+     "distribucion": {
+      "Pasto": 5,
+      "Superficie de agua": 1,
+      "Piña": 4
+     },
+     "valor_pixel_servicio": {
+      "26": 5,
+      "27": 1,
+      "23": 4
+     }
+    }
    },
    {
     "codigo": 26,
     "categoria": "Pasto",
-    "color": "#F0E68C",
-    "fuente_color": "propuesta_geoportal",
-    "estado": "documentada_catalogo_previo",
-    "fuente_correspondencia": "catalogo_previo",
+    "color": "#FFFF00",
+    "fuente_color": "MiAMBIENTE · atributos RGB del servicio REST capa 2",
+    "estado": "verificada_espacialmente",
+    "fuente_correspondencia": "Muestreo espacial vs servicio REST MiAMBIENTE capa 2 · 100.0 % de 10 puntos (2026-11-21T18:40:08)",
     "grupo_derivado": "pastos",
     "descripcion": "",
-    "candidato_leyenda_oficial": "Pasto"
+    "candidato_leyenda_oficial": "Pasto",
+    "evidencia": {
+     "puntos": 10,
+     "acuerdo_pct": 100.0,
+     "distribucion": {
+      "Pasto": 10
+     },
+     "valor_pixel_servicio": {
+      "26": 10
+     }
+    }
    },
    {
     "codigo": 27,
     "categoria": "Superficie de agua",
-    "color": "#4FC3F7",
-    "fuente_color": "propuesta_geoportal",
-    "estado": "documentada_catalogo_previo",
-    "fuente_correspondencia": "catalogo_previo",
+    "color": "#80F1E6",
+    "fuente_color": "MiAMBIENTE · atributos RGB del servicio REST capa 2",
+    "estado": "verificada_espacialmente",
+    "fuente_correspondencia": "Muestreo espacial vs servicio REST MiAMBIENTE capa 2 · 100.0 % de 10 puntos (2026-11-21T18:40:08)",
     "grupo_derivado": "agua",
     "descripcion": "",
-    "candidato_leyenda_oficial": "Superficie de agua"
+    "candidato_leyenda_oficial": "Superficie de agua",
+    "evidencia": {
+     "puntos": 10,
+     "acuerdo_pct": 100.0,
+     "distribucion": {
+      "Superficie de agua": 10
+     },
+     "valor_pixel_servicio": {
+      "27": 10
+     }
+    }
    },
    {
     "codigo": 28,
     "categoria": "Área poblada",
-    "color": "#E53935",
-    "fuente_color": "propuesta_geoportal",
-    "estado": "documentada_catalogo_previo",
-    "fuente_correspondencia": "catalogo_previo",
+    "color": "#FF0000",
+    "fuente_color": "MiAMBIENTE · atributos RGB del servicio REST capa 2",
+    "estado": "verificada_espacialmente",
+    "fuente_correspondencia": "Muestreo espacial vs servicio REST MiAMBIENTE capa 2 · 100.0 % de 10 puntos (2026-11-21T18:40:08)",
     "grupo_derivado": "areas_intervenidas",
     "descripcion": "",
-    "candidato_leyenda_oficial": "Área poblada"
+    "candidato_leyenda_oficial": "Área poblada",
+    "evidencia": {
+     "puntos": 10,
+     "acuerdo_pct": 100.0,
+     "distribucion": {
+      "Área poblada": 10
+     },
+     "valor_pixel_servicio": {
+      "28": 10
+     }
+    }
    },
    {
     "codigo": 29,
     "categoria": "Infraestructura",
-    "color": "#757575",
-    "fuente_color": "propuesta_geoportal",
-    "estado": "documentada_catalogo_previo",
-    "fuente_correspondencia": "catalogo_previo",
+    "color": "#990000",
+    "fuente_color": "MiAMBIENTE · atributos RGB del servicio REST capa 2",
+    "estado": "verificada_espacialmente",
+    "fuente_correspondencia": "Muestreo espacial vs servicio REST MiAMBIENTE capa 2 · 100.0 % de 10 puntos (2026-11-21T18:40:08)",
     "grupo_derivado": "areas_intervenidas",
     "descripcion": "",
-    "candidato_leyenda_oficial": "Infraestructura"
+    "candidato_leyenda_oficial": "Infraestructura",
+    "evidencia": {
+     "puntos": 10,
+     "acuerdo_pct": 100.0,
+     "distribucion": {
+      "Infraestructura": 10
+     },
+     "valor_pixel_servicio": {
+      "29": 10
+     }
+    }
    },
    {
     "codigo": 30,
     "categoria": "Explotación minera",
-    "color": "#8D6E63",
-    "fuente_color": "propuesta_geoportal",
-    "estado": "documentada_catalogo_previo",
-    "fuente_correspondencia": "catalogo_previo",
+    "color": "#A600CC",
+    "fuente_color": "MiAMBIENTE · atributos RGB del servicio REST capa 2",
+    "estado": "verificada_espacialmente",
+    "fuente_correspondencia": "Muestreo espacial vs servicio REST MiAMBIENTE capa 2 · 100.0 % de 10 puntos (2026-11-21T18:40:08)",
     "grupo_derivado": "areas_intervenidas",
     "descripcion": "",
-    "candidato_leyenda_oficial": "Explotación minera"
+    "candidato_leyenda_oficial": "Explotación minera",
+    "evidencia": {
+     "puntos": 10,
+     "acuerdo_pct": 100.0,
+     "distribucion": {
+      "Explotación minera": 10
+     },
+     "valor_pixel_servicio": {
+      "30": 10
+     }
+    }
    },
    {
     "codigo": 31,
@@ -627,36 +1127,66 @@
   "2021_detallado": [
    {
     "codigo": 1,
-    "categoria": "Código 1 · Bosque natural (grupo documentado)",
-    "color": "#1B5E20",
-    "fuente_color": "propuesta_geoportal",
-    "estado": "grupo_documentado_catalogo_previo",
-    "fuente_correspondencia": "catalogo_previo",
+    "categoria": "Bosque latifoliado mixto maduro",
+    "color": "#005800",
+    "fuente_color": "MiAMBIENTE · atributos RGB del servicio REST capa 1",
+    "estado": "verificada_espacialmente",
+    "fuente_correspondencia": "Muestreo espacial vs servicio REST MiAMBIENTE capa 1 · 100.0 % de 10 puntos (2026-11-21T18:40:08)",
     "grupo_derivado": "bosque_natural",
     "descripcion": "",
-    "candidato_leyenda_oficial": "Bosque latifoliado mixto maduro"
+    "candidato_leyenda_oficial": "Bosque latifoliado mixto maduro",
+    "evidencia": {
+     "puntos": 10,
+     "acuerdo_pct": 100.0,
+     "distribucion": {
+      "Bosque latifoliado mixto maduro": 10
+     },
+     "valor_pixel_servicio": {
+      "1": 10
+     }
+    }
    },
    {
     "codigo": 2,
-    "categoria": "Código 2 · Bosque natural (grupo documentado)",
-    "color": "#43A047",
-    "fuente_color": "propuesta_geoportal",
-    "estado": "grupo_documentado_catalogo_previo",
-    "fuente_correspondencia": "catalogo_previo",
-    "grupo_derivado": "bosque_natural",
+    "categoria": "Bosque latifoliado mixto secundario",
+    "color": "#00A600",
+    "fuente_color": "MiAMBIENTE · atributos RGB del servicio REST capa 1",
+    "estado": "verificada_espacialmente",
+    "fuente_correspondencia": "Muestreo espacial vs servicio REST MiAMBIENTE capa 1 · 100.0 % de 10 puntos (2026-11-21T18:40:08)",
+    "grupo_derivado": "bosque_secundario",
     "descripcion": "",
-    "candidato_leyenda_oficial": "Bosque latifoliado mixto secundario"
+    "candidato_leyenda_oficial": "Bosque latifoliado mixto secundario",
+    "evidencia": {
+     "puntos": 10,
+     "acuerdo_pct": 100.0,
+     "distribucion": {
+      "Bosque latifoliado mixto secundario": 10
+     },
+     "valor_pixel_servicio": {
+      "2": 10
+     }
+    }
    },
    {
     "codigo": 3,
-    "categoria": "Código 3 · Bosque natural (grupo documentado)",
-    "color": "#6A1B9A",
-    "fuente_color": "propuesta_geoportal",
-    "estado": "grupo_documentado_catalogo_previo",
-    "fuente_correspondencia": "catalogo_previo",
+    "categoria": "Bosque de mangle",
+    "color": "#6800B5",
+    "fuente_color": "MiAMBIENTE · atributos RGB del servicio REST capa 1",
+    "estado": "verificada_espacialmente",
+    "fuente_correspondencia": "Muestreo espacial vs servicio REST MiAMBIENTE capa 1 · 100.0 % de 10 puntos (2026-11-21T18:40:08)",
     "grupo_derivado": "bosque_natural",
     "descripcion": "",
-    "candidato_leyenda_oficial": "Bosque de mangle"
+    "candidato_leyenda_oficial": "Bosque de mangle",
+    "evidencia": {
+     "puntos": 10,
+     "acuerdo_pct": 100.0,
+     "distribucion": {
+      "Bosque de mangle": 10
+     },
+     "valor_pixel_servicio": {
+      "3": 10
+     }
+    }
    },
    {
     "codigo": 4,
@@ -693,69 +1223,129 @@
    },
    {
     "codigo": 7,
-    "categoria": "Código 7 · Bosque plantado (grupo documentado)",
-    "color": "#33691E",
-    "fuente_color": "propuesta_geoportal",
-    "estado": "grupo_documentado_catalogo_previo",
-    "fuente_correspondencia": "catalogo_previo",
+    "categoria": "Bosque plantado de coníferas",
+    "color": "#133C2A",
+    "fuente_color": "MiAMBIENTE · atributos RGB del servicio REST capa 1",
+    "estado": "verificada_espacialmente",
+    "fuente_correspondencia": "Muestreo espacial vs servicio REST MiAMBIENTE capa 1 · 100.0 % de 10 puntos (2026-11-21T18:40:08)",
     "grupo_derivado": "bosque_plantado",
     "descripcion": "",
-    "candidato_leyenda_oficial": "Bosque plantado de coníferas"
+    "candidato_leyenda_oficial": "Bosque plantado de coníferas",
+    "evidencia": {
+     "puntos": 10,
+     "acuerdo_pct": 100.0,
+     "distribucion": {
+      "Bosque plantado de coníferas": 10
+     },
+     "valor_pixel_servicio": {
+      "7": 10
+     }
+    }
    },
    {
     "codigo": 8,
-    "categoria": "Código 8 · Bosque plantado (grupo documentado)",
-    "color": "#558B2F",
-    "fuente_color": "propuesta_geoportal",
-    "estado": "grupo_documentado_catalogo_previo",
-    "fuente_correspondencia": "catalogo_previo",
+    "categoria": "Bosque plantado de latifoliadas",
+    "color": "#546B2E",
+    "fuente_color": "MiAMBIENTE · atributos RGB del servicio REST capa 1",
+    "estado": "verificada_espacialmente",
+    "fuente_correspondencia": "Muestreo espacial vs servicio REST MiAMBIENTE capa 1 · 100.0 % de 10 puntos (2026-11-21T18:40:08)",
     "grupo_derivado": "bosque_plantado",
     "descripcion": "",
-    "candidato_leyenda_oficial": "Bosque plantado de latifoliadas"
+    "candidato_leyenda_oficial": "Bosque plantado de latifoliadas",
+    "evidencia": {
+     "puntos": 10,
+     "acuerdo_pct": 100.0,
+     "distribucion": {
+      "Bosque plantado de latifoliadas": 10
+     },
+     "valor_pixel_servicio": {
+      "8": 10
+     }
+    }
    },
    {
     "codigo": 9,
-    "categoria": "Código 9 · Rastrojo y vegetación arbustiva (grupo documentado)",
-    "color": "#9CCC65",
-    "fuente_color": "propuesta_geoportal",
-    "estado": "grupo_documentado_catalogo_previo",
-    "fuente_correspondencia": "catalogo_previo",
+    "categoria": "Rastrojo y vegetación arbustiva",
+    "color": "#94D900",
+    "fuente_color": "MiAMBIENTE · atributos RGB del servicio REST capa 1",
+    "estado": "verificada_espacialmente",
+    "fuente_correspondencia": "Muestreo espacial vs servicio REST MiAMBIENTE capa 1 · 100.0 % de 10 puntos (2026-11-21T18:40:08)",
     "grupo_derivado": "rastrojo_arbustivo",
     "descripcion": "",
-    "candidato_leyenda_oficial": "Rastrojo y vegetación arbustiva"
+    "candidato_leyenda_oficial": "Rastrojo y vegetación arbustiva",
+    "evidencia": {
+     "puntos": 10,
+     "acuerdo_pct": 100.0,
+     "distribucion": {
+      "Rastrojo y vegetación arbustiva": 10
+     },
+     "valor_pixel_servicio": {
+      "9": 10
+     }
+    }
    },
    {
     "codigo": 10,
-    "categoria": "Código 10 · sin documentación verificada",
-    "color": "#D4E157",
-    "fuente_color": "propuesta_geoportal",
-    "estado": "leyenda_oficial_sin_correspondencia",
-    "fuente_correspondencia": "pendiente",
-    "grupo_derivado": "no_identificado",
+    "categoria": "Vegetación herbácea",
+    "color": "#DAF57C",
+    "fuente_color": "MiAMBIENTE · atributos RGB del servicio REST capa 1",
+    "estado": "verificada_espacialmente",
+    "fuente_correspondencia": "Muestreo espacial vs servicio REST MiAMBIENTE capa 1 · 100.0 % de 10 puntos (2026-11-21T18:40:08)",
+    "grupo_derivado": "otra_vegetacion",
     "descripcion": "",
-    "candidato_leyenda_oficial": "Vegetación herbácea"
+    "candidato_leyenda_oficial": "Vegetación herbácea",
+    "evidencia": {
+     "puntos": 10,
+     "acuerdo_pct": 100.0,
+     "distribucion": {
+      "Vegetación herbácea": 10
+     },
+     "valor_pixel_servicio": {
+      "10": 10
+     }
+    }
    },
    {
     "codigo": 11,
-    "categoria": "Código 11 · sin documentación verificada",
-    "color": "#80DEEA",
-    "fuente_color": "propuesta_geoportal",
-    "estado": "leyenda_oficial_sin_correspondencia",
-    "fuente_correspondencia": "pendiente",
-    "grupo_derivado": "no_identificado",
+    "categoria": "Vegetación baja inundable",
+    "color": "#00FFA6",
+    "fuente_color": "MiAMBIENTE · atributos RGB del servicio REST capa 1",
+    "estado": "verificada_espacialmente",
+    "fuente_correspondencia": "Muestreo espacial vs servicio REST MiAMBIENTE capa 1 · 100.0 % de 10 puntos (2026-11-21T18:40:08)",
+    "grupo_derivado": "otra_vegetacion",
     "descripcion": "",
-    "candidato_leyenda_oficial": "Vegetación baja inundable"
+    "candidato_leyenda_oficial": "Vegetación baja inundable",
+    "evidencia": {
+     "puntos": 10,
+     "acuerdo_pct": 100.0,
+     "distribucion": {
+      "Vegetación baja inundable": 10
+     },
+     "valor_pixel_servicio": {
+      "11": 10
+     }
+    }
    },
    {
     "codigo": 12,
-    "categoria": "Código 12 · sin documentación verificada",
-    "color": "#BCAAA4",
-    "fuente_color": "propuesta_geoportal",
-    "estado": "leyenda_oficial_sin_correspondencia",
-    "fuente_correspondencia": "pendiente",
-    "grupo_derivado": "no_identificado",
+    "categoria": "Afloramiento rocoso y tierra desnuda",
+    "color": "#8D8D8D",
+    "fuente_color": "MiAMBIENTE · atributos RGB del servicio REST capa 1",
+    "estado": "verificada_espacialmente",
+    "fuente_correspondencia": "Muestreo espacial vs servicio REST MiAMBIENTE capa 1 · 100.0 % de 10 puntos (2026-11-21T18:40:08)",
+    "grupo_derivado": "areas_abiertas_naturales",
     "descripcion": "",
-    "candidato_leyenda_oficial": "Afloramiento rocoso y tierra desnuda"
+    "candidato_leyenda_oficial": "Afloramiento rocoso y tierra desnuda",
+    "evidencia": {
+     "puntos": 10,
+     "acuerdo_pct": 100.0,
+     "distribucion": {
+      "Afloramiento rocoso y tierra desnuda": 10
+     },
+     "valor_pixel_servicio": {
+      "12": 10
+     }
+    }
    },
    {
     "codigo": 13,
@@ -770,14 +1360,24 @@
    },
    {
     "codigo": 14,
-    "categoria": "Código 14 · sin documentación verificada",
-    "color": "#6D4C41",
-    "fuente_color": "propuesta_geoportal",
-    "estado": "leyenda_oficial_sin_correspondencia",
-    "fuente_correspondencia": "pendiente",
-    "grupo_derivado": "no_identificado",
+    "categoria": "Café",
+    "color": "#422F00",
+    "fuente_color": "MiAMBIENTE · atributos RGB del servicio REST capa 1",
+    "estado": "verificada_espacialmente",
+    "fuente_correspondencia": "Muestreo espacial vs servicio REST MiAMBIENTE capa 1 · 100.0 % de 10 puntos (2026-11-21T18:40:08)",
+    "grupo_derivado": "cultivos",
     "descripcion": "",
-    "candidato_leyenda_oficial": "Café"
+    "candidato_leyenda_oficial": "Café",
+    "evidencia": {
+     "puntos": 10,
+     "acuerdo_pct": 100.0,
+     "distribucion": {
+      "Café": 10
+     },
+     "valor_pixel_servicio": {
+      "14": 10
+     }
+    }
    },
    {
     "codigo": 15,
@@ -869,91 +1469,171 @@
    },
    {
     "codigo": 23,
-    "categoria": "Código 23 · sin documentación verificada",
-    "color": "#FFD54F",
-    "fuente_color": "propuesta_geoportal",
-    "estado": "leyenda_oficial_sin_correspondencia",
-    "fuente_correspondencia": "pendiente",
-    "grupo_derivado": "no_identificado",
+    "categoria": "Piña",
+    "color": "#FFFFA8",
+    "fuente_color": "MiAMBIENTE · atributos RGB del servicio REST capa 1",
+    "estado": "verificada_espacialmente",
+    "fuente_correspondencia": "Muestreo espacial vs servicio REST MiAMBIENTE capa 1 · 100.0 % de 10 puntos (2026-11-21T18:40:08)",
+    "grupo_derivado": "cultivos",
     "descripcion": "",
-    "candidato_leyenda_oficial": "Piña"
+    "candidato_leyenda_oficial": "Piña",
+    "evidencia": {
+     "puntos": 10,
+     "acuerdo_pct": 100.0,
+     "distribucion": {
+      "Piña": 10
+     },
+     "valor_pixel_servicio": {
+      "23": 10
+     }
+    }
    },
    {
     "codigo": 24,
-    "categoria": "Código 24 · sin documentación verificada",
-    "color": "#FFE0B2",
-    "fuente_color": "propuesta_geoportal",
-    "estado": "leyenda_oficial_sin_correspondencia",
-    "fuente_correspondencia": "pendiente",
-    "grupo_derivado": "no_identificado",
+    "categoria": "Otro cultivo anual",
+    "color": "#FFDB00",
+    "fuente_color": "MiAMBIENTE · atributos RGB del servicio REST capa 1",
+    "estado": "verificada_espacialmente",
+    "fuente_correspondencia": "Muestreo espacial vs servicio REST MiAMBIENTE capa 1 · 100.0 % de 10 puntos (2026-11-21T18:40:08)",
+    "grupo_derivado": "cultivos",
     "descripcion": "",
-    "candidato_leyenda_oficial": "Otro cultivo anual"
+    "candidato_leyenda_oficial": "Otro cultivo anual",
+    "evidencia": {
+     "puntos": 10,
+     "acuerdo_pct": 100.0,
+     "distribucion": {
+      "Otro cultivo anual": 10
+     },
+     "valor_pixel_servicio": {
+      "24": 10
+     }
+    }
    },
    {
     "codigo": 25,
-    "categoria": "Código 25 · sin documentación verificada",
-    "color": "#F8BBD0",
-    "fuente_color": "propuesta_geoportal",
-    "estado": "leyenda_oficial_sin_correspondencia",
-    "fuente_correspondencia": "pendiente",
-    "grupo_derivado": "no_identificado",
+    "categoria": "Área heterogénea de producción agropecuaria",
+    "color": "#A87900",
+    "fuente_color": "MiAMBIENTE · atributos RGB del servicio REST capa 1",
+    "estado": "verificada_espacialmente",
+    "fuente_correspondencia": "Muestreo espacial vs servicio REST MiAMBIENTE capa 1 · 100.0 % de 10 puntos (2026-11-21T18:40:08)",
+    "grupo_derivado": "agropecuario_mixto",
     "descripcion": "",
-    "candidato_leyenda_oficial": "Área heterogénea de producción agropecuaria"
+    "candidato_leyenda_oficial": "Área heterogénea de producción agropecuaria",
+    "evidencia": {
+     "puntos": 10,
+     "acuerdo_pct": 100.0,
+     "distribucion": {
+      "Área heterogénea de producción agropecuaria": 10
+     },
+     "valor_pixel_servicio": {
+      "25": 10
+     }
+    }
    },
    {
     "codigo": 26,
-    "categoria": "Código 26 · sin documentación verificada",
-    "color": "#F0E68C",
-    "fuente_color": "propuesta_geoportal",
-    "estado": "leyenda_oficial_sin_correspondencia",
-    "fuente_correspondencia": "pendiente",
-    "grupo_derivado": "no_identificado",
+    "categoria": "Pasto",
+    "color": "#FFFF00",
+    "fuente_color": "MiAMBIENTE · atributos RGB del servicio REST capa 1",
+    "estado": "verificada_espacialmente",
+    "fuente_correspondencia": "Muestreo espacial vs servicio REST MiAMBIENTE capa 1 · 100.0 % de 10 puntos (2026-11-21T18:40:08)",
+    "grupo_derivado": "pastos",
     "descripcion": "",
-    "candidato_leyenda_oficial": "Pasto"
+    "candidato_leyenda_oficial": "Pasto",
+    "evidencia": {
+     "puntos": 10,
+     "acuerdo_pct": 100.0,
+     "distribucion": {
+      "Pasto": 10
+     },
+     "valor_pixel_servicio": {
+      "26": 10
+     }
+    }
    },
    {
     "codigo": 27,
-    "categoria": "Código 27 · sin documentación verificada",
-    "color": "#4FC3F7",
-    "fuente_color": "propuesta_geoportal",
-    "estado": "leyenda_oficial_sin_correspondencia",
-    "fuente_correspondencia": "pendiente",
-    "grupo_derivado": "no_identificado",
+    "categoria": "Superficie de agua",
+    "color": "#80F1E6",
+    "fuente_color": "MiAMBIENTE · atributos RGB del servicio REST capa 1",
+    "estado": "verificada_espacialmente",
+    "fuente_correspondencia": "Muestreo espacial vs servicio REST MiAMBIENTE capa 1 · 100.0 % de 10 puntos (2026-11-21T18:40:08)",
+    "grupo_derivado": "agua",
     "descripcion": "",
-    "candidato_leyenda_oficial": "Superficie de agua"
+    "candidato_leyenda_oficial": "Superficie de agua",
+    "evidencia": {
+     "puntos": 10,
+     "acuerdo_pct": 100.0,
+     "distribucion": {
+      "Superficie de agua": 10
+     },
+     "valor_pixel_servicio": {
+      "27": 10
+     }
+    }
    },
    {
     "codigo": 28,
-    "categoria": "Código 28 · sin documentación verificada",
-    "color": "#E53935",
-    "fuente_color": "propuesta_geoportal",
-    "estado": "leyenda_oficial_sin_correspondencia",
-    "fuente_correspondencia": "pendiente",
-    "grupo_derivado": "no_identificado",
+    "categoria": "Área poblada",
+    "color": "#FF0000",
+    "fuente_color": "MiAMBIENTE · atributos RGB del servicio REST capa 1",
+    "estado": "verificada_espacialmente",
+    "fuente_correspondencia": "Muestreo espacial vs servicio REST MiAMBIENTE capa 1 · 100.0 % de 10 puntos (2026-11-21T18:40:08)",
+    "grupo_derivado": "areas_intervenidas",
     "descripcion": "",
-    "candidato_leyenda_oficial": "Área poblada"
+    "candidato_leyenda_oficial": "Área poblada",
+    "evidencia": {
+     "puntos": 10,
+     "acuerdo_pct": 100.0,
+     "distribucion": {
+      "Área poblada": 10
+     },
+     "valor_pixel_servicio": {
+      "28": 10
+     }
+    }
    },
    {
     "codigo": 29,
-    "categoria": "Código 29 · sin documentación verificada",
-    "color": "#757575",
-    "fuente_color": "propuesta_geoportal",
-    "estado": "leyenda_oficial_sin_correspondencia",
-    "fuente_correspondencia": "pendiente",
-    "grupo_derivado": "no_identificado",
+    "categoria": "Infraestructura",
+    "color": "#990000",
+    "fuente_color": "MiAMBIENTE · atributos RGB del servicio REST capa 1",
+    "estado": "verificada_espacialmente",
+    "fuente_correspondencia": "Muestreo espacial vs servicio REST MiAMBIENTE capa 1 · 100.0 % de 10 puntos (2026-11-21T18:40:08)",
+    "grupo_derivado": "areas_intervenidas",
     "descripcion": "",
-    "candidato_leyenda_oficial": "Infraestructura"
+    "candidato_leyenda_oficial": "Infraestructura",
+    "evidencia": {
+     "puntos": 10,
+     "acuerdo_pct": 100.0,
+     "distribucion": {
+      "Infraestructura": 10
+     },
+     "valor_pixel_servicio": {
+      "29": 10
+     }
+    }
    },
    {
     "codigo": 30,
-    "categoria": "Código 30 · sin documentación verificada",
-    "color": "#8D6E63",
-    "fuente_color": "propuesta_geoportal",
-    "estado": "leyenda_oficial_sin_correspondencia",
-    "fuente_correspondencia": "pendiente",
-    "grupo_derivado": "no_identificado",
+    "categoria": "Explotación minera",
+    "color": "#A600CC",
+    "fuente_color": "MiAMBIENTE · atributos RGB del servicio REST capa 1",
+    "estado": "verificada_espacialmente",
+    "fuente_correspondencia": "Muestreo espacial vs servicio REST MiAMBIENTE capa 1 · 100.0 % de 10 puntos (2026-11-21T18:40:08)",
+    "grupo_derivado": "areas_intervenidas",
     "descripcion": "",
-    "candidato_leyenda_oficial": "Explotación minera"
+    "candidato_leyenda_oficial": "Explotación minera",
+    "evidencia": {
+     "puntos": 10,
+     "acuerdo_pct": 100.0,
+     "distribucion": {
+      "Explotación minera": 10
+     },
+     "valor_pixel_servicio": {
+      "30": 10
+     }
+    }
    },
    {
     "codigo": 31,
@@ -1085,5 +1765,10 @@
     "descripcion": ""
    }
   ]
+ },
+ "auditoria_aplicada": {
+  "fecha": "2026-11-21T18:40:08",
+  "acuerdo_minimo_pct": 80.0,
+  "minimo_puntos": 5
  }
 }

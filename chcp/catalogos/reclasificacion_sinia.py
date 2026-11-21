@@ -30,6 +30,24 @@ GRUPOS_DERIVADOS: dict[str, dict[str, str]] = {
     "sin_datos": {"nombre": "Sin datos", "color": "#FFFFFF"},
 }
 
+# Grupo derivado de cada categoría de la leyenda oficial de cobertura boscosa y uso
+# del suelo (MiAMBIENTE, 2012 y 2021). Se aplica por NOMBRE verificado, nunca por
+# posición en la leyenda.
+GRUPO_POR_CATEGORIA_OFICIAL: dict[str, str] = {
+    "Bosque latifoliado mixto maduro": "bosque_natural", "Bosque latifoliado mixto secundario": "bosque_secundario",
+    "Bosque de mangle": "bosque_natural", "Bosque de orey": "bosque_natural", "Bosque de cativo": "bosque_natural",
+    "Bosque de rafia": "bosque_natural", "Bosque plantado de coníferas": "bosque_plantado",
+    "Bosque plantado de latifoliadas": "bosque_plantado", "Rastrojo y vegetación arbustiva": "rastrojo_arbustivo",
+    "Vegetación herbácea": "otra_vegetacion", "Vegetación baja inundable": "otra_vegetacion",
+    "Afloramiento rocoso y tierra desnuda": "areas_abiertas_naturales", "Playa y arenal natural": "areas_abiertas_naturales",
+    "Café": "cultivos", "Cítrico": "cultivos", "Palma aceitera": "cultivos", "Plátano/banano": "cultivos",
+    "Otro cultivo permanente": "cultivos", "Arroz": "cultivos", "Caña de azúcar": "cultivos", "Horticultura mixta": "cultivos",
+    "Maíz": "cultivos", "Piña": "cultivos", "Otro cultivo anual": "cultivos",
+    "Área heterogénea de producción agropecuaria": "agropecuario_mixto", "Pasto": "pastos", "Superficie de agua": "agua",
+    "Área poblada": "areas_intervenidas", "Infraestructura": "areas_intervenidas", "Explotación minera": "areas_intervenidas",
+    "Estanque para acuicultura": "areas_intervenidas", "Salinera": "areas_intervenidas", "Albinas": "areas_abiertas_naturales",
+}
+
 # Máscaras forestales por producto. «codigos» se interpretan con la leyenda del
 # MISMO producto; nunca se reutilizan entre años.
 MASCARAS_FORESTALES: dict[str, dict[str, Any]] = {
@@ -43,7 +61,7 @@ MASCARAS_FORESTALES: dict[str, dict[str, Any]] = {
     "2019_general": {"grupos": ["bosque_amplio"], "justificacion": "Categoría amplia; incluye otras tierras boscosas."},
     "2021_general": {"grupos": ["bosque_amplio"], "justificacion": "«Bosques y Otras Tierras Boscosas», definición del motor de fragmentación validado."},
     "2021_detallado": {"grupos": ["bosque_natural", "bosque_secundario"], "opcionales": ["bosque_plantado"],
-                       "justificacion": "Grupos 1–6 (bosque natural) según documentación previa; pendiente de correspondencia individual."},
+                       "justificacion": "Bosques naturales y secundarios (códigos 1–6). Códigos 1–3 verificados espacialmente; 4–6 no aparecen en la CHCP y conservan el grupo documentado. Plantaciones (7–8) solo si el análisis lo declara."},
     "2023_general": {"grupos": ["bosque_amplio"], "justificacion": "Categoría amplia del diagnóstico 2023."},
 }
 

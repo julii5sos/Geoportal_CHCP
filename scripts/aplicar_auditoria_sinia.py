@@ -23,6 +23,11 @@ import sys
 from pathlib import Path
 
 RAIZ = Path(__file__).resolve().parents[1]
+if str(RAIZ) not in sys.path:
+    sys.path.insert(0, str(RAIZ))
+
+from chcp.catalogos.reclasificacion_sinia import GRUPO_POR_CATEGORIA_OFICIAL  # noqa: E402
+
 AUDITORIA = RAIZ / "docs" / "validacion" / "auditoria_assets_sinia.json"
 LEYENDAS = RAIZ / "data" / "leyendas_sinia.json"
 
@@ -87,8 +92,10 @@ def aplicar(auditoria: dict, leyendas: dict, acuerdo: float, minimo: int) -> lis
                 "evidencia": {"puntos": validos, "acuerdo_pct": ev["acuerdo_pct"], "distribucion": ev.get("distribucion"),
                               "valor_pixel_servicio": ev.get("valor_servicio") or None},
             })
-            if fila.get("grupo_derivado") == "no_identificado" and fila.get("candidato_leyenda_oficial") and _normalizar(fila["candidato_leyenda_oficial"]).lower() == nuevo.lower():
-                cambios.append(f"{clave} código {codigo}: coincide con el candidato de la leyenda oficial; revisar grupo derivado.")
+            grupo = GRUPO_POR_CATEGORIA_OFICIAL.get(nuevo)
+            if grupo and fila.get("grupo_derivado") != grupo and clave.endswith("_detallado"):
+                cambios.append(f"{clave} código {codigo}: grupo derivado {fila.get('grupo_derivado')} → {grupo}.")
+                fila["grupo_derivado"] = grupo
             color = _hex(colores.get(nombre, ""))
             if color:
                 fila["color"] = color

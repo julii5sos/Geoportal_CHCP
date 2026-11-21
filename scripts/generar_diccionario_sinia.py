@@ -84,6 +84,8 @@ def _seccion(clave: str, ficha: dict, aud: dict) -> str:
         lineas.append(f"| Inventario en la CHCP | Códigos presentes: {', '.join(map(str, sorted(presentes))) or '—'} · área enmascarada {inv.get('enmascarado_ha', 0) or 0:,.0f} ha · escala {inv.get('escala_inventario_m')} m |")
     if vec:
         lineas.append(f"| Inventario del vector | {vec.get('n_entidades', '—'):,} entidades · campos {', '.join(vec.get('campos', []))} · geometrías {vec.get('tipos_geometria_muestra', {})} |")
+    if ficha.get("hallazgos_auditoria"):
+        lineas += ["", "**Hallazgos de la auditoría:**", "", *[f"- {h}" for h in ficha["hallazgos_auditoria"]]]
     lineas += ["", "| Código | Categoría | Grupo derivado | Color | Fuente del color | Estado | Evidencia | En CHCP |", "|---:|---|---|---|---|---|---|---|"]
     for f in leyenda(clave):
         ev = corr.get(str(f["codigo"]))
@@ -129,7 +131,6 @@ def validacion(auditoria: dict) -> str:
         errores = [k for k, v in aud.items() if isinstance(v, dict) and "error" in v]
         inv = aud.get("inventario_chcp") or {}
         corr = (aud.get("correspondencia_rest") or {}).get("por_codigo") or {}
-        ok_corr = [c for c, e in corr.items() if e.get("acuerdo_pct", 0) >= 80 and e.get("categoria_mayoritaria")]
         if meta.get("bandas"):
             b = meta["bandas"][0]
             banda = f"`{b['id']}` {(b.get('tipo_dato') or {}).get('precision', '')} 0–{((b.get('tipo_dato') or {}).get('range') or {}).get('max', '?')}"
@@ -140,12 +141,15 @@ def validacion(auditoria: dict) -> str:
             proj = (vec.get("proyeccion_geometria") or {}).get("crs", "—")
         codigos = ", ".join(map(str, inv.get("codigos_presentes") or [])) or (", ".join((aud.get("vector") or {}).get("por_categoria", {}).keys()) or "—")
         mascara = f"{inv['enmascarado_ha']:,.0f} ha" if inv.get("enmascarado_ha") is not None else "—"
-        rest = f"{len(ok_corr)}/{len(corr)} códigos ≥ 80 %" if corr else ("no aplica" if not ficha.get("capa_rest") else "sin datos")
+        estados_cod = [f["estado"] for f in leyenda(clave) if str(f["codigo"]) in corr]
+        rest = (f"{estados_cod.count('verificada_espacialmente')} verificados · {estados_cod.count('discrepante_con_servicio')} discrepantes · "
+                f"{len(corr) - estados_cod.count('verificada_espacialmente') - estados_cod.count('discrepante_con_servicio')} sin evidencia suficiente (de {len(corr)})"
+                if corr else ("no aplica" if not ficha.get("capa_rest") else "sin datos"))
         estado = "⚠️ Con errores: " + ", ".join(errores) if errores else "✅ Auditado"
         lineas.append(f"| `{ficha['asset']}` | {meta.get('tipo', ficha['tipo'])} | {banda} | {proj} | {codigos} | {mascara} | {rest} | {estado} |")
         if aud.get("areas_aoi_control"):
             filas = aud["areas_aoi_control"]
-            detalles.append(f"### {ficha['anio']} · {ficha['nombre']} — superficie en {auditoria.get('aoi_control')}\n\n| Código | Categoría | ha |\n|---:|---|---:|\n" +
+            detalles.append(f"\n### {ficha['anio']} · {ficha['nombre']} — superficie en {auditoria.get('aoi_control')}\n\n| Código | Categoría | ha |\n|---:|---|---:|\n" +
                             "\n".join(f"| {f['codigo']} | {_txt(next((x['categoria'] for x in leyenda(clave) if x['codigo'] == f['codigo']), 'sin leyenda'))} | {f['ha']:,.2f} |" for f in filas))
         vec = aud.get("vector")
         if vec:
@@ -153,7 +157,7 @@ def validacion(auditoria: dict) -> str:
             ref = motor.get("referencia_2026_11_07", {})
             coincide = all(motor.get(k) == ref.get(k) for k in ("parches", "aristas", "componentes", "superficie_ha"))
             detalles.append(
-                f"### 2021 · vector institucional\n\n"
+                f"\n### 2021 · vector institucional\n\n"
                 f"- Entidades: **{vec.get('n_entidades', 0):,}** · campos: {', '.join(vec.get('campos', []))}.\n"
                 f"- Entidades por categoría: {vec.get('por_categoria')}.\n"
                 f"- Tipos de geometría en una muestra de 500 entidades: {vec.get('tipos_geometria_muestra')}. "
@@ -162,9 +166,14 @@ def validacion(auditoria: dict) -> str:
                 f"- Motor de fragmentación en {auditoria.get('aoi_control')} (500 m, 0 ha, contexto 500 m): "
                 f"{motor.get('parches')} parches, {motor.get('aristas')} aristas, {motor.get('componentes')} componente(s), "
                 f"{motor.get('superficie_ha')} ha → {'**idéntico** a la validación del 2026-11-07' if coincide else '**difiere** de la validación del 2026-11-07'}.")
-    lineas += ["", "## Detalle por asset", "", *detalles, "",
-               "## Hallazgos", "",
-               "Ver la sección de evidencia de cada producto en `docs/DICCIONARIO_CAPAS_SINIA.md`.", ""]
+    hallazgos = [f"### {f['anio']} · {f['nombre']}\n\n" + "\n".join(f"- {h}" for h in f.get("hallazgos_auditoria", [])) + "\n"
+                 for f in cat.values() if f.get("hallazgos_auditoria")]
+    lineas += ["", "## Hallazgos", "", *hallazgos, "", "## Detalle por asset", "", *detalles, "",
+               "## Pendientes", "",
+               "- Repetir la auditoría con la cuenta de servicio de producción antes de publicar (permisos de lectura de los ocho assets).",
+               "- Resolver con SINIA–MiAMBIENTE las discrepancias de códigos del ráster 2012 detallado.",
+               "- Verificar los códigos 2021 ausentes de la CHCP si el geoportal se amplía a otras cuencas.",
+               "- Recuperar la simbología oficial de 2019, 2023, 2012 binario y vector 2021 (hoy paleta propia).", ""]
     return "\n".join(lineas)
 
 
