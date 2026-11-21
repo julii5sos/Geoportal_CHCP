@@ -1,0 +1,160 @@
+{
+  "fecha": "2026-11-21T17:11:00",
+  "proyecto": "geoportal-513817",
+  "subcuenca": "Qda. Bonita",
+  "metodologia": "MT-2026.7-DIAGNOSTICO-INTEGRADO",
+  "segundos": 5.4,
+  "area_ha": 509.9985493958467,
+  "puntaje": 4.0,
+  "prioridad": "Alta",
+  "senales": {
+    "tmf": true,
+    "hansen": true,
+    "esri": false,
+    "gedi": false,
+    "ndvi": false
+  },
+  "aportes": {
+    "tmf": 2.0,
+    "hansen": 2.0,
+    "esri": 0.0,
+    "gedi": 0.0,
+    "ndvi": 0.0
+  },
+  "prioridad_visita": {
+    "puntaje_cambios": 4.0,
+    "prioridad_cambios": "Alta",
+    "porcentaje_aoi_en_corredores": 65.0947,
+    "intersecta_corredor": true,
+    "intersecta_mesoamericano": false,
+    "aporte_solapamiento": 1.0,
+    "aporte_mesoamericano": 0.0,
+    "aporte_corredor": 1.0,
+    "valor_corredor": "Alto",
+    "puntaje_integrado": 5.0,
+    "puntaje_maximo": 8.0,
+    "prioridad_visita": "Muy alta",
+    "contexto_estructural": {
+      "disponible": false,
+      "estado": "No evaluada",
+      "requiere_focalizacion": false,
+      "numero_parches": 0,
+      "numero_componentes": 0,
+      "porcentaje_componente_mayor": 0.0,
+      "porcentaje_bosque": 0.0,
+      "umbral_m": null,
+      "conexion_potencial_corredor": false,
+      "corredor_referencia": null,
+      "categoria_corredor": null,
+      "interpretacion": "La administración debe configurar el asset de Bosque y otros usos 2021 para incorporar fragmentación y conectividad al diagnóstico.",
+      "participa_puntaje": false,
+      "limitacion": "Es una lectura estructural dependiente del umbral entre parches y de la cobertura clasificada en 2021. No demuestra conectividad funcional ni movimiento de una especie."
+    },
+    "combinacion_territorial": "Cambios + corredor",
+    "foco_visita": "Ubique primero las señales recientes que se encuentran dentro del corredor.",
+    "lectura_integrada": "Urgencia por cambios: Alta; valor del corredor: Alto; condición estructural: No evaluada.",
+    "diagnostico_completo": false,
+    "limitacion": "La prioridad de visita orienta la planificación operativa. No demuestra la causa del cambio, daño ambiental ni conectividad funcional para una especie."
+  },
+  "consistencia": {
+    "nivel": "Lectura mixta",
+    "detalle": "El área contiene señales de deterioro y de regeneración forestal o ganancia arbórea. Revise su distribución espacial; no deben compensarse numéricamente ni interpretarse como ausencia de cambio.",
+    "fuentes_deterioro": [
+      "JRC TMF",
+      "Hansen GFC"
+    ],
+    "fuentes_recuperacion": [
+      "JRC TMF (regeneración forestal)"
+    ]
+  },
+  "clases_jrc_ha": {
+    "tmf_estable": 104.68121929048914,
+    "tmf_degradacion": 111.4746589910458,
+    "tmf_deforestacion": 22.860019277299152,
+    "tmf_recuperacion": 127.43301202549651,
+    "tmf_agua": 0.5568127618116491,
+    "tmf_otra_cobertura": 140.85587886682913
+  },
+  "hansen_post_2020_ha": 2.1516381624109604,
+  "serie_anual": [
+    {
+      "anio": 2020,
+      "jrc_degradacion_ha": 111.03346751148209,
+      "jrc_deforestacion_ha": 28.993247912911816,
+      "jrc_regeneracion_ha": 97.66241374705353,
+      "hansen_perdida_ha": null
+    },
+    {
+      "anio": 2021,
+      "jrc_degradacion_ha": 111.12170350069508,
+      "jrc_deforestacion_ha": 23.69120853750729,
+      "jrc_regeneracion_ha": 124.65772630329806,
+      "hansen_perdida_ha": 1.058839276432991
+    },
+    {
+      "anio": 2022,
+      "jrc_degradacion_ha": 111.12170350069508,
+      "jrc_deforestacion_ha": 23.073529358792538,
+      "jrc_regeneracion_ha": 126.75788082959602,
+      "hansen_perdida_ha": 0.1764768436551094
+    },
+    {
+      "anio": 2023,
+      "jrc_degradacion_ha": 111.20993948990807,
+      "jrc_deforestacion_ha": 22.860019277299152,
+      "jrc_regeneracion_ha": 127.43301202549651,
+      "hansen_perdida_ha": 0.2647254914045334
+    },
+    {
+      "anio": 2024,
+      "jrc_degradacion_ha": 111.29818087334141,
+      "jrc_deforestacion_ha": 22.860019277299152,
+      "jrc_regeneracion_ha": 127.43301202549651,
+      "hansen_perdida_ha": 0.38687918501741747
+    },
+    {
+      "anio": 2025,
+      "jrc_degradacion_ha": 111.4746589910458,
+      "jrc_deforestacion_ha": 22.860019277299152,
+      "jrc_regeneracion_ha": 127.43301202549651,
+      "hansen_perdida_ha": 0.26471737772226334
+    }
+  ],
+  "comprobaciones": [
+    {
+      "nombre": "cierre_clases_jrc",
+      "ok": true,
+      "detalle": "Suma de clases 507.86 ha frente a 510.00 ha (0.42 %). Diferencias menores se deben a píxeles sin dato o al borde del polígono."
+    },
+    {
+      "nombre": "puntaje_maximo",
+      "ok": true,
+      "detalle": "Puntaje 4.0 de 6.5"
+    },
+    {
+      "nombre": "prioridad_visita_maxima",
+      "ok": true,
+      "detalle": "Puntaje integrado 5.0 de 8.0"
+    },
+    {
+      "nombre": "anios_serie",
+      "ok": true,
+      "detalle": "La serie debe cubrir 2020–2025"
+    },
+    {
+      "nombre": "hansen_desde_2021",
+      "ok": true,
+      "detalle": "Hansen 2020 no se reporta porque el corte es el 31/12/2020"
+    },
+    {
+      "nombre": "serie_coincide_con_resumen",
+      "ok": true,
+      "detalle": "Deforestación JRC 2025: serie 22.86 ha, resumen 22.86 ha"
+    },
+    {
+      "nombre": "hansen_serie_vs_post2020",
+      "ok": true,
+      "detalle": "Suma anual Hansen 2.15 ha frente a pérdida posterior a 2020 2.15 ha"
+    }
+  ]
+}

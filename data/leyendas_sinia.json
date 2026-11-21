@@ -1,0 +1,1088 @@
+{
+ "version": "2026-11-21",
+ "estados": {
+  "verificada_espacialmente": "Código comprobado por correspondencia espacial con el servicio oficial de MiAMBIENTE.",
+  "verificada_valor_atributo": "Valor textual leído directamente del atributo del asset vectorial.",
+  "documentada_catalogo_previo": "Leyenda del catálogo previo del proyecto; no contradicha por la auditoría, pendiente de correspondencia espacial.",
+  "grupo_documentado_catalogo_previo": "Solo se conoce el grupo (p. ej., bosque natural), no la categoría individual.",
+  "leyenda_oficial_sin_correspondencia": "Existe un nombre en la leyenda oficial, pero no se ha probado qué código de píxel le corresponde.",
+  "no_identificado": "Código presente sin categoría documentada; no se asigna significado."
+ },
+ "fuentes_color": {
+  "MiAMBIENTE": "Color leído de la simbología del servicio oficial.",
+  "propuesta_geoportal": "Paleta propia del Geoportal CHCP; no es simbología oficial de MiAMBIENTE."
+ },
+ "leyendas": {
+  "1992_historico": [
+   {
+    "codigo": 1,
+    "categoria": "Aguas interiores",
+    "color": "#BFE9FF",
+    "fuente_color": "MiAMBIENTE · renderer REST capa 4",
+    "estado": "documentada_catalogo_previo",
+    "fuente_correspondencia": "catalogo_previo",
+    "grupo_derivado": "agua",
+    "descripcion": "Cuerpos de agua continentales.",
+    "candidato_leyenda_oficial": "Aguas Interiores"
+   },
+   {
+    "codigo": 2,
+    "categoria": "Bosque intervenido",
+    "color": "#A5FF75",
+    "fuente_color": "MiAMBIENTE · renderer REST capa 4",
+    "estado": "documentada_catalogo_previo",
+    "fuente_correspondencia": "catalogo_previo",
+    "grupo_derivado": "bosque_secundario",
+    "descripcion": "Bosque natural con extracción o alteración visible de su estructura.",
+    "candidato_leyenda_oficial": "Bosque Intervenido"
+   },
+   {
+    "codigo": 3,
+    "categoria": "Bosque maduro",
+    "color": "#267300",
+    "fuente_color": "MiAMBIENTE · renderer REST capa 4",
+    "estado": "documentada_catalogo_previo",
+    "fuente_correspondencia": "catalogo_previo",
+    "grupo_derivado": "bosque_natural",
+    "descripcion": "Bosque natural con estructura y composición poco alteradas.",
+    "candidato_leyenda_oficial": "Bosque Maduro"
+   },
+   {
+    "codigo": 4,
+    "categoria": "Bosque secundario maduro",
+    "color": "#37A600",
+    "fuente_color": "MiAMBIENTE · renderer REST capa 4",
+    "estado": "documentada_catalogo_previo",
+    "fuente_correspondencia": "catalogo_previo",
+    "grupo_derivado": "bosque_secundario",
+    "descripcion": "Bosque natural regenerado tras una perturbación, con dosel desarrollado.",
+    "candidato_leyenda_oficial": "Bosque Secundario Maduro"
+   },
+   {
+    "codigo": 5,
+    "categoria": "Manglar",
+    "color": "#8200A6",
+    "fuente_color": "MiAMBIENTE · renderer REST capa 4",
+    "estado": "documentada_catalogo_previo",
+    "fuente_correspondencia": "catalogo_previo",
+    "grupo_derivado": "bosque_natural",
+    "descripcion": "Bosque costero de zona intermareal dominado por mangles.",
+    "candidato_leyenda_oficial": "Manglar"
+   },
+   {
+    "codigo": 6,
+    "categoria": "Otros usos",
+    "color": "#808080",
+    "fuente_color": "MiAMBIENTE · renderer REST capa 4",
+    "estado": "documentada_catalogo_previo",
+    "fuente_correspondencia": "catalogo_previo",
+    "grupo_derivado": "areas_intervenidas",
+    "descripcion": "Usos no forestales ni agropecuarios (poblados, infraestructura u otros).",
+    "candidato_leyenda_oficial": "Otros Usos"
+   },
+   {
+    "codigo": 7,
+    "categoria": "Rastrojos (bosque pionero)",
+    "color": "#55FF00",
+    "fuente_color": "MiAMBIENTE · renderer REST capa 4",
+    "estado": "documentada_catalogo_previo",
+    "fuente_correspondencia": "catalogo_previo",
+    "grupo_derivado": "rastrojo_arbustivo",
+    "descripcion": "Vegetación leñosa joven en sucesión temprana tras uso agropecuario.",
+    "candidato_leyenda_oficial": "Rastrojos (Bosque Pionero)"
+   },
+   {
+    "codigo": 8,
+    "categoria": "Sin categoría documentada",
+    "color": "#BDBDBD",
+    "fuente_color": "propuesta_geoportal",
+    "estado": "no_identificado",
+    "fuente_correspondencia": "catalogo_previo",
+    "grupo_derivado": "no_identificado",
+    "descripcion": ""
+   },
+   {
+    "codigo": 9,
+    "categoria": "Uso agropecuario",
+    "color": "#FFFF00",
+    "fuente_color": "MiAMBIENTE · renderer REST capa 4",
+    "estado": "documentada_catalogo_previo",
+    "fuente_correspondencia": "catalogo_previo",
+    "grupo_derivado": "agropecuario_mixto",
+    "descripcion": "Áreas de cultivos y pastos sin desagregar.",
+    "candidato_leyenda_oficial": "Uso Agropecuario"
+   },
+   {
+    "codigo": 10,
+    "categoria": "Uso agropecuario de subsistencia",
+    "color": "#FFEBB0",
+    "fuente_color": "MiAMBIENTE · renderer REST capa 4",
+    "estado": "documentada_catalogo_previo",
+    "fuente_correspondencia": "catalogo_previo",
+    "grupo_derivado": "agropecuario_mixto",
+    "descripcion": "Mosaico agrícola de pequeña escala para autoconsumo.",
+    "candidato_leyenda_oficial": "Uso Agropecuario de Subsistencia"
+   },
+   {
+    "codigo": 11,
+    "categoria": "Vegetación baja inundable",
+    "color": "#75FFDF",
+    "fuente_color": "MiAMBIENTE · renderer REST capa 4",
+    "estado": "documentada_catalogo_previo",
+    "fuente_correspondencia": "catalogo_previo",
+    "grupo_derivado": "otra_vegetacion",
+    "descripcion": "Vegetación herbácea o arbustiva en terrenos de inundación periódica.",
+    "candidato_leyenda_oficial": "Vegetación Baja Inundable"
+   }
+  ],
+  "2000_historico": [
+   {
+    "codigo": 1,
+    "categoria": "Agua",
+    "color": "#BEE8FF",
+    "fuente_color": "MiAMBIENTE · renderer REST capa 3",
+    "estado": "documentada_catalogo_previo",
+    "fuente_correspondencia": "catalogo_previo",
+    "grupo_derivado": "agua",
+    "descripcion": "Cuerpos de agua continentales.",
+    "candidato_leyenda_oficial": "Agua"
+   },
+   {
+    "codigo": 2,
+    "categoria": "Bosque intervenido",
+    "color": "#A3FF73",
+    "fuente_color": "MiAMBIENTE · renderer REST capa 3",
+    "estado": "documentada_catalogo_previo",
+    "fuente_correspondencia": "catalogo_previo",
+    "grupo_derivado": "bosque_secundario",
+    "descripcion": "Bosque natural con extracción o alteración visible de su estructura.",
+    "candidato_leyenda_oficial": "Bosque Intervenido"
+   },
+   {
+    "codigo": 3,
+    "categoria": "Bosque maduro",
+    "color": "#267300",
+    "fuente_color": "MiAMBIENTE · renderer REST capa 3",
+    "estado": "documentada_catalogo_previo",
+    "fuente_correspondencia": "catalogo_previo",
+    "grupo_derivado": "bosque_natural",
+    "descripcion": "Bosque natural con estructura y composición poco alteradas.",
+    "candidato_leyenda_oficial": "Bosque Maduro"
+   },
+   {
+    "codigo": 4,
+    "categoria": "Bosque secundario maduro",
+    "color": "#38A800",
+    "fuente_color": "MiAMBIENTE · renderer REST capa 3",
+    "estado": "documentada_catalogo_previo",
+    "fuente_correspondencia": "catalogo_previo",
+    "grupo_derivado": "bosque_secundario",
+    "descripcion": "Bosque natural regenerado tras una perturbación, con dosel desarrollado.",
+    "candidato_leyenda_oficial": "Bosque Secundario Maduro"
+   },
+   {
+    "codigo": 5,
+    "categoria": "Manglar",
+    "color": "#8400A8",
+    "fuente_color": "MiAMBIENTE · renderer REST capa 3",
+    "estado": "documentada_catalogo_previo",
+    "fuente_correspondencia": "catalogo_previo",
+    "grupo_derivado": "bosque_natural",
+    "descripcion": "Bosque costero de zona intermareal dominado por mangles.",
+    "candidato_leyenda_oficial": "Manglar"
+   },
+   {
+    "codigo": 6,
+    "categoria": "Otros usos",
+    "color": "#828282",
+    "fuente_color": "MiAMBIENTE · renderer REST capa 3",
+    "estado": "documentada_catalogo_previo",
+    "fuente_correspondencia": "catalogo_previo",
+    "grupo_derivado": "areas_intervenidas",
+    "descripcion": "Usos no forestales ni agropecuarios (poblados, infraestructura u otros).",
+    "candidato_leyenda_oficial": "Otros Usos"
+   },
+   {
+    "codigo": 7,
+    "categoria": "Rastrojos (bosque pionero)",
+    "color": "#55FF00",
+    "fuente_color": "MiAMBIENTE · renderer REST capa 3",
+    "estado": "documentada_catalogo_previo",
+    "fuente_correspondencia": "catalogo_previo",
+    "grupo_derivado": "rastrojo_arbustivo",
+    "descripcion": "Vegetación leñosa joven en sucesión temprana tras uso agropecuario.",
+    "candidato_leyenda_oficial": "Rastrojos (Bosque Pionero)"
+   },
+   {
+    "codigo": 8,
+    "categoria": "Uso agropecuario",
+    "color": "#FFFF00",
+    "fuente_color": "MiAMBIENTE · renderer REST capa 3",
+    "estado": "documentada_catalogo_previo",
+    "fuente_correspondencia": "catalogo_previo",
+    "grupo_derivado": "agropecuario_mixto",
+    "descripcion": "Áreas de cultivos y pastos sin desagregar.",
+    "candidato_leyenda_oficial": "Uso Agropecuario"
+   },
+   {
+    "codigo": 9,
+    "categoria": "Uso agropecuario de subsistencia",
+    "color": "#FFEBAF",
+    "fuente_color": "MiAMBIENTE · renderer REST capa 3",
+    "estado": "documentada_catalogo_previo",
+    "fuente_correspondencia": "catalogo_previo",
+    "grupo_derivado": "agropecuario_mixto",
+    "descripcion": "Mosaico agrícola de pequeña escala para autoconsumo.",
+    "candidato_leyenda_oficial": "Uso Agropecuario de Subsistencia"
+   },
+   {
+    "codigo": 10,
+    "categoria": "Vegetación baja inundable",
+    "color": "#73FFDF",
+    "fuente_color": "MiAMBIENTE · renderer REST capa 3",
+    "estado": "documentada_catalogo_previo",
+    "fuente_correspondencia": "catalogo_previo",
+    "grupo_derivado": "otra_vegetacion",
+    "descripcion": "Vegetación herbácea o arbustiva en terrenos de inundación periódica.",
+    "candidato_leyenda_oficial": "Vegetación Baja Inundable"
+   }
+  ],
+  "2012_binario": [
+   {
+    "codigo": 1,
+    "categoria": "Bosque",
+    "color": "#2E7D32",
+    "fuente_color": "propuesta_geoportal",
+    "estado": "documentada_catalogo_previo",
+    "fuente_correspondencia": "catalogo_previo",
+    "grupo_derivado": "bosque_amplio",
+    "descripcion": "Bosque según la cartografía 2012; no distingue natural de plantado."
+   },
+   {
+    "codigo": 2,
+    "categoria": "No bosque",
+    "color": "#E0D3B8",
+    "fuente_color": "propuesta_geoportal",
+    "estado": "documentada_catalogo_previo",
+    "fuente_correspondencia": "catalogo_previo",
+    "grupo_derivado": "otras_tierras_amplia",
+    "descripcion": "Todo lo que no es bosque; no equivale solo a agricultura."
+   }
+  ],
+  "2012_detallado": [
+   {
+    "codigo": 1,
+    "categoria": "Bosque latifoliado mixto maduro",
+    "color": "#1B5E20",
+    "fuente_color": "propuesta_geoportal",
+    "estado": "documentada_catalogo_previo",
+    "fuente_correspondencia": "catalogo_previo",
+    "grupo_derivado": "bosque_natural",
+    "descripcion": "",
+    "candidato_leyenda_oficial": "Bosque latifoliado mixto maduro"
+   },
+   {
+    "codigo": 2,
+    "categoria": "Bosque latifoliado mixto secundario",
+    "color": "#43A047",
+    "fuente_color": "propuesta_geoportal",
+    "estado": "documentada_catalogo_previo",
+    "fuente_correspondencia": "catalogo_previo",
+    "grupo_derivado": "bosque_secundario",
+    "descripcion": "",
+    "candidato_leyenda_oficial": "Bosque latifoliado mixto secundario"
+   },
+   {
+    "codigo": 3,
+    "categoria": "Bosque de mangle",
+    "color": "#6A1B9A",
+    "fuente_color": "propuesta_geoportal",
+    "estado": "documentada_catalogo_previo",
+    "fuente_correspondencia": "catalogo_previo",
+    "grupo_derivado": "bosque_natural",
+    "descripcion": "",
+    "candidato_leyenda_oficial": "Bosque de mangle"
+   },
+   {
+    "codigo": 4,
+    "categoria": "Bosque de orey",
+    "color": "#00897B",
+    "fuente_color": "propuesta_geoportal",
+    "estado": "documentada_catalogo_previo",
+    "fuente_correspondencia": "catalogo_previo",
+    "grupo_derivado": "bosque_natural",
+    "descripcion": "",
+    "candidato_leyenda_oficial": "Bosque de orey"
+   },
+   {
+    "codigo": 5,
+    "categoria": "Bosque de cativo",
+    "color": "#26A69A",
+    "fuente_color": "propuesta_geoportal",
+    "estado": "documentada_catalogo_previo",
+    "fuente_correspondencia": "catalogo_previo",
+    "grupo_derivado": "bosque_natural",
+    "descripcion": "",
+    "candidato_leyenda_oficial": "Bosque de cativo"
+   },
+   {
+    "codigo": 6,
+    "categoria": "Bosque de rafia",
+    "color": "#80CBC4",
+    "fuente_color": "propuesta_geoportal",
+    "estado": "documentada_catalogo_previo",
+    "fuente_correspondencia": "catalogo_previo",
+    "grupo_derivado": "bosque_natural",
+    "descripcion": "",
+    "candidato_leyenda_oficial": "Bosque de rafia"
+   },
+   {
+    "codigo": 7,
+    "categoria": "Bosque plantado de coníferas",
+    "color": "#33691E",
+    "fuente_color": "propuesta_geoportal",
+    "estado": "documentada_catalogo_previo",
+    "fuente_correspondencia": "catalogo_previo",
+    "grupo_derivado": "bosque_plantado",
+    "descripcion": "",
+    "candidato_leyenda_oficial": "Bosque plantado de coníferas"
+   },
+   {
+    "codigo": 8,
+    "categoria": "Bosque plantado de latifoliadas",
+    "color": "#558B2F",
+    "fuente_color": "propuesta_geoportal",
+    "estado": "documentada_catalogo_previo",
+    "fuente_correspondencia": "catalogo_previo",
+    "grupo_derivado": "bosque_plantado",
+    "descripcion": "",
+    "candidato_leyenda_oficial": "Bosque plantado de latifoliadas"
+   },
+   {
+    "codigo": 9,
+    "categoria": "Rastrojo y vegetación arbustiva",
+    "color": "#9CCC65",
+    "fuente_color": "propuesta_geoportal",
+    "estado": "documentada_catalogo_previo",
+    "fuente_correspondencia": "catalogo_previo",
+    "grupo_derivado": "rastrojo_arbustivo",
+    "descripcion": "",
+    "candidato_leyenda_oficial": "Rastrojo y vegetación arbustiva"
+   },
+   {
+    "codigo": 10,
+    "categoria": "Vegetación herbácea",
+    "color": "#D4E157",
+    "fuente_color": "propuesta_geoportal",
+    "estado": "documentada_catalogo_previo",
+    "fuente_correspondencia": "catalogo_previo",
+    "grupo_derivado": "otra_vegetacion",
+    "descripcion": "",
+    "candidato_leyenda_oficial": "Vegetación herbácea"
+   },
+   {
+    "codigo": 11,
+    "categoria": "Vegetación baja inundable",
+    "color": "#80DEEA",
+    "fuente_color": "propuesta_geoportal",
+    "estado": "documentada_catalogo_previo",
+    "fuente_correspondencia": "catalogo_previo",
+    "grupo_derivado": "otra_vegetacion",
+    "descripcion": "",
+    "candidato_leyenda_oficial": "Vegetación baja inundable"
+   },
+   {
+    "codigo": 12,
+    "categoria": "Afloramiento rocoso y tierra desnuda",
+    "color": "#BCAAA4",
+    "fuente_color": "propuesta_geoportal",
+    "estado": "documentada_catalogo_previo",
+    "fuente_correspondencia": "catalogo_previo",
+    "grupo_derivado": "areas_abiertas_naturales",
+    "descripcion": "",
+    "candidato_leyenda_oficial": "Afloramiento rocoso y tierra desnuda"
+   },
+   {
+    "codigo": 13,
+    "categoria": "Playa y arenal natural",
+    "color": "#FFF59D",
+    "fuente_color": "propuesta_geoportal",
+    "estado": "documentada_catalogo_previo",
+    "fuente_correspondencia": "catalogo_previo",
+    "grupo_derivado": "areas_abiertas_naturales",
+    "descripcion": "",
+    "candidato_leyenda_oficial": "Playa y arenal natural"
+   },
+   {
+    "codigo": 14,
+    "categoria": "Café",
+    "color": "#6D4C41",
+    "fuente_color": "propuesta_geoportal",
+    "estado": "documentada_catalogo_previo",
+    "fuente_correspondencia": "catalogo_previo",
+    "grupo_derivado": "cultivos",
+    "descripcion": "",
+    "candidato_leyenda_oficial": "Café"
+   },
+   {
+    "codigo": 15,
+    "categoria": "Cítrico",
+    "color": "#FFB74D",
+    "fuente_color": "propuesta_geoportal",
+    "estado": "documentada_catalogo_previo",
+    "fuente_correspondencia": "catalogo_previo",
+    "grupo_derivado": "cultivos",
+    "descripcion": "",
+    "candidato_leyenda_oficial": "Cítrico"
+   },
+   {
+    "codigo": 16,
+    "categoria": "Palma aceitera",
+    "color": "#F57F17",
+    "fuente_color": "propuesta_geoportal",
+    "estado": "documentada_catalogo_previo",
+    "fuente_correspondencia": "catalogo_previo",
+    "grupo_derivado": "cultivos",
+    "descripcion": "",
+    "candidato_leyenda_oficial": "Palma aceitera"
+   },
+   {
+    "codigo": 17,
+    "categoria": "Plátano/banano",
+    "color": "#FDD835",
+    "fuente_color": "propuesta_geoportal",
+    "estado": "documentada_catalogo_previo",
+    "fuente_correspondencia": "catalogo_previo",
+    "grupo_derivado": "cultivos",
+    "descripcion": "",
+    "candidato_leyenda_oficial": "Plátano/banano"
+   },
+   {
+    "codigo": 18,
+    "categoria": "Otro cultivo permanente",
+    "color": "#FFCC80",
+    "fuente_color": "propuesta_geoportal",
+    "estado": "documentada_catalogo_previo",
+    "fuente_correspondencia": "catalogo_previo",
+    "grupo_derivado": "cultivos",
+    "descripcion": "",
+    "candidato_leyenda_oficial": "Otro cultivo permanente"
+   },
+   {
+    "codigo": 19,
+    "categoria": "Arroz",
+    "color": "#E6EE9C",
+    "fuente_color": "propuesta_geoportal",
+    "estado": "documentada_catalogo_previo",
+    "fuente_correspondencia": "catalogo_previo",
+    "grupo_derivado": "cultivos",
+    "descripcion": "",
+    "candidato_leyenda_oficial": "Arroz"
+   },
+   {
+    "codigo": 20,
+    "categoria": "Caña de azúcar",
+    "color": "#C0CA33",
+    "fuente_color": "propuesta_geoportal",
+    "estado": "documentada_catalogo_previo",
+    "fuente_correspondencia": "catalogo_previo",
+    "grupo_derivado": "cultivos",
+    "descripcion": "",
+    "candidato_leyenda_oficial": "Caña de azúcar"
+   },
+   {
+    "codigo": 21,
+    "categoria": "Horticultura mixta",
+    "color": "#FFAB91",
+    "fuente_color": "propuesta_geoportal",
+    "estado": "documentada_catalogo_previo",
+    "fuente_correspondencia": "catalogo_previo",
+    "grupo_derivado": "cultivos",
+    "descripcion": "",
+    "candidato_leyenda_oficial": "Horticultura mixta"
+   },
+   {
+    "codigo": 22,
+    "categoria": "Maíz",
+    "color": "#FFE082",
+    "fuente_color": "propuesta_geoportal",
+    "estado": "documentada_catalogo_previo",
+    "fuente_correspondencia": "catalogo_previo",
+    "grupo_derivado": "cultivos",
+    "descripcion": "",
+    "candidato_leyenda_oficial": "Maíz"
+   },
+   {
+    "codigo": 23,
+    "categoria": "Piña",
+    "color": "#FFD54F",
+    "fuente_color": "propuesta_geoportal",
+    "estado": "documentada_catalogo_previo",
+    "fuente_correspondencia": "catalogo_previo",
+    "grupo_derivado": "cultivos",
+    "descripcion": "",
+    "candidato_leyenda_oficial": "Piña"
+   },
+   {
+    "codigo": 24,
+    "categoria": "Otro cultivo anual",
+    "color": "#FFE0B2",
+    "fuente_color": "propuesta_geoportal",
+    "estado": "documentada_catalogo_previo",
+    "fuente_correspondencia": "catalogo_previo",
+    "grupo_derivado": "cultivos",
+    "descripcion": "",
+    "candidato_leyenda_oficial": "Otro cultivo anual"
+   },
+   {
+    "codigo": 25,
+    "categoria": "Área heterogénea de producción agropecuaria",
+    "color": "#F8BBD0",
+    "fuente_color": "propuesta_geoportal",
+    "estado": "documentada_catalogo_previo",
+    "fuente_correspondencia": "catalogo_previo",
+    "grupo_derivado": "agropecuario_mixto",
+    "descripcion": "",
+    "candidato_leyenda_oficial": "Área heterogénea de producción agropecuaria"
+   },
+   {
+    "codigo": 26,
+    "categoria": "Pasto",
+    "color": "#F0E68C",
+    "fuente_color": "propuesta_geoportal",
+    "estado": "documentada_catalogo_previo",
+    "fuente_correspondencia": "catalogo_previo",
+    "grupo_derivado": "pastos",
+    "descripcion": "",
+    "candidato_leyenda_oficial": "Pasto"
+   },
+   {
+    "codigo": 27,
+    "categoria": "Superficie de agua",
+    "color": "#4FC3F7",
+    "fuente_color": "propuesta_geoportal",
+    "estado": "documentada_catalogo_previo",
+    "fuente_correspondencia": "catalogo_previo",
+    "grupo_derivado": "agua",
+    "descripcion": "",
+    "candidato_leyenda_oficial": "Superficie de agua"
+   },
+   {
+    "codigo": 28,
+    "categoria": "Área poblada",
+    "color": "#E53935",
+    "fuente_color": "propuesta_geoportal",
+    "estado": "documentada_catalogo_previo",
+    "fuente_correspondencia": "catalogo_previo",
+    "grupo_derivado": "areas_intervenidas",
+    "descripcion": "",
+    "candidato_leyenda_oficial": "Área poblada"
+   },
+   {
+    "codigo": 29,
+    "categoria": "Infraestructura",
+    "color": "#757575",
+    "fuente_color": "propuesta_geoportal",
+    "estado": "documentada_catalogo_previo",
+    "fuente_correspondencia": "catalogo_previo",
+    "grupo_derivado": "areas_intervenidas",
+    "descripcion": "",
+    "candidato_leyenda_oficial": "Infraestructura"
+   },
+   {
+    "codigo": 30,
+    "categoria": "Explotación minera",
+    "color": "#8D6E63",
+    "fuente_color": "propuesta_geoportal",
+    "estado": "documentada_catalogo_previo",
+    "fuente_correspondencia": "catalogo_previo",
+    "grupo_derivado": "areas_intervenidas",
+    "descripcion": "",
+    "candidato_leyenda_oficial": "Explotación minera"
+   },
+   {
+    "codigo": 31,
+    "categoria": "Estanque para acuicultura",
+    "color": "#4DD0E1",
+    "fuente_color": "propuesta_geoportal",
+    "estado": "documentada_catalogo_previo",
+    "fuente_correspondencia": "catalogo_previo",
+    "grupo_derivado": "areas_intervenidas",
+    "descripcion": "",
+    "candidato_leyenda_oficial": "Estanque para acuicultura"
+   },
+   {
+    "codigo": 32,
+    "categoria": "Salinera",
+    "color": "#E0E0E0",
+    "fuente_color": "propuesta_geoportal",
+    "estado": "documentada_catalogo_previo",
+    "fuente_correspondencia": "catalogo_previo",
+    "grupo_derivado": "areas_intervenidas",
+    "descripcion": "",
+    "candidato_leyenda_oficial": "Salinera"
+   }
+  ],
+  "2021_detallado": [
+   {
+    "codigo": 1,
+    "categoria": "Código 1 · Bosque natural (grupo documentado)",
+    "color": "#1B5E20",
+    "fuente_color": "propuesta_geoportal",
+    "estado": "grupo_documentado_catalogo_previo",
+    "fuente_correspondencia": "catalogo_previo",
+    "grupo_derivado": "bosque_natural",
+    "descripcion": "",
+    "candidato_leyenda_oficial": "Bosque latifoliado mixto maduro"
+   },
+   {
+    "codigo": 2,
+    "categoria": "Código 2 · Bosque natural (grupo documentado)",
+    "color": "#43A047",
+    "fuente_color": "propuesta_geoportal",
+    "estado": "grupo_documentado_catalogo_previo",
+    "fuente_correspondencia": "catalogo_previo",
+    "grupo_derivado": "bosque_natural",
+    "descripcion": "",
+    "candidato_leyenda_oficial": "Bosque latifoliado mixto secundario"
+   },
+   {
+    "codigo": 3,
+    "categoria": "Código 3 · Bosque natural (grupo documentado)",
+    "color": "#6A1B9A",
+    "fuente_color": "propuesta_geoportal",
+    "estado": "grupo_documentado_catalogo_previo",
+    "fuente_correspondencia": "catalogo_previo",
+    "grupo_derivado": "bosque_natural",
+    "descripcion": "",
+    "candidato_leyenda_oficial": "Bosque de mangle"
+   },
+   {
+    "codigo": 4,
+    "categoria": "Código 4 · Bosque natural (grupo documentado)",
+    "color": "#00897B",
+    "fuente_color": "propuesta_geoportal",
+    "estado": "grupo_documentado_catalogo_previo",
+    "fuente_correspondencia": "catalogo_previo",
+    "grupo_derivado": "bosque_natural",
+    "descripcion": "",
+    "candidato_leyenda_oficial": "Bosque de orey"
+   },
+   {
+    "codigo": 5,
+    "categoria": "Código 5 · Bosque natural (grupo documentado)",
+    "color": "#26A69A",
+    "fuente_color": "propuesta_geoportal",
+    "estado": "grupo_documentado_catalogo_previo",
+    "fuente_correspondencia": "catalogo_previo",
+    "grupo_derivado": "bosque_natural",
+    "descripcion": "",
+    "candidato_leyenda_oficial": "Bosque de cativo"
+   },
+   {
+    "codigo": 6,
+    "categoria": "Código 6 · Bosque natural (grupo documentado)",
+    "color": "#80CBC4",
+    "fuente_color": "propuesta_geoportal",
+    "estado": "grupo_documentado_catalogo_previo",
+    "fuente_correspondencia": "catalogo_previo",
+    "grupo_derivado": "bosque_natural",
+    "descripcion": "",
+    "candidato_leyenda_oficial": "Bosque de rafia"
+   },
+   {
+    "codigo": 7,
+    "categoria": "Código 7 · Bosque plantado (grupo documentado)",
+    "color": "#33691E",
+    "fuente_color": "propuesta_geoportal",
+    "estado": "grupo_documentado_catalogo_previo",
+    "fuente_correspondencia": "catalogo_previo",
+    "grupo_derivado": "bosque_plantado",
+    "descripcion": "",
+    "candidato_leyenda_oficial": "Bosque plantado de coníferas"
+   },
+   {
+    "codigo": 8,
+    "categoria": "Código 8 · Bosque plantado (grupo documentado)",
+    "color": "#558B2F",
+    "fuente_color": "propuesta_geoportal",
+    "estado": "grupo_documentado_catalogo_previo",
+    "fuente_correspondencia": "catalogo_previo",
+    "grupo_derivado": "bosque_plantado",
+    "descripcion": "",
+    "candidato_leyenda_oficial": "Bosque plantado de latifoliadas"
+   },
+   {
+    "codigo": 9,
+    "categoria": "Código 9 · Rastrojo y vegetación arbustiva (grupo documentado)",
+    "color": "#9CCC65",
+    "fuente_color": "propuesta_geoportal",
+    "estado": "grupo_documentado_catalogo_previo",
+    "fuente_correspondencia": "catalogo_previo",
+    "grupo_derivado": "rastrojo_arbustivo",
+    "descripcion": "",
+    "candidato_leyenda_oficial": "Rastrojo y vegetación arbustiva"
+   },
+   {
+    "codigo": 10,
+    "categoria": "Código 10 · sin documentación verificada",
+    "color": "#D4E157",
+    "fuente_color": "propuesta_geoportal",
+    "estado": "leyenda_oficial_sin_correspondencia",
+    "fuente_correspondencia": "pendiente",
+    "grupo_derivado": "no_identificado",
+    "descripcion": "",
+    "candidato_leyenda_oficial": "Vegetación herbácea"
+   },
+   {
+    "codigo": 11,
+    "categoria": "Código 11 · sin documentación verificada",
+    "color": "#80DEEA",
+    "fuente_color": "propuesta_geoportal",
+    "estado": "leyenda_oficial_sin_correspondencia",
+    "fuente_correspondencia": "pendiente",
+    "grupo_derivado": "no_identificado",
+    "descripcion": "",
+    "candidato_leyenda_oficial": "Vegetación baja inundable"
+   },
+   {
+    "codigo": 12,
+    "categoria": "Código 12 · sin documentación verificada",
+    "color": "#BCAAA4",
+    "fuente_color": "propuesta_geoportal",
+    "estado": "leyenda_oficial_sin_correspondencia",
+    "fuente_correspondencia": "pendiente",
+    "grupo_derivado": "no_identificado",
+    "descripcion": "",
+    "candidato_leyenda_oficial": "Afloramiento rocoso y tierra desnuda"
+   },
+   {
+    "codigo": 13,
+    "categoria": "Código 13 · sin documentación verificada",
+    "color": "#FFF59D",
+    "fuente_color": "propuesta_geoportal",
+    "estado": "leyenda_oficial_sin_correspondencia",
+    "fuente_correspondencia": "pendiente",
+    "grupo_derivado": "no_identificado",
+    "descripcion": "",
+    "candidato_leyenda_oficial": "Playa y arenal natural"
+   },
+   {
+    "codigo": 14,
+    "categoria": "Código 14 · sin documentación verificada",
+    "color": "#6D4C41",
+    "fuente_color": "propuesta_geoportal",
+    "estado": "leyenda_oficial_sin_correspondencia",
+    "fuente_correspondencia": "pendiente",
+    "grupo_derivado": "no_identificado",
+    "descripcion": "",
+    "candidato_leyenda_oficial": "Café"
+   },
+   {
+    "codigo": 15,
+    "categoria": "Código 15 · sin documentación verificada",
+    "color": "#FFB74D",
+    "fuente_color": "propuesta_geoportal",
+    "estado": "leyenda_oficial_sin_correspondencia",
+    "fuente_correspondencia": "pendiente",
+    "grupo_derivado": "no_identificado",
+    "descripcion": "",
+    "candidato_leyenda_oficial": "Cítrico"
+   },
+   {
+    "codigo": 16,
+    "categoria": "Código 16 · sin documentación verificada",
+    "color": "#F57F17",
+    "fuente_color": "propuesta_geoportal",
+    "estado": "leyenda_oficial_sin_correspondencia",
+    "fuente_correspondencia": "pendiente",
+    "grupo_derivado": "no_identificado",
+    "descripcion": "",
+    "candidato_leyenda_oficial": "Palma aceitera"
+   },
+   {
+    "codigo": 17,
+    "categoria": "Código 17 · sin documentación verificada",
+    "color": "#FDD835",
+    "fuente_color": "propuesta_geoportal",
+    "estado": "leyenda_oficial_sin_correspondencia",
+    "fuente_correspondencia": "pendiente",
+    "grupo_derivado": "no_identificado",
+    "descripcion": "",
+    "candidato_leyenda_oficial": "Plátano/banano"
+   },
+   {
+    "codigo": 18,
+    "categoria": "Código 18 · sin documentación verificada",
+    "color": "#FFCC80",
+    "fuente_color": "propuesta_geoportal",
+    "estado": "leyenda_oficial_sin_correspondencia",
+    "fuente_correspondencia": "pendiente",
+    "grupo_derivado": "no_identificado",
+    "descripcion": "",
+    "candidato_leyenda_oficial": "Otro cultivo permanente"
+   },
+   {
+    "codigo": 19,
+    "categoria": "Código 19 · sin documentación verificada",
+    "color": "#E6EE9C",
+    "fuente_color": "propuesta_geoportal",
+    "estado": "leyenda_oficial_sin_correspondencia",
+    "fuente_correspondencia": "pendiente",
+    "grupo_derivado": "no_identificado",
+    "descripcion": "",
+    "candidato_leyenda_oficial": "Arroz"
+   },
+   {
+    "codigo": 20,
+    "categoria": "Código 20 · sin documentación verificada",
+    "color": "#C0CA33",
+    "fuente_color": "propuesta_geoportal",
+    "estado": "leyenda_oficial_sin_correspondencia",
+    "fuente_correspondencia": "pendiente",
+    "grupo_derivado": "no_identificado",
+    "descripcion": "",
+    "candidato_leyenda_oficial": "Caña de azúcar"
+   },
+   {
+    "codigo": 21,
+    "categoria": "Código 21 · sin documentación verificada",
+    "color": "#FFAB91",
+    "fuente_color": "propuesta_geoportal",
+    "estado": "leyenda_oficial_sin_correspondencia",
+    "fuente_correspondencia": "pendiente",
+    "grupo_derivado": "no_identificado",
+    "descripcion": "",
+    "candidato_leyenda_oficial": "Horticultura mixta"
+   },
+   {
+    "codigo": 22,
+    "categoria": "Código 22 · sin documentación verificada",
+    "color": "#FFE082",
+    "fuente_color": "propuesta_geoportal",
+    "estado": "leyenda_oficial_sin_correspondencia",
+    "fuente_correspondencia": "pendiente",
+    "grupo_derivado": "no_identificado",
+    "descripcion": "",
+    "candidato_leyenda_oficial": "Maíz"
+   },
+   {
+    "codigo": 23,
+    "categoria": "Código 23 · sin documentación verificada",
+    "color": "#FFD54F",
+    "fuente_color": "propuesta_geoportal",
+    "estado": "leyenda_oficial_sin_correspondencia",
+    "fuente_correspondencia": "pendiente",
+    "grupo_derivado": "no_identificado",
+    "descripcion": "",
+    "candidato_leyenda_oficial": "Piña"
+   },
+   {
+    "codigo": 24,
+    "categoria": "Código 24 · sin documentación verificada",
+    "color": "#FFE0B2",
+    "fuente_color": "propuesta_geoportal",
+    "estado": "leyenda_oficial_sin_correspondencia",
+    "fuente_correspondencia": "pendiente",
+    "grupo_derivado": "no_identificado",
+    "descripcion": "",
+    "candidato_leyenda_oficial": "Otro cultivo anual"
+   },
+   {
+    "codigo": 25,
+    "categoria": "Código 25 · sin documentación verificada",
+    "color": "#F8BBD0",
+    "fuente_color": "propuesta_geoportal",
+    "estado": "leyenda_oficial_sin_correspondencia",
+    "fuente_correspondencia": "pendiente",
+    "grupo_derivado": "no_identificado",
+    "descripcion": "",
+    "candidato_leyenda_oficial": "Área heterogénea de producción agropecuaria"
+   },
+   {
+    "codigo": 26,
+    "categoria": "Código 26 · sin documentación verificada",
+    "color": "#F0E68C",
+    "fuente_color": "propuesta_geoportal",
+    "estado": "leyenda_oficial_sin_correspondencia",
+    "fuente_correspondencia": "pendiente",
+    "grupo_derivado": "no_identificado",
+    "descripcion": "",
+    "candidato_leyenda_oficial": "Pasto"
+   },
+   {
+    "codigo": 27,
+    "categoria": "Código 27 · sin documentación verificada",
+    "color": "#4FC3F7",
+    "fuente_color": "propuesta_geoportal",
+    "estado": "leyenda_oficial_sin_correspondencia",
+    "fuente_correspondencia": "pendiente",
+    "grupo_derivado": "no_identificado",
+    "descripcion": "",
+    "candidato_leyenda_oficial": "Superficie de agua"
+   },
+   {
+    "codigo": 28,
+    "categoria": "Código 28 · sin documentación verificada",
+    "color": "#E53935",
+    "fuente_color": "propuesta_geoportal",
+    "estado": "leyenda_oficial_sin_correspondencia",
+    "fuente_correspondencia": "pendiente",
+    "grupo_derivado": "no_identificado",
+    "descripcion": "",
+    "candidato_leyenda_oficial": "Área poblada"
+   },
+   {
+    "codigo": 29,
+    "categoria": "Código 29 · sin documentación verificada",
+    "color": "#757575",
+    "fuente_color": "propuesta_geoportal",
+    "estado": "leyenda_oficial_sin_correspondencia",
+    "fuente_correspondencia": "pendiente",
+    "grupo_derivado": "no_identificado",
+    "descripcion": "",
+    "candidato_leyenda_oficial": "Infraestructura"
+   },
+   {
+    "codigo": 30,
+    "categoria": "Código 30 · sin documentación verificada",
+    "color": "#8D6E63",
+    "fuente_color": "propuesta_geoportal",
+    "estado": "leyenda_oficial_sin_correspondencia",
+    "fuente_correspondencia": "pendiente",
+    "grupo_derivado": "no_identificado",
+    "descripcion": "",
+    "candidato_leyenda_oficial": "Explotación minera"
+   },
+   {
+    "codigo": 31,
+    "categoria": "Código 31 · sin documentación verificada",
+    "color": "#4DD0E1",
+    "fuente_color": "propuesta_geoportal",
+    "estado": "leyenda_oficial_sin_correspondencia",
+    "fuente_correspondencia": "pendiente",
+    "grupo_derivado": "no_identificado",
+    "descripcion": "",
+    "candidato_leyenda_oficial": "Estanque para acuicultura"
+   },
+   {
+    "codigo": 32,
+    "categoria": "Código 32 · sin documentación verificada",
+    "color": "#E0E0E0",
+    "fuente_color": "propuesta_geoportal",
+    "estado": "leyenda_oficial_sin_correspondencia",
+    "fuente_correspondencia": "pendiente",
+    "grupo_derivado": "no_identificado",
+    "descripcion": "",
+    "candidato_leyenda_oficial": "Salinera"
+   },
+   {
+    "codigo": 33,
+    "categoria": "Código 33 · sin documentación verificada",
+    "color": "#EEEEEE",
+    "fuente_color": "propuesta_geoportal",
+    "estado": "leyenda_oficial_sin_correspondencia",
+    "fuente_correspondencia": "pendiente",
+    "grupo_derivado": "no_identificado",
+    "descripcion": "",
+    "candidato_leyenda_oficial": "Albinas"
+   }
+  ],
+  "2019_general": [
+   {
+    "codigo": 1,
+    "categoria": "Bosques y otras tierras boscosas",
+    "color": "#237A4B",
+    "fuente_color": "propuesta_geoportal",
+    "estado": "documentada_catalogo_previo",
+    "fuente_correspondencia": "catalogo_previo",
+    "grupo_derivado": "bosque_amplio",
+    "descripcion": "Incluye bosques y otras tierras boscosas; no equivale a bosque natural."
+   },
+   {
+    "codigo": 2,
+    "categoria": "Otras tierras",
+    "color": "#D8C49C",
+    "fuente_color": "propuesta_geoportal",
+    "estado": "documentada_catalogo_previo",
+    "fuente_correspondencia": "catalogo_previo",
+    "grupo_derivado": "otras_tierras_amplia",
+    "descripcion": "Coberturas no boscosas sin desagregar."
+   },
+   {
+    "codigo": 3,
+    "categoria": "Cuerpos de agua",
+    "color": "#388FC4",
+    "fuente_color": "propuesta_geoportal",
+    "estado": "documentada_catalogo_previo",
+    "fuente_correspondencia": "catalogo_previo",
+    "grupo_derivado": "agua",
+    "descripcion": ""
+   }
+  ],
+  "2021_general": [
+   {
+    "codigo": 1,
+    "categoria": "Bosques y Otras Tierras Boscosas",
+    "color": "#237A4B",
+    "fuente_color": "propuesta_geoportal",
+    "estado": "verificada_valor_atributo",
+    "fuente_correspondencia": "atributo Categoria del asset (2026-11-07 y 2026-11-21)",
+    "grupo_derivado": "bosque_amplio",
+    "descripcion": "Valor exacto del campo Categoria usado por el motor de fragmentación."
+   },
+   {
+    "codigo": 2,
+    "categoria": "Otras Tierras",
+    "color": "#D8C49C",
+    "fuente_color": "propuesta_geoportal",
+    "estado": "verificada_valor_atributo",
+    "fuente_correspondencia": "atributo Categoria del asset",
+    "grupo_derivado": "otras_tierras_amplia",
+    "descripcion": ""
+   },
+   {
+    "codigo": 3,
+    "categoria": "Aguas Continentales",
+    "color": "#388FC4",
+    "fuente_color": "propuesta_geoportal",
+    "estado": "verificada_valor_atributo",
+    "fuente_correspondencia": "atributo Categoria del asset",
+    "grupo_derivado": "agua",
+    "descripcion": ""
+   }
+  ],
+  "2023_general": [
+   {
+    "codigo": 1,
+    "categoria": "Bosques y otras tierras boscosas",
+    "color": "#237A4B",
+    "fuente_color": "propuesta_geoportal",
+    "estado": "documentada_catalogo_previo",
+    "fuente_correspondencia": "catalogo_previo",
+    "grupo_derivado": "bosque_amplio",
+    "descripcion": "Diagnóstico general 2023; no comparable con 2021 sin dictamen."
+   },
+   {
+    "codigo": 2,
+    "categoria": "Otras tierras",
+    "color": "#D8C49C",
+    "fuente_color": "propuesta_geoportal",
+    "estado": "documentada_catalogo_previo",
+    "fuente_correspondencia": "catalogo_previo",
+    "grupo_derivado": "otras_tierras_amplia",
+    "descripcion": ""
+   },
+   {
+    "codigo": 3,
+    "categoria": "Superficie de agua",
+    "color": "#388FC4",
+    "fuente_color": "propuesta_geoportal",
+    "estado": "documentada_catalogo_previo",
+    "fuente_correspondencia": "catalogo_previo",
+    "grupo_derivado": "agua",
+    "descripcion": ""
+   }
+  ]
+ }
+}

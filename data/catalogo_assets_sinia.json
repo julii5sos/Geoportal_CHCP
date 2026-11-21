@@ -1,0 +1,237 @@
+{
+ "version": "2026-11-21",
+ "raiz_assets_por_defecto": "projects/geoportal-513817/assets",
+ "fuentes": {
+  "rest": "https://geoportal.miambiente.gob.pa/server/rest/services/Nodo_Suelos/MapServer",
+  "rest_leyenda": "https://geoportal.miambiente.gob.pa/server/rest/services/Nodo_Suelos/MapServer/legend",
+  "mapa_2021": "https://sinia.gob.pa/datos/Suelo/Cobertura_Boscosa_Uso_Suelo_2021_17x22_20241029.pdf",
+  "mapa_2012": "https://sinia.gob.pa/datos/Suelo/Cobertura_Boscosa_Uso_Suelo_2012_17x22_20191001_op.pdf",
+  "mapa_2023": "https://sinia.gob.pa/datos/BNBOT_2023_11x17.pdf",
+  "catalogo_sinia": "https://sinia.gob.pa/datos-abiertos-y-geoservicios/",
+  "catalogo_previo": "julii5sos/geoportal-chcp-conectividad-ecologica · catalogo_assets_sinia.py (2026-11-07)"
+ },
+ "assets": {
+  "1992_historico": {
+   "asset": "SINIA_1992_COBERTURA_HISTORICA_RASTER30M",
+   "anio": 1992,
+   "nombre": "Cobertura histórica de bosque y uso del suelo 1992",
+   "tipo": "IMAGE",
+   "resolucion_m": 30,
+   "crs": "EPSG:32617",
+   "banda": "b1",
+   "nodata": 255,
+   "escala_cartografica": "1:250.000",
+   "capa_rest": {
+    "id": 4,
+    "tipo": "vector",
+    "campo": "CATEGORIA"
+   },
+   "coherencia_con": "2021_general",
+   "uso_analitico": "Caracterización histórica de cobertura; máscara forestal derivada para contexto estructural histórico.",
+   "limitaciones": [
+    "Escala 1:250.000: no apta para parches pequeños.",
+    "El código 8 no tiene categoría documentada en el catálogo previo.",
+    "Códigos no intercambiables con 2000."
+   ],
+   "institucion": "SINIA – Ministerio de Ambiente de Panamá (MiAMBIENTE)",
+   "clave": "1992_historico",
+   "fuentes": [
+    "julii5sos/geoportal-chcp-conectividad-ecologica · catalogo_assets_sinia.py (2026-11-07)",
+    "https://sinia.gob.pa/datos-abiertos-y-geoservicios/",
+    "https://geoportal.miambiente.gob.pa/server/rest/services/Nodo_Suelos/MapServer"
+   ],
+   "estado_acceso": "acceso_tipo_verificados"
+  },
+  "2000_historico": {
+   "asset": "SINIA_2000_COBERTURA_HISTORICA_RASTER30M",
+   "anio": 2000,
+   "nombre": "Cobertura histórica de bosque y uso del suelo 2000",
+   "tipo": "IMAGE",
+   "resolucion_m": 30,
+   "crs": "EPSG:32617",
+   "banda": "b1",
+   "nodata": 255,
+   "escala_cartografica": "1:250.000",
+   "capa_rest": {
+    "id": 3,
+    "tipo": "vector",
+    "campo": "CATEGORIA"
+   },
+   "coherencia_con": "2021_general",
+   "uso_analitico": "Caracterización histórica de cobertura; máscara forestal derivada para contexto estructural histórico.",
+   "limitaciones": [
+    "Escala 1:250.000.",
+    "El código 8 significa «Uso agropecuario», distinto de 1992."
+   ],
+   "institucion": "SINIA – Ministerio de Ambiente de Panamá (MiAMBIENTE)",
+   "clave": "2000_historico",
+   "fuentes": [
+    "julii5sos/geoportal-chcp-conectividad-ecologica · catalogo_assets_sinia.py (2026-11-07)",
+    "https://sinia.gob.pa/datos-abiertos-y-geoservicios/",
+    "https://geoportal.miambiente.gob.pa/server/rest/services/Nodo_Suelos/MapServer"
+   ],
+   "estado_acceso": "acceso_tipo_verificados"
+  },
+  "2012_binario": {
+   "asset": "SINIA_2012_BOSQUE_BINARIO_RASTER5M",
+   "anio": 2012,
+   "nombre": "Bosque / no bosque 2012",
+   "tipo": "IMAGE",
+   "resolucion_m": 5,
+   "crs": "EPSG:32617",
+   "banda": "b1",
+   "nodata": 255,
+   "escala_cartografica": "1:50.000",
+   "capa_rest": null,
+   "coherencia_con": "2021_general",
+   "uso_analitico": "Máscara forestal binaria para fragmentación y conectividad a resolución nativa, previa validación del AOI.",
+   "limitaciones": [
+    "«No bosque» no equivale exclusivamente a agricultura.",
+    "No distingue bosque natural de plantado."
+   ],
+   "institucion": "SINIA – Ministerio de Ambiente de Panamá (MiAMBIENTE)",
+   "clave": "2012_binario",
+   "fuentes": [
+    "julii5sos/geoportal-chcp-conectividad-ecologica · catalogo_assets_sinia.py (2026-11-07)",
+    "https://sinia.gob.pa/datos-abiertos-y-geoservicios/",
+    "https://sinia.gob.pa/datos/Suelo/Cobertura_Boscosa_Uso_Suelo_2012_17x22_20191001_op.pdf"
+   ],
+   "estado_acceso": "acceso_tipo_verificados"
+  },
+  "2012_detallado": {
+   "asset": "SINIA_2012_USO_SUELO_RASTER5M",
+   "anio": 2012,
+   "nombre": "Cobertura boscosa y uso del suelo 2012 (detallada)",
+   "tipo": "IMAGE",
+   "resolucion_m": 5,
+   "crs": "EPSG:32617",
+   "banda": "b1",
+   "nodata": 65535,
+   "escala_cartografica": "1:50.000",
+   "capa_rest": {
+    "id": 2,
+    "tipo": "raster"
+   },
+   "coherencia_con": "2021_general",
+   "uso_analitico": "Distinción de bosques naturales, plantados, rastrojos, cultivos, pastos y usos antrópicos.",
+   "limitaciones": [
+    "No agrupar automáticamente bosques naturales, plantados y rastrojos."
+   ],
+   "institucion": "SINIA – Ministerio de Ambiente de Panamá (MiAMBIENTE)",
+   "clave": "2012_detallado",
+   "fuentes": [
+    "julii5sos/geoportal-chcp-conectividad-ecologica · catalogo_assets_sinia.py (2026-11-07)",
+    "https://sinia.gob.pa/datos-abiertos-y-geoservicios/",
+    "https://geoportal.miambiente.gob.pa/server/rest/services/Nodo_Suelos/MapServer",
+    "https://sinia.gob.pa/datos/Suelo/Cobertura_Boscosa_Uso_Suelo_2012_17x22_20191001_op.pdf"
+   ],
+   "estado_acceso": "acceso_tipo_verificados"
+  },
+  "2019_general": {
+   "asset": "SINIA_2019_COBERTURA_GENERAL_RASTER20M",
+   "anio": 2019,
+   "nombre": "Cobertura general 2019",
+   "tipo": "IMAGE",
+   "resolucion_m": 19.799712,
+   "crs": "EPSG:32617",
+   "banda": "b1",
+   "nodata": 0,
+   "escala_cartografica": null,
+   "capa_rest": null,
+   "coherencia_con": "2021_general",
+   "uso_analitico": "Superficie por categoría amplia; referencia institucional independiente.",
+   "limitaciones": [
+    "La clase 1 no equivale automáticamente a bosque natural.",
+    "Píxel ≈ 19.8 m, no 20 m exactos."
+   ],
+   "institucion": "SINIA – Ministerio de Ambiente de Panamá (MiAMBIENTE)",
+   "clave": "2019_general",
+   "fuentes": [
+    "julii5sos/geoportal-chcp-conectividad-ecologica · catalogo_assets_sinia.py (2026-11-07)",
+    "https://sinia.gob.pa/datos-abiertos-y-geoservicios/"
+   ],
+   "estado_acceso": "acceso_tipo_verificados"
+  },
+  "2021_general": {
+   "asset": "SINIA_2021_COBERTURA_GENERAL_VECTOR",
+   "anio": 2021,
+   "nombre": "Cobertura general oficial 2021 (vector)",
+   "tipo": "TABLE",
+   "resolucion_m": null,
+   "crs": "Según geometrías del asset",
+   "campo_tematico": "Categoria",
+   "nodata": null,
+   "escala_cartografica": "1:25.000 (derivada)",
+   "capa_rest": null,
+   "coherencia_con": null,
+   "uso_analitico": "Referencia oficial para fragmentación y conectividad estructural (clase «Bosques y Otras Tierras Boscosas»).",
+   "limitaciones": [
+    "Las entidades no son parches ecológicos: se disuelven antes de medir.",
+    "La categoría forestal incluye otras tierras boscosas."
+   ],
+   "institucion": "SINIA – Ministerio de Ambiente de Panamá (MiAMBIENTE)",
+   "clave": "2021_general",
+   "fuentes": [
+    "julii5sos/geoportal-chcp-conectividad-ecologica · catalogo_assets_sinia.py (2026-11-07)",
+    "https://sinia.gob.pa/datos-abiertos-y-geoservicios/",
+    "https://sinia.gob.pa/datos/Suelo/Cobertura_Boscosa_Uso_Suelo_2021_17x22_20241029.pdf"
+   ],
+   "estado_acceso": "acceso_tipo_verificados"
+  },
+  "2021_detallado": {
+   "asset": "SINIA_2021_USO_SUELO_RASTER10M",
+   "anio": 2021,
+   "nombre": "Cobertura boscosa y uso del suelo 2021 (detallada)",
+   "tipo": "IMAGE",
+   "resolucion_m": 10,
+   "crs": "EPSG:32617",
+   "banda": "b1",
+   "nodata": 255,
+   "escala_cartografica": "1:25.000",
+   "capa_rest": {
+    "id": 1,
+    "tipo": "raster"
+   },
+   "coherencia_con": "2021_general",
+   "uso_analitico": "Detalle de bosques, vegetación, usos agropecuarios y antrópicos 2021 una vez verificada la correspondencia.",
+   "limitaciones": [
+    "La correspondencia código ↔ categoría debe verificarse espacialmente; la leyenda oficial lista 33 categorías pero su orden no prueba el valor del píxel."
+   ],
+   "institucion": "SINIA – Ministerio de Ambiente de Panamá (MiAMBIENTE)",
+   "clave": "2021_detallado",
+   "fuentes": [
+    "julii5sos/geoportal-chcp-conectividad-ecologica · catalogo_assets_sinia.py (2026-11-07)",
+    "https://sinia.gob.pa/datos-abiertos-y-geoservicios/",
+    "https://geoportal.miambiente.gob.pa/server/rest/services/Nodo_Suelos/MapServer",
+    "https://sinia.gob.pa/datos/Suelo/Cobertura_Boscosa_Uso_Suelo_2021_17x22_20241029.pdf"
+   ],
+   "estado_acceso": "acceso_tipo_verificados"
+  },
+  "2023_general": {
+   "asset": "SINIA_2023_COBERTURA_GENERAL_RASTER10M",
+   "anio": 2023,
+   "nombre": "Cobertura general diagnóstica 2023",
+   "tipo": "IMAGE",
+   "resolucion_m": 10,
+   "crs": "EPSG:32617",
+   "banda": "b1",
+   "nodata": 0,
+   "escala_cartografica": null,
+   "capa_rest": null,
+   "coherencia_con": "2021_general",
+   "uso_analitico": "Diagnóstico general independiente; escenario estructural paralelo.",
+   "limitaciones": [
+    "No calcular pérdida o ganancia 2021–2023 sin dictamen de comparabilidad.",
+    "El sufijo 25K del asset no implica 25 m."
+   ],
+   "institucion": "SINIA – Ministerio de Ambiente de Panamá (MiAMBIENTE)",
+   "clave": "2023_general",
+   "fuentes": [
+    "julii5sos/geoportal-chcp-conectividad-ecologica · catalogo_assets_sinia.py (2026-11-07)",
+    "https://sinia.gob.pa/datos-abiertos-y-geoservicios/",
+    "https://sinia.gob.pa/datos/BNBOT_2023_11x17.pdf"
+   ],
+   "estado_acceso": "acceso_tipo_verificados"
+  }
+ }
+}

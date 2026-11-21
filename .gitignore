@@ -16,5 +16,4 @@ deploy/cloud-run-service.yaml
 *.json.key
 *credentials*.json
 *service-account*.json
-verificacion_gee*.json
 data/estadisticas_territoriales.tmp
