@@ -57,7 +57,7 @@ gcloud run deploy $Servicio `
     --region $Region `
     --service-account $sa `
     --allow-unauthenticated `
-    --memory 2Gi --cpu 2 --timeout 600 `
+    --memory 2Gi --cpu 1 --timeout 600 `
     --concurrency 4 --min-instances 0 --max-instances 2 `
     --set-env-vars "GEE_PROJECT_ID=$Proyecto,WEB_ANALYSIS_RATE_LIMIT=$AnalisisPorIp,WEB_DOWNLOAD_RATE_LIMIT=30,WEB_RATE_LIMIT_WINDOW_SECONDS=600,WEB_MAX_CONCURRENT_ANALYSES=1,WEB_TRUST_PROXY_HEADERS=1"
 
