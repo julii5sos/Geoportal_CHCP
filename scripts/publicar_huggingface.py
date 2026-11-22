@@ -96,8 +96,23 @@ def main() -> int:
     except ImportError:
         raise SystemExit("Instale primero: pip install huggingface_hub")
 
-    token = os.getenv("HF_TOKEN") or getpass.getpass("Token de Hugging Face (Write): ").strip()
+    token = (os.getenv("HF_TOKEN") or getpass.getpass("Token de Hugging Face (Write): ")).strip().strip('"')
+    if not token.startswith("hf_"):
+        raise SystemExit("El token debe empezar con «hf_». En Windows, pegar en la pregunta oculta a veces no funciona: "
+                         "defínalo antes con  set HF_TOKEN=hf_...  y vuelva a ejecutar el script.")
     api = HfApi(token=token)
+    try:
+        cuenta = api.whoami()
+    except Exception:
+        raise SystemExit("Hugging Face rechazó el token (401). Cree uno nuevo de tipo «Write» en "
+                         "https://huggingface.co/settings/tokens, confirme su correo y defínalo con  set HF_TOKEN=hf_...")
+    permiso = ((cuenta.get("auth") or {}).get("accessToken") or {}).get("role")
+    if permiso not in (None, "write", "fineGrained"):
+        raise SystemExit(f"El token es de tipo «{permiso}». Necesita uno de tipo «Write».")
+    if cuenta.get("name", "").lower() != args.usuario.lower():
+        print(f"  Aviso: el token pertenece a «{cuenta.get('name')}»; se usará ese usuario.")
+        args.usuario = cuenta["name"]
+    print(f"  Token válido para {cuenta.get('name')} ({permiso or 'sin rol informado'}).")
     repo_id = f"{args.usuario}/{args.space}"
 
     if args.clave:
