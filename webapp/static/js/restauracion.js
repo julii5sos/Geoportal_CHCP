@@ -70,7 +70,7 @@
       const ll = x.linea.map(([a, b]) => [b, a]);
       const ancho = Math.max(6, Math.min(16, x.ancho / 6));
       const g = L.layerGroup([L.polyline(ll, { color: '#7cb342', weight: ancho + 4, opacity: 0.95 }), L.polyline(ll, { color: '#fff', weight: 2, dashArray: '6 5' })]);
-      g.eachLayer((l) => { l.bindTooltip(`Franja restaurada de ${number(x.d, 0)} m × ${x.ancho} m (${hectares(x.d * x.ancho / 10_000, 2)}). Clic para quitar.`); l.on('click', () => agregar(x)); });
+      g.eachLayer((l) => { l.bindTooltip(`Enlace propuesto (franja hipotética) de ${number(x.d, 0)} m × ${x.ancho} m (${hectares(x.d * x.ancho / 10_000, 2)} hipotéticas). Clic para quitar.`); l.on('click', () => agregar(x)); });
       return g;
     })).addTo(map);
   }
@@ -95,7 +95,7 @@
     if (!x.n) return `<p class="rs-note">El escenario ${nombre} aún no tiene franjas. Haga clic en una brecha roja o use «Unir dos parches».</p>`;
     const unidas = base.r.redes - x.r.redes;
     const iic = base.r.iic ? (x.r.iic - base.r.iic) / base.r.iic * 100 : 0;
-    return `<p><b>Escenario ${nombre}:</b> restaurar ${hectares(x.ha, 2)} en ${x.n} franja(s) ${unidas > 0 ? `uniría ${unidas + 1} redes en una (de ${base.r.redes} a ${x.r.redes} redes)` : 'no uniría redes distintas, pero acortaría caminos dentro de una red'}; la red principal pasaría de ${hectares(base.r.red_mayor_ha, 0)} a ${hectares(x.r.red_mayor_ha, 0)} de bosque conectado y el índice de conectividad integral (IIC) ${iic >= 0 ? 'aumentaría' : 'cambiaría'} un ${number(iic, 1)} %${x.ha > 0 ? ` (${number(iic / x.ha, 2)} % por hectárea restaurada)` : ''}.</p>`;
+    return `<p><b>Escenario ${nombre}:</b> si ${x.n} enlace(s) propuesto(s) (${hectares(x.ha, 2)} hipotéticas) llegaran a existir como bosque, la red estructural ${unidas > 0 ? `uniría ${unidas + 1} redes en una (de ${base.r.redes} a ${x.r.redes} redes)` : 'no uniría redes distintas, pero acortaría caminos dentro de una red'}; la red principal pasaría de ${hectares(base.r.red_mayor_ha, 0)} a ${hectares(x.r.red_mayor_ha, 0)} de bosque conectado y el índice de conectividad integral (IIC) ${iic >= 0 ? 'aumentaría' : 'cambiaría'} un ${number(iic, 1)} %${x.ha > 0 ? ` (${number(iic / x.ha, 2)} % por hectárea restaurada)` : ''}.</p>`;
   }
   function resultados() {
     const base = filaEscenario('actual'), A = filaEscenario('A'), B = filaEscenario('B');
@@ -105,17 +105,24 @@
       ['Bosque en la red principal', (x) => hectares(x.r.red_mayor_ha, 0), (x) => delta(x.r.red_mayor_ha, base.r.red_mayor_ha, 0, ' ha'), 'más es mejor'],
       ['% del bosque en la red principal', (x) => pct(x.r.red_mayor_pct), (x) => delta(x.r.red_mayor_pct, base.r.red_mayor_pct, 1, ' pp'), 'más es mejor'],
       ['Conectividad integral (IIC, 0–1)', (x) => number(x.r.iic, 4), (x) => (base.r.iic ? delta((x.r.iic / base.r.iic - 1) * 100, 0, 1, ' %') : '—'), 'más es mejor'],
-      ['Superficie a restaurar', (x) => hectares(x.ha, 2), () => '', 'costo'],
+      ['Superficie hipotética de las franjas', (x) => hectares(x.ha, 2), () => '', 'largo × ancho elegido; no es un diseño'],
     ];
     const max = Math.max(base.r.iic, A.r.iic, B.r.iic) || 1;
     $('#rs-results').innerHTML = `
-      <div class="rs-res-head"><h2>Comparación de escenarios</h2><button class="btn btn-s" id="rs-export" type="button">Descargar escenarios (GeoJSON)</button></div>
+      ${window.CHCP.procedencia(st.data, 'C', st.data.territorios[st.id], '<span>Red precalculada (tipo B) recalculada en su navegador</span>')}
+      <div class="rs-res-head"><h2>Cambio estructural hipotético de la red</h2><button class="btn btn-s" id="rs-export" type="button">Descargar escenarios (GeoJSON)</button></div>
       <table class="fi-table rs-table"><thead><tr><th>Indicador</th><th>Actual</th><th${st.esc === 'A' ? ' class="on"' : ''}>Escenario A</th><th${st.esc === 'B' ? ' class="on"' : ''}>Escenario B</th></tr></thead><tbody>
       ${filas.map(([n, v, d, h]) => `<tr><td>${n}<small>${h}</small></td><td>${v(base)}</td><td>${v(A)} ${A.n ? d(A) : ''}</td><td>${v(B)} ${B.n ? d(B) : ''}</td></tr>`).join('')}
       </tbody></table>
       <div class="rs-bars">${[['Actual', base, '#90a4ae'], ['A', A, '#43a047'], ['B', B, '#1e88e5']].map(([n, x, c]) => `<div><span>IIC ${n}</span><i><b style="width:${x.r.iic / max * 100}%;background:${c}"></b></i></div>`).join('')}</div>
       ${lectura('A', base, A)}${lectura('B', base, B)}
-      <p class="rs-warn"><b>Resultado matemático, no beneficio comprobado.</b> El simulador mide cómo cambia la red estructural si una franja de bosque uniera dos parches (umbral ${number(st.umbral, 0)} m). No demuestra que la fauna la use, no considera tenencia, costos ni viabilidad, y la superficie restaurada no se suma al hábitat. Las distancias se miden entre vértices de los parches y son aproximadas.</p>`;
+      <div class="rs-niveles"><b>Qué mide y qué no mide este simulador</b><ul>
+        <li><span class="ok">Sí</span> <b>Conexión matemática:</b> agrega un enlace entre dos parches en el grafo (umbral ${number(st.umbral, 0)} m, distancias en UTM 17N).</li>
+        <li><span class="ok">Sí</span> <b>Cambio estructural de la red:</b> redes, parches aislados e IIC recalculados con la misma fórmula del motor.</li>
+        <li><span class="mid">Aproximado</span> <b>Superficie hipotética:</b> largo entre vértices × ancho elegido; no es un polígono de restauración ni considera tenencia, costos o viabilidad, y no se suma al hábitat.</li>
+        <li><span class="no">No</span> <b>Conectividad ecológica potencial para especies:</b> requiere resistencias y distancias de dispersión justificadas.</li>
+        <li><span class="no">No</span> <b>Conectividad funcional demostrada:</b> requiere evidencia de movimiento (telemetría, cámaras, genética).</li>
+        <li><span class="no">No</span> <b>Restauración efectiva:</b> un enlace propuesto no es bosque restaurado.</li></ul></div>`;
     $('#rs-export').addEventListener('click', exportar);
   }
   function lista() {
@@ -204,7 +211,7 @@
   L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', { attribution: 'Esri World Imagery', maxZoom: 18 }).addTo(st.map);
   const colorCorr = { Alta: '#1b5e20', Mediana: '#9ccc65', 'Media-baja': '#ffb74d' };
   L.geoJSON(st.territory.corridors, { style: (f) => ({ color: colorCorr[f.properties.categoria_etiqueta] || '#7fae00', weight: 1.2, fillColor: colorCorr[f.properties.categoria_etiqueta] || '#a1d303', fillOpacity: 0.12 }), onEachFeature: (f, l) => l.bindTooltip(`${f.properties.nombre} · conectividad ${f.properties.categoria_etiqueta} (Almanaque Azul)`) }).addTo(st.map);
-  $('#rs-legend').innerHTML = '<span><i style="background:#1b7837"></i>Red principal</span><span><i style="background:#2166ac"></i>Otras redes (un color por red)</span><span><i class="dash"></i>Brecha candidata</span><span><i class="fr"></i>Franja restaurada</span><span><i style="background:#1f78b4;height:3px"></i>Ríos principales</span><span><i style="background:#ffb74d55;border:1px solid #ffb74d"></i>Corredor Almanaque Azul</span>';
+  $('#rs-legend').innerHTML = '<span><i style="background:#1b7837"></i>Red principal</span><span><i style="background:#2166ac"></i>Otras redes (un color por red)</span><span><i class="dash"></i>Brecha candidata</span><span><i class="fr"></i>Enlace propuesto (hipotético)</span><span><i style="background:#1f78b4;height:3px"></i>Ríos principales</span><span><i style="background:#ffb74d55;border:1px solid #ffb74d"></i>Corredor Almanaque Azul</span>';
   const subs = Object.values(st.data.territorios).filter((t) => t && t.id !== 'chcp').sort((a, b) => a.nombre.localeCompare(b.nombre, 'es'));
   $('#rs-select').innerHTML = subs.map((t) => `<option value="${t.id}">${esc(t.nombre)}</option>`).join('');
   $('#rs-select').addEventListener('change', (e) => { st.escenarios = { A: [], B: [] }; history.replaceState(null, '', `${location.pathname}?id=${e.target.value}`); cargar(e.target.value); });

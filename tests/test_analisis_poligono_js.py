@@ -84,3 +84,26 @@ class AnalisisPoligonoJsTests(unittest.TestCase):
         self.assertTrue(r["corr"]["intersecta_mesoamericano"])
         self.assertAlmostEqual(r["corr"]["porcentaje_aoi_en_corredores"], 50.0)
         self.assertAlmostEqual(r["ha"], 121.9, delta=1.5)
+
+    def test_replica_python_igual_al_navegador(self):
+        import numpy as np
+        from chcp.gee.mapas_ficha import CODIFICACION_VALORES as codec
+        from chcp.nucleo import estimacion_local as EL
+
+        rnd = np.random.default_rng(3)
+        n = 400
+        capas = {"aux": rnd.choice([0, 1, 3, 7, 15, 255], n).astype("uint8"),
+                 "jrc_2025": rnd.choice([1, 2, 3, 4, 255], n).astype("uint8"),
+                 "hansen": rnd.choice([21, 23, 255], n).astype("uint8"),
+                 "esri_cambio": rnd.choice([1, 2, 3, 255], n).astype("uint8"),
+                 "eri": rnd.integers(0, 256, n).astype("uint8"),
+                 "gedi": rnd.integers(0, 256, n).astype("uint8")}
+        masc = rnd.choice([0, 1], n).astype("uint8")
+        py = EL.metricas(EL.acumular(EL.nuevo_acumulador(), capas, masc, None, 0.09, codec))
+        js = self.node(f"const codec = {json.dumps(codec)};"
+                       f"const capas = {json.dumps({k: v.tolist() for k, v in capas.items()})};"
+                       "for (const k in capas) capas[k] = Uint8Array.from(capas[k]);"
+                       f"const acc = P.acumular(P.nuevoAcumulador(), capas, Uint8Array.from({json.dumps(masc.tolist())}), null, 0.09, codec);"
+                       "console.log(JSON.stringify(P.metricas(acc)));")
+        for k, v in py.items():
+            self.assertAlmostEqual(js[k], v, places=6, msg=k)

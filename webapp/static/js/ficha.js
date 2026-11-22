@@ -177,6 +177,17 @@
       <p class="fi-note">Fuente: Almanaque Azul (corredores de conectividad y puntos críticos). Las categorías y la condición son las publicadas por esa fuente; el geoportal no las modifica.</p></section>`;
   }
 
+  function seccionRelativa(t) {
+    const b = t.indicadores_relativos;
+    if (!b || !b.valores || t.id === 'chcp') return '';
+    const nombres = { perdida_reciente_pct_anual: ['Pérdida reciente de cobertura arbórea', '% del bosque por año', 'Hansen 2021–2025 ÷ bosque oficial 2021 ÷ 5'], salida_arboles_pct: ['Salida de árboles', '% de los árboles de 2017', 'ESRI 2017 → 2024'], perturbacion_acumulada_pct: ['Perturbación acumulada (legado)', '% del territorio', 'JRC deforestado + degradado desde 1990'], descenso_vigor_pct: ['Descenso fuerte de vigor', '% del territorio', 'NDVI 2020 → 2025'] };
+    const filas = Object.entries(nombres).map(([k, [n, u, f]]) => { const v = b.valores[k], r = b.razon_vs_cuenca?.[k], c = b.valores_cuenca?.[k]; return `<tr><td><b>${n}</b><small>${f}</small></td><td>${v == null ? '—' : number(v, 2)} <small>${u}</small></td><td>${c == null ? '—' : number(c, 2)}</td><td>${r == null ? '—' : `<span class="rel-${r > 1.5 ? 'alto' : r < 0.67 ? 'bajo' : 'medio'}">${number(r, r < 1 ? 2 : 1)} ×</span>`}</td></tr>`; }).join('');
+    return `<section class="fi-sec"><h2>${icon('chart', 22)} Intensidad relativa del cambio <span class="exp-tag">experimental</span></h2>
+      <p>La preevaluación MT-2026.7 usa umbrales absolutos pensados para predios (por ejemplo 0,18 ha de pérdida Hansen) y el estado acumulado de JRC; en subcuencas de miles de hectáreas casi siempre se activa (46 de 53 quedan en prioridad Alta). Estos indicadores expresan el cambio <b>en proporción</b> al bosque o al territorio y lo comparan con la cuenca completa, para distinguir una subcuenca extensa con poca pérdida relativa de una pequeña con mucha.</p>
+      <table class="fi-table"><thead><tr><th>Indicador</th><th>Esta subcuenca</th><th>CHCP completa</th><th>Razón frente a la CHCP</th></tr></thead><tbody>${filas}</tbody></table>
+      <p class="fi-note">${esc(b.version)} · indicadores continuos sin umbrales calibrados: no constituyen una prioridad validada ni reemplazan MT-2026.7. Razón &gt; 1 = más intenso que el promedio de la cuenca. No se suman entre sí porque JRC y Hansen comparten imágenes Landsat.</p></section>`;
+  }
+
   // ------------------------------------------------------------ render
   function render(t) {
     const p = t.preevaluacion, e = t.estructura_2021, mp = e?.metricas_paisaje, serie = t.serie_anual || [];
@@ -189,7 +200,7 @@
     $('#fi-doc').innerHTML = `
       <header class="fi-head">
         <div><span class="fi-kicker">Ficha técnica · ${esc(t.grupo)}</span><h1>${esc(t.nombre)}</h1>
-        <p>${hectares(t.area_ha)} · datos del ${esc(String(st.data.generado || '').slice(0, 10))} · ${esc(st.data.metodologia)} · Clúster Copernicus Centroamérica AFOLU II</p></div>
+        <p>${hectares(t.area_ha)} · datos del ${esc(String(st.data.generado || '').slice(0, 10))} · ${esc(st.data.metodologia)} · Clúster Copernicus Centroamérica AFOLU II</p>${window.CHCP.procedencia(st.data, 'B', t)}</div>
         <div class="fi-score" data-tone="${toneP}"><span>Preevaluación</span><b>${number(p.puntaje, 1)}<small>/ ${number(p.puntaje_maximo, 1)}</small></b><em>${esc(p.prioridad)}</em><small>Visita: ${esc(p.prioridad_visita || '—')}</small></div>
       </header>
       <section class="fi-sec"><h2>${icon('info', 22)} En pocas palabras</h2>${diagnostico(t).map((f) => `<p>${f}</p>`).join('')}</section>
@@ -197,6 +208,7 @@
         <div class="fi-legend"><span><i style="background:#1b5e20"></i>Parche clave (conectividad alta)</span><span><i style="background:#66bb6a"></i>Parche de importancia media</span><span><i style="background:#c5e1a5"></i>Parche de importancia baja</span><span><i class="dash"></i>Brecha candidata a reconexión</span><span><i style="background:#1f78b4;height:3px"></i>Ríos principales (HydroSHEDS)</span><span><i style="background:#1b5e2033;border:1.5px solid #1b5e20"></i>Corredor Almanaque Azul · conectividad alta</span><span><i style="background:#9ccc6533;border:1.5px solid #9ccc65"></i>· mediana</span><span><i style="background:#ffb74d33;border:1.5px solid #ffb74d"></i>· media-baja</span><span><i class="pt"></i>Punto crítico (Almanaque Azul)</span></div></section>
       <section class="fi-sec fi-gal-sec"><h2>${icon('layers', 22)} Mapas temáticos</h2><p class="fi-note">Cada mapa muestra una fuente distinta sobre el mismo territorio. Ríos y corredores del Almanaque Azul se superponen como referencia.</p>${seccionGaleria(t)}</section>
       <section class="fi-sec"><h2>${icon('chart', 22)} Indicadores y comparación con las demás subcuencas</h2><p class="fi-note">Verde: mejor que la mayoría de subcuencas; ámbar: intermedio; rojo: entre las más desfavorables. La comparación es relativa a la CHCP, no un umbral normativo.</p><div class="fi-inds">${indicadores}</div></section>
+      ${seccionRelativa(t)}
       <section class="fi-sec fi-two"><div><h2>${icon('forest', 22)} Dinámica del bosque · JRC 2025</h2>${donut(jrc, hectares(t.area_ha, 0))}</div>
         <div><h2>${icon('trend', 22)} Evolución 2020–2025 (ha)</h2>${serie.length ? line(serie, [{ k: 'jrc_degradacion_ha', l: 'Degradado (JRC)', c: '#f28e2b' }, { k: 'jrc_regeneracion_ha', l: 'Regeneración (JRC)', c: '#3d8b37' }, { k: 'jrc_deforestacion_ha', l: 'Deforestado (JRC)', c: '#2f7ee0' }]) : ''}
         <h3>Pérdida anual Hansen</h3>${bars(serie.filter((x) => x.hansen_perdida_ha != null).map((x) => ({ l: String(x.anio), v: x.hansen_perdida_ha, c: '#d0442c' })), (v) => hectares(v))}</div></section>

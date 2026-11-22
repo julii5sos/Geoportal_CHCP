@@ -76,18 +76,29 @@
   }
 
   // --------------------------------------------------------------- geometría
-  const M_LAT = 110_540;
-  const mLon = (lat) => 111_320 * Math.cos(lat * Math.PI / 180);
+  // Distancias en WGS 84 / UTM 17N (EPSG:32617), igual que el motor en Python.
+  // Proyección transversa de Mercator con la serie de Krüger (error < 1 mm en la zona).
+  function utm17(lon, lat) {
+    const a = 6378137, f = 1 / 298.257223563, k0 = 0.9996, lon0 = -81 * Math.PI / 180;
+    const n = f / (2 - f), A = a / (1 + n) * (1 + n * n / 4 + n ** 4 / 64);
+    const al = [n / 2 - 2 * n * n / 3 + 5 * n ** 3 / 16, 13 * n * n / 48 - 3 * n ** 3 / 5, 61 * n ** 3 / 240];
+    const phi = lat * Math.PI / 180, lam = lon * Math.PI / 180 - lon0;
+    const e = 2 * Math.sqrt(n) / (1 + n);
+    const t = Math.sinh(Math.atanh(Math.sin(phi)) - e * Math.atanh(e * Math.sin(phi)));
+    const xi = Math.atan2(t, Math.cos(lam)), eta = Math.atanh(Math.sin(lam) / Math.sqrt(1 + t * t));
+    let x = eta, y = xi;
+    for (let j = 1; j <= 3; j += 1) { x += al[j - 1] * Math.cos(2 * j * xi) * Math.sinh(2 * j * eta); y += al[j - 1] * Math.sin(2 * j * xi) * Math.cosh(2 * j * eta); }
+    return [500000 + k0 * A * x, k0 * A * y];
+  }
 
   /** Vértices (muestreados) y caja de un polígono en metros locales. */
-  function preparar(feature, lat0, maxVertices = 300) {
+  function preparar(feature, _lat0, maxVertices = 300) {
     const g = feature.geometry;
     const anillos = g.type === 'Polygon' ? [g.coordinates[0]] : g.type === 'MultiPolygon' ? g.coordinates.map((p) => p[0]) : [];
     const todos = anillos.flat();
     const paso = Math.max(1, Math.ceil(todos.length / maxVertices));
-    const k = mLon(lat0);
     const pts = [];
-    for (let i = 0; i < todos.length; i += paso) pts.push([todos[i][0] * k, todos[i][1] * M_LAT, todos[i]]);
+    for (let i = 0; i < todos.length; i += paso) { const [x, y] = utm17(todos[i][0], todos[i][1]); pts.push([x, y, todos[i]]); }
     const xs = pts.map((p) => p[0]), ys = pts.map((p) => p[1]);
     return { pts, caja: [Math.min(...xs), Math.min(...ys), Math.max(...xs), Math.max(...ys)] };
   }
@@ -154,14 +165,13 @@
   }
 
   function cercaDeLineas(p, lineas, maxM) {
-    const k = mLon(p[1]);
+    const [px, py] = utm17(p[0], p[1]);
     for (const f of lineas) {
       const g = f.geometry;
       const partes = g.type === 'LineString' ? [g.coordinates] : g.type === 'MultiLineString' ? g.coordinates : [];
       for (const parte of partes) for (let i = 1; i < parte.length; i += 1) {
         // distancia punto–segmento en metros locales
-        const ax = parte[i - 1][0] * k, ay = parte[i - 1][1] * M_LAT, bx = parte[i][0] * k, by = parte[i][1] * M_LAT;
-        const px = p[0] * k, py = p[1] * M_LAT;
+        const [ax, ay] = utm17(parte[i - 1][0], parte[i - 1][1]), [bx, by] = utm17(parte[i][0], parte[i][1]);
         const dx = bx - ax, dy = by - ay, l2 = dx * dx + dy * dy;
         const t = l2 ? Math.max(0, Math.min(1, ((px - ax) * dx + (py - ay) * dy) / l2)) : 0;
         if (Math.hypot(px - ax - t * dx, py - ay - t * dy) <= maxM) return true;
@@ -170,7 +180,7 @@
     return false;
   }
 
-  const api = { analizar, preparar, masCercano, candidatosEntreRedes, priorizar, puntoEnPoligono, cercaDeLineas };
+  const api = { utm17, analizar, preparar, masCercano, candidatosEntreRedes, priorizar, puntoEnPoligono, cercaDeLineas };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   else raiz.CHCP_RED = api;
 })(typeof window !== 'undefined' ? window : globalThis);

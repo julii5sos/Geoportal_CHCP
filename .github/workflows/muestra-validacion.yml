@@ -10,7 +10,7 @@ on:
       mapa:
         description: "Mapa a validar"
         type: choice
-        options: [senal_perdida, sinia_2021]
+        options: [senal_perdida, hansen_2021_2025, jrc_cambio_2021_2025, sinia_2021]
         default: senal_perdida
       error_objetivo:
         description: "Error estándar objetivo de la exactitud global (0.015 ≈ ±3 %)"

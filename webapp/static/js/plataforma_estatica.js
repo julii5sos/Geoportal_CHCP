@@ -116,6 +116,7 @@
         ${x.id !== 'chcp' ? `<a class="btn btn-s" href="${enlace('restauracion')}?id=${encodeURIComponent(x.id)}">${icon('sprout', 16)} Simular restauración</a><a class="btn btn-s" href="${enlace('campo')}?id=${encodeURIComponent(x.id)}">${icon('clipboard', 16)} Sitios de campo</a>` : ''}
         <a class="btn btn-s" href="${window.CHCP_STATIC ? 'panel.html' : '/panel'}${x.id === 'chcp' ? '' : `#${x.id}`}">${icon('chart', 16)} Ver en el panel</a>
       </div>
+      ${window.CHCP.procedencia(st.data, 'B', x)}
       <p class="hint-p small">Resultados precalculados con Google Earth Engine (${esc(String(st.data.generado || '').slice(0, 10))}). Indicativos: orientan una revisión y no sustituyen la verificación de campo.</p>`;
     $('#pe-res').classList.remove('closed');
     $('#pe-reopen').hidden = true;
@@ -197,6 +198,11 @@
     const sinDatos = subs.filter((f) => !st.data.territorios[f.properties.id]?.mapas?.valores?.includes('aux'));
     if (!subs.length) { mostrarError('El polígono está fuera de la Cuenca Hidrográfica del Canal de Panamá.'); return; }
     if (!codec || sinDatos.length === subs.length) { mostrarError('Los mapas de valores para analizar polígonos se generan en la próxima actualización de datos con Earth Engine.'); return; }
+    // Tolerancia de borde (auditoría D.6): error relativo esperado por rasterización ≈ perímetro × píxel / (2 × área).
+    const pixel = Math.max(...subs.map((f) => st.data.territorios[f.properties.id]?.mapas?.tamano_pixel_m || 0));
+    const perimetro = P.poligonos(pg.geo).flat().reduce((s, anillo) => s + anillo.slice(1).reduce((t, p, i) => { const [x1, y1] = RED.utm17(...anillo[i]); const [x2, y2] = RED.utm17(...p); return t + Math.hypot(x2 - x1, y2 - y1); }, 0), 0);
+    const errorBorde = perimetro * pixel / (2 * P.areaHa(pg.geo) * 10000);
+    if (errorBorde > 0.25) { mostrarError(`Polígono demasiado pequeño o irregular para la malla precalculada (píxel ${number(pixel, 0)} m; error de borde estimado ${number(errorBorde * 100, 0)} %). Para este caso se requiere el análisis directo con Earth Engine en la plataforma completa.`); return; }
     $('#pg-busy').hidden = false;
     const acc = P.nuevoAcumulador();
     const corrColor = (f) => (f.properties?.es_mesoamericano || /mesoamericano/i.test(f.properties?.nombre || '') ? 'rgb(200,0,0)' : 'rgb(100,0,0)');
@@ -231,7 +237,7 @@
       const tam = {}; r.red.forEach((c) => { tam[c] = (tam[c] || 0) + 1; });
       estructura = { numero_parches: red.areas.size, numero_componentes: r.redes, porcentaje_nodos_componente_mayor: Math.max(...Object.values(tam)) / red.areas.size * 100, aislados: r.aislados, bosque_parches_ha: r.bosque_ha, iic: r.iic };
     } else estructura = { numero_parches: 0, numero_componentes: 0, porcentaje_nodos_componente_mayor: 0 };
-    pg.resultado = { ...P.evaluar(acc, estructura), acc, estructura, area_dibujada_ha: P.areaHa(pg.geo), subcuencas: subs.map((f) => f.properties.nombre), sin_datos: sinDatos.map((f) => f.properties.nombre), pixel_m: acc.pixeles_m.length ? Math.max(...acc.pixeles_m) : null };
+    pg.resultado = { ...P.evaluar(acc, estructura), acc, estructura, error_borde: errorBorde, perimetro_m: perimetro, area_dibujada_ha: P.areaHa(pg.geo), subcuencas: subs.map((f) => f.properties.nombre), sin_datos: sinDatos.map((f) => f.properties.nombre), pixel_m: acc.pixeles_m.length ? Math.max(...acc.pixeles_m) : null };
     $('#pg-busy').hidden = true;
     mostrarResultadoPoligono();
   }
@@ -250,7 +256,9 @@
     const tarjeta = (n, val, s2 = '') => `<div class="pe-m"><span>${n}</span><b>${val}</b>${s2 ? `<small>${s2}</small>` : ''}</div>`;
     $('#pe-res-b').innerHTML = `
       ${R0.sin_datos.length ? `<p class="rs-warn">Sin mapas de valores todavía en: ${esc(R0.sin_datos.join(', '))}. Esa parte no se analizó.</p>` : ''}${fuera > 0.01 * R0.area_dibujada_ha ? `<p class="rs-warn">Se analizaron ${hectares(m.area_ha, 1)}; ${hectares(fuera, 1)} del polígono quedan fuera de la CHCP${R0.sin_datos.length ? ' o en subcuencas sin datos' : ''}.</p>` : ''}
-      <div class="pe-prio" style="border-color:${PRIO[R0.prioridad] || '#90a4ae'}"><span>Preevaluación MT-2026.7 del polígono</span><b>${number(R0.puntaje, 1)} <small>/ 6.5</small></b><em style="color:${PRIO[R0.prioridad]}">${esc(R0.prioridad)}</em><small>Prioridad de visita: <b>${esc(v.prioridad_visita)}</b> (${number(v.puntaje_integrado, 2)} pts; corredor +${number(v.aporte_corredor, 2)}) · ${esc(v.combinacion_territorial)} · ${esc(R0.consistencia.nivel)}</small></div>
+      ${window.CHCP.procedencia(st.data, 'C', null, `<span>Malla de ${number(R0.pixel_m, 0)} m · error de borde estimado ${number(R0.error_borde * 100, 1)} %</span>`)}
+      ${R0.error_borde > 0.10 ? `<p class="rs-warn"><b>Resultado aproximado:</b> el error de borde estimado (${number(R0.error_borde * 100, 0)} %) supera la tolerancia del 10 %. Las superficies son orientativas y la categoría no es concluyente; confirme con el análisis directo de Earth Engine.</p>` : ''}
+      <div class="pe-prio" style="border-color:${PRIO[R0.prioridad] || '#90a4ae'}"><span>Preevaluación MT-2026.7 del polígono${R0.error_borde > 0.10 ? ' · no concluyente' : ''}</span><b>${number(R0.puntaje, 1)} <small>/ 6.5</small></b><em style="color:${PRIO[R0.prioridad]}">${esc(R0.prioridad)}</em><small>Prioridad de visita: <b>${esc(v.prioridad_visita)}</b> (${number(v.puntaje_integrado, 2)} pts; corredor +${number(v.aporte_corredor, 2)}) · ${esc(v.combinacion_territorial)} · ${esc(R0.consistencia.nivel)}</small></div>
       <h3 class="pe-h">Señales satelitales</h3>
       <ul class="pe-sig">
         ${sig('tmf', `Deforestado ${hectares(m.tmf_deforestacion_ha, 2)} · degradado ${hectares(m.tmf_degradacion_ha, 2)}`)}
@@ -266,14 +274,14 @@
         ${tarjeta('En corredores', pct(R0.corredores.porcentaje_aoi_en_corredores, 1), R0.corredores.intersecta_mesoamericano ? 'incluye Mesoamericano' : 'Almanaque Azul')}
         ${tarjeta('NDVI medio 2020→2025', R0.ndvi_delta_medio == null ? '—' : `${R0.ndvi_delta_medio > 0 ? '+' : ''}${number(R0.ndvi_delta_medio, 3)}`)}
         ${tarjeta('ERI medio', R0.eri_medio == null ? '—' : `${number(R0.eri_medio * 100, 0)}/100`)}
-        ${tarjeta('Parches que toca', number(R0.estructura.numero_parches, 0), R0.estructura.numero_parches ? `${number(R0.estructura.numero_componentes, 0)} red(es) · ${esc(v.contexto_estructural.estado)}` : 'sin bosque oficial 2021')}
+        ${tarjeta('Parches 2021 que toca (área completa)', number(R0.estructura.numero_parches, 0), R0.estructura.numero_parches ? `${number(R0.estructura.numero_componentes, 0)} red(es) · ${esc(v.contexto_estructural.estado)}` : 'sin bosque oficial 2021')}
         ${tarjeta('Franja riparia sin bosque', hectares((a.riparia[2] || 0) + (a.riparia[3] || 0), 2), `${hectares(a.riparia[3] || 0, 2)} en pendiente ≥ 30 %`)}
       </div>
       <div class="pe-acc"><button class="btn btn-p" id="pg-json" type="button">${icon('download', 16)} Descargar resultados (JSON)</button><button class="btn btn-s" id="pg-geo" type="button">${icon('map', 16)} Descargar polígono (GeoJSON)</button></div>
-      <p class="hint-p small">Calculado en su navegador con los mapas precalculados de ${esc(String(st.data.generado || '').slice(0, 10))} (píxel de hasta ${number(R0.pixel_m, 0)} m). Mismas reglas y umbrales que la plataforma con Earth Engine; en polígonos menores de ~${number((R0.pixel_m || 30) ** 2 * 20 / 10000, 1)} ha las superficies son aproximadas. Resultado indicativo: orienta una revisión y no sustituye la verificación de campo.</p>`;
+      <p class="hint-p small">Estimación local (tipo C): no es un cálculo de Earth Engine en este momento. Usa los mapas precalculados de ${esc(String(st.data.generado || '').slice(0, 10))} (píxel de hasta ${number(R0.pixel_m, 0)} m). Mismas reglas y umbrales que la plataforma con Earth Engine; en polígonos menores de ~${number((R0.pixel_m || 30) ** 2 * 20 / 10000, 1)} ha las superficies son aproximadas. Resultado indicativo: orienta una revisión y no sustituye la verificación de campo.</p>`;
     $('#pe-res').classList.remove('closed'); $('#pe-reopen').hidden = true;
     const bajar = (nombre, texto, tipo) => { const el = document.createElement('a'); el.href = URL.createObjectURL(new Blob([texto], { type: tipo })); el.download = nombre; el.click(); URL.revokeObjectURL(el.href); };
-    $('#pg-json').addEventListener('click', () => { const { acc, ...resto } = pg.resultado; bajar('analisis_poligono.json', JSON.stringify({ metodologia: st.data.metodologia, datos: st.data.generado, poligono: pg.geo, ...resto, superficies_ha: { jrc: acc.jrc, hansen_por_anio: acc.hansen, esri: acc.esri, sinia_2021: acc.sinia, coincidencia: acc.coincidencia, riparia: acc.riparia } }, null, 1), 'application/json'); });
+    $('#pg-json').addEventListener('click', () => { const { acc, ...resto } = pg.resultado; bajar('analisis_poligono.json', JSON.stringify({ procesamiento: { tipo: 'C', descripcion: 'Estimación local derivada de resultados precalculados (tipo B)', base: st.data.procesamiento, error_borde_estimado: pg.resultado.error_borde, pixel_m: pg.resultado.pixel_m }, metodologia: st.data.metodologia, datos: st.data.generado, poligono: pg.geo, ...resto, superficies_ha: { jrc: acc.jrc, hansen_por_anio: acc.hansen, esri: acc.esri, sinia_2021: acc.sinia, coincidencia: acc.coincidencia, riparia: acc.riparia } }, null, 1), 'application/json'); });
     $('#pg-geo').addEventListener('click', () => bajar('poligono.geojson', JSON.stringify({ type: 'Feature', properties: { area_ha: pg.resultado.area_dibujada_ha }, geometry: pg.geo }), 'application/geo+json'));
   }
   function iniciarPoligono() {

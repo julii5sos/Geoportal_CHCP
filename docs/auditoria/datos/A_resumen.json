@@ -1,0 +1,211 @@
+{
+ "fuente": "data/estadisticas_territoriales.json",
+ "generado_datos": "2026-11-22T18:46:51",
+ "n_subcuencas": 53,
+ "categorias_subcuencas": {
+  "Alta": 46,
+  "Media": 6,
+  "Preventiva": 1
+ },
+ "categorias_todos_54": {
+  "Alta": 47,
+  "Media": 6,
+  "Preventiva": 1
+ },
+ "puntajes_distintos": [
+  [
+   0.5,
+   1
+  ],
+  [
+   2.0,
+   6
+  ],
+  [
+   4.0,
+   25
+  ],
+  [
+   4.5,
+   1
+  ],
+  [
+   5.0,
+   1
+  ],
+  [
+   5.5,
+   9
+  ],
+  [
+   6.0,
+   10
+  ]
+ ],
+ "entropia_categorias_normalizada": 0.405,
+ "frecuencia_senales": {
+  "tmf": 52,
+  "hansen": 46,
+  "esri": 19,
+  "gedi": 13,
+  "ndvi": 1
+ },
+ "motivo_tmf": {
+  "tmf_con_criterio_relativo": 46,
+  "tmf_solo_por_umbral_absoluto": 6
+ },
+ "spearman_area_puntaje": 0.249,
+ "sensibilidad_umbrales_absolutos": {
+  "absolutos_x1": {
+   "Alta": 46,
+   "Media": 6,
+   "Preventiva": 1
+  },
+  "absolutos_x2": {
+   "Alta": 46,
+   "Media": 6,
+   "Preventiva": 1
+  },
+  "absolutos_x5": {
+   "Alta": 46,
+   "Media": 5,
+   "Baja": 1,
+   "Preventiva": 1
+  },
+  "absolutos_x10": {
+   "Alta": 46,
+   "Media": 4,
+   "Baja": 2,
+   "Preventiva": 1
+  },
+  "absolutos_x50": {
+   "Alta": 41,
+   "Media": 8,
+   "Baja": 3,
+   "Preventiva": 1
+  },
+  "absolutos_x100": {
+   "Alta": 35,
+   "Media": 13,
+   "Baja": 4,
+   "Preventiva": 1
+  },
+  "sin_criterios_absolutos": {
+   "Alta": 20,
+   "Baja": 6,
+   "Media": 26,
+   "Preventiva": 1
+  }
+ },
+ "spearman_puntaje_base_vs_absolutos_x10": 0.999,
+ "escenario_sintetico_mismas_proporciones": [
+  {
+   "area_ha": 1,
+   "senales": [],
+   "puntaje": 0.0,
+   "categoria": "Baja"
+  },
+  {
+   "area_ha": 5,
+   "senales": [],
+   "puntaje": 0.0,
+   "categoria": "Baja"
+  },
+  {
+   "area_ha": 25,
+   "senales": [],
+   "puntaje": 0.0,
+   "categoria": "Baja"
+  },
+  {
+   "area_ha": 100,
+   "senales": [],
+   "puntaje": 0.0,
+   "categoria": "Baja"
+  },
+  {
+   "area_ha": 500,
+   "senales": [],
+   "puntaje": 0.0,
+   "categoria": "Baja"
+  },
+  {
+   "area_ha": 2000,
+   "senales": [
+    "tmf",
+    "hansen"
+   ],
+   "puntaje": 4.0,
+   "categoria": "Alta"
+  },
+  {
+   "area_ha": 10000,
+   "senales": [
+    "tmf",
+    "hansen"
+   ],
+   "puntaje": 4.0,
+   "categoria": "Alta"
+  },
+  {
+   "area_ha": 50000,
+   "senales": [
+    "tmf",
+    "hansen"
+   ],
+   "puntaje": 4.0,
+   "categoria": "Alta"
+  },
+  {
+   "area_ha": 300000,
+   "senales": [
+    "tmf",
+    "hansen"
+   ],
+   "puntaje": 4.0,
+   "categoria": "Alta"
+  }
+ ],
+ "variante_experimental": {
+  "version": "MT-2026.7-SUBC-EXP-1",
+  "spearman_con_area": {
+   "perdida_reciente_pct_anual": 0.164,
+   "salida_arboles_pct": 0.218,
+   "perturbacion_acumulada_pct": 0.005,
+   "descenso_vigor_pct": 0.16
+  },
+  "spearman_con_puntaje_original": {
+   "perdida_reciente_pct_anual": 0.634,
+   "salida_arboles_pct": 0.827,
+   "perturbacion_acumulada_pct": 0.082,
+   "descenso_vigor_pct": 0.415
+  },
+  "redundancia_spearman": {
+   "perdida_reciente_pct_anual~salida_arboles_pct": 0.588,
+   "perdida_reciente_pct_anual~perturbacion_acumulada_pct": 0.519,
+   "perdida_reciente_pct_anual~descenso_vigor_pct": 0.469,
+   "salida_arboles_pct~perturbacion_acumulada_pct": 0.038,
+   "salida_arboles_pct~descenso_vigor_pct": 0.649,
+   "perturbacion_acumulada_pct~descenso_vigor_pct": 0.14
+  },
+  "valores_cuenca": {
+   "perdida_reciente_pct_anual": 0.4088979511724039,
+   "salida_arboles_pct": 5.414247644719723,
+   "perturbacion_acumulada_pct": 15.595931245265623,
+   "descenso_vigor_pct": 1.1823866462222146
+  },
+  "distintos_valores": {
+   "perdida_reciente_pct_anual": 47,
+   "salida_arboles_pct": 53,
+   "perturbacion_acumulada_pct": 53,
+   "descenso_vigor_pct": 53
+  },
+  "por_encima_de_la_cuenca": {
+   "perdida_reciente_pct_anual": 23,
+   "salida_arboles_pct": 21,
+   "perturbacion_acumulada_pct": 27,
+   "descenso_vigor_pct": 18
+  },
+  "sensibilidad_denominador_spearman": 0.98
+ }
+}

@@ -532,3 +532,22 @@ html.app #main-content:has(.pg) { overflow-y:auto; background:#f3f6fa; }
 .pe-sig li.on { border-color:#f4b4a8; background:#fff5f3; } .pe-sig li.on span { color:var(--alerta); font-weight:700; }
 #s-poligono .pbtns { display:flex; gap:8px; flex-wrap:wrap; margin:10px 0; }
 #s-poligono .pinfo { display:flex; flex-direction:column; background:#fffbe6; border:1px solid #ffe58f; border-radius:8px; padding:8px 12px; font-size:13px; }
+.rs-niveles { background:#f7f9fc; border:1px solid var(--line); border-radius:8px; padding:10px 14px; font-size:12.5px; margin-top:8px; }
+.rs-niveles ul { list-style:none; padding:0; margin:6px 0 0; display:grid; gap:4px; }
+.rs-niveles span { display:inline-block; min-width:74px; text-align:center; font-size:11px; font-weight:700; border-radius:999px; padding:1px 6px; margin-right:6px; color:#fff; }
+.rs-niveles .ok { background:#2e7d32; } .rs-niveles .mid { background:#f28e2b; } .rs-niveles .no { background:#90a4ae; }
+/* Procedencia del resultado (tipo A/B/C) */
+.procedencia { display:flex; flex-wrap:wrap; align-items:center; gap:4px 10px; font-size:11.5px; color:#455a64; background:#f4f7fb; border:1px solid var(--line); border-left:4px solid #0a4393; border-radius:8px; padding:6px 10px; margin:8px 0; }
+.procedencia b { color:#fff; background:#0a4393; border-radius:999px; padding:1px 8px; font-size:11px; }
+.procedencia[data-tipo=A] { border-left-color:#2e7d32; } .procedencia[data-tipo=A] b { background:#2e7d32; }
+.procedencia[data-tipo=C] { border-left-color:#f28e2b; } .procedencia[data-tipo=C] b { background:#f28e2b; }
+.procedencia .pr-warn { color:#b35c00; font-weight:700; }
+.va-pend { display:flex; flex-direction:column; gap:4px; background:#fff4e5; border:1px solid #ffcc80; border-left:5px solid #f28e2b; border-radius:8px; padding:10px 14px; margin-bottom:10px; }
+.va-pend b { color:#8a4b00; font-size:14.5px; } .va-pend span { font-size:13px; color:#5d4037; }
+.va-tag { font-size:12.5px; color:#455a64; margin:6px 0 10px; }
+.va-tag span { color:#fff; font-weight:700; border-radius:999px; padding:2px 9px; margin-right:6px; font-size:11.5px; }
+.va-tag .t-ok { background:#607d8b; } .va-tag .t-pre { background:#f28e2b; } .va-tag .t-full { background:#2e7d32; }
+.va-ej { margin-top:8px; } .va-ej > summary { cursor:pointer; font-weight:700; color:var(--azul); }
+.va-rev { font-size:12.5px; display:flex; gap:6px; align-items:center; color:#455a64; }
+.exp-tag { font-size:11px; font-weight:700; color:#fff; background:#7e57c2; border-radius:999px; padding:2px 9px; vertical-align:middle; }
+.rel-alto { color:#c62828; font-weight:700; } .rel-medio { color:#8a6d00; font-weight:700; } .rel-bajo { color:#2e7d32; font-weight:700; }

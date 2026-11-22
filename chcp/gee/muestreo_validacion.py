@@ -11,27 +11,58 @@ from typing import Any
 
 from chcp.gee.analisis_temporal import _estado_y_mascara_valida_ee
 from chcp.gee.coberturas_sinia import _imagen_categorias
-from chcp.gee.evaluacion_ecologica import _coincidence, _hansen
+from chcp.gee.analisis_complementario import HANSEN_ASSET
+from chcp.gee.evaluacion_ecologica import _hansen
 from chcp.nucleo.metodologia_indice import PERIODOS_ANALISIS
 
+_REF_PERDIDA = "Había bosque a fines de 2020 y entre 2021 y 2025 se observa desmonte, quema, apertura del dosel o caminos nuevos."
+_REF_BOSQUE = "Dosel arbóreo continuo durante 2020–2025 (incluye bosque secundario cerrado y plantaciones con dosel cerrado)."
+_REF_NO_BOSQUE = "Pasto, cultivo, rastrojo bajo, suelo, construcción o agua durante 2020–2025."
+
+# Versión 2 (auditoría C): todas las clases de cambio se refieren a 2021–2025. La versión 1
+# usaba el estado JRC acumulado desde 1990, que mezclaba deforestación antigua con la reciente.
 MAPAS: dict[str, dict[str, Any]] = {
     "senal_perdida": {
-        "titulo": "Señal de pérdida de bosque 2021–2025 del geoportal",
-        "descripcion": "Pérdida = al menos dos fuentes coinciden (deterioro JRC, pérdida Hansen desde 2021 o salida de árboles ESRI 2017→2024). "
-                       "Bosque = bosque JRC sin perturbación y sin señales. No bosque = el resto.",
+        "titulo": "Señal de pérdida de bosque 2021–2025 del geoportal (≥ 2 fuentes)",
+        "version": 2,
+        "descripcion": "Pérdida = al menos dos de: JRC (bosque sin perturbación en 2020 y deforestado o degradado en 2025), "
+                       "Hansen (pérdida 2021–2025) y ESRI (árboles 2017 → otra clase 2024). Bosque = JRC sin perturbación en "
+                       "2025 y ninguna fuente. No bosque = el resto. Período de referencia 2021–2025 (ESRI cubre 2017–2024).",
         "escala_m": 30,
         "leyenda": [
-            {"codigo": 1, "clave": "perdida", "etiqueta": "Pérdida o degradación de bosque", "color": "#c62828",
-             "guia": "Había bosque al inicio del período y en imágenes recientes se ve desmonte, quema, caminos nuevos o dosel abierto."},
-            {"codigo": 2, "clave": "bosque", "etiqueta": "Bosque", "color": "#2e7d32",
-             "guia": "Dosel arbóreo continuo durante todo el período (incluye bosque secundario cerrado)."},
-            {"codigo": 3, "clave": "no_bosque", "etiqueta": "No bosque", "color": "#d7c2a1",
-             "guia": "Pasto, cultivo, rastrojo bajo, suelo, construcción o agua durante todo el período."},
+            {"codigo": 1, "clave": "perdida", "etiqueta": "Pérdida o degradación 2021–2025", "color": "#c62828", "guia": _REF_PERDIDA},
+            {"codigo": 2, "clave": "bosque", "etiqueta": "Bosque", "color": "#2e7d32", "guia": _REF_BOSQUE},
+            {"codigo": 3, "clave": "no_bosque", "etiqueta": "No bosque", "color": "#d7c2a1", "guia": _REF_NO_BOSQUE},
+        ],
+    },
+    "hansen_2021_2025": {
+        "titulo": "Hansen GFC: pérdida de cobertura arbórea 2021–2025",
+        "version": 1,
+        "descripcion": "Evaluación separada de Hansen. Pérdida = lossyear 2021–2025; bosque = cobertura 2000 ≥ 30 % sin pérdida "
+                       "hasta 2025; no bosque = el resto.",
+        "escala_m": 30,
+        "leyenda": [
+            {"codigo": 1, "clave": "perdida", "etiqueta": "Pérdida 2021–2025", "color": "#c62828", "guia": _REF_PERDIDA},
+            {"codigo": 2, "clave": "bosque", "etiqueta": "Bosque", "color": "#2e7d32", "guia": _REF_BOSQUE},
+            {"codigo": 3, "clave": "no_bosque", "etiqueta": "No bosque", "color": "#d7c2a1", "guia": _REF_NO_BOSQUE},
+        ],
+    },
+    "jrc_cambio_2021_2025": {
+        "titulo": "JRC TMF: perturbación nueva 2021–2025",
+        "version": 1,
+        "descripcion": "Evaluación separada de JRC. Pérdida = sin perturbación en 2020 y deforestado o degradado en 2025; "
+                       "bosque = sin perturbación en 2020 y 2025; no bosque = el resto.",
+        "escala_m": 30,
+        "leyenda": [
+            {"codigo": 1, "clave": "perdida", "etiqueta": "Perturbación nueva 2021–2025", "color": "#c62828", "guia": _REF_PERDIDA},
+            {"codigo": 2, "clave": "bosque", "etiqueta": "Bosque", "color": "#2e7d32", "guia": _REF_BOSQUE},
+            {"codigo": 3, "clave": "no_bosque", "etiqueta": "No bosque", "color": "#d7c2a1", "guia": _REF_NO_BOSQUE},
         ],
     },
     "sinia_2021": {
         "titulo": "Cobertura general SINIA 2021 (tres categorías)",
-        "descripcion": "Exactitud temática del producto oficial 2021 en la CHCP.",
+        "version": 1,
+        "descripcion": "Exactitud temática del producto oficial 2021 en la CHCP (fecha de referencia 2021).",
         "escala_m": 10,
         "leyenda": [
             {"codigo": 1, "clave": "bosque", "etiqueta": "Bosques y otras tierras boscosas", "color": "#237A4B",
@@ -44,16 +75,35 @@ MAPAS: dict[str, dict[str, Any]] = {
     },
 }
 
+# Clase especial de la interpretación: el punto no se puede decidir con la evidencia disponible.
+SIN_EVIDENCIA = {"codigo": 0, "clave": "sin_evidencia", "etiqueta": "Sin evidencia suficiente",
+                 "guia": "Nubes, sombra, imágenes sin fecha adecuada o cobertura ambigua. Se excluye del cálculo y se informa."}
+
 
 def imagen_estratos(clave: str, geometria, ee):
-    if clave == "senal_perdida":
-        jrc, valida = _estado_y_mascara_valida_ee("jrc_tmf", PERIODOS_ANALISIS["jrc_diagnostico"], geometria, ee_module=ee)
-        ini, _ = _estado_y_mascara_valida_ee("esri_lulc", PERIODOS_ANALISIS["esri_inicial"], geometria, ee_module=ee)
-        fin, _ = _estado_y_mascara_valida_ee("esri_lulc", PERIODOS_ANALISIS["esri_final"], geometria, ee_module=ee)
-        post, _, _ = _hansen(geometria, ee)
-        fuentes = _coincidence(jrc, post, ini, fin, geometria, ee).unmask(0)
-        imagen = (ee.Image(3).where(jrc.eq(1).And(fuentes.eq(0)), 2).where(fuentes.gte(2), 1)
-                  .updateMask(valida).setDefaultProjection(jrc.projection()))
+    if clave in ("senal_perdida", "hansen_2021_2025", "jrc_cambio_2021_2025"):
+        jrc25, valida = _estado_y_mascara_valida_ee("jrc_tmf", 2025, geometria, ee_module=ee)
+        jrc20, _ = _estado_y_mascara_valida_ee("jrc_tmf", 2020, geometria, ee_module=ee)
+        proy = jrc25.projection()
+        jrc_reciente = jrc20.eq(1).And(jrc25.eq(2).Or(jrc25.eq(3))).unmask(0)
+        post, _, base = _hansen(geometria, ee)
+        hansen_reciente = post.gt(0).unmask(0).reproject(crs=proy)
+        if clave == "hansen_2021_2025":
+            hansen = ee.Image(HANSEN_ASSET)
+            bosque = hansen.select("treecover2000").gte(30).And(hansen.select("lossyear").unmask(0).eq(0))
+            imagen = (ee.Image(3).where(bosque, 2).where(post.gt(0).unmask(0), 1)
+                      .setDefaultProjection(hansen.projection()))
+            return imagen.rename("estrato").toInt().clip(geometria)
+        if clave == "jrc_cambio_2021_2025":
+            imagen = ee.Image(3).where(jrc20.eq(1).And(jrc25.eq(1)), 2).where(jrc_reciente, 1).updateMask(valida).setDefaultProjection(proy)
+            return imagen.rename("estrato").toInt().clip(geometria)
+        ini, v_ini = _estado_y_mascara_valida_ee("esri_lulc", PERIODOS_ANALISIS["esri_inicial"], geometria, ee_module=ee)
+        fin, v_fin = _estado_y_mascara_valida_ee("esri_lulc", PERIODOS_ANALISIS["esri_final"], geometria, ee_module=ee)
+        esri = (ini.eq(2).And(fin.neq(2)).And(v_ini).And(v_fin).unmask(0).setDefaultProjection(ini.projection())
+                .reduceResolution(reducer=ee.Reducer.max(), bestEffort=True, maxPixels=1024).reproject(crs=proy).gt(0))
+        fuentes = jrc_reciente.add(hansen_reciente).add(esri)
+        imagen = (ee.Image(3).where(jrc25.eq(1).And(fuentes.eq(0)), 2).where(fuentes.gte(2), 1)
+                  .updateMask(valida).setDefaultProjection(proy))
     elif clave == "sinia_2021":
         imagen = _imagen_categorias(2021, ee)
     else:

@@ -18,6 +18,8 @@ from statistics import mean, median, pstdev
 from typing import Any, Iterable
 from zipfile import BadZipFile, ZipFile
 
+from chcp.nucleo.proyecciones import EPSG_METRICO
+
 
 MAX_NODOS_CENTRALIDAD_EXACTA = 250
 MUESTRA_NODOS_INTERMEDIACION = 64
@@ -934,6 +936,7 @@ def analizar_fragmentacion_conectividad(
     aoi_geojson: dict[str, Any],
     umbral_m: float = 500,
     area_min_ha: float = 0,
+    epsg_metrico: int = EPSG_METRICO,
 ) -> dict[str, Any]:
     deps, lector, prj = _lector(datos_zip)
     if not prj:
@@ -945,7 +948,7 @@ def analizar_fragmentacion_conectividad(
         raise ValueError(f"El campo {campo_clase!r} no existe en el shapefile.")
 
     crs_origen = deps["CRS"].from_wkt(prj)
-    crs_area = deps["CRS"].from_epsg(8857)
+    crs_area = deps["CRS"].from_epsg(int(epsg_metrico))
     a_area = deps["Transformer"].from_crs(crs_origen, crs_area, always_xy=True)
     wgs_a_area = deps["Transformer"].from_crs("EPSG:4326", crs_area, always_xy=True)
     area_a_wgs = deps["Transformer"].from_crs(crs_area, "EPSG:4326", always_xy=True)
@@ -1150,6 +1153,7 @@ def analizar_fragmentacion_geojson(
     incluir_contexto_exterior: bool = False,
     corredores_geojson: dict[str, Any] | None = None,
     radio_busqueda_corredor_m: float = 0.0,
+    epsg_metrico: int = EPSG_METRICO,
 ) -> dict[str, Any]:
     """Analiza una cobertura preclasificada como bosque recibida desde Earth Engine.
 
@@ -1161,7 +1165,7 @@ def analizar_fragmentacion_geojson(
     """
 
     deps = _dependencias()
-    crs_area = deps["CRS"].from_epsg(8857)
+    crs_area = deps["CRS"].from_epsg(int(epsg_metrico))
     wgs_a_area = deps["Transformer"].from_crs(
         "EPSG:4326", crs_area, always_xy=True
     )
@@ -1236,6 +1240,7 @@ def analizar_fragmentacion_geojson(
         corredores_contexto=corredores_contexto,
         radio_busqueda_corredor_m=float(radio_busqueda_corredor_m or 0.0),
     )
+    resultado["crs_metrico"] = f"EPSG:{int(epsg_metrico)}"
     resultado["area_objetivo_geojson"] = {
         "type": "FeatureCollection",
         "features": [

@@ -31,6 +31,7 @@ if str(RAIZ) not in sys.path:
 os.environ.setdefault("GEE_PROJECT_ID", "geoportal-513817")
 
 from chcp.nucleo.metodologia_indice import METODOLOGIA_VERSION  # noqa: E402
+from chcp.nucleo.procesamiento import metadatos_ejecucion  # noqa: E402
 from chcp.territorio.territorio_local import coleccion_subcuencas  # noqa: E402
 from webapp.models import (  # noqa: E402
     AreaSelection, EcologicalEvaluationRequest, EriRequest, IntegratedEvaluationRequest, SiniaCoverageRequest,
@@ -49,7 +50,7 @@ SALIDA = RAIZ / "data" / "estadisticas_territoriales.json"
 DIR_GEOMETRIAS = RAIZ / "data" / "subcuencas"
 DIR_MAPAS = RAIZ / "data" / "mapas"
 # Versión del contenido del archivo: si cambia, se recalcula todo aunque no se use --rehacer.
-VERSION_DATOS = 2
+VERSION_DATOS = 3  # 3: distancias de conectividad en UTM 17N y métricas completas del índice
 CLASES_JRC = ("tmf_estable", "tmf_degradacion", "tmf_deforestacion", "tmf_recuperacion",
               "tmf_agua", "tmf_otra_cobertura")
 
@@ -141,6 +142,9 @@ def _compactar(territorio: dict, evaluacion: dict, estructura: dict | None, corr
             "combinacion_territorial": visita.get("combinacion_territorial"),
             "lectura_integrada": visita.get("lectura_integrada"),
         },
+        # Todas las métricas del evaluador (superficies válidas por fuente incluidas) para auditar señales.
+        "metricas_indice": {k: (round(v, 6) if isinstance(v, float) else v) for k, v in m.items() if isinstance(v, (int, float))},
+        "procesado": datetime.now().isoformat(timespec="seconds"),
         "jrc_ha": {k: m.get(k) for k in CLASES_JRC},
         "hansen_post_2020_ha": m.get("hansen_post"),
         "esri": {k: m.get(k) for k in ("esri_salida", "esri_ganancia", "esri_estable", "esri_arboles_final")},
@@ -196,6 +200,25 @@ def _mapas_y_riparia(territorio: dict, registro: dict) -> None:
         print(f"    riparia: {exc}")
 
 
+REGISTRO = RAIZ / "data" / "registro_versiones.json"
+
+
+def _registrar(datos: dict, inicio: str, procesados: int) -> None:
+    """Registro de versiones: una entrada por ejecución (fuente, código, fecha, estado)."""
+    from chcp.nucleo.procesamiento import estado_actualizacion
+
+    registro = json.loads(REGISTRO.read_text(encoding="utf-8")) if REGISTRO.exists() else []
+    estado = estado_actualizacion(datos)
+    registro.append({
+        "inicio": inicio, "fin": datetime.now().isoformat(timespec="seconds"),
+        "version_codigo": datos["procesamiento"]["version_codigo"], "workflow_run": datos["procesamiento"]["workflow_run"],
+        "metodologia": datos["metodologia"], "version_datos": datos["version_datos"],
+        "territorios_procesados": procesados, "errores": sorted(datos.get("errores") or {}),
+        "estado": "completa" if estado["completa"] else "parcial", "por_version": estado["por_version"],
+    })
+    REGISTRO.write_text(json.dumps(registro[-200:], ensure_ascii=False, indent=1), encoding="utf-8")
+
+
 def _guardar(datos: dict) -> None:
     datos["generado"] = datetime.now().isoformat(timespec="seconds")
     temporal = SALIDA.with_suffix(".tmp")
@@ -215,7 +238,7 @@ def main() -> int:
     args = parser.parse_args()
 
     datos = {"metodologia": METODOLOGIA_VERSION, "version_datos": VERSION_DATOS, "proyecto": os.environ["GEE_PROJECT_ID"],
-             "umbral_conectividad_m": args.distancia, "capas_mapa": CAPAS, "codificacion_valores": CODIFICACION_VALORES, "territorios": {}, "errores": {}}
+             "umbral_conectividad_m": args.distancia, "procesamiento": metadatos_ejecucion(METODOLOGIA_VERSION, VERSION_DATOS), "capas_mapa": CAPAS, "codificacion_valores": CODIFICACION_VALORES, "territorios": {}, "errores": {}}
     # Se conservan siempre los territorios ya publicados para que el sitio no quede
     # incompleto durante una actualización parcial (p. ej. --limite 1). Los de una
     # versión anterior de datos se marcan como pendientes y se reemplazan al recalcularlos.
@@ -247,6 +270,7 @@ def main() -> int:
     if args.rehacer:
         for t in datos["territorios"].values():
             t["version_datos"] = -1  # pendiente, pero visible hasta que se recalcule
+    inicio_ejecucion = datetime.now().isoformat(timespec="seconds")
     pendientes = [t for t in _territorios() if t["id"] not in datos["territorios"] or not vigente(datos["territorios"][t["id"]])]
     if args.limite:
         pendientes = pendientes[: args.limite]
@@ -287,6 +311,7 @@ def main() -> int:
             traceback.print_exc(limit=1)
         _guardar(datos)
 
+    _registrar(datos, inicio_ejecucion, len(pendientes))
     total = len(_territorios())
     print(f"Listo: {len(datos['territorios'])}/{total} territorios en {SALIDA}")
     if datos["errores"]:
