@@ -22,7 +22,7 @@
       <p class="hint-p small">Formatos: GeoJSON o KML. Para dibujar, haga clic en cada vértice y doble clic (o «Terminar») para cerrar. Solo se analiza la parte dentro de la CHCP.</p>
       <div class="pinfo" id="pg-info" hidden></div>
       <div class="pbtns">
-        <button class="btn btn-p" id="pg-run" type="button" disabled>Verificar polígono</button>
+        <button class="btn btn-p" id="pg-run" type="button" disabled>Analizar este polígono</button>
         <button class="btn btn-s" id="pg-clear" type="button" disabled>Borrar</button>
       </div>
       <p class="hint-p small">El cálculo se hace en su navegador con los mapas de valores precalculados (píxel de 10 a 30 m según la subcuenca); no envía el polígono a ningún servidor.</p>
@@ -44,5 +44,12 @@
     <div class="res-b" id="pe-res-b"></div>
   </aside>
 </main>
+<div class="modal" id="pe-modal" hidden role="dialog" aria-modal="true" aria-labelledby="pe-modal-t">
+  <div class="dlg">
+    <div class="dlg-h"><h2 id="pe-modal-t">Realizar análisis</h2><button class="xbtn" id="pe-modal-x" type="button" aria-label="Cerrar">×</button></div>
+    <div class="dlg-b"><ol class="stp" id="pe-stp"></ol><div class="dlg-c" id="pe-wiz"></div></div>
+    <div class="dlg-f"><button class="btn btn-s" id="pe-back" type="button">Atrás</button><button class="btn btn-p" id="pe-next" type="button">Siguiente</button></div>
+  </div>
+</div>
 {% endblock %}
 {% block scripts %}<script src="{{ url_for('static', filename='js/red_conectividad.js') }}"></script><script src="{{ url_for('static', filename='js/analisis_poligono.js') }}"></script><script src="{{ url_for('static', filename='js/plataforma_estatica.js') }}"></script>{% endblock %}

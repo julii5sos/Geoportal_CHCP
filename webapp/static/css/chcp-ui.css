@@ -561,3 +561,14 @@ html.app #main-content:has(.pg) { overflow-y:auto; background:#f3f6fa; }
 /* Mapas precalculados nítidos (sin suavizado al ampliar) y aviso de resolución */
 .leaflet-image-layer.pe-raster { image-rendering:pixelated; image-rendering:crisp-edges; }
 .pe-aviso { position:absolute; left:50%; top:14px; transform:translateX(-50%); z-index:800; max-width:560px; background:#fff8e1; border:1px solid #ffe082; border-left:4px solid #f9a825; border-radius:8px; padding:8px 12px; font-size:12.5px; color:#5d4037; box-shadow:0 4px 14px rgba(0,0,0,.15); }
+/* Plataforma publicada: asistente y secciones por análisis */
+.pe-wiz-sel { display:block; margin-top:8px; width:100%; padding:7px 9px; border:1px solid var(--azul-linea); border-radius:7px; font-weight:600; }
+.pe-wiz-acc { display:flex; gap:8px; }
+.opt.layer-disabled { opacity:.5; cursor:not-allowed; }
+.pe-nav { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:8px; position:sticky; top:0; background:#fff; padding:4px 0 8px; z-index:2; }
+.pe-nav a { font-size:12px; font-weight:700; color:var(--azul); background:var(--azul-suave); border-radius:999px; padding:4px 10px; text-decoration:none; }
+.pe-sec { border-top:1px solid var(--line); padding:12px 0 6px; }
+.pe-sec h3 { display:flex; align-items:center; gap:7px; font-size:15px; color:var(--azul-tinta); margin:0 0 10px; }
+.pe-sec h3 svg { color:var(--azul); }
+.pe-h4 { font-size:13px; margin:10px 0 6px; color:var(--azul-tinta); }
+.pe-t { font-size:12.5px; } .pe-t td small { display:block; color:var(--muted); font-size:11px; }
