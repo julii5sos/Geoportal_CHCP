@@ -176,7 +176,9 @@ def _mapas_y_riparia(territorio: dict, registro: dict) -> None:
     """Mapas temáticos PNG, ríos principales y franjas riparias (complementarios)."""
     geometria, _ = resolve_area(AreaSelection(**territorio["area"]))
     destino = DIR_MAPAS / territorio["id"]
-    registro["mapas"] = generar_mapas(geometria, destino, ee_module=ee)
+    from chcp.gee.mapas_ficha import MAX_PIXELES_CUENCA, MAX_PIXELES_LADO
+    registro["mapas"] = generar_mapas(geometria, destino, ee_module=ee,
+                                      max_pixeles=MAX_PIXELES_CUENCA if territorio["id"] == "chcp" else MAX_PIXELES_LADO)
     try:
         rios = rios_principales(geometria, ee_module=ee)
         (destino / "rios.json").write_text(json.dumps(

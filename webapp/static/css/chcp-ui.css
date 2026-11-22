@@ -558,3 +558,6 @@ html.app #main-content:has(.pg) { overflow-y:auto; background:#f3f6fa; }
 .fi-logo { flex:none; width:64px; height:64px; align-self:center; }
 .fi-head { align-items:center; } .fi-head-txt { flex:1; }
 @media (max-width:640px) { .logo-badge { width:42px; height:42px; } .logo-badge img { width:35px; height:35px; } }
+/* Mapas precalculados nítidos (sin suavizado al ampliar) y aviso de resolución */
+.leaflet-image-layer.pe-raster { image-rendering:pixelated; image-rendering:crisp-edges; }
+.pe-aviso { position:absolute; left:50%; top:14px; transform:translateX(-50%); z-index:800; max-width:560px; background:#fff8e1; border:1px solid #ffe082; border-left:4px solid #f9a825; border-radius:8px; padding:8px 12px; font-size:12.5px; color:#5d4037; box-shadow:0 4px 14px rgba(0,0,0,.15); }

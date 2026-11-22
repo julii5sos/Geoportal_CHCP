@@ -32,7 +32,7 @@ concurrency:
 jobs:
   recalcular:
     runs-on: ubuntu-latest
-    timeout-minutes: 300
+    timeout-minutes: 350  # máximo de GitHub: 360; el cálculo es reanudable
     steps:
       - uses: actions/checkout@v4
         with:

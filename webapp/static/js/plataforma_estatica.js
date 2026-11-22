@@ -48,7 +48,7 @@
     const fuente = conMapas();
     const orden = catalogo().filter((c) => c.disponible && st.activas.has(c.k));
     for (const c of orden.filter((x) => x.k.startsWith('r:'))) {
-      st.capas[c.k] = L.imageOverlay(mapFile(fuente.id, `${c.capa.clave}.png`), fuente.mapas.limites, { opacity: st.opacidad, interactive: false }).addTo(map);
+      st.capas[c.k] = L.imageOverlay(mapFile(fuente.id, `${c.capa.clave}.png`), fuente.mapas.limites, { opacity: st.opacidad, interactive: false, pane: 'rasters', className: 'pe-raster' }).addTo(map);
     }
     if (st.activas.has('preevaluacion')) {
       st.capas.preevaluacion = L.geoJSON(st.territory.subbasins, { style: (f) => { const p = st.data.territorios[f.properties.id]?.preevaluacion; return { color: '#fff', weight: 0.8, fillColor: PRIO[p?.prioridad] || '#e5e9f0', fillOpacity: 0.55 }; }, onEachFeature: clicSubcuenca }).addTo(map);
@@ -58,7 +58,7 @@
     }
     if (st.activas.has('corredores')) st.capas.corredores = L.geoJSON(st.territory.corridors, { style: (f) => { const c = COLOR_CORREDOR[f.properties.categoria_etiqueta] || '#7fae00'; return { color: c, weight: 1.4, fillColor: c, fillOpacity: 0.15 }; }, onEachFeature: (f, l) => l.bindTooltip(`${esc(f.properties.nombre)} · conectividad ${esc(f.properties.categoria_etiqueta)}`) }).addTo(map);
     if (st.activas.has('rios') && fuente.mapas?.rios) {
-      try { st.rios = await (await fetch(mapFile(fuente.id, 'rios.json'))).json(); st.capas.rios = L.geoJSON(st.rios, { style: { color: '#1f78b4', weight: 2 }, interactive: false }).addTo(map); } catch (_) { /* sin ríos */ }
+      try { st.rios = await (await fetch(mapFile(fuente.id, 'rios.json'))).json(); st.capas.rios = L.geoJSON(st.rios, { style: { color: '#1f78b4', weight: 2 }, interactive: false, pane: 'rasters' }).addTo(map); } catch (_) { /* sin ríos */ }
     }
     if (st.activas.has('parches') && st.geo) {
       const color = { Alta: '#1b5e20', Media: '#66bb6a', Baja: '#c5e1a5' };
@@ -70,6 +70,16 @@
       const sitios = Object.values(st.data.territorios).filter((x) => x && (st.id === 'chcp' || x.id === st.id)).flatMap((x) => (x.sitios || []).map((s) => ({ ...s, sub: x.nombre })));
       st.capas.sitios = L.layerGroup(sitios.map((s) => L.circleMarker([s.lat, s.lon], { radius: 4 + s.fuentes * 2, color: '#fff', weight: 1.2, fillColor: '#6a1b9a', fillOpacity: 0.9 }).bindTooltip(`${esc(s.id)} · ${hectares(s.area_ha)} · ${s.fuentes} fuente(s)`))).addTo(map);
     }
+    // Recorte visual: con una subcuenca elegida, todo lo que está fuera queda velado.
+    const f = st.id !== 'chcp' && st.territory.subbasins.features.find((x) => x.properties.id === st.id);
+    if (f) {
+      const huecos = (f.geometry.type === 'Polygon' ? [f.geometry.coordinates] : f.geometry.coordinates).map((p) => p[0].map(([x, y]) => [y, x]));
+      st.capas.mascara = L.polygon([[[-90, -180], [-90, 180], [90, 180], [90, -180]], ...huecos], { pane: 'mascara', stroke: false, fillColor: '#eef1f4', fillOpacity: 0.9, interactive: false }).addTo(map);
+    }
+    const aviso = $('#pe-aviso');
+    const reutiliza = st.id !== 'chcp' && fuente.id === 'chcp' && orden.some((c) => c.k.startsWith('r:'));
+    aviso.hidden = !reutiliza;
+    if (reutiliza) aviso.innerHTML = `Los mapas detallados de ${esc(t().nombre)} aún no se han generado: se muestra el mapa de la cuenca completa (píxel de ${number(fuente.mapas.tamano_pixel_m, 0)} m) recortado a la subcuenca. Se reemplazará por la versión de 10–30 m en la próxima actualización.`;
     leyenda(orden);
   }
   function clicSubcuenca(f, l) {
@@ -308,6 +318,9 @@
   // ------------------------------------------------------------ inicio
   try { [st.data, st.territory] = await Promise.all([api('/api/v1/panel/statistics'), api('/api/v1/territory')]); } catch (error) { $('#pe-capas').innerHTML = `<p class="fi-pending">No se pudieron cargar los datos: ${esc(error.message)}</p>`; return; }
   st.map = L.map('smap', { zoomControl: true });
+  // Orden de dibujo: mapas (350) < velo fuera de la subcuenca (380) < vectores (400).
+  st.map.createPane('rasters').style.zIndex = 350;
+  st.map.createPane('mascara').style.zIndex = 380;
   const ponerBase = (k) => { const b = BASES.find((x) => x[0] === k) || BASES[0]; if (st.base) st.map.removeLayer(st.base); st.base = L.tileLayer(b[2], { attribution: 'Esri', maxZoom: 18 }).addTo(st.map); st.base.bringToBack(); $$('#pe-bm button').forEach((x) => x.setAttribute('aria-pressed', String(x.dataset.base === k))); };
   $('#pe-bm').innerHTML = BASES.map(([k, n, , c]) => `<button type="button" data-base="${k}"><i style="background:${c}"></i>${n}</button>`).join('');
   $$('#pe-bm button').forEach((b) => b.addEventListener('click', () => ponerBase(b.dataset.base)));

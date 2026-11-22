@@ -134,3 +134,31 @@ class BloquesTests(unittest.TestCase):
         v = mf.descargar_valores(Img(), None, malla, EE)
         self.assertEqual(v.shape, (malla["grid"]["dimensions"]["height"], malla["grid"]["dimensions"]["width"]))
         self.assertTrue((v == 1).all())
+
+
+class GenerarMapasTests(unittest.TestCase):
+    def test_genera_todas_las_capas_en_paralelo_y_aisla_errores(self):
+        import tempfile
+        from pathlib import Path
+        from unittest import mock
+
+        import numpy as np
+
+        class EE:
+            @staticmethod
+            def Geometry(*a, **k): return None
+
+        def falso(imagen, geometria, malla, ee, partes=1):
+            if imagen == "eri":
+                raise RuntimeError("falla simulada")
+            d = malla["grid"]["dimensions"]
+            return np.ones((d["height"], d["width"]))
+
+        with tempfile.TemporaryDirectory() as tmp, \
+                mock.patch.object(mf, "_imagen_capa", lambda clave, g, ee: clave), \
+                mock.patch.object(mf, "descargar_valores", falso):
+            r = mf.generar_mapas(CUADRADO, Path(tmp), ee_module=EE, registro=lambda *_: None)
+            self.assertIn("eri", r["errores"])
+            self.assertEqual(len(r["capas"]), len(mf.CAPAS) - 1)
+            self.assertIn("aux", r["valores"])
+            self.assertTrue((Path(tmp) / "jrc_2025.v.png").exists())

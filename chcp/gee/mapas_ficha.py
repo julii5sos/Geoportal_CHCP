@@ -351,8 +351,12 @@ def descargar_valores(imagen, geometria, malla: dict[str, Any], ee, partes: int 
     return salida
 
 
+HILOS_MAPAS = 5  # solicitudes simultáneas a Earth Engine por territorio
+MAX_PIXELES_CUENCA = 2400  # CHCP completa: ~40 m por píxel en lugar de ~115 m
+
+
 def generar_mapas(geojson: dict[str, Any], destino, *, ee_module, capas: list[str] | None = None,
-                  registro: Callable[[str], None] = print) -> dict[str, Any]:
+                  registro: Callable[[str], None] = print, max_pixeles: int = MAX_PIXELES_LADO) -> dict[str, Any]:
     """Escribe un PNG por capa en ``destino`` y devuelve los metadatos para la ficha."""
     from pathlib import Path
 
@@ -360,19 +364,31 @@ def generar_mapas(geojson: dict[str, Any], destino, *, ee_module, capas: list[st
     destino = Path(destino)
     destino.mkdir(parents=True, exist_ok=True)
     geometria = ee.Geometry(geojson.get("geometry", geojson), proj="EPSG:4326", geodesic=False)
-    malla = malla_mercator(geojson)
+    malla = malla_mercator(geojson, max_pixeles=max_pixeles)
     disponibles, errores = [], {}
     valores_ok = []
-    for clave in capas or [c["clave"] for c in CAPAS] + list(CAPAS_SOLO_VALOR):
-        try:
-            valores = descargar_valores(_imagen_capa(clave, geometria, ee), geometria, malla, ee)
+    claves = capas or [c["clave"] for c in CAPAS] + list(CAPAS_SOLO_VALOR)
+
+    def una_capa(clave: str) -> None:
+        valores = descargar_valores(_imagen_capa(clave, geometria, ee), geometria, malla, ee)
+        if clave in CAPAS_POR_CLAVE:
+            (destino / f"{clave}.png").write_bytes(png(colorear(valores, CAPAS_POR_CLAVE[clave])))
+        if clave in CODIFICACION_VALORES:
+            (destino / f"{clave}.v.png").write_bytes(png_gris(codificar(valores, CODIFICACION_VALORES[clave])))
+
+    # Las solicitudes a Earth Engine son de entrada/salida: se piden varias capas a la vez.
+    from concurrent.futures import ThreadPoolExecutor
+
+    with ThreadPoolExecutor(max_workers=HILOS_MAPAS) as grupo:
+        futuros = {clave: grupo.submit(una_capa, clave) for clave in claves}
+    for clave, futuro in futuros.items():
+        exc = futuro.exception()
+        if exc is None:
             if clave in CAPAS_POR_CLAVE:
-                (destino / f"{clave}.png").write_bytes(png(colorear(valores, CAPAS_POR_CLAVE[clave])))
                 disponibles.append(clave)
             if clave in CODIFICACION_VALORES:
-                (destino / f"{clave}.v.png").write_bytes(png_gris(codificar(valores, CODIFICACION_VALORES[clave])))
                 valores_ok.append(clave)
-        except Exception as exc:  # una capa fallida no impide las demás
+        else:  # una capa fallida no impide las demás
             errores[clave] = f"{type(exc).__name__}: {exc}"[:300]
             registro(f"    mapa {clave}: {errores[clave]}")
     return {"limites": malla["limites"], "tamano_pixel_m": malla["tamano_pixel_m"],
