@@ -8,7 +8,9 @@
   async function api(path, options = {}) {
     if (window.CHCP_STATIC) {
       // Sitio estático (GitHub Pages): solo datos precalculados, sin Earth Engine.
-      const file = window.CHCP_STATIC[path.split('?')[0]];
+      const clean = path.split('?')[0];
+      const geometry = clean.match(/^\/api\/v1\/panel\/geometry\/([A-Za-z0-9_-]+)$/);
+      const file = geometry ? `datos/subcuencas/${geometry[1]}.json` : window.CHCP_STATIC[clean];
       if (!file) {
         const error = new Error('Disponible solo en la versión completa del geoportal (requiere Earth Engine).');
         error.status = 501;

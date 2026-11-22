@@ -865,9 +865,24 @@ def _calcular_metricas_parches(
         "cercania_calculada": cercania_calculada,
     }
     nodos.sort(key=lambda item: item["indice_conector"], reverse=True)
+    try:
+        from chcp.nucleo.metricas_paisaje import MAX_CANDIDATOS_DIIC, resumen_paisaje
+
+        orden = list(indices_objetivo)
+        locales = {indice: posicion for posicion, indice in enumerate(orden)}
+        geometrias_objetivo = [geometrias_visibles[indice] for indice in orden]
+        grafo_local = nx.relabel_nodes(subgrafo_objetivo, locales, copy=True)
+        metricas_paisaje = resumen_paisaje(
+            geometrias_objetivo, grafo_local, area_paisaje_ha, nx=nx, umbral_m=umbral_m,
+        )
+        for aporte in metricas_paisaje["diic_principales"]:
+            aporte["parche_id"] = int(orden[aporte.pop("indice")]) + 1
+    except Exception as exc:  # los indicadores complementarios nunca detienen el motor
+        metricas_paisaje = {"error": f"{type(exc).__name__}: {exc}"}
     return {
         "metricas_clase": metricas_clase,
         "metricas_red": metricas_red,
+        "metricas_paisaje": metricas_paisaje,
         "top_conectores": nodos[:20],
         "parches_geojson": {"type": "FeatureCollection", "features": features},
         "conexiones_geojson": {
