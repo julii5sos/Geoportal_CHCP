@@ -1,4 +1,7 @@
+import importlib.util
 import unittest
+
+FOLIUM = importlib.util.find_spec("folium") is not None
 from io import BytesIO
 from zipfile import ZIP_DEFLATED, ZipFile
 
@@ -78,6 +81,7 @@ class BosqueConectividadTests(unittest.TestCase):
         self.assertGreater(resultado["metricas_clase"]["area_total_bosque_ha"], 0)
         self.assertEqual(len(resultado["parches_geojson"]["features"]), 3)
 
+    @unittest.skipUnless(FOLIUM, "folium solo se usa en la interfaz histórica")
     def test_asset_geojson_preclasificado_no_requiere_campo_del_usuario(self):
         cuadrados = [
             (-80.000, 8.000, -79.999, 8.001),
@@ -187,6 +191,7 @@ class BosqueConectividadTests(unittest.TestCase):
         self.assertEqual(resultado["conexiones_geojson"]["features"], [])
         self.assertEqual(resultado["conexiones_potenciales_geojson"]["features"], [])
 
+    @unittest.skipUnless(FOLIUM, "folium solo se usa en la interfaz histórica")
     def test_area_geometry_collection_se_normaliza_sin_fallar(self):
         area_compuesta = {
             "type": "GeometryCollection",
@@ -308,6 +313,7 @@ class BosqueConectividadTests(unittest.TestCase):
             coordenadas = feature["geometry"]["coordinates"]
             self.assertLess(abs(coordenadas[1][0] - coordenadas[0][0]), 0.001)
 
+    @unittest.skipUnless(FOLIUM, "folium solo se usa en la interfaz histórica")
     def test_ruta_estructural_potencial_puede_usar_bosque_exterior(self):
         def poligono(oeste, este, propiedades=None):
             return {

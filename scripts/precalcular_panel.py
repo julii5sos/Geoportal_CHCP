@@ -38,6 +38,11 @@ from webapp.models import (  # noqa: E402
 from webapp.service import (  # noqa: E402
     run_ecological_evaluation, run_integrated_evaluation, run_sinia_coverages,
 )
+import ee  # noqa: E402
+
+from chcp.gee.gee_config import desactivar_teselas  # noqa: E402
+
+desactivar_teselas(ee)  # el precálculo solo necesita números, no capas de mapa
 
 SALIDA = RAIZ / "data" / "estadisticas_territoriales.json"
 CLASES_JRC = ("tmf_estable", "tmf_degradacion", "tmf_deforestacion", "tmf_recuperacion",

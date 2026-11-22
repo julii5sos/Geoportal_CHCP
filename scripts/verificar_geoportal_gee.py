@@ -37,6 +37,7 @@ from chcp.gee.gee_config import inicializar_earth_engine
 from chcp.nucleo.corredores import analizar_interseccion_corredores
 from chcp.nucleo.metodologia_indice import METODOLOGIA_VERSION, PUNTAJE_MAXIMO_VISITA
 from chcp.territorio.territorio_local import geometria_subcuenca
+from chcp.gee.gee_config import desactivar_teselas
 
 CLASES_JRC = ("tmf_estable", "tmf_degradacion", "tmf_deforestacion",
               "tmf_recuperacion", "tmf_agua", "tmf_otra_cobertura")
@@ -56,6 +57,7 @@ def main() -> int:
     entorno = dict(os.environ)
     entorno["GEE_PROJECT_ID"] = args.project
     inicializar_earth_engine(ee, environ=entorno)
+    desactivar_teselas(ee)
 
     geometria = geometria_subcuenca(args.subcuenca)
     inicio = time.time()

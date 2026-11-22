@@ -1,3 +1,4 @@
+import importlib.util
 import unittest
 
 from chcp.nucleo.corredores import (
@@ -56,6 +57,7 @@ class CorredoresDatosTests(unittest.TestCase):
         self.assertTrue(resultado["participa_prioridad_visita"])
         self.assertEqual(resultado["distancia_corredor_mas_cercano_m"], 0.0)
 
+    @unittest.skipUnless(importlib.util.find_spec("folium"), "folium solo se usa en la interfaz histórica")
     def test_no_serializa_corredores_si_las_capas_estan_apagadas(self):
         import folium
 
