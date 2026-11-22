@@ -135,3 +135,19 @@ class ConfiguracionGeeTests(unittest.TestCase):
 if __name__ == "__main__":
     unittest.main()
 
+
+
+class DesactivarTeselasTests(unittest.TestCase):
+    def test_get_map_id_devuelve_url_nula_sin_llamar_a_earth_engine(self):
+        from types import SimpleNamespace
+
+        from chcp.gee.gee_config import desactivar_teselas
+        from chcp.gee.evaluacion_ecologica import _tile
+
+        class Imagen:
+            def getMapId(self, vis=None):
+                raise AssertionError("no debe llamarse")
+
+        falso_ee = SimpleNamespace(Image=Imagen)
+        desactivar_teselas(falso_ee)
+        self.assertIsNone(_tile(Imagen(), {}))

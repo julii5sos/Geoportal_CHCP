@@ -171,3 +171,20 @@ def assets_privados_configurados(
         for nombre in PRIVATE_ASSET_KEYS
     }
 
+
+
+def desactivar_teselas(ee_module) -> None:
+    """Evita crear capas de mapa (``getMapId``) en cálculos por lotes.
+
+    Los procesos sin interfaz (GitHub Actions, precálculo del panel) solo necesitan
+    números; crear teselas exige el permiso ``earthengine.maps.create`` que la cuenta
+    de servicio de solo lectura no tiene. Los resultados conservan la clave
+    ``tile_url`` con valor ``None``.
+    """
+
+    from types import SimpleNamespace
+
+    def _sin_teselas(self, vis_params=None):  # noqa: ARG001
+        return {"mapid": None, "token": None, "tile_fetcher": SimpleNamespace(url_format=None)}
+
+    ee_module.Image.getMapId = _sin_teselas
