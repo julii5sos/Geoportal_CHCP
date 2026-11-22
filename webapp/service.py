@@ -260,7 +260,23 @@ def _public_record(item: CachedResult, *, cache_hit: bool) -> dict[str, Any]:
         "created_utc": datetime.fromtimestamp(item.created_at, timezone.utc).isoformat(),
         "map_feature_limits": limits,
         **value,
+        # Procedencia (auditoría D): cálculo directo de Earth Engine por el backend;
+        # si proviene de la caché del servidor, conserva la fecha del cálculo original.
+        "procesamiento": {
+            "tipo": "A",
+            "descripcion": "Calculado con Earth Engine por el servidor"
+            + (" (resultado reutilizado de la caché; ver fecha)" if cache_hit else ""),
+            "fecha_procesamiento": datetime.fromtimestamp(item.created_at, timezone.utc).isoformat(timespec="seconds"),
+            "version_codigo": _version_codigo(),
+            "metodologia": METODOLOGIA_VERSION,
+        },
     }
+
+
+def _version_codigo() -> str:
+    from chcp.nucleo.procesamiento import version_codigo
+
+    return version_codigo()
 
 
 def run_analysis(request: AnalysisRequest) -> dict[str, Any]:

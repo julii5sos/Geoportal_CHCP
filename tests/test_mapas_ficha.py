@@ -98,3 +98,67 @@ class CodificacionTests(unittest.TestCase):
     def test_todas_las_capas_de_indice_tienen_codificacion(self):
         for clave in ("jrc_2025", "hansen", "esri_cambio", "ndvi_cambio", "eri", "sinia_2021", "coincidencia", "riparia", "gedi", "aux"):
             self.assertIn(clave, mf.CODIFICACION_VALORES)
+
+
+class BloquesTests(unittest.TestCase):
+    def test_submallas_cubren_la_malla_sin_solapes(self):
+        m = mf.malla_mercator(CUADRADO)["grid"]
+        bloques = mf.submallas(m, 3)
+        self.assertEqual(sum(b["dimensions"]["width"] * b["dimensions"]["height"] for _, _, b in bloques),
+                         m["dimensions"]["width"] * m["dimensions"]["height"])
+        fila, col, b = bloques[4]
+        self.assertAlmostEqual(b["affineTransform"]["translateX"], m["affineTransform"]["translateX"] + col * m["affineTransform"]["scaleX"])
+        self.assertAlmostEqual(b["affineTransform"]["translateY"], m["affineTransform"]["translateY"] + fila * m["affineTransform"]["scaleY"])
+
+    def test_reintento_por_bloques_cuando_es_demasiado_grande(self):
+        import numpy as np
+
+        class Img:
+            def toFloat(self): return self
+            def clip(self, g): return self
+            def unmask(self, v): return self
+            def rename(self, n): return self
+
+        class Datos:
+            llamadas = 0
+            def computePixels(self, req):
+                Datos.llamadas += 1
+                d = req["grid"]["dimensions"]
+                if d["width"] > 400:
+                    raise Exception("Reprojection output too large (9774x9418 pixels).")
+                return {"v": np.ones((d["height"], d["width"]))}
+
+        class EE:
+            data = Datos()
+        malla = mf.malla_mercator(CUADRADO)
+        v = mf.descargar_valores(Img(), None, malla, EE)
+        self.assertEqual(v.shape, (malla["grid"]["dimensions"]["height"], malla["grid"]["dimensions"]["width"]))
+        self.assertTrue((v == 1).all())
+
+
+class GenerarMapasTests(unittest.TestCase):
+    def test_genera_todas_las_capas_en_paralelo_y_aisla_errores(self):
+        import tempfile
+        from pathlib import Path
+        from unittest import mock
+
+        import numpy as np
+
+        class EE:
+            @staticmethod
+            def Geometry(*a, **k): return None
+
+        def falso(imagen, geometria, malla, ee, partes=1):
+            if imagen == "eri":
+                raise RuntimeError("falla simulada")
+            d = malla["grid"]["dimensions"]
+            return np.ones((d["height"], d["width"]))
+
+        with tempfile.TemporaryDirectory() as tmp, \
+                mock.patch.object(mf, "_imagen_capa", lambda clave, g, ee: clave), \
+                mock.patch.object(mf, "descargar_valores", falso):
+            r = mf.generar_mapas(CUADRADO, Path(tmp), ee_module=EE, registro=lambda *_: None)
+            self.assertIn("eri", r["errores"])
+            self.assertEqual(len(r["capas"]), len(mf.CAPAS) - 1)
+            self.assertIn("aux", r["valores"])
+            self.assertTrue((Path(tmp) / "jrc_2025.v.png").exists())

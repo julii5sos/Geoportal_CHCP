@@ -84,3 +84,33 @@ class EvaluarCarpetaTests(unittest.TestCase):
             self.assertEqual(r["interpretados"], 5)
             self.assertAlmostEqual(r["resultado"]["por_clase"][0]["exactitud_usuario"], 2 / 3)
             self.assertFalse(r["completo"])
+
+
+class ControlCalidadTests(unittest.TestCase):
+    def test_desacuerdos_sin_evidencia_y_estado(self):
+        import csv
+        import importlib.util
+        import tempfile
+
+        spec = importlib.util.spec_from_file_location("ev2", RAIZ / "scripts" / "evaluar_validacion.py")
+        ev = importlib.util.module_from_spec(spec); spec.loader.exec_module(ev)
+        with tempfile.TemporaryDirectory() as tmp:
+            carpeta = Path(tmp) / "m"; carpeta.mkdir()
+            leyenda = [{"codigo": 1, "clave": "perdida", "etiqueta": "Pérdida"}, {"codigo": 2, "clave": "bosque", "etiqueta": "Bosque"}]
+            (carpeta / "diseno.json").write_text(json.dumps({"mapa": "m", "titulo": "t", "leyenda": leyenda, "areas_ha": {"1": 100, "2": 900}}))
+            # id, estrato, ref1, ref2, final
+            filas = [("P1", 1, "1", "1", ""), ("P2", 1, "1", "2", ""), ("P3", 1, "1", "", ""), ("P4", 2, "2", "", ""),
+                     ("P5", 2, "0", "", ""), ("P6", 2, "2", "1", "2"), ("P7", 1, "2", "", "")]
+            with (carpeta / "estratos.csv").open("w", newline="") as f:
+                w = csv.writer(f); w.writerow(["id", "clase_mapa"]); [w.writerow([i, e]) for i, e, *_ in filas]
+            with (carpeta / "muestra.csv").open("w", newline="") as f:
+                w = csv.writer(f); w.writerow(["id", "lon", "lat", "clase_referencia", "clase_referencia_2", "clase_final", "fecha_imagen"])
+                [w.writerow([i, 0, 0, a, b, c, "2025-01-10"]) for i, _, a, b, c in filas]
+            ev.evaluar_carpeta(carpeta)
+            r = json.loads((carpeta / "resultados.json").read_text())
+            qc = r["control_calidad"]
+            self.assertEqual(qc["desacuerdos_pendientes"], 1)          # P2
+            self.assertEqual(qc["sin_evidencia_excluidos"], 1)         # P5
+            self.assertEqual(qc["revisados_segundo_interprete"], 3)    # P1, P2, P6
+            self.assertEqual(r["interpretados"], 5)                    # P1, P3, P4, P6 (resuelto), P7
+            self.assertEqual(r["estado"], "preliminar")                # desacuerdo pendiente

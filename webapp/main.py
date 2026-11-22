@@ -1,6 +1,8 @@
 """Servidor Flask del Geoportal de Conectividad Ecológica de la CHCP."""
 
 from __future__ import annotations
+
+import json
 import re
 
 import logging
@@ -274,7 +276,7 @@ def create_app(*, testing: bool = False) -> Flask:
 
     @app.get("/api/v1/validacion/<path:ruta>")
     def api_validacion(ruta: str):
-        if not re.fullmatch(r"(indice\.json|[a-z0-9_]{1,40}/(diseno|resultados)\.json|[a-z0-9_]{1,40}/(muestra|estratos)\.csv|[a-z0-9_]{1,40}/muestra\.kml)", ruta):
+        if not re.fullmatch(r"(indice\.json|[a-z0-9_]{1,40}/(diseno|resultados)\.json|[a-z0-9_]{1,40}/muestra\.csv|[a-z0-9_]{1,40}/muestra\.kml)", ruta):
             return jsonify(error="Solicitud no válida."), 400
         path = PANEL_STATISTICS_PATH.parent / "validacion" / ruta
         if not path.exists():
@@ -312,7 +314,13 @@ def create_app(*, testing: bool = False) -> Flask:
                 error="Los indicadores del panel aún no se han calculado.",
                 hint="Ejecute: python scripts/precalcular_panel.py",
             ), 404
-        response = send_file(path, mimetype="application/json", max_age=300)
+        # Se sirve con trazabilidad (tipo B, versión, estado de la actualización) e
+        # indicadores relativos experimentales; el archivo original no se modifica.
+        from chcp.nucleo.procesamiento import enriquecer_estadisticas
+
+        datos = json.loads(path.read_text(encoding="utf-8"))
+        response = jsonify(enriquecer_estadisticas(datos))
+        response.headers["Cache-Control"] = "public, max-age=300"
         return response
 
     @app.get("/methodology")

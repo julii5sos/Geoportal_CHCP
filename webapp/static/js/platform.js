@@ -1,5 +1,14 @@
 (async function () {
-  const { $, $$, escapeHtml: esc, number, hectares, api, toast, readPortalState, writePortalState } = window.CHCP;
+  const { $, $$, escapeHtml: esc, number, hectares, api: apiBase, toast, readPortalState, writePortalState, procedencia } = window.CHCP;
+  // Procedencia (auditoría D): cada resultado del servidor indica tipo A, fecha y versión.
+  let ultimoProcesamiento = null;
+  const api = async (...args) => { const r = await apiBase(...args); if (r && r.procesamiento) ultimoProcesamiento = r; return r; };
+  const marcarProcedencia = () => {
+    const body = document.getElementById('results-body');
+    if (!body || !ultimoProcesamiento || body.querySelector(':scope > .procedencia') || body.querySelector('.empty-result')) return;
+    body.insertAdjacentHTML('afterbegin', procedencia(ultimoProcesamiento, ultimoProcesamiento.procesamiento.tipo || 'A'));
+  };
+  new MutationObserver(marcarProcedencia).observe(document.getElementById('results-body') || document.body, { childList: true });
   const icon = window.CHCP_ICON || (() => '');
   if (!window.L) return;
 

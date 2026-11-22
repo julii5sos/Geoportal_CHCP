@@ -29,7 +29,11 @@ if str(RAIZ) not in sys.path:
     sys.path.insert(0, str(RAIZ))
 os.environ.setdefault("GEE_PROJECT_ID", "geoportal-513817")
 
-COLUMNAS_MUESTRA = ["id", "lon", "lat", "clase_referencia", "confianza", "interprete", "fecha", "fuente_imagen", "notas"]
+# Campos de interpretación y control de calidad (auditoría C.5). «clase_referencia» puede ser 0 /
+# «sin_evidencia». La revisión por un segundo intérprete usa «interprete_2» y «clase_referencia_2»;
+# los desacuerdos se resuelven en «clase_final» con su justificación en «resolucion».
+COLUMNAS_MUESTRA = ["id", "lon", "lat", "clase_referencia", "confianza", "fecha_imagen", "fuente_imagen", "interprete", "fecha",
+                    "interprete_2", "clase_referencia_2", "clase_final", "resolucion", "notas"]
 EXACTITUD_ESPERADA = {"perdida": 0.7, "bosque": 0.9, "no_bosque": 0.85, "otras": 0.85, "agua": 0.95}
 
 
@@ -110,6 +114,10 @@ def main() -> int:
         "escala_m": definicion["escala_m"], "proyecto": os.environ["GEE_PROJECT_ID"],
         "generado": datetime.now().isoformat(timespec="seconds"),
         "metodo": "Muestreo aleatorio estratificado por clase del mapa; estimadores de Olofsson et al. (2014).",
+        "version_mapa": definicion.get("version", 1),
+        "reglas_interpretacion": "Interpretación ciega (sin abrir estratos.csv ni capas del geoportal), píxel centrado en el punto, "
+                                 "fecha de imagen registrada; 0 = sin evidencia suficiente (se excluye y se informa); revisión de "
+                                 "al menos 10 % de los puntos y de todos los de confianza baja por un segundo intérprete.",
     }, ensure_ascii=False, indent=1), encoding="utf-8")
     print(f"{len(puntos)} puntos en {destino}")
     return 0

@@ -264,9 +264,12 @@ def _area_geojson_ha(area_geojson: dict[str, Any]) -> float:
 
 
 def _perimetro_geojson_m(area_geojson: dict[str, Any]) -> float:
+    """Perímetro en UTM 17N (conforme): Equal Earth deforma las longitudes ±15 % en la CHCP."""
     from pyproj import Transformer
 
-    a_m = Transformer.from_crs("EPSG:4326", CRS_METRICAS, always_xy=True)
+    from chcp.nucleo.proyecciones import EPSG_METRICO
+
+    a_m = Transformer.from_crs("EPSG:4326", f"EPSG:{EPSG_METRICO}", always_xy=True)
     area_m = _union_proyectada(normalizar_area_geojson(area_geojson), a_m.transform)
     return float(area_m.length) if area_m is not None else 0.0
 

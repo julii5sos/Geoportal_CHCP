@@ -1,0 +1,34 @@
+# Matriz de hallazgos · auditoría científica y técnica (2026-11-22)
+
+Estados:
+- **Corregido:** el cambio está implementado y probado.
+- **Mitigado:** el riesgo está controlado, pero la causa sigue abierta.
+- **Pendiente:** requiere una ejecución o una decisión.
+- **Bloqueado:** requiere datos o accesos externos.
+
+| ID | Módulo | Problema | Evidencia | Causa | Riesgo | Severidad | Corrección | Prueba | Estado |
+|---|---|---|---|---|---|---|---|---|---|
+| A1 | Índice MT-2026.7 | JRC se activa en 52 de 53 subcuencas | `datos/A_resumen.json` | Estado JRC acumulado desde 1990 (mediana del 16 % del territorio) | Prioridad que no distingue la urgencia reciente | Alta | Diagnóstico documentado. MT-2026.7 intacto. Indicadores relativos experimentales separados (pérdida reciente frente a legado). | `a_saturacion.py` | Corregido como diagnóstico; los umbrales definitivos siguen pendientes |
+| A2 | Índice MT-2026.7 | Hansen con un único umbral absoluto de 0,18 ha | Tabla A: se activa en 46 de 53 | Umbral diseñado para predios | No distingue 0,03 % de 7 % de pérdida | Alta | Indicador relativo «pérdida reciente % del bosque por año» | `a_saturacion.py` y tabla | Corregido como experimental |
+| A3 | Índice MT-2026.7 | Dos fuentes correlacionadas (JRC y Hansen) bastan para «Alta» | 25 subcuencas con 4,0; entropía 0,405 | Suma binaria de fuentes que comparten Landsat | Saturación y empates | Media | Los indicadores relativos no se suman; redundancia medida (ρ 0,47–0,65) | `A_resumen.json` | Pendiente: aprobación científica |
+| A4 | Índice MT-2026.7 | Dependencia del tamaño | Escenario sintético: Baja hasta 500 ha, Alta desde 2 000 ha con las mismas proporciones | Criterios absolutos | Comparación injusta entre territorios | Media | Indicadores relativos (ρ con la superficie ≤ 0,22) | Escenario sintético | Corregido como experimental |
+| A5 | Datos del panel | Faltaba la cobertura válida NDVI y GEDI por territorio | Datos v1 | Compactación incompleta | Señales no auditables | Baja | `metricas_indice` en la versión 3 | Revisión del código | Pendiente: recálculo |
+| B1 | SINIA 2012 | 18 de 30 códigos sin verificar | `datos/B_resumen.json` | Más probable: escala y bordes (clases pequeñas, ρ área–acuerdo 0,68) | Superficies y máscaras erróneas | Alta | Máscara forestal solo con los códigos verificados 1 y 2; diccionario sin cambios | `codigos_forestales == [1, 2]` | Mitigado |
+| B2 | SINIA 2012 | Muestreo anterior insuficiente: 10 puntos, bordes incluidos, a 10 m | Script de auditoría anterior | Diseño de muestreo | No distingue recodificación de efecto de borde | Media | Comparación controlada: puntos interiores, 30 por código, desplazamientos de ±10 m, metadatos del servicio | `b_sinia_2012_controlado.py` y workflow | Pendiente: ejecución |
+| B3 | SINIA 2012 | Códigos 17 y 21 posiblemente recodificados | 90 % hacia 26 y 27 | Por confirmar | Error de diccionario | Media | No se recodifica sin confirmación oficial | B4 controlada | Bloqueado: confirmación de MiAMBIENTE |
+| B4 | Comparabilidad | Transiciones 2012–2021 | Leyendas y escalas distintas | Productos no armonizados | Falsa pérdida o ganancia | Alta | Siguen bloqueadas; propuesta de armonización bosque / no bosque | `comparabilidad_sinia` | Mitigado |
+| C1 | Validación (interfaz) | El ejemplo bibliográfico se mostraba por defecto | Página Validación | Diseño de la interfaz | Confundir el ejemplo con la exactitud de la CHCP | Crítica | Aviso «Validación temática pendiente…»; ejemplo plegado; tres estados distinguidos | Revisión visual | Corregido |
+| C2 | Validación | Fuga de la clase del mapa (`estratos.csv` publicado y cargado) | Constructor, API y JS | Diseño | Interpretación no ciega | Alta | No se publica ni se sirve ni se carga | `test_sitio_estatico` | Corregido |
+| C3 | Validación | Estrato «pérdida» con JRC acumulado frente a referencia reciente | `muestreo_validacion.py` v1 | Definición inconsistente | Comisión inflada por diseño | Alta | `senal_perdida` v2 (2021–2025); mapas separados JRC y Hansen | Revisión del código | Corregido |
+| C4 | Validación | Sin control de calidad (segundo intérprete, sin evidencia, fecha de imagen) | Plantilla CSV | No implementado | Resultados no auditables | Media | Campos de control de calidad y reglas de muestra completa | `test_validacion` (desacuerdos y exclusiones) | Corregido |
+| C5 | Validación | No existe ninguna muestra interpretada | `data/validacion/` vacío | Falta trabajo de campo y gabinete | No hay exactitud cuantificada | Crítica | Plan de validación y herramientas | — | Pendiente: trabajo humano |
+| D1 | Arquitectura | Resultados sin tipo, fecha ni versión | Interfaz y API | No implementado | Confundir lo precalculado o local con lo actual | Alta | Tipos A, B y C con recuadro de procedencia; `procesamiento` en la API | Pruebas y revisión visual | Corregido |
+| D2 | Arquitectura | Actualizaciones parciales sin aviso | Workflow | `if: always()` y conservación de territorios | Mezcla de versiones | Media | `estado_actualizacion`, versión por territorio y `registro_versiones.json` | Revisión del código | Corregido |
+| D3 | Polígonos (C) | Sin tolerancia por tamaño | `plataforma_estatica.js` | No implementado | Superficies sesgadas en polígonos pequeños | Alta | Regla de error de borde 10 % / 25 % | Revisión del código | Corregido |
+| D4 | Paridad | A frente a C no comparado | — | — | Equivalencia no demostrada | Media | Réplica en Python (= JS), `d_paridad.py` y workflow | `test_replica_python_igual_al_navegador` | Pendiente: ejecución |
+| D5 | Mapas de la CHCP | ERI y coincidencias fallaron por tamaño | Registro de Actions | Reproyección demasiado grande | Mapas faltantes | Baja | Descarga por bloques | PR #7 | Pendiente: fusión |
+| E1 | Conectividad | Distancias en Equal Earth (+15,8 % / −13,4 %) | Tabla E.1 | CRS equivalente usado para distancias | Umbral, ENN, núcleo, brechas y bordes anisótropos | **Crítica** | UTM 17N para distancias; 8857 solo histórico | `test_proyeccion_metrica.py` | Corregido en código; pendiente el recálculo v3 |
+| E2 | Simulador | Distancias equirrectangulares en el navegador | `red_conectividad.js` | Aproximación | Errores pequeños de distancia | Baja | UTM 17N con la serie de Krüger | Prueba frente a `pyproj` (< 1 cm) | Corregido |
+| E3 | Simulador | Lenguaje de «restauración» | Interfaz | Redacción | Sobreinterpretación | Media | Enlace propuesto, superficie hipotética y niveles de lo que se mide | Prueba de monotonicidad | Corregido |
+| E4 | ERI | Imputación GEDI no documentada; definiciones de bosque distintas; proximidad riparia ≠ condición | `eri_gee.py` | Diseño del ERI | Interpretación errónea | Baja | Documentado; la fórmula no se cambia (exige ERI-2) | — | Pendiente: decisión científica |
+| E5 | Cobertura temporal | Perímetro en Equal Earth | `analisis_temporal.py` | CRS | Densidad de borde sesgada | Media | UTM 17N | Suite de pruebas | Corregido |

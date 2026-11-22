@@ -260,6 +260,9 @@ def analizar_interseccion_corredores(aoi_geojson: dict[str, Any]) -> dict[str, A
     )
     aoi_m = transform(proyector.transform, geometria_aoi)
     area_aoi_ha = aoi_m.area / 10_000
+    from chcp.nucleo.proyecciones import EPSG_METRICO
+    proyector_metrico = Transformer.from_crs("EPSG:4326", f"EPSG:{EPSG_METRICO}", always_xy=True)
+    aoi_utm = transform(proyector_metrico.transform, geometria_aoi)
 
     detalles = []
     intersecciones = []
@@ -272,7 +275,8 @@ def analizar_interseccion_corredores(aoi_geojson: dict[str, Any]) -> dict[str, A
         if not geometria.is_valid:
             geometria = make_valid(geometria)
         geometria_m = transform(proyector.transform, geometria)
-        distancia_m = float(geometria_m.distance(aoi_m))
+        # Distancias en UTM 17N (conforme); Equal Earth solo para superficies.
+        distancia_m = float(transform(proyector_metrico.transform, geometria).distance(aoi_utm))
         if (
             distancia_corredor_mas_cercano_m is None
             or distancia_m < distancia_corredor_mas_cercano_m

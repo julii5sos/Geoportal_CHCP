@@ -1,0 +1,35 @@
+{
+ "asset": "projects/geoportal-513817/assets/SINIA_2012_USO_SUELO_RASTER5M",
+ "puntos_por_codigo": 10,
+ "fecha_muestreo": "2026-11-21T18:40:08",
+ "codigos_en_chcp": 30,
+ "diagnostico": {
+  "coincide": 12,
+  "recodificacion_candidata": 2,
+  "dispersa": 16,
+  "sin_evidencia": 0
+ },
+ "recodificacion_candidata": [
+  {
+   "codigo": 17,
+   "valor_servicio": "26",
+   "pct": 90.0
+  },
+  {
+   "codigo": 21,
+   "valor_servicio": "27",
+   "pct": 90.0
+  }
+ ],
+ "area_mediana_ha": {
+  "coinciden": 7576.2,
+  "no_coinciden": 281.3
+ },
+ "area_total_ha": {
+  "coinciden": 333103.6,
+  "no_coinciden": 7940.9
+ },
+ "spearman_area_acuerdo": 0.683,
+ "codigos_no_verificados_en_mascara_forestal": [],
+ "nota": "10 puntos aleatorios por código sin control de bordes: evidencia insuficiente para declarar una correspondencia nacional; ver scripts/auditoria/b_sinia_2012_controlado.py."
+}

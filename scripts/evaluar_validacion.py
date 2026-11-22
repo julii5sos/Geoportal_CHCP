@@ -26,10 +26,16 @@ DIR = RAIZ / "data" / "validacion"
 MIN_POR_ESTRATO = 2  # el error estándar requiere al menos dos puntos por estrato
 
 
+QC_MINIMO = 0.10  # fracción de puntos revisados por un segundo intérprete para declarar la muestra completa
+
+
 def leer_referencia(valor: str, leyenda: list[dict]) -> int | None:
+    """Código de la leyenda; 0 = sin evidencia suficiente; None = vacío o no reconocido."""
     valor = (valor or "").strip().lower()
     if not valor:
         return None
+    if valor in ("0", "sin_evidencia", "sin evidencia", "sin evidencia suficiente"):
+        return 0
     for c in leyenda:
         if valor in (str(c["codigo"]), c["clave"].lower(), c["etiqueta"].lower()):
             return c["codigo"]
@@ -44,18 +50,41 @@ def evaluar_carpeta(carpeta: Path) -> dict:
     with (carpeta / "muestra.csv").open(encoding="utf-8") as f:
         filas = list(csv.DictReader(f))
     pares, no_validas = [], []
+    sin_evidencia = desacuerdo = revisados = acuerdos_qc = sin_fecha = 0
     for fila in filas:
-        ref = leer_referencia(fila.get("clase_referencia", ""), leyenda)
-        if (fila.get("clase_referencia") or "").strip() and ref is None:
-            no_validas.append(fila["id"])
-        if ref is not None and fila["id"] in estrato:
-            pares.append((estrato[fila["id"]], ref))
+        r1 = leer_referencia(fila.get("clase_referencia", ""), leyenda)
+        r2 = leer_referencia(fila.get("clase_referencia_2", ""), leyenda)
+        final = leer_referencia(fila.get("clase_final", ""), leyenda)
+        for campo in ("clase_referencia", "clase_referencia_2", "clase_final"):
+            if (fila.get(campo) or "").strip() and leer_referencia(fila.get(campo), leyenda) is None:
+                no_validas.append(fila["id"])
+        if r2 is not None and r1 is not None:
+            revisados += 1
+            acuerdos_qc += int(r1 == r2)
+        if final is None:
+            if r2 is not None and r1 is not None and r1 != r2:
+                desacuerdo += 1
+                continue
+            final = r1
+        if final is None:
+            continue
+        if final == 0:
+            sin_evidencia += 1
+            continue
+        if not (fila.get("fecha_imagen") or "").strip():
+            sin_fecha += 1
+        if fila["id"] in estrato:
+            pares.append((estrato[fila["id"]], final))
     codigos = [c["codigo"] for c in leyenda]
     conteos = matriz_conteos(pares, codigos)
     por_estrato = {str(c): sum(conteos[i]) for i, c in enumerate(codigos)}
     salida = {
         "mapa": diseno["mapa"], "titulo": diseno["titulo"], "total_puntos": len(filas),
         "interpretados": len(pares), "por_estrato": por_estrato, "valores_no_reconocidos": no_validas[:50],
+        "control_calidad": {"sin_evidencia_excluidos": sin_evidencia, "desacuerdos_pendientes": desacuerdo,
+                            "revisados_segundo_interprete": revisados,
+                            "acuerdo_entre_interpretes_pct": round(acuerdos_qc / revisados * 100, 1) if revisados else None,
+                            "puntos_sin_fecha_de_imagen": sin_fecha},
         "actualizado": datetime.now().isoformat(timespec="seconds"),
     }
     areas = {c: float(diseno["areas_ha"][str(c)]) for c in codigos}
@@ -63,13 +92,19 @@ def evaluar_carpeta(carpeta: Path) -> dict:
     if pares and listo:
         resultado = evaluar(codigos, areas, conteos)
         salida["resultado"] = resultado
-        salida["completo"] = len(pares) == len(filas)
+        cerrados = len(pares) + sin_evidencia
+        salida["completo"] = (cerrados == len(filas) and desacuerdo == 0 and revisados >= QC_MINIMO * len(filas))
+        salida["estado"] = "completa" if salida["completo"] else "preliminar"
+        if sin_evidencia:
+            salida["advertencia_sin_evidencia"] = (f"{sin_evidencia} punto(s) excluidos por falta de evidencia; si se concentran "
+                                                   "en un estrato pueden sesgar sus exactitudes.")
     else:
         salida["resultado"] = None
+        salida["estado"] = "preliminar" if pares else "sin_interpretaciones"
         salida["mensaje"] = f"Se necesitan al menos {MIN_POR_ESTRATO} puntos interpretados en cada estrato para calcular resultados."
     (carpeta / "resultados.json").write_text(json.dumps(salida, ensure_ascii=False, indent=1), encoding="utf-8")
     return {"mapa": diseno["mapa"], "titulo": diseno["titulo"], "descripcion": diseno.get("descripcion"),
-            "total_puntos": len(filas), "interpretados": len(pares)}
+            "total_puntos": len(filas), "interpretados": len(pares), "estado": salida.get("estado"), "completo": salida.get("completo", False)}
 
 
 def main() -> int:

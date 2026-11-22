@@ -56,3 +56,25 @@ class RedConectividadJsTests(unittest.TestCase):
             "cerca: R.cercaDeLineas([-79.4995, 9.005], rio, 100), lejos: R.cercaDeLineas([-79.49, 9.005], rio, 100)}));"
         )
         self.assertEqual(r, {"dentro": True, "fuera": False, "cerca": True, "lejos": False})
+
+    def test_utm17_igual_que_pyproj(self):
+        from pyproj import Transformer
+        t = Transformer.from_crs(4326, 32617, always_xy=True)
+        pts = [(-80.15, 8.6), (-79.2, 9.55), (-79.65, 9.1)]
+        r = self.ejecutar(f"console.log(JSON.stringify({json.dumps(pts)}.map(([a, b]) => R.utm17(a, b))));")
+        for (lon, lat), (x, y) in zip(pts, r):
+            ex, ey = t.transform(lon, lat)
+            self.assertAlmostEqual(x, ex, delta=0.01)
+            self.assertAlmostEqual(y, ey, delta=0.01)
+
+    def test_agregar_enlaces_nunca_empeora_la_red(self):
+        r = self.ejecutar(
+            "const rnd = (() => { let s = 7; return () => (s = (s * 16807) % 2147483647) / 2147483647; })();"
+            "const out = [];"
+            "for (let k = 0; k < 200; k += 1) { const a = new Map(); for (let i = 1; i <= 15; i += 1) a.set(i, 1 + rnd() * 50);"
+            " const e = []; for (let i = 1; i <= 15; i += 1) for (let j = i + 1; j <= 15; j += 1) if (rnd() < 0.1) e.push([i, j]);"
+            " const b = R.analizar(a, e, 2000); const x = 1 + Math.floor(rnd() * 15), y = 1 + Math.floor(rnd() * 15);"
+            " const c = R.analizar(a, e.concat([[x, y]]), 2000);"
+            " out.push(c.redes <= b.redes && c.iic >= b.iic - 1e-15 && c.aislados <= b.aislados && Math.abs(c.bosque_ha - b.bosque_ha) < 1e-9); }"
+            "console.log(JSON.stringify(out.every(Boolean)));")
+        self.assertTrue(r)

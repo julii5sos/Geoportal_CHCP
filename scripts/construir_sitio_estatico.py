@@ -81,7 +81,9 @@ def construir(destino: Path, app_completa: str, repo_url: str) -> list[str]:
     if (RAIZ / "data" / "subcuencas").exists():
         shutil.copytree(RAIZ / "data" / "subcuencas", destino / "datos" / "subcuencas")
     if (RAIZ / "data" / "validacion").exists():
-        shutil.copytree(RAIZ / "data" / "validacion", destino / "datos" / "validacion")
+        # estratos.csv (clase del mapa) no se publica en el sitio: la interpretación debe ser ciega.
+        shutil.copytree(RAIZ / "data" / "validacion", destino / "datos" / "validacion",
+                        ignore=shutil.ignore_patterns("estratos.csv"))
     if (RAIZ / "data" / "mapas").exists():
         shutil.copytree(RAIZ / "data" / "mapas", destino / "datos" / "mapas")
     shutil.copytree(RAIZ / "webapp" / "static", destino / "static",

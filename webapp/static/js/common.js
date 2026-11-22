@@ -10,6 +10,16 @@
 
   const valFile = (ruta) => (window.CHCP_STATIC ? `datos/validacion/${ruta}` : `/api/v1/validacion/${ruta}`);
 
+  // Procedencia visible de cada resultado (auditoría D): tipo A, B o C, fecha y versión.
+  const TIPOS_PROCESAMIENTO = { A: 'Calculado con Earth Engine en este momento', B: 'Precalculado con Earth Engine', C: 'Estimación local en su navegador (derivada de resultados precalculados)' };
+  function procedencia(datos, tipo = 'B', territorio = null, extra = '') {
+    const p = (datos && datos.procesamiento) || {};
+    const fecha = String((territorio && territorio.procesado) || p.fecha_procesamiento || (datos && datos.generado) || '').replace('T', ' ').slice(0, 16);
+    const version = territorio && territorio.version_datos != null ? ` · datos v${territorio.version_datos}` : '';
+    const parcial = datos && datos.estado_actualizacion && !datos.estado_actualizacion.completa ? '<span class="pr-warn">actualización parcial</span>' : '';
+    return `<div class="procedencia" data-tipo="${tipo}"><b>Tipo ${tipo}</b><span>${escapeHtml(TIPOS_PROCESAMIENTO[tipo])}</span><span>Cálculo: ${escapeHtml(fecha || 'sin fecha')}${escapeHtml(version)}</span><span>${escapeHtml(p.metodologia || (datos && datos.metodologia) || '')} · código ${escapeHtml(String(p.version_codigo || 'no registrado').slice(0, 12))}</span>${extra}${parcial}</div>`;
+  }
+
   async function api(path, options = {}) {
     if (window.CHCP_STATIC) {
       // Sitio estático (GitHub Pages): solo datos precalculados, sin Earth Engine.
@@ -78,6 +88,6 @@
     burger.setAttribute('aria-expanded', String(open));
   });
 
-  window.CHCP = {$, $$, escapeHtml, number, hectares, api, mapFile, valFile, toast, readPortalState, writePortalState, normalizeSearch};
+  window.CHCP = {$, $$, escapeHtml, number, hectares, api, mapFile, valFile, procedencia, toast, readPortalState, writePortalState, normalizeSearch};
 })();
 
