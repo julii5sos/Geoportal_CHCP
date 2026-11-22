@@ -261,6 +261,10 @@ def create_app(*, testing: bool = False) -> Flask:
     def ficha():
         return render_template("ficha.html", active="panel", project_id=resolver_proyecto_gee(), use_map=True, app_page=True)
 
+    @app.get("/restauracion")
+    def restauracion():
+        return render_template("restauracion.html", active="restauracion", project_id=resolver_proyecto_gee(), use_map=True, app_page=True)
+
     @app.get("/api/v1/panel/geometry/<identificador>")
     def api_panel_geometry(identificador: str):
         if not re.fullmatch(r"[A-Za-z0-9_-]{1,40}", identificador):
@@ -269,6 +273,15 @@ def create_app(*, testing: bool = False) -> Flask:
         if not path.exists():
             return jsonify(error="Geometrías no calculadas para este territorio."), 404
         return send_file(path, mimetype="application/json", max_age=300)
+
+    @app.get("/api/v1/panel/maps/<identificador>/<archivo>")
+    def api_panel_map(identificador: str, archivo: str):
+        if not re.fullmatch(r"[A-Za-z0-9_-]{1,40}", identificador) or not re.fullmatch(r"[a-z0-9_]{1,40}\.(png|json)", archivo):
+            return jsonify(error="Solicitud no válida."), 400
+        path = PANEL_STATISTICS_PATH.parent / "mapas" / identificador / archivo
+        if not path.exists():
+            return jsonify(error="Mapa no calculado para este territorio."), 404
+        return send_file(path, mimetype="image/png" if archivo.endswith(".png") else "application/json", max_age=300)
 
     @app.get("/api/v1/panel/statistics")
     def api_panel_statistics():

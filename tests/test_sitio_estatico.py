@@ -15,11 +15,11 @@ class SitioEstaticoTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             destino = Path(tmp) / "sitio"
             mod.construir(destino, "https://ejemplo.hf.space", "https://github.com/julii5sos/Geoportal_CHCP")
-            for archivo in ("index.html", "monitoreo.html", "coberturas.html", "metodologia.html", "acerca.html", "ficha.html", ".nojekyll", "static/js/monitoreo.js", "static/js/ficha.js", "static/vendor/leaflet.js",
+            for archivo in ("index.html", "monitoreo.html", "coberturas.html", "metodologia.html", "acerca.html", "ficha.html", "restauracion.html", ".nojekyll", "static/js/monitoreo.js", "static/js/ficha.js", "static/js/restauracion.js", "static/js/red_conectividad.js", "static/vendor/leaflet.js",
                             "datos/territorio.json", "datos/estadisticas_territoriales.json", "datos/sinia_catalogo.json"):
                 self.assertTrue((destino / archivo).exists(), archivo)
             import re
-            for pagina in ("index.html", "monitoreo.html", "coberturas.html", "metodologia.html", "acerca.html", "ficha.html"):
+            for pagina in ("index.html", "monitoreo.html", "coberturas.html", "metodologia.html", "acerca.html", "ficha.html", "restauracion.html"):
                 html = (destino / pagina).read_text(encoding="utf-8")
                 self.assertNotIn('"/static/', html)
                 self.assertIn("window.CHCP_STATIC", html)
@@ -42,3 +42,14 @@ class FichaRutaTests(unittest.TestCase):
         self.assertEqual(cliente.get("/ficha").status_code, 200)
         self.assertEqual(cliente.get("/api/v1/panel/geometry/..%2Fsecretos").status_code, 404)
         self.assertEqual(cliente.get("/api/v1/panel/geometry/no-existe").status_code, 404)
+
+    def test_rutas_de_mapas_rechazan_archivos_no_permitidos(self):
+        try:
+            from webapp.main import create_app
+        except Exception as exc:
+            self.skipTest(str(exc))
+        cliente = create_app().test_client()
+        self.assertEqual(cliente.get("/restauracion").status_code, 200)
+        self.assertEqual(cliente.get("/api/v1/panel/maps/s5/..%2F..%2Fsecretos.png").status_code, 404)
+        self.assertEqual(cliente.get("/api/v1/panel/maps/s5/config.py").status_code, 400)
+        self.assertEqual(cliente.get("/api/v1/panel/maps/s5/eri.png").status_code, 404)

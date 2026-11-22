@@ -72,3 +72,10 @@ No se modificó ninguna fórmula. Para comparar subcuencas entre sí el panel or
 por puntaje y muestra superficies y porcentajes reales. Una recalibración de
 umbrales por escala territorial sería una nueva versión del método y requiere
 decisión explícita del equipo.
+
+## Mapas de la ficha, análisis ripario y simulador de restauración (2026-11-22)
+
+- **Mapas temáticos.** Ocho capas por territorio (SINIA 2021, JRC TMF 2025, Hansen 2021–2025, cambio ESRI 2017→2024, cambio NDVI 2020→2025, ERI, señales coincidentes y franja riparia) se piden a Earth Engine con `computePixels` en una malla Web Mercator (≤ 900 px por lado, ≥ 10 m) y se colorean con leyendas fijas en `chcp/gee/mapas_ficha.py`. Son ilustraciones: las superficies siguen calculándose a la resolución nativa de cada fuente.
+- **Red hídrica.** Se reutiliza la misma definición del ERI: cauces MERIT Hydro con área de drenaje ≥ 1 km². La distancia al cauce se interpola (bilineal) desde la malla de 90 m, por lo que las franjas de 30, 50 y 100 m son indicativas. Los ríos dibujados son HydroSHEDS (drenaje ≥ 10 km²). Si se dispone de hidrografía local (IGNTG, ACP), debe sustituir a MERIT mediante un asset del proyecto.
+- **Bosque ripario.** SINIA 2021 (oficial, la misma base de la conectividad) y árboles ESRI 2024 como segunda fuente. Las orillas sin bosque se describen por clases de pendiente (0–15 %, 15–30 %, ≥ 30 %, Copernicus DEM 30 m); no es un modelo de erosión ni de caudal.
+- **Simulador de restauración.** Recalcula en el navegador componentes, parches aislados y el IIC binario (misma fórmula que `metricas_paisaje.py`, verificada en `tests/test_red_conectividad_js.py`). Una franja restaurada se modela como un enlace nuevo; su superficie no se suma al hábitat (resultado conservador). Las brechas candidatas combinan las del motor y el enlace más corto entre cada par de redes (≤ max(4 × umbral, 2 km)), medido entre vértices. La priorización ordena por ganancia de IIC por hectárea con el ancho elegido (30/60/100 m). Es un resultado estructural: no considera resistencia del paisaje, tenencia ni costos.

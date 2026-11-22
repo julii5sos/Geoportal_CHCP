@@ -36,8 +36,9 @@ from webapp.models import (  # noqa: E402
     AreaSelection, EcologicalEvaluationRequest, EriRequest, IntegratedEvaluationRequest, SiniaCoverageRequest,
 )
 from webapp.service import (  # noqa: E402
-    run_ecological_evaluation, run_eri, run_integrated_evaluation, run_sinia_coverages,
+    _initialize_ee, resolve_area, run_ecological_evaluation, run_eri, run_integrated_evaluation, run_sinia_coverages,
 )
+from chcp.gee.mapas_ficha import CAPAS, calcular_riparia, generar_mapas, rios_principales  # noqa: E402
 import ee  # noqa: E402
 
 from chcp.gee.gee_config import desactivar_teselas  # noqa: E402
@@ -46,6 +47,7 @@ desactivar_teselas(ee)  # el precálculo solo necesita números, no capas de map
 
 SALIDA = RAIZ / "data" / "estadisticas_territoriales.json"
 DIR_GEOMETRIAS = RAIZ / "data" / "subcuencas"
+DIR_MAPAS = RAIZ / "data" / "mapas"
 # Versión del contenido del archivo: si cambia, se recalcula todo aunque no se use --rehacer.
 VERSION_DATOS = 2
 CLASES_JRC = ("tmf_estable", "tmf_degradacion", "tmf_deforestacion", "tmf_recuperacion",
@@ -105,6 +107,7 @@ def _guardar_geometrias(identificador: str, estructura: dict | None) -> None:
         "conexiones": limpiar(estructura.get("conexiones_geojson")),
         "brechas": limpiar(estructura.get("conexiones_potenciales_geojson")),
         "ruta_corredor": limpiar(estructura.get("ruta_corredor_geojson")),
+        "red": estructura.get("red_simulacion"),
     }
     (DIR_GEOMETRIAS / f"{identificador}.json").write_text(json.dumps(datos, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
 
@@ -165,6 +168,28 @@ def _compactar(territorio: dict, evaluacion: dict, estructura: dict | None, corr
     }
 
 
+def _mapas_y_riparia(territorio: dict, registro: dict) -> None:
+    """Mapas temáticos PNG, ríos principales y franjas riparias (complementarios)."""
+    geometria, _ = resolve_area(AreaSelection(**territorio["area"]))
+    destino = DIR_MAPAS / territorio["id"]
+    registro["mapas"] = generar_mapas(geometria, destino, ee_module=ee)
+    try:
+        rios = rios_principales(geometria, ee_module=ee)
+        (destino / "rios.json").write_text(json.dumps(
+            {"type": "FeatureCollection", "features": [
+                {**f, "geometry": {"type": f["geometry"]["type"], "coordinates": _redondear(f["geometry"]["coordinates"])}}
+                for f in rios["features"]]}, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
+        registro["mapas"]["rios"] = len(rios["features"])
+    except Exception as exc:
+        registro["mapas"]["rios"] = None
+        print(f"    ríos: {exc}")
+    try:
+        registro["riparia"] = calcular_riparia(geometria, ee_module=ee, area_ha=registro.get("area_ha"))
+    except Exception as exc:
+        registro["riparia"] = {"error": f"{type(exc).__name__}: {exc}"[:300]}
+        print(f"    riparia: {exc}")
+
+
 def _guardar(datos: dict) -> None:
     datos["generado"] = datetime.now().isoformat(timespec="seconds")
     temporal = SALIDA.with_suffix(".tmp")
@@ -178,14 +203,33 @@ def main() -> int:
     parser.add_argument("--limite", type=int, default=0, help="Procesar solo N territorios pendientes")
     parser.add_argument("--sin-estructura", action="store_true", help="Omitir fragmentación y conectividad 2021")
     parser.add_argument("--distancia", type=float, default=500, help="Umbral entre parches en metros")
+    parser.add_argument("--sin-mapas", action="store_true", help="Omitir mapas temáticos y análisis ripario")
+    parser.add_argument("--solo-mapas", action="store_true",
+                        help="Solo (re)generar mapas y análisis ripario de los territorios ya calculados")
     args = parser.parse_args()
 
     datos = {"metodologia": METODOLOGIA_VERSION, "version_datos": VERSION_DATOS, "proyecto": os.environ["GEE_PROJECT_ID"],
-             "umbral_conectividad_m": args.distancia, "territorios": {}, "errores": {}}
+             "umbral_conectividad_m": args.distancia, "capas_mapa": CAPAS, "territorios": {}, "errores": {}}
     if SALIDA.exists() and not args.rehacer:
         previo = json.loads(SALIDA.read_text(encoding="utf-8"))
         if previo.get("metodologia") == METODOLOGIA_VERSION and previo.get("version_datos") == VERSION_DATOS:
             datos["territorios"] = previo.get("territorios", {})
+
+    if args.solo_mapas:
+        _initialize_ee()
+        objetivo = [t for t in _territorios() if t["id"] in datos["territorios"]]
+        if args.limite:
+            objetivo = objetivo[: args.limite]
+        for numero, territorio in enumerate(objetivo, 1):
+            inicio = time.time()
+            try:
+                _mapas_y_riparia(territorio, datos["territorios"][territorio["id"]])
+                capas = datos["territorios"][territorio["id"]]["mapas"]["capas"]
+                print(f"[{numero}/{len(objetivo)}] {territorio['nombre']}: {len(capas)} mapas · {time.time() - inicio:.0f} s")
+            except Exception as exc:
+                print(f"[{numero}/{len(objetivo)}] {territorio['nombre']}: ERROR {exc}")
+            _guardar(datos)
+        return 0
 
     pendientes = [t for t in _territorios() if t["id"] not in datos["territorios"]]
     if args.limite:
@@ -217,6 +261,8 @@ def main() -> int:
                 territorio, evaluacion, estructura, respuesta.get("corridor_context") or {}, sinia, eri
             )
             _guardar_geometrias(territorio["id"], estructura)
+            if not args.sin_mapas:
+                _mapas_y_riparia(territorio, datos["territorios"][territorio["id"]])
             datos["errores"].pop(territorio["id"], None)
             print(f"{etiqueta}: {evaluacion['score']} pts ({evaluacion['priority']}) · {time.time() - inicio:.0f} s")
         except Exception as exc:  # se registra y se continúa con el siguiente territorio

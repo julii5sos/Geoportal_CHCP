@@ -18,3 +18,4 @@ deploy/cloud-run-service.yaml
 *service-account*.json
 data/estadisticas_territoriales.tmp
 sitio/
+salida_prueba_mapas/

@@ -33,6 +33,7 @@ PAGINAS = {
     "/methodology": "metodologia.html",
     "/about": "acerca.html",
     "/ficha": "ficha.html",
+    "/restauracion": "restauracion.html",
 }
 
 
@@ -42,7 +43,8 @@ def reescribir_enlaces(html: str, app_completa: str) -> str:
 
     html = html.replace('"/static/', '"static/').replace("'/static/", "'static/")
     destinos = {"": "index.html", "panel": "monitoreo.html", "coberturas": "coberturas.html",
-                "methodology": "metodologia.html", "about": "acerca.html", "ficha": "ficha.html"}
+                "methodology": "metodologia.html", "about": "acerca.html", "ficha": "ficha.html",
+                "restauracion": "restauracion.html"}
 
     def cambiar(m):
         ruta, ancla = m.group(1), m.group(2) or ""
@@ -75,6 +77,8 @@ def construir(destino: Path, app_completa: str, repo_url: str) -> list[str]:
         generados.append(archivo)
     if (RAIZ / "data" / "subcuencas").exists():
         shutil.copytree(RAIZ / "data" / "subcuencas", destino / "datos" / "subcuencas")
+    if (RAIZ / "data" / "mapas").exists():
+        shutil.copytree(RAIZ / "data" / "mapas", destino / "datos" / "mapas")
     shutil.copytree(RAIZ / "webapp" / "static", destino / "static",
                     ignore=shutil.ignore_patterns("__fixture*", "__fx*"))
     (destino / ".nojekyll").write_text("", encoding="utf-8")

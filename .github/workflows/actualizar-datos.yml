@@ -16,6 +16,11 @@ on:
         description: "Solo N territorios (vacío = todos)"
         required: false
         default: ""
+      modo:
+        description: "Qué recalcular"
+        type: choice
+        options: [completo, solo-mapas, sin-mapas]
+        default: completo
 
 permissions:
   contents: write
@@ -56,16 +61,22 @@ jobs:
           GEE_SERVICE_ACCOUNT_JSON: ${{ secrets.GEE_SERVICE_ACCOUNT_JSON }}
           GEE_PROJECT_ID: geoportal-513817
         run: |
+          OPCIONES=""
+          if [ "${{ github.event.inputs.modo }}" = "solo-mapas" ]; then OPCIONES="--solo-mapas"; fi
+          if [ "${{ github.event.inputs.modo }}" = "sin-mapas" ]; then OPCIONES="--sin-mapas"; fi
           if [ -n "${{ github.event.inputs.limite }}" ]; then
-            python scripts/precalcular_panel.py --limite "${{ github.event.inputs.limite }}"
+            python scripts/precalcular_panel.py $OPCIONES --limite "${{ github.event.inputs.limite }}"
+          elif [ "${{ github.event.inputs.modo }}" = "solo-mapas" ]; then
+            python scripts/precalcular_panel.py --solo-mapas
           else
-            python scripts/precalcular_panel.py --rehacer
+            python scripts/precalcular_panel.py --rehacer $OPCIONES
           fi
       - name: Guardar resultados en el repositorio
+        if: always()   # el cálculo es reanudable: se guarda lo avanzado aunque falle o se agote el tiempo
         run: |
           git config user.name "geoportal-chcp-bot"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/estadisticas_territoriales.json data/subcuencas
+          git add data/estadisticas_territoriales.json data/subcuencas data/mapas
           if git diff --cached --quiet; then
             echo "Sin cambios en los indicadores."
           else

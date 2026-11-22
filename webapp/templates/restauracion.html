@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block title %}Simulador de restauración para la conectividad · Geoportal CHCP{% endblock %}
+{% block body %}
+<main id="v-restauracion" data-project="{{ project_id }}">
+  <aside class="rs-side" aria-label="Controles del simulador">
+    <div class="rs-block">
+      <span class="rs-kicker">Planificar · conectividad</span>
+      <h1>¿Dónde restaurar para reconectar el bosque?</h1>
+      <label class="rs-field">Subcuenca<select id="rs-select"></select></label>
+    </div>
+    <details class="rs-help" open>
+      <summary>Cómo funciona</summary>
+      <ol>
+        <li>El mapa muestra los parches de bosque oficial 2021. Cada color es una <b>red</b>: parches a menos de <b id="rs-umbral">500 m</b> entre sí.</li>
+        <li>Las líneas rojas discontinuas son <b>brechas candidatas</b>. Haga clic en una para restaurarla en el escenario activo.</li>
+        <li>También puede <b>unir dos parches</b>: pulse el botón y luego haga clic en dos parches.</li>
+        <li>El simulador recalcula la red y compara el escenario actual con sus propuestas.</li>
+      </ol>
+    </details>
+    <div class="rs-block">
+      <div class="rs-scen" role="tablist" id="rs-scen">
+        <button role="tab" data-s="A" aria-selected="true">Escenario A</button>
+        <button role="tab" data-s="B" aria-selected="false">Escenario B</button>
+      </div>
+      <div class="rs-tools">
+        <button class="btn btn-s" id="rs-unir" type="button">Unir dos parches</button>
+        <label>Ancho de la franja<select id="rs-ancho"><option value="30">30 m</option><option value="60" selected>60 m</option><option value="100">100 m</option></select></label>
+        <button class="btn btn-o" id="rs-limpiar" type="button">Vaciar escenario</button>
+      </div>
+      <p class="rs-hint" id="rs-hint"></p>
+      <ul class="rs-list" id="rs-list"></ul>
+    </div>
+    <div class="rs-block"><h2>Prioridades sugeridas</h2><p class="rs-note">Brechas ordenadas por cuánto mejoran la conectividad integral (IIC) por hectárea restaurada.</p><ol class="rs-prior" id="rs-prior"></ol></div>
+  </aside>
+  <section class="rs-main">
+    <div id="rs-map"></div>
+    <div class="rs-legend" id="rs-legend"></div>
+    <div class="rs-results" id="rs-results" aria-live="polite"></div>
+  </section>
+</main>
+{% endblock %}
+{% block scripts %}<script src="{{ url_for('static', filename='js/red_conectividad.js') }}"></script><script src="{{ url_for('static', filename='js/restauracion.js') }}"></script>{% endblock %}
