@@ -68,3 +68,13 @@ class RipariaTests(unittest.TestCase):
         r = mf.resumir_riparia({})
         self.assertIsNone(r["franjas"][0]["bosque_sinia_pct"])
         self.assertEqual(r["longitud_cauces_km"], 0)
+
+
+class SitiosTests(unittest.TestCase):
+    def test_orden_por_fuentes_y_area_e_identificador_estable(self):
+        c = [{"area_ha": 3, "centro": [-79.81, 9.15], "fuentes": 1}, {"area_ha": 1, "centro": [-79.82, 9.16], "fuentes": 3},
+             {"area_ha": 0.2, "centro": [-79.83, 9.17], "fuentes": 3}, {"area_ha": 2, "centro": [-79.84, 9.18], "fuentes": 2}]
+        s = mf.ordenar_sitios(c, "s5", 10, 0.5)
+        self.assertEqual([x["fuentes"] for x in s], [3, 2, 1])
+        self.assertEqual(s[0]["id"], mf.identificador_sitio("s5", 9.16, -79.82))
+        self.assertEqual(s[0]["id"], "s5-16008200")

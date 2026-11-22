@@ -351,3 +351,52 @@ def rios_principales(geojson: dict[str, Any], *, ee_module) -> dict[str, Any]:
                 if parte.get("type") in ("LineString", "MultiLineString"):
                     salida.append({"type": "Feature", "properties": f.get("properties", {}), "geometry": parte})
     return {"type": "FeatureCollection", "features": salida}
+
+
+# ---------------------------------------------------------------------------
+# Sitios priorizados para verificación de campo.
+# ---------------------------------------------------------------------------
+def identificador_sitio(territorio: str, lat: float, lon: float) -> str:
+    """Identificador corto y estable mientras el sitio no se desplace (~10 m)."""
+    return f"{territorio}-{abs(round(lat * 1e4)) % 10_000:04d}{abs(round(lon * 1e4)) % 10_000:04d}"
+
+
+def ordenar_sitios(candidatos: list[dict[str, Any]], territorio: str, maximo: int, area_min_ha: float) -> list[dict[str, Any]]:
+    sitios = []
+    for c in candidatos:
+        if (c.get("area_ha") or 0) < area_min_ha or not c.get("centro"):
+            continue
+        lon, lat = c["centro"]
+        sitios.append({"id": identificador_sitio(territorio, lat, lon), "lat": round(lat, 6), "lon": round(lon, 6),
+                       "area_ha": round(float(c["area_ha"]), 2), "fuentes": int(c.get("fuentes") or 1)})
+    sitios.sort(key=lambda s: (-s["fuentes"], -s["area_ha"]))
+    vistos, salida = set(), []
+    for s in sitios:
+        if s["id"] not in vistos:
+            vistos.add(s["id"]); salida.append(s)
+    return salida[:maximo]
+
+
+def sitios_verificacion(geojson: dict[str, Any], territorio: str, *, ee_module, maximo: int = 12,
+                        area_min_ha: float = 0.5) -> list[dict[str, Any]]:
+    """Manchas con señales de pérdida (≥ 1 fuente), priorizadas por fuentes coincidentes y superficie."""
+    ee = ee_module
+    geometria = ee.Geometry(geojson.get("geometry", geojson), proj="EPSG:4326", geodesic=False)
+    fuentes = _imagen_capa("coincidencia", geometria, ee).rename("fuentes").toInt()
+    proyeccion = ee.Image(fuentes).projection()
+    vectores = fuentes.gte(1).selfMask().reduceToVectors(
+        geometry=geometria, crs=proyeccion, scale=30, geometryType="polygon", eightConnected=True,
+        labelProperty="etiqueta", maxPixels=1e10, tileScale=4,
+    )
+
+    def describir(f):
+        g = f.geometry(1)
+        return ee.Feature(None, {
+            "area_ha": g.area(1).divide(10_000),
+            "centro": g.centroid(1).coordinates(),
+            "fuentes": fuentes.reduceRegion(ee.Reducer.max(), g, 30).get("fuentes"),
+        })
+    datos = (vectores.map(lambda f: f.set("area_ha", f.geometry(1).area(1).divide(10_000)))
+             .filter(ee.Filter.gte("area_ha", area_min_ha)).sort("area_ha", False).limit(maximo * 4)
+             .map(describir).getInfo())
+    return ordenar_sitios([f["properties"] for f in datos.get("features", [])], territorio, maximo, area_min_ha)

@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block title %}Validación e incertidumbre · Geoportal CHCP{% endblock %}
+{% block body %}
+<main id="v-validacion" class="pg" data-project="{{ project_id }}">
+  <header class="pg-head">
+    <span class="rs-kicker">Evaluar · confiabilidad</span>
+    <h1>¿Qué tan confiables son los mapas?</h1>
+    <p>Ningún mapa satelital es perfecto. Aquí se compara una muestra de puntos del mapa con lo que realmente se observa en imágenes de alta resolución o en campo. Con esa comparación se estima <b>cuánto acierta cada clase</b> y <b>cuál es la superficie real, con su margen de error</b>, siguiendo las buenas prácticas de FAO (Olofsson et al., 2014).</p>
+    <div class="va-steps">
+      <div><b>1</b><span>Muestra aleatoria estratificada por clase del mapa</span></div>
+      <div><b>2</b><span>Interpretación «a ciegas» de cada punto</span></div>
+      <div><b>3</b><span>Matriz de confusión y exactitudes con intervalo del 95 %</span></div>
+      <div><b>4</b><span>Superficie ajustada por error</span></div>
+    </div>
+  </header>
+  <section class="pg-sec">
+    <div class="va-bar"><label class="rs-field">Mapa evaluado<select id="va-mapa"></select></label><div id="va-estado" class="va-estado"></div></div>
+    <div id="va-diseno"></div>
+  </section>
+  <section class="pg-sec" id="va-res-sec"><h2>Resultados</h2><div id="va-res"></div></section>
+  <section class="pg-sec" id="va-int-sec">
+    <h2>Interpretar la muestra</h2>
+    <p class="rs-note">Cada punto se observa en la imagen satelital y se le asigna la clase que se ve, <b>sin conocer la clase del mapa</b>. El avance se guarda en este navegador; al terminar descargue el CSV y súbalo a <code>data/validacion/&lt;mapa&gt;/muestra.csv</code> en GitHub para publicar los resultados.</p>
+    <div id="va-int"></div>
+  </section>
+  <section class="pg-sec">
+    <h2>Calcular con un archivo propio</h2>
+    <p class="rs-note">Cargue un <code>muestra.csv</code> interpretado (por ejemplo, desde Google Earth Pro o QGIS) para ver los resultados antes de publicarlos. El cálculo se hace solo en su navegador.</p>
+    <input type="file" id="va-archivo" accept=".csv,text/csv">
+    <div id="va-propio"></div>
+  </section>
+</main>
+{% endblock %}
+{% block scripts %}<script src="{{ url_for('static', filename='js/validacion_estimadores.js') }}"></script><script src="{{ url_for('static', filename='js/validacion.js') }}"></script>{% endblock %}

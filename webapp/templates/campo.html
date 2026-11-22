@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}Verificación de campo · Geoportal CHCP{% endblock %}
+{% block body %}
+<main id="v-campo" class="pg" data-repo="{{ repo_url or 'https://github.com/julii5sos/Geoportal_CHCP' }}">
+  <header class="pg-head">
+    <span class="rs-kicker">Verificar · seguimiento de campo</span>
+    <h1>Verificación de campo</h1>
+    <p>Los sitios de esta página son manchas donde una o más fuentes satelitales señalan pérdida de bosque. Visitarlos permite <b>confirmar o descartar</b> la alerta y convertir el geoportal en un sistema de monitoreo verificable. Cada visita se registra como un formulario en GitHub, con fecha, autor, fotografías e historial.</p>
+    <div class="cp-estados">
+      <span data-e="Pendiente"><i></i>Pendiente <b id="cp-n-Pendiente">0</b></span>
+      <span data-e="Visitado"><i></i>Visitado <b id="cp-n-Visitado">0</b></span>
+      <span data-e="Confirmado"><i></i>Confirmado <b id="cp-n-Confirmado">0</b></span>
+      <span data-e="Descartado"><i></i>Descartado <b id="cp-n-Descartado">0</b></span>
+    </div>
+  </header>
+  <section class="pg-sec">
+    <div class="va-bar">
+      <label class="rs-field">Subcuenca<select id="cp-select"><option value="">Toda la cuenca</option></select></label>
+      <label class="rs-field">Estado<select id="cp-filtro"><option value="">Todos</option><option>Pendiente</option><option>Visitado</option><option>Confirmado</option><option>Descartado</option></select></label>
+      <a class="btn btn-s" id="cp-nuevo" target="_blank" rel="noopener">Registrar un sitio nuevo</a>
+      <button class="btn btn-s" id="cp-csv" type="button">Descargar registros (CSV)</button>
+    </div>
+    <p class="rs-note" id="cp-aviso"></p>
+    <div class="cp-grid"><div id="cp-map"></div><div class="cp-list" id="cp-list"></div></div>
+  </section>
+  <section class="pg-sec cp-como">
+    <h2>Cómo registrar una visita</h2>
+    <ol>
+      <li>Elija un sitio y pulse <b>Registrar visita</b>. Se abre un formulario con el identificador y las coordenadas ya completados.</li>
+      <li>Indique la fecha, el <b>estado</b> (visitado, confirmado o descartado), la causa observada y la confianza.</li>
+      <li>Arrastre las fotografías al formulario (desde el teléfono también funciona) y envíelo.</li>
+      <li>El geoportal lee los registros y actualiza el estado del sitio. Cada nueva visita se suma al historial.</li>
+    </ol>
+    <p class="rs-note">Se necesita una cuenta gratuita de GitHub. El repositorio es público: no registre datos personales de terceros. Para trabajo sin conexión puede usarse KoboToolbox y cargar luego los registros.</p>
+  </section>
+</main>
+{% endblock %}
+{% block scripts %}<script src="{{ url_for('static', filename='js/campo.js') }}"></script>{% endblock %}

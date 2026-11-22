@@ -38,7 +38,7 @@ from webapp.models import (  # noqa: E402
 from webapp.service import (  # noqa: E402
     _initialize_ee, resolve_area, run_ecological_evaluation, run_eri, run_integrated_evaluation, run_sinia_coverages,
 )
-from chcp.gee.mapas_ficha import CAPAS, calcular_riparia, generar_mapas, rios_principales  # noqa: E402
+from chcp.gee.mapas_ficha import CAPAS, calcular_riparia, generar_mapas, rios_principales, sitios_verificacion  # noqa: E402
 import ee  # noqa: E402
 
 from chcp.gee.gee_config import desactivar_teselas  # noqa: E402
@@ -183,6 +183,12 @@ def _mapas_y_riparia(territorio: dict, registro: dict) -> None:
     except Exception as exc:
         registro["mapas"]["rios"] = None
         print(f"    ríos: {exc}")
+    if territorio["id"] != "chcp":
+        try:
+            registro["sitios"] = sitios_verificacion(geometria, territorio["id"], ee_module=ee)
+        except Exception as exc:
+            registro["sitios"] = []
+            print(f"    sitios: {exc}")
     try:
         registro["riparia"] = calcular_riparia(geometria, ee_module=ee, area_ha=registro.get("area_ha"))
     except Exception as exc:
