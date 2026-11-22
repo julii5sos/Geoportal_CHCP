@@ -30,6 +30,8 @@ jobs:
     timeout-minutes: 300
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: main
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
@@ -68,5 +70,6 @@ jobs:
             echo "Sin cambios en los indicadores."
           else
             git commit -m "Actualizar indicadores con Earth Engine ($(date -u +%Y-%m-%d))"
-            git push
+            git pull --rebase origin main   # por si main cambió durante el cálculo
+            git push origin HEAD:main
           fi

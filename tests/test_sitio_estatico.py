@@ -15,14 +15,16 @@ class SitioEstaticoTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             destino = Path(tmp) / "sitio"
             mod.construir(destino, "https://ejemplo.hf.space", "https://github.com/julii5sos/Geoportal_CHCP")
-            for archivo in ("index.html", "coberturas.html", ".nojekyll", "static/js/monitoreo.js", "static/vendor/leaflet.js",
+            for archivo in ("index.html", "monitoreo.html", "coberturas.html", "metodologia.html", "acerca.html", ".nojekyll", "static/js/monitoreo.js", "static/vendor/leaflet.js",
                             "datos/territorio.json", "datos/estadisticas_territoriales.json", "datos/sinia_catalogo.json"):
                 self.assertTrue((destino / archivo).exists(), archivo)
-            for pagina in ("index.html", "coberturas.html"):
+            import re
+            for pagina in ("index.html", "monitoreo.html", "coberturas.html", "metodologia.html", "acerca.html"):
                 html = (destino / pagina).read_text(encoding="utf-8")
                 self.assertNotIn('"/static/', html)
                 self.assertIn("window.CHCP_STATIC", html)
                 self.assertIn("https://ejemplo.hf.space/platform", html)
+                self.assertEqual(re.findall(r'href="/[a-z]', html), [], pagina)
             stats = json.loads((destino / "datos/estadisticas_territoriales.json").read_text(encoding="utf-8"))
             self.assertEqual(len(stats["territorios"]), 54)
             todo = " ".join(p.read_text(encoding="utf-8", errors="ignore") for p in destino.rglob("*") if p.is_file() and p.suffix in {".html", ".json", ".js"})

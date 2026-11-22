@@ -278,6 +278,7 @@
   $('#mon-sub').innerHTML = '<option value="">Toda la cuenca</option>' + Object.keys(groups).sort((a, b) => a.localeCompare(b, 'es')).map((g) => `<optgroup label="${esc(g)}">${groups[g].sort((a, b) => a.nombre.localeCompare(b.nombre, 'es')).map((t) => `<option value="${t.id}">${esc(t.nombre)}</option>`).join('')}</optgroup>`).join('');
   const missing = 53 - subs().length;
   $('#mon-sub-hint').textContent = `${subs().length} de 53 subcuencas calculadas${missing > 0 ? ` · faltan ${missing}` : ''}`;
-  const initial = (location.hash || '').slice(1);
+  const hash = decodeURIComponent((location.hash || '').slice(1));
+  const initial = st.data.territorios[hash] ? hash : (Object.values(st.data.territorios).find((t) => t && t.nombre === hash)?.id || '');
   select(st.data.territorios[initial] ? initial : (st.data.territorios.chcp ? 'chcp' : subs()[0]?.id), Boolean(initial));
 })();
