@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %}Coberturas oficiales de Panamá · SINIA/MiAMBIENTE · Geoportal CHCP{% endblock %}
+{% block body %}
+<main id="v-coberturas" data-project="{{ project_id }}">
+  <aside class="cob-side" aria-label="Productos y categorías">
+    <header class="cob-head">
+      <span class="eyebrow">SINIA – MiAMBIENTE</span>
+      <h1>Coberturas oficiales de Panamá</h1>
+      <p>Ocho productos institucionales con su leyenda, estado de verificación y superficie por categoría. Los datos originales no se modifican.</p>
+    </header>
+    <section class="cob-block">
+      <label for="cob-area">Territorio</label>
+      <select id="cob-area"><option value="">Cuenca Hidrográfica del Canal de Panamá</option></select>
+    </section>
+    <section class="cob-block">
+      <div class="cob-row"><label for="cob-product">Producto</label><label class="cob-inline"><input type="checkbox" id="cob-compare-on"> Comparar con otro</label></div>
+      <select id="cob-product"></select>
+      <select id="cob-product-b" hidden></select>
+      <div class="cob-view" role="radiogroup" aria-label="Vista de categorías">
+        <label><input type="radio" name="cob-view" value="original" checked> Categorías originales</label>
+        <label><input type="radio" name="cob-view" value="derivado"> Grupos ecológicos derivados</label>
+      </div>
+      <p class="cob-product-info" id="cob-product-info"></p>
+    </section>
+    <section class="cob-block cob-legend-block">
+      <div class="cob-row"><h2>Leyenda</h2><span><button type="button" class="link" id="cob-all">Todas</button> · <button type="button" class="link" id="cob-none">Ninguna</button></span></div>
+      <ul class="cob-legend" id="cob-legend"></ul>
+      <p class="cob-note" id="cob-legend-note"></p>
+    </section>
+    <div class="cob-actions">
+      <button class="btn btn-p" id="cob-stats" type="button">Calcular superficies</button>
+      <button class="btn btn-s" id="cob-csv" type="button" disabled>Exportar CSV</button>
+    </div>
+  </aside>
+  <section class="cob-map-wrap" aria-label="Mapa de coberturas">
+    <div id="cob-map"></div>
+    <div class="cob-swipe" id="cob-swipe" hidden><input type="range" id="cob-swipe-range" min="0" max="100" value="50" aria-label="Divisor del comparador"><span class="cob-swipe-line" id="cob-swipe-line"></span></div>
+    <div class="cob-tags" id="cob-tags"></div>
+  </section>
+  <aside class="cob-results" id="cob-results" aria-label="Superficies y fuentes">
+    <div class="cob-results-h"><span class="eyebrow">Resultados</span><h2 id="cob-results-title">Superficie por categoría</h2><p id="cob-results-sub">Seleccione un territorio y pulse «Calcular superficies».</p></div>
+    <div class="cob-results-b" id="cob-results-body"></div>
+  </aside>
+</main>
+{% endblock %}
+{% block scripts %}<script src="{{ url_for('static', filename='js/coberturas.js') }}"></script>{% endblock %}

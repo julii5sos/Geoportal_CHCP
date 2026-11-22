@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}Monitoreo · Geoportal CHCP{% endblock %}
+{% block body %}
+<main id="v-monitoreo" data-project="{{ project_id }}">
+  <section class="mon" aria-label="Indicadores del territorio">
+    <header class="mon-top">
+      <nav class="mon-crumbs" id="mon-crumbs" aria-label="Ubicación"></nav>
+      <h1 id="mon-title">Cuenca del Canal de Panamá</h1>
+      <div class="mon-selects">
+        <label>Cuenca<select id="mon-basin"><option value="chcp">Cuenca Hidrográfica del Canal de Panamá</option></select></label>
+        <label>Subcuenca<select id="mon-sub"><option value="">Toda la cuenca</option></select><small id="mon-sub-hint"></small></label>
+      </div>
+      <p class="mon-lead" id="mon-lead">Cargando indicadores…</p>
+      <div class="mon-tabs" role="tablist" id="mon-tabs">
+        <button role="tab" data-tab="resumen" aria-selected="true">Resumen</button>
+        <button role="tab" data-tab="sinia" aria-selected="false">Cobertura SINIA</button>
+        <button role="tab" data-tab="cambio" aria-selected="false">Cambio de cobertura</button>
+        <button role="tab" data-tab="prioridades" aria-selected="false">Prioridades</button>
+        <button role="tab" data-tab="conectividad" aria-selected="false">Conectividad</button>
+        <button role="tab" data-tab="corredores" aria-selected="false">Corredores</button>
+      </div>
+    </header>
+    <div class="mon-widgets" id="mon-widgets"></div>
+  </section>
+  <section class="mon-map" aria-label="Mapa de subcuencas">
+    <div id="mon-map"></div>
+    <div class="mon-legend" id="mon-legend"></div>
+  </section>
+</main>
+{% endblock %}
+{% block scripts %}<script src="{{ url_for('static', filename='js/monitoreo.js') }}"></script>{% endblock %}
