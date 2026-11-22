@@ -5,6 +5,11 @@
   const number = (value, digits = 1) => new Intl.NumberFormat('es-PA', {maximumFractionDigits: digits, minimumFractionDigits: digits}).format(Number(value || 0));
   const hectares = (value, digits = 1) => `${number(value, digits)} ha`;
 
+  // Archivos precalculados por territorio (mapas PNG y ríos): estático o servidor.
+  const mapFile = (id, file) => (window.CHCP_STATIC ? `datos/mapas/${encodeURIComponent(id)}/${file}` : `/api/v1/panel/maps/${encodeURIComponent(id)}/${file}`);
+
+  const valFile = (ruta) => (window.CHCP_STATIC ? `datos/validacion/${ruta}` : `/api/v1/validacion/${ruta}`);
+
   async function api(path, options = {}) {
     if (window.CHCP_STATIC) {
       // Sitio estático (GitHub Pages): solo datos precalculados, sin Earth Engine.
@@ -73,6 +78,6 @@
     burger.setAttribute('aria-expanded', String(open));
   });
 
-  window.CHCP = {$, $$, escapeHtml, number, hectares, api, toast, readPortalState, writePortalState, normalizeSearch};
+  window.CHCP = {$, $$, escapeHtml, number, hectares, api, mapFile, valFile, toast, readPortalState, writePortalState, normalizeSearch};
 })();
 

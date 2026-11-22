@@ -883,6 +883,16 @@ def _calcular_metricas_parches(
         "metricas_clase": metricas_clase,
         "metricas_red": metricas_red,
         "metricas_paisaje": metricas_paisaje,
+        # Red completa del área (no solo el árbol visible): el simulador de
+        # restauración recalcula componentes e IIC sobre estas aristas.
+        "red_simulacion": {
+            "umbral_m": float(umbral_m),
+            "area_paisaje_ha": round(float(area_paisaje_ha), 4),
+            "aristas": [
+                [int(o) + 1, int(d) + 1, round(float(a["distancia_m"]), 1)]
+                for o, d, a in subgrafo_objetivo.edges(data=True)
+            ],
+        },
         "top_conectores": nodos[:20],
         "parches_geojson": {"type": "FeatureCollection", "features": features},
         "conexiones_geojson": {

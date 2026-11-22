@@ -1,0 +1,78 @@
+name: Verificación de campo
+description: Registrar la visita a un sitio señalado por el geoportal (fotos, coordenadas, estado y causa observada).
+title: "[Campo] "
+labels: ["verificacion-campo"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Cada visita queda registrada con fecha y autor, y el historial se conserva. **No incluya datos personales de terceros** (nombres de propietarios, teléfonos): este repositorio es público.
+  - type: input
+    id: sitio
+    attributes:
+      label: Sitio
+      description: Identificador del sitio en el geoportal (p. ej. s5-16008200). Déjelo vacío si es un sitio nuevo.
+    validations:
+      required: false
+  - type: input
+    id: subcuenca
+    attributes:
+      label: Subcuenca
+  - type: input
+    id: coordenadas
+    attributes:
+      label: Coordenadas observadas
+      description: Latitud, longitud en grados decimales (WGS 84), p. ej. 9.16004, -79.82011
+    validations:
+      required: true
+  - type: input
+    id: fecha
+    attributes:
+      label: Fecha de la visita
+      placeholder: AAAA-MM-DD
+    validations:
+      required: true
+  - type: dropdown
+    id: estado
+    attributes:
+      label: Estado
+      description: "Visitado = se llegó pero falta decidir; Confirmado = se observa la pérdida o degradación señalada; Descartado = no hay pérdida (falsa alarma)."
+      options:
+        - Visitado
+        - Confirmado
+        - Descartado
+    validations:
+      required: true
+  - type: dropdown
+    id: causa
+    attributes:
+      label: Causa o situación observada
+      multiple: true
+      options:
+        - Agricultura
+        - Pasto o ganadería
+        - Extracción de madera
+        - Infraestructura o construcción
+        - Incendio
+        - Plantación forestal (cosecha)
+        - Regeneración natural
+        - Sin cambio visible
+        - Otra
+  - type: dropdown
+    id: confianza
+    attributes:
+      label: Confianza
+      options:
+        - Alta
+        - Media
+        - Baja
+  - type: textarea
+    id: observaciones
+    attributes:
+      label: Observaciones
+      description: Qué se vio, extensión aproximada, acceso, fecha probable del cambio.
+  - type: textarea
+    id: fotos
+    attributes:
+      label: Fotografías
+      description: Arrastre aquí las fotos (o tómelas desde el teléfono). Indique la dirección de cada toma si es posible.

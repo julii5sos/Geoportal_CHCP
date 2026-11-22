@@ -16,36 +16,43 @@
 </head>
 <body>
 <a class="skip-link" href="#main-content">Saltar al contenido principal</a>
-<header class="nav{% if app_page %} app-nav{% endif %}">
+{#- Menú del portal (estructura del modelo «conectividad_canal»): mismo encabezado en todas las páginas.
+    En el sitio estático los enlaces /ruta se reescriben a archivos .html al construirlo. -#}
+{%- set menu = [
+  ('home', 'Conoce la herramienta', url_for('index'), []),
+  ('panel', 'Panel', url_for('panel'), [
+     ('panel', 'Panel de la cuenca y subcuencas', url_for('panel'), 'Indicadores, cambio de cobertura, conectividad y corredores'),
+     ('ficha', 'Ficha técnica por subcuenca', url_for('ficha'), 'Diagnóstico descargable con mapas'),
+     ('coberturas', 'Coberturas oficiales SINIA', url_for('coberturas'), 'Ocho productos de MiAMBIENTE con su leyenda')]),
+  ('platform', 'Plataforma', url_for('platform'), [
+     ('platform', 'Plataforma SIG', url_for('platform'), 'Capas, consulta por subcuenca y análisis'),
+     ('restauracion', 'Simulador de restauración', url_for('restauracion'), 'Dónde restaurar para reconectar el bosque'),
+     ('validacion', 'Validación de mapas', url_for('validacion'), 'Exactitud y superficie con margen de error'),
+     ('campo', 'Verificación de campo', url_for('campo'), 'Sitios a visitar y registro de visitas')]),
+  ('methodology', 'Metodología', url_for('methodology'), []),
+  ('datos', 'Uso de datos', url_for('methodology') ~ '#sources', []),
+  ('about', 'Acerca', url_for('about'), []),
+] -%}
+<header class="nav">
   <div class="nav-in">
-    {% if not app_page %}<div class="util"><a href="{{ url_for('index') }}">Inicio</a><a href="{{ url_for('methodology') }}#sources">Atribución de datos</a><span>WGS 84 · EPSG:4326</span></div>{% endif %}
+    <div class="util"><a href="{{ url_for('index') }}">Inicio</a><a href="{{ url_for('methodology') }}#sources">Atribución de datos</a><span>WGS 84 · EPSG:4326</span></div>
     <div class="main-row">
-      <a class="wm" href="{% if sitio_estatico %}index.html{% else %}{{ url_for('index') }}{% endif %}" aria-label="Inicio · Geoportal de Conectividad Ecológica de la CHCP">{{ logo() }}<span><b>Geoportal CHCP</b><small>{% if app_page %}Plataforma de análisis territorial y monitoreo de bosques{% else %}Conectividad ecológica{% endif %}</small></span></a>
+      <a class="wm" href="{{ url_for('index') }}" aria-label="Inicio · Geoportal de Conectividad Ecológica de la CHCP">{{ logo() }}<span><b>Geoportal CHCP</b><small>Conectividad ecológica</small></span></a>
       <nav class="links" id="links" aria-label="Secciones principales">
-        {% if sitio_estatico %}
-        <a href="monitoreo.html"{% if active == 'panel' %} aria-current="page"{% endif %}><svg class="nav-ic" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 18h10a4 4 0 0 0 .6-7.95A6 6 0 0 0 6.2 9.2 4.4 4.4 0 0 0 7 18z"/></svg>Monitoreo</a>
-        <a href="coberturas.html"{% if active == 'coberturas' %} aria-current="page"{% endif %}><svg class="nav-ic" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 3.5 9 4.8-9 4.8-9-4.8z"/><path d="m3 12.4 9 4.8 9-4.8"/><path d="m3 16.4 9 4.8 9-4.8"/></svg>Coberturas SINIA</a>
-        {% if full_app_url %}<a href="{{ full_app_url }}/platform" rel="noopener"><svg class="nav-ic" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 4 3 6.5v13.5l6-2.5 6 2.5 6-2.5V4l-6 2.5z"/><path d="M9 4v13.5M15 6.5V20"/></svg>Análisis territorial ↗</a>{% endif %}
-        <a href="metodologia.html"{% if active == 'methodology' %} aria-current="page"{% endif %}><svg class="nav-ic" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="3.5" width="14" height="17" rx="2"/><path d="M8.5 8h7M8.5 12h7M8.5 16h4"/></svg>Metodología</a>
-        <a href="acerca.html"{% if active == 'about' %} aria-current="page"{% endif %}><svg class="nav-ic" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.6 9.3a2.5 2.5 0 1 1 3.4 2.3c-.6.3-1 .8-1 1.5v.6"/><path d="M12 17h.01"/></svg>Acerca</a>
-        {% elif app_page %}
-        <a href="{{ url_for('platform') }}"{% if active == 'platform' %} aria-current="page"{% endif %}><svg class="nav-ic" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 4 3 6.5v13.5l6-2.5 6 2.5 6-2.5V4l-6 2.5z"/><path d="M9 4v13.5M15 6.5V20"/></svg>Análisis territorial</a>
-        <a href="{{ url_for('panel') }}"{% if active == 'panel' %} aria-current="page"{% endif %}><svg class="nav-ic" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 18h10a4 4 0 0 0 .6-7.95A6 6 0 0 0 6.2 9.2 4.4 4.4 0 0 0 7 18z"/></svg>Monitoreo</a>
-        <a href="{{ url_for('coberturas') }}"{% if active == 'coberturas' %} aria-current="page"{% endif %}><svg class="nav-ic" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 3.5 9 4.8-9 4.8-9-4.8z"/><path d="m3 12.4 9 4.8 9-4.8"/><path d="m3 16.4 9 4.8 9-4.8"/></svg>Coberturas SINIA</a>
-        <a href="{{ url_for('platform') }}#results-body"><svg class="nav-ic" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11M7 10.5 12 15.5 17 10.5"/><path d="M4 18.5V20h16v-1.5"/></svg>Descargas</a>
-        <a href="{{ url_for('methodology') }}"{% if active == 'methodology' %} aria-current="page"{% endif %}><svg class="nav-ic" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="3.5" width="14" height="17" rx="2"/><path d="M8.5 8h7M8.5 12h7M8.5 16h4"/></svg>Documentación</a>
-        <a href="{{ url_for('about') }}"{% if active == 'about' %} aria-current="page"{% endif %}><svg class="nav-ic" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.6 9.3a2.5 2.5 0 1 1 3.4 2.3c-.6.3-1 .8-1 1.5v.6"/><path d="M12 17h.01"/></svg>Ayuda</a>
-        {% else %}
-        <a href="{{ url_for('index') }}"{% if active == 'home' %} aria-current="page"{% endif %}>Conoce la herramienta</a>
-        <a href="{{ url_for('panel') }}"{% if active == 'panel' %} aria-current="page"{% endif %}>Panel</a>
-        <a href="{{ url_for('platform') }}"{% if active == 'platform' %} aria-current="page"{% endif %}>Plataforma</a>
-        <a href="{{ url_for('methodology') }}"{% if active == 'methodology' %} aria-current="page"{% endif %}>Metodología</a>
-        <a href="{{ url_for('methodology') }}#sources"{% if active == 'methodology' %} aria-current="page"{% endif %}>Uso de datos</a>
-        <a href="{{ url_for('about') }}"{% if active == 'about' %} aria-current="page"{% endif %}>Acerca</a>
-        {% endif %}
+        {%- for clave, texto, href, sub in menu %}
+        {%- set actual = active == clave or (sub and active in sub|map(attribute=0)|list) %}
+        {%- if sub %}
+        <div class="dd">
+          <a href="{{ href }}"{% if actual %} aria-current="page"{% endif %} aria-haspopup="true">{{ texto }}<i class="chev dn" aria-hidden="true"></i></a>
+          <div class="dd-m" role="menu">{% for c2, t2, h2, d2 in sub %}<a role="menuitem" href="{{ h2 }}"{% if active == c2 %} class="on"{% endif %}><b>{{ t2 }}</b><small>{{ d2 }}</small></a>{% endfor %}</div>
+        </div>
+        {%- else %}
+        <a href="{{ href }}"{% if actual %} aria-current="page"{% endif %}>{{ texto }}</a>
+        {%- endif %}
+        {%- endfor %}
       </nav>
       <div class="nav-btns">
-        {% if not app_page %}<a class="btn btn-w" href="{{ url_for('platform') }}">Explorar datos <span aria-hidden="true">↗</span></a><span class="btn btn-o" aria-label="Idioma español">ES</span>{% endif %}
+        <a class="btn btn-w" href="{{ url_for('platform') }}">Explorar datos <span aria-hidden="true">↗</span></a><span class="btn btn-o" aria-label="Idioma español">ES</span>
         <button class="burger" id="burger" type="button" aria-expanded="false" aria-controls="links">Menú</button>
       </div>
     </div>

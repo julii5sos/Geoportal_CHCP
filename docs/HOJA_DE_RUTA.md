@@ -9,9 +9,10 @@ Estado a 2026-11-22. Cada módulo indica qué datos o decisiones necesita antes 
 | Ficha técnica por subcuenca | **Implementada** (`/ficha`, imprimible a PDF) | Se enriquece sola cuando llegan los datos v2 (mapa de parches, núcleo, dIIC, ERI). |
 | Validación e incertidumbre | Diseño | Puntos de referencia independientes (fotointerpretación o campo) con muestreo estratificado por clase de mapa; matriz de confusión, exactitud de usuario/productor, área ajustada por error e IC 95 % (Olofsson et al., 2014; FAO). Sin esos puntos no se publican intervalos. |
 | Conectividad por circuitos y PC/dPC | En espera | Superficie de resistencia justificada (bibliografía o expertos) y distancias de dispersión por grupo de especies. IIC binario ya cubre la versión sin parámetros biológicos. |
+| Mapas temáticos en la ficha (8 capas) y Almanaque Azul | **Implementado** (`chcp/gee/mapas_ficha.py`) | Se generan en la próxima actualización de datos. |
 | Persistencia del bosque | Siguiente | Frecuencia de bosque JRC 1990–2025 por píxel; se puede añadir al precálculo sin parámetros nuevos. |
-| Conectividad riparia | Siguiente | Red hídrica HydroSHEDS/MERIT; franjas de 30/50/100 m y porcentaje con bosque por tramo. |
-| Priorización y simulador de restauración | Diseño | Se hará en el navegador sobre las geometrías de `data/subcuencas/<id>.json`: el usuario «rellena» una brecha y se recalcula IIC con la misma fórmula. |
-| Comparador de escenarios | Diseño | Depende del simulador (escenario actual, conservación, restauración). |
+| Conectividad riparia | **Implementada (indicativa)** | Franjas 30/50/100 m sobre MERIT Hydro; mejorar con hidrografía local cuando esté disponible. |
+| Priorización y simulador de restauración | **Implementado** (`/restauracion`) | Dibujo libre de polígonos de restauración (hoy: brechas candidatas y unión de dos parches). |
+| Comparador de escenarios | **Implementado** (actual, A y B en `/restauracion`) | Añadir escenario de pérdida (quitar parches) para medir riesgo. |
 | Formularios de verificación de campo | Diseño | Un sitio estático no guarda envíos: usar KoboToolbox (gratuito) o GitHub Issues con plantilla; estados pendiente/visitado/confirmado/descartado. |
 | Dibujo de polígonos propios | Futuro | Requiere un servidor con acceso a GEE. |
