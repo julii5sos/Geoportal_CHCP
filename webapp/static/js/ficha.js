@@ -188,7 +188,8 @@
     const acc = acciones(t);
     $('#fi-doc').innerHTML = `
       <header class="fi-head">
-        <div><span class="fi-kicker">Ficha técnica · ${esc(t.grupo)}</span><h1>${esc(t.nombre)}</h1>
+        <img class="fi-logo" src="${window.CHCP_STATIC ? 'static' : '/static'}/img/logo_emblema_160.png" alt="Geoportal CHCP" width="64" height="64">
+        <div class="fi-head-txt"><span class="fi-kicker">Ficha técnica · ${esc(t.grupo)}</span><h1>${esc(t.nombre)}</h1>
         <p>${hectares(t.area_ha)} · datos del ${esc(String(st.data.generado || '').slice(0, 10))} · ${esc(st.data.metodologia)} · Clúster Copernicus Centroamérica AFOLU II</p></div>
         <div class="fi-score" data-tone="${toneP}"><span>Preevaluación</span><b>${number(p.puntaje, 1)}<small>/ ${number(p.puntaje_maximo, 1)}</small></b><em>${esc(p.prioridad)}</em><small>Visita: ${esc(p.prioridad_visita || '—')}</small></div>
       </header>
