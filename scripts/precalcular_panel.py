@@ -216,10 +216,17 @@ def main() -> int:
 
     datos = {"metodologia": METODOLOGIA_VERSION, "version_datos": VERSION_DATOS, "proyecto": os.environ["GEE_PROJECT_ID"],
              "umbral_conectividad_m": args.distancia, "capas_mapa": CAPAS, "codificacion_valores": CODIFICACION_VALORES, "territorios": {}, "errores": {}}
-    if SALIDA.exists() and not args.rehacer:
+    # Se conservan siempre los territorios ya publicados para que el sitio no quede
+    # incompleto durante una actualización parcial (p. ej. --limite 1). Los de una
+    # versión anterior de datos se marcan como pendientes y se reemplazan al recalcularlos.
+    if SALIDA.exists():
         previo = json.loads(SALIDA.read_text(encoding="utf-8"))
-        if previo.get("metodologia") == METODOLOGIA_VERSION and previo.get("version_datos") == VERSION_DATOS:
-            datos["territorios"] = previo.get("territorios", {})
+        datos["territorios"] = previo.get("territorios", {})
+        if previo.get("version_datos") != VERSION_DATOS:
+            for t in datos["territorios"].values():
+                t.setdefault("version_datos", previo.get("version_datos") or 1)
+    vigente = lambda t: (not args.rehacer and t.get("version_datos", VERSION_DATOS) == VERSION_DATOS
+                         and t.get("metodologia", METODOLOGIA_VERSION) == METODOLOGIA_VERSION)
 
     if args.solo_mapas:
         _initialize_ee()
@@ -237,7 +244,10 @@ def main() -> int:
             _guardar(datos)
         return 0
 
-    pendientes = [t for t in _territorios() if t["id"] not in datos["territorios"]]
+    if args.rehacer:
+        for t in datos["territorios"].values():
+            t["version_datos"] = -1  # pendiente, pero visible hasta que se recalcule
+    pendientes = [t for t in _territorios() if t["id"] not in datos["territorios"] or not vigente(datos["territorios"][t["id"]])]
     if args.limite:
         pendientes = pendientes[: args.limite]
     print(f"{len(datos['territorios'])} territorios ya calculados; {len(pendientes)} pendientes.")
@@ -263,9 +273,9 @@ def main() -> int:
                 eri = run_eri(EriRequest(area=area))["result"]
             except Exception as exc:  # el ERI es complementario: su fallo no bloquea el territorio
                 eri = {"clase": None, "lectura": f"No calculado: {exc}"}
-            datos["territorios"][territorio["id"]] = _compactar(
+            datos["territorios"][territorio["id"]] = {"version_datos": VERSION_DATOS, **_compactar(
                 territorio, evaluacion, estructura, respuesta.get("corridor_context") or {}, sinia, eri
-            )
+            )}
             _guardar_geometrias(territorio["id"], estructura)
             if not args.sin_mapas:
                 _mapas_y_riparia(territorio, datos["territorios"][territorio["id"]])
