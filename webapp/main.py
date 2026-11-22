@@ -1,6 +1,7 @@
 """Servidor Flask del Geoportal de Conectividad Ecológica de la CHCP."""
 
 from __future__ import annotations
+import re
 
 import logging
 import os
@@ -255,6 +256,19 @@ def create_app(*, testing: bool = False) -> Flask:
             project_id=resolver_proyecto_gee(),
             use_map=True,
         )
+
+    @app.get("/ficha")
+    def ficha():
+        return render_template("ficha.html", active="panel", project_id=resolver_proyecto_gee(), use_map=True, app_page=True)
+
+    @app.get("/api/v1/panel/geometry/<identificador>")
+    def api_panel_geometry(identificador: str):
+        if not re.fullmatch(r"[A-Za-z0-9_-]{1,40}", identificador):
+            return jsonify(error="Identificador no válido."), 400
+        path = PANEL_STATISTICS_PATH.parent / "subcuencas" / f"{identificador}.json"
+        if not path.exists():
+            return jsonify(error="Geometrías no calculadas para este territorio."), 404
+        return send_file(path, mimetype="application/json", max_age=300)
 
     @app.get("/api/v1/panel/statistics")
     def api_panel_statistics():

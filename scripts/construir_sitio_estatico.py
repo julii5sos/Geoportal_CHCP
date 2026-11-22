@@ -1,7 +1,7 @@
 """Construye la versión HTML estática del Geoportal CHCP (GitHub Pages).
 
-Incluye Monitoreo (CHCP y 53 subcuencas), mapas de subcuencas, corredores y puntos
-críticos, y el explorador de coberturas SINIA con las superficies precalculadas.
+Incluye inicio, Monitoreo (CHCP y 53 subcuencas), mapas de subcuencas, corredores y
+puntos críticos, coberturas SINIA con superficies precalculadas, metodología y acerca.
 No incluye nada que requiera Earth Engine en el momento ni credenciales.
 
     python scripts/construir_sitio_estatico.py                       # genera sitio/
@@ -26,7 +26,31 @@ API_ESTATICA = {
     "/api/v1/panel/statistics": "datos/estadisticas_territoriales.json",
     "/api/v1/sinia/catalog": "datos/sinia_catalogo.json",
 }
-PAGINAS = {"/panel": "index.html", "/coberturas": "coberturas.html"}
+PAGINAS = {
+    "/": "index.html",
+    "/panel": "monitoreo.html",
+    "/coberturas": "coberturas.html",
+    "/methodology": "metodologia.html",
+    "/about": "acerca.html",
+    "/ficha": "ficha.html",
+}
+
+
+def reescribir_enlaces(html: str, app_completa: str) -> str:
+    """Convierte las rutas del servidor Flask en archivos del sitio estático."""
+    import re
+
+    html = html.replace('"/static/', '"static/').replace("'/static/", "'static/")
+    destinos = {"": "index.html", "panel": "monitoreo.html", "coberturas": "coberturas.html",
+                "methodology": "metodologia.html", "about": "acerca.html", "ficha": "ficha.html"}
+
+    def cambiar(m):
+        ruta, ancla = m.group(1), m.group(2) or ""
+        if ruta == "platform":
+            return f'href="{app_completa}/platform{ancla}"' if app_completa else f'href="monitoreo.html{ancla if ancla != "#results-body" else ""}"'
+        return f'href="{destinos.get(ruta, "index.html")}{ancla}"' if ruta in destinos else m.group(0)
+
+    return re.sub(r'href="/([a-z]*)(#[^"]*)?(?:\?[^"]*)?"', cambiar, html)
 
 
 def construir(destino: Path, app_completa: str, repo_url: str) -> list[str]:
@@ -46,10 +70,11 @@ def construir(destino: Path, app_completa: str, repo_url: str) -> list[str]:
         (destino / archivo).write_text(json.dumps(respuesta.get_json(), ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
         generados.append(archivo)
     for ruta, archivo in PAGINAS.items():
-        html = cliente.get(ruta).get_data(as_text=True)
-        html = html.replace('"/static/', '"static/').replace("'/static/", "'static/")
+        html = reescribir_enlaces(cliente.get(ruta).get_data(as_text=True), app.config["FULL_APP_URL"])
         (destino / archivo).write_text(html, encoding="utf-8")
         generados.append(archivo)
+    if (RAIZ / "data" / "subcuencas").exists():
+        shutil.copytree(RAIZ / "data" / "subcuencas", destino / "datos" / "subcuencas")
     shutil.copytree(RAIZ / "webapp" / "static", destino / "static",
                     ignore=shutil.ignore_patterns("__fixture*", "__fx*"))
     (destino / ".nojekyll").write_text("", encoding="utf-8")

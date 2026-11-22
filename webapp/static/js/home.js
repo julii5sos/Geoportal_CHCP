@@ -8,6 +8,7 @@
   }).addTo(map);
   try {
     const territory = await api('/api/v1/territory');
+    window.__chcpTerritory = territory;
     const basin = L.geoJSON(territory.basin, {style: {color: '#0a4393', weight: 3, fillColor: '#0a4393', fillOpacity: .08}}).addTo(map);
     L.geoJSON(territory.subbasins, {style: {color: '#77cc09', weight: 1, fillOpacity: 0}, onEachFeature: (feature, layer) => layer.bindTooltip(feature.properties?.nombre || 'Subcuenca')}).addTo(map);
     map.fitBounds(basin.getBounds(), {padding: [16, 16]});
@@ -32,7 +33,8 @@
   }
   function choose(item) {
     writePortalState({territoryId: item.id, territoryName: item.nombre, territoryType: item.tipo});
-    window.location.assign(`/panel?territory=${encodeURIComponent(item.id)}`);
+    const destino = window.CHCP_STATIC ? 'monitoreo.html' : '/panel';
+    window.location.assign(`${destino}#${encodeURIComponent(item.tipo === 'cuenca' ? 'chcp' : item.nombre)}`);
   }
   function renderChoices() {
     if (!choices.length) {
@@ -52,7 +54,12 @@
     spinner.hidden = false;
     status.textContent = 'Buscando territorios…';
     try {
-      const response = await api(`/api/v1/territories/search?q=${encodeURIComponent(query)}`);
+      const normal = (text) => String(text || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+      const response = window.CHCP_STATIC
+        ? { results: [{ id: 'chcp', nombre: 'Cuenca Hidrográfica del Canal de Panamá', tipo: 'cuenca' },
+            ...(window.__chcpTerritory?.subbasins?.features || []).map((f) => ({ id: f.properties.id, nombre: f.properties.nombre, grupo: f.properties.grupo, tipo: 'subcuenca' }))]
+            .filter((item) => normal(item.nombre).includes(normal(query))).slice(0, 12) }
+        : await api(`/api/v1/territories/search?q=${encodeURIComponent(query)}`);
       choices = response.results;
       active = choices.length ? 0 : -1;
       renderChoices();

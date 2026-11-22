@@ -13,6 +13,9 @@ GitHub Actions (mensual o manual)                     GitHub Pages
 └──────────────────────────────────────┘              └──────────────────────────┘
 ```
 
+Páginas publicadas: **Inicio** (`index.html`, con buscador de subcuencas), **Monitoreo**,
+**Coberturas SINIA**, **Metodología** y **Acerca**.
+
 | Qué ofrece la página | Qué queda para una actualización futura |
 |---|---|
 | Monitoreo de la CHCP y 53 subcuencas: preevaluación MT-2026.7, dinámica JRC, serie 2020–2025, Hansen, ESRI, NDVI, SINIA 2019/2021/2023, fragmentación y conectividad 2021, corredores y rankings | Dibujar o importar un polígono y analizarlo al momento |

@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}Ficha técnica por subcuenca · Geoportal CHCP{% endblock %}
+{% block body %}
+<main id="v-ficha" data-project="{{ project_id }}">
+  <div class="fi-toolbar no-print">
+    <label for="fi-select">Subcuenca</label>
+    <select id="fi-select"></select>
+    <button class="btn btn-p" id="fi-print" type="button">Descargar PDF / imprimir</button>
+    <a class="btn btn-s" id="fi-back" href="{% if sitio_estatico %}monitoreo.html{% else %}{{ url_for('panel') }}{% endif %}">Volver al monitoreo</a>
+  </div>
+  <article class="fi-doc" id="fi-doc" aria-live="polite">
+    <p class="fi-loading">Cargando ficha técnica…</p>
+  </article>
+</main>
+{% endblock %}
+{% block scripts %}<script src="{{ url_for('static', filename='js/ficha.js') }}"></script>{% endblock %}

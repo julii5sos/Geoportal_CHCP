@@ -33,10 +33,10 @@ os.environ.setdefault("GEE_PROJECT_ID", "geoportal-513817")
 from chcp.nucleo.metodologia_indice import METODOLOGIA_VERSION  # noqa: E402
 from chcp.territorio.territorio_local import coleccion_subcuencas  # noqa: E402
 from webapp.models import (  # noqa: E402
-    AreaSelection, EcologicalEvaluationRequest, IntegratedEvaluationRequest, SiniaCoverageRequest,
+    AreaSelection, EcologicalEvaluationRequest, EriRequest, IntegratedEvaluationRequest, SiniaCoverageRequest,
 )
 from webapp.service import (  # noqa: E402
-    run_ecological_evaluation, run_integrated_evaluation, run_sinia_coverages,
+    run_ecological_evaluation, run_eri, run_integrated_evaluation, run_sinia_coverages,
 )
 import ee  # noqa: E402
 
@@ -45,6 +45,9 @@ from chcp.gee.gee_config import desactivar_teselas  # noqa: E402
 desactivar_teselas(ee)  # el precálculo solo necesita números, no capas de mapa
 
 SALIDA = RAIZ / "data" / "estadisticas_territoriales.json"
+DIR_GEOMETRIAS = RAIZ / "data" / "subcuencas"
+# Versión del contenido del archivo: si cambia, se recalcula todo aunque no se use --rehacer.
+VERSION_DATOS = 2
 CLASES_JRC = ("tmf_estable", "tmf_degradacion", "tmf_deforestacion", "tmf_recuperacion",
               "tmf_agua", "tmf_otra_cobertura")
 
@@ -65,15 +68,56 @@ def _compactar_estructura(estructura: dict | None) -> dict | None:
     clase = estructura.get("metricas_clase") or {}
     red = estructura.get("metricas_red") or {}
     corredor = estructura.get("conexion_corredor") or {}
+    campos_conector = ("patch_id", "area_ha", "indice_conector", "prioridad_conectividad", "grado", "componente")
     return {
         "metricas_clase": {k: v for k, v in clase.items() if isinstance(v, (int, float, str, type(None)))},
         "metricas_red": {k: v for k, v in red.items() if isinstance(v, (int, float, str, type(None)))},
+        "metricas_paisaje": estructura.get("metricas_paisaje"),
+        "top_conectores": [{k: c.get(k) for k in campos_conector} for c in (estructura.get("top_conectores") or [])[:5]],
+        "brechas_potenciales": len((estructura.get("conexiones_potenciales_geojson") or {}).get("features", [])),
         "conecta_corredor": corredor.get("conecta"),
         "corredor_nombre": corredor.get("corredor_nombre"),
     }
 
 
-def _compactar(territorio: dict, evaluacion: dict, estructura: dict | None, corredores: dict, sinia: dict) -> dict:
+def _redondear(coordenadas, decimales: int = 5):
+    if isinstance(coordenadas, (int, float)):
+        return round(coordenadas, decimales)
+    return [_redondear(c, decimales) for c in coordenadas]
+
+
+def _guardar_geometrias(identificador: str, estructura: dict | None) -> None:
+    """Parches, brechas y ruta al corredor de la subcuenca para los mapas de la ficha."""
+    if not estructura:
+        return
+    campos = ("patch_id", "area_ha", "indice_conector", "prioridad_conectividad", "componente", "esta_aislado")
+    def limpiar(coleccion, propiedades=None):
+        salida = []
+        for f in (coleccion or {}).get("features", []):
+            props = f.get("properties") or {}
+            salida.append({"type": "Feature",
+                           "properties": {k: props.get(k) for k in propiedades} if propiedades else props,
+                           "geometry": {"type": f["geometry"]["type"], "coordinates": _redondear(f["geometry"]["coordinates"])}})
+        return {"type": "FeatureCollection", "features": salida}
+    DIR_GEOMETRIAS.mkdir(parents=True, exist_ok=True)
+    datos = {
+        "parches": limpiar(estructura.get("parches_geojson"), campos),
+        "conexiones": limpiar(estructura.get("conexiones_geojson")),
+        "brechas": limpiar(estructura.get("conexiones_potenciales_geojson")),
+        "ruta_corredor": limpiar(estructura.get("ruta_corredor_geojson")),
+    }
+    (DIR_GEOMETRIAS / f"{identificador}.json").write_text(json.dumps(datos, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
+
+
+def _compactar_eri(eri: dict | None) -> dict | None:
+    if not eri:
+        return None
+    return {k: eri.get(k) for k in ("valor", "clase", "color", "lectura", "componentes", "componente_limitante_etiqueta",
+                                    "distribucion_clases", "pesos", "anio_referencia", "fuentes")}
+
+
+def _compactar(territorio: dict, evaluacion: dict, estructura: dict | None, corredores: dict, sinia: dict,
+               eri: dict | None = None) -> dict:
     m = evaluacion["metrics"]
     visita = evaluacion.get("visit_priority") or {}
     return {
@@ -116,6 +160,8 @@ def _compactar(territorio: dict, evaluacion: dict, estructura: dict | None, corr
             ],
         },
         "estructura_2021": _compactar_estructura(estructura),
+        "eri": _compactar_eri(eri),
+        "periodos": evaluacion.get("periods"),
     }
 
 
@@ -134,11 +180,11 @@ def main() -> int:
     parser.add_argument("--distancia", type=float, default=500, help="Umbral entre parches en metros")
     args = parser.parse_args()
 
-    datos = {"metodologia": METODOLOGIA_VERSION, "proyecto": os.environ["GEE_PROJECT_ID"],
+    datos = {"metodologia": METODOLOGIA_VERSION, "version_datos": VERSION_DATOS, "proyecto": os.environ["GEE_PROJECT_ID"],
              "umbral_conectividad_m": args.distancia, "territorios": {}, "errores": {}}
     if SALIDA.exists() and not args.rehacer:
         previo = json.loads(SALIDA.read_text(encoding="utf-8"))
-        if previo.get("metodologia") == METODOLOGIA_VERSION:
+        if previo.get("metodologia") == METODOLOGIA_VERSION and previo.get("version_datos") == VERSION_DATOS:
             datos["territorios"] = previo.get("territorios", {})
 
     pendientes = [t for t in _territorios() if t["id"] not in datos["territorios"]]
@@ -163,9 +209,14 @@ def main() -> int:
                 evaluacion = respuesta["result"]["evaluation"]
                 estructura = respuesta["result"]["structure"]
             sinia = run_sinia_coverages(SiniaCoverageRequest(area=area))["result"]
+            try:
+                eri = run_eri(EriRequest(area=area))["result"]
+            except Exception as exc:  # el ERI es complementario: su fallo no bloquea el territorio
+                eri = {"clase": None, "lectura": f"No calculado: {exc}"}
             datos["territorios"][territorio["id"]] = _compactar(
-                territorio, evaluacion, estructura, respuesta.get("corridor_context") or {}, sinia
+                territorio, evaluacion, estructura, respuesta.get("corridor_context") or {}, sinia, eri
             )
+            _guardar_geometrias(territorio["id"], estructura)
             datos["errores"].pop(territorio["id"], None)
             print(f"{etiqueta}: {evaluacion['score']} pts ({evaluacion['priority']}) · {time.time() - inicio:.0f} s")
         except Exception as exc:  # se registra y se continúa con el siguiente territorio

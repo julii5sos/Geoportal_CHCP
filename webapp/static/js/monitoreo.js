@@ -224,7 +224,8 @@
     if (!u) return;
     $('#mon-title').textContent = u.nombre;
     $('#mon-crumbs').innerHTML = st.sel === 'chcp' ? '<span>Cuenca del Canal</span>' : `<button type="button" data-go="chcp">Cuenca del Canal</button><span>›</span><span>${esc(u.grupo)}</span><span>›</span><span>${esc(u.nombre)}</span>`;
-    $('#mon-lead').innerHTML = lead(u);
+    const fichaId = st.sel === 'chcp' ? '' : `?id=${encodeURIComponent(st.sel)}`;
+    $('#mon-lead').innerHTML = `${lead(u)} <a class="mon-ficha" href="${window.CHCP_STATIC ? 'ficha.html' : '/ficha'}${fichaId}">${(window.CHCP_ICON || (() => ''))('doc', 16)} Ver ficha técnica completa</a>`;
     $('#mon-widgets').innerHTML = VIEWS[st.tab](u) + `<p class="mon-foot">Indicadores precalculados el ${esc((st.data.generado || '').replace('T', ' '))} con ${esc(st.data.metodologia)} · proyecto ${esc(st.data.proyecto)}.${window.CHCP_STATIC ? (window.CHCP_FULL_URL ? ` <a href="${window.CHCP_FULL_URL}/platform">Analizar un área propia ↗</a>` : ' El análisis de áreas dibujadas llegará en una próxima actualización.') : ' <a href="/platform">Analizar un área propia</a>'}</p>`;
     $$('[data-exp]', $('#mon-widgets')).forEach((b) => b.addEventListener('click', () => { const e = $(`#exp-${b.dataset.exp}`); e.hidden = !e.hidden; }));
     $$('[data-go]').forEach((b) => b.addEventListener('click', () => select(b.dataset.go)));
@@ -278,6 +279,7 @@
   $('#mon-sub').innerHTML = '<option value="">Toda la cuenca</option>' + Object.keys(groups).sort((a, b) => a.localeCompare(b, 'es')).map((g) => `<optgroup label="${esc(g)}">${groups[g].sort((a, b) => a.nombre.localeCompare(b.nombre, 'es')).map((t) => `<option value="${t.id}">${esc(t.nombre)}</option>`).join('')}</optgroup>`).join('');
   const missing = 53 - subs().length;
   $('#mon-sub-hint').textContent = `${subs().length} de 53 subcuencas calculadas${missing > 0 ? ` · faltan ${missing}` : ''}`;
-  const initial = (location.hash || '').slice(1);
+  const hash = decodeURIComponent((location.hash || '').slice(1));
+  const initial = st.data.territorios[hash] ? hash : (Object.values(st.data.territorios).find((t) => t && t.nombre === hash)?.id || '');
   select(st.data.territorios[initial] ? initial : (st.data.territorios.chcp ? 'chcp' : subs()[0]?.id), Boolean(initial));
 })();
