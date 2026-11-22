@@ -1,9 +1,293 @@
 {
  "metodologia": "MT-2026.7-DIAGNOSTICO-INTEGRADO",
+ "version_datos": 2,
  "proyecto": "geoportal-513817",
  "umbral_conectividad_m": 500,
+ "capas_mapa": [
+  {
+   "clave": "sinia_2021",
+   "titulo": "Cobertura oficial SINIA 2021",
+   "tipo": "categorias",
+   "leyenda": [
+    {
+     "valor": 1,
+     "color": "#237A4B",
+     "etiqueta": "Bosques y otras tierras boscosas"
+    },
+    {
+     "valor": 2,
+     "color": "#D8C49C",
+     "etiqueta": "Otras tierras"
+    },
+    {
+     "valor": 3,
+     "color": "#388FC4",
+     "etiqueta": "Cuerpos de agua"
+    }
+   ],
+   "lectura": "Cartografía oficial de MiAMBIENTE (vector 2021 rasterizado). Es la base de la fragmentación y la conectividad."
+  },
+  {
+   "clave": "jrc_2025",
+   "titulo": "Estado del bosque húmedo · JRC TMF 2025",
+   "tipo": "categorias",
+   "leyenda": [
+    {
+     "valor": 1,
+     "color": "#1d6b35",
+     "etiqueta": "Bosque sin perturbación"
+    },
+    {
+     "valor": 2,
+     "color": "#f28e2b",
+     "etiqueta": "Bosque degradado"
+    },
+    {
+     "valor": 3,
+     "color": "#fabc20",
+     "etiqueta": "Deforestado"
+    },
+    {
+     "valor": 4,
+     "color": "#a6d96a",
+     "etiqueta": "Regeneración"
+    },
+    {
+     "valor": 5,
+     "color": "#5aa9e6",
+     "etiqueta": "Agua"
+    },
+    {
+     "valor": 6,
+     "color": "#d7c2a1",
+     "etiqueta": "Otra cobertura"
+    }
+   ],
+   "lectura": "Clases acumuladas desde 1990 a diciembre de 2025 (Landsat, 30 m)."
+  },
+  {
+   "clave": "hansen",
+   "titulo": "Pérdida de cobertura arbórea por año · Hansen GFC",
+   "tipo": "categorias",
+   "leyenda": [
+    {
+     "valor": 21,
+     "color": "#fee391",
+     "etiqueta": "2021"
+    },
+    {
+     "valor": 22,
+     "color": "#fec44f",
+     "etiqueta": "2022"
+    },
+    {
+     "valor": 23,
+     "color": "#fe9929",
+     "etiqueta": "2023"
+    },
+    {
+     "valor": 24,
+     "color": "#ec7014",
+     "etiqueta": "2024"
+    },
+    {
+     "valor": 25,
+     "color": "#cc4c02",
+     "etiqueta": "2025"
+    }
+   ],
+   "lectura": "Año de la pérdida detectada (30 m). Incluye cosecha de plantaciones; no indica la causa."
+  },
+  {
+   "clave": "esri_cambio",
+   "titulo": "Cambio de árboles 2017 → 2024 · ESRI",
+   "tipo": "categorias",
+   "leyenda": [
+    {
+     "valor": 1,
+     "color": "#d7301f",
+     "etiqueta": "Árboles en 2017, otra clase en 2024"
+    },
+    {
+     "valor": 2,
+     "color": "#2b8cbe",
+     "etiqueta": "Otra clase en 2017, árboles en 2024"
+    },
+    {
+     "valor": 3,
+     "color": "#a1d99b",
+     "etiqueta": "Árboles en ambos años"
+    }
+   ],
+   "lectura": "Clasificación automática Sentinel-2 (10 m); los bordes y mosaicos agrícolas tienen más error."
+  },
+  {
+   "clave": "ndvi_cambio",
+   "titulo": "Cambio del NDVI 2020 → 2025 · Sentinel-2",
+   "tipo": "continuo",
+   "minimo": -0.3,
+   "maximo": 0.3,
+   "paleta": [
+    "#8c510a",
+    "#d8b365",
+    "#f6e8c3",
+    "#f5f5f5",
+    "#c7eae5",
+    "#5ab4ac",
+    "#01665e"
+   ],
+   "leyenda": [
+    {
+     "color": "#8c510a",
+     "etiqueta": "≤ −0.30 (pérdida fuerte de vigor)"
+    },
+    {
+     "color": "#f5f5f5",
+     "etiqueta": "Sin cambio"
+    },
+    {
+     "color": "#01665e",
+     "etiqueta": "≥ +0.30 (más vigor)"
+    }
+   ],
+   "lectura": "Diferencia de la mediana anual sin nubes. Un descenso puede deberse a cosecha, sequía o nubes residuales; no es pérdida de bosque por sí solo."
+  },
+  {
+   "clave": "eri",
+   "titulo": "Resiliencia ecológica indicativa (ERI)",
+   "tipo": "continuo",
+   "minimo": 0.0,
+   "maximo": 1.0,
+   "paleta": [
+    "#B42318",
+    "#F79009",
+    "#F2C94C",
+    "#76B72A",
+    "#00544D"
+   ],
+   "leyenda": [
+    {
+     "color": "#B42318",
+     "etiqueta": "Muy baja"
+    },
+    {
+     "color": "#F79009",
+     "etiqueta": "Baja"
+    },
+    {
+     "color": "#F2C94C",
+     "etiqueta": "Media"
+    },
+    {
+     "color": "#76B72A",
+     "etiqueta": "Alta"
+    },
+    {
+     "color": "#00544D",
+     "etiqueta": "Muy alta"
+    }
+   ],
+   "lectura": "Integridad 35 %, conectividad local 25 %, estabilidad del relieve 20 % y cercanía a ríos 20 %. Indicativo, sin validación de campo."
+  },
+  {
+   "clave": "coincidencia",
+   "titulo": "Señales de pérdida coincidentes",
+   "tipo": "categorias",
+   "leyenda": [
+    {
+     "valor": 1,
+     "color": "#ffe08a",
+     "etiqueta": "1 fuente"
+    },
+    {
+     "valor": 2,
+     "color": "#f28e2b",
+     "etiqueta": "2 fuentes"
+    },
+    {
+     "valor": 3,
+     "color": "#c62828",
+     "etiqueta": "3 fuentes (JRC, Hansen y ESRI)"
+    }
+   ],
+   "lectura": "Dónde coinciden deterioro JRC, pérdida Hansen desde 2021 y salida de árboles ESRI. Más fuentes = más confianza, no certeza."
+  },
+  {
+   "clave": "riparia",
+   "titulo": "Franja riparia de 50 m",
+   "tipo": "categorias",
+   "leyenda": [
+    {
+     "valor": 4,
+     "color": "#1f78b4",
+     "etiqueta": "Eje aproximado del cauce"
+    },
+    {
+     "valor": 1,
+     "color": "#2e7d32",
+     "etiqueta": "Franja con bosque (SINIA 2021)"
+    },
+    {
+     "valor": 2,
+     "color": "#f4a261",
+     "etiqueta": "Franja sin bosque, pendiente < 30 %"
+    },
+    {
+     "valor": 3,
+     "color": "#c62828",
+     "etiqueta": "Franja sin bosque, pendiente ≥ 30 %"
+    }
+   ],
+   "lectura": "Cauces con ≥ 1 km² de drenaje (MERIT Hydro, 90 m). Posición indicativa: verificar con hidrografía local."
+  }
+ ],
+ "codificacion_valores": {
+  "sinia_2021": {
+   "tipo": "categorias"
+  },
+  "jrc_2025": {
+   "tipo": "categorias"
+  },
+  "hansen": {
+   "tipo": "categorias"
+  },
+  "esri_cambio": {
+   "tipo": "categorias"
+  },
+  "coincidencia": {
+   "tipo": "categorias"
+  },
+  "riparia": {
+   "tipo": "categorias"
+  },
+  "ndvi_cambio": {
+   "tipo": "continuo",
+   "minimo": -1.0,
+   "paso": 0.008
+  },
+  "eri": {
+   "tipo": "continuo",
+   "minimo": 0.0,
+   "paso": 0.004
+  },
+  "gedi": {
+   "tipo": "continuo",
+   "minimo": 0.0,
+   "paso": 0.25
+  },
+  "aux": {
+   "tipo": "bits",
+   "bits": {
+    "linea_base": 1,
+    "ndvi_valido": 2,
+    "ndvi_descenso": 4,
+    "gedi_valido": 8
+   }
+  }
+ },
  "territorios": {
   "chcp": {
+   "version_datos": 2,
    "id": "chcp",
    "nombre": "Cuenca Hidrográfica del Canal de Panamá",
    "grupo": "Cuenca",
@@ -52,8 +336,8 @@
     "esri_arboles_final": 238489.80055009015
    },
    "ndvi": {
-    "ndvi_inicial_medio": 0.6469540981305653,
-    "ndvi_final_medio": 0.6737570070133702,
+    "ndvi_inicial_medio": 0.6469540981305654,
+    "ndvi_final_medio": 0.6737570070133704,
     "ndvi_delta_medio": 0.026802908882804868,
     "ndvi_disminucion": 4049.2034433330805
    },
@@ -230,7 +514,160 @@
      }
     ]
    },
-   "estructura_2021": null
+   "estructura_2021": null,
+   "eri": {
+    "valor": 0.5671,
+    "clase": "Media",
+    "color": "#F2C94C",
+    "lectura": "Condición intermedia; conviene revisar los componentes más débiles.",
+    "componentes": {
+     "integridad_estructural": 0.3925365398322904,
+     "conectividad": 0.5563454985671056,
+     "estabilidad_topografica": 0.8959231406092307,
+     "proximidad_riparia": 0.5573131104465384
+    },
+    "componente_limitante_etiqueta": "Integridad estructural",
+    "distribucion_clases": [
+     {
+      "clave": "muy_baja",
+      "clase": "Muy baja",
+      "color": "#B42318",
+      "area_ha": 3468.8062049695086
+     },
+     {
+      "clave": "baja",
+      "clase": "Baja",
+      "color": "#F79009",
+      "area_ha": 53172.23401183077
+     },
+     {
+      "clave": "media",
+      "clase": "Media",
+      "color": "#F2C94C",
+      "area_ha": 126184.45877483867
+     },
+     {
+      "clave": "alta",
+      "clase": "Alta",
+      "color": "#76B72A",
+      "area_ha": 107248.286727798
+     },
+     {
+      "clave": "muy_alta",
+      "clase": "Muy alta",
+      "color": "#00544D",
+      "area_ha": 44961.15635987286
+     }
+    ],
+    "pesos": {
+     "integridad_estructural": 0.35,
+     "conectividad": 0.25,
+     "estabilidad_topografica": 0.2,
+     "proximidad_riparia": 0.2
+    },
+    "anio_referencia": 2024,
+    "fuentes": [
+     "Dynamic World",
+     "GEDI / OpenForis",
+     "Copernicus DEM GLO-30",
+     "MERIT Hydro"
+    ]
+   },
+   "periodos": {
+    "referencia": 2025,
+    "jrc_diagnostico": 2025,
+    "hansen_diagnostico": 2025,
+    "esri_inicial": 2017,
+    "esri_final": 2024,
+    "esri_final_visual": 2025,
+    "ndvi_inicial": 2020,
+    "ndvi_final": 2025,
+    "ndvi_final_visual": 2025
+   },
+   "mapas": {
+    "limites": [
+     [
+      8.627485,
+      -80.147786
+     ],
+     [
+      9.526037,
+      -79.217149
+     ]
+    ],
+    "tamano_pixel_m": 113.7,
+    "dimensiones": [
+     900,
+     880
+    ],
+    "capas": [
+     "sinia_2021",
+     "jrc_2025",
+     "hansen",
+     "esri_cambio",
+     "ndvi_cambio",
+     "riparia"
+    ],
+    "valores": [
+     "sinia_2021",
+     "jrc_2025",
+     "hansen",
+     "esri_cambio",
+     "ndvi_cambio",
+     "riparia",
+     "gedi",
+     "aux"
+    ],
+    "errores": {
+     "eri": "EEException: Reprojection output too large (9774x9418 pixels).",
+     "coincidencia": "EEException: Reprojection output too large (10258x9967 pixels)."
+    },
+    "rios": 472
+   },
+   "riparia": {
+    "longitud_cauces_km": 1969.6,
+    "franjas": [
+     {
+      "ancho_m": 30,
+      "area_ha": 9262.62,
+      "bosque_sinia_ha": 5020.47,
+      "bosque_sinia_pct": 54.2,
+      "arboles_esri_pct": 67.1
+     },
+     {
+      "ancho_m": 50,
+      "area_ha": 19695.64,
+      "bosque_sinia_ha": 10713.26,
+      "bosque_sinia_pct": 54.4,
+      "arboles_esri_pct": 67.3
+     },
+     {
+      "ancho_m": 100,
+      "area_ha": 44677.94,
+      "bosque_sinia_ha": 24178.25,
+      "bosque_sinia_pct": 54.1,
+      "arboles_esri_pct": 66.6
+     }
+    ],
+    "sin_bosque_por_pendiente": [
+     {
+      "pendiente": "0–15 %",
+      "area_ha": 7691.03
+     },
+     {
+      "pendiente": "15–30 %",
+      "area_ha": 927.12
+     },
+     {
+      "pendiente": "≥ 30 %",
+      "area_ha": 364.23
+     }
+    ],
+    "franja_referencia_m": 50,
+    "area_drenaje_minima_km2": 1.0,
+    "nota": "Cauces MERIT Hydro (90 m, drenaje ≥ 1 km²); distancias interpoladas, indicativas. Bosque: SINIA 2021 (oficial) y árboles ESRI 2024 como segunda fuente.",
+    "escala_m": 30
+   }
   },
   "s0": {
    "id": "s0",
@@ -483,7 +920,8 @@
     },
     "conecta_corredor": true,
     "corredor_nombre": "Corredor biológico mesoamericano este"
-   }
+   },
+   "version_datos": 1
   },
   "s1": {
    "id": "s1",
@@ -746,7 +1184,8 @@
     },
     "conecta_corredor": true,
     "corredor_nombre": "Corredor biológico mesoamericano este"
-   }
+   },
+   "version_datos": 1
   },
   "s2": {
    "id": "s2",
@@ -999,7 +1438,8 @@
     },
     "conecta_corredor": true,
     "corredor_nombre": "Corredor del Canal de Panamá"
-   }
+   },
+   "version_datos": 1
   },
   "s3": {
    "id": "s3",
@@ -1247,7 +1687,8 @@
     },
     "conecta_corredor": true,
     "corredor_nombre": "Corredor biológico mesoamericano este"
-   }
+   },
+   "version_datos": 1
   },
   "s4": {
    "id": "s4",
@@ -1495,7 +1936,8 @@
     },
     "conecta_corredor": true,
     "corredor_nombre": "Corredor del Canal de Panamá"
-   }
+   },
+   "version_datos": 1
   },
   "s5": {
    "id": "s5",
@@ -1742,7 +2184,8 @@
     },
     "conecta_corredor": true,
     "corredor_nombre": "Corredor del Canal de Panamá"
-   }
+   },
+   "version_datos": 1
   },
   "s6": {
    "id": "s6",
@@ -1984,7 +2427,8 @@
     },
     "conecta_corredor": true,
     "corredor_nombre": "Corredor del Canal de Panamá"
-   }
+   },
+   "version_datos": 1
   },
   "s7": {
    "id": "s7",
@@ -2237,7 +2681,8 @@
     },
     "conecta_corredor": true,
     "corredor_nombre": "Corredor biológico mesoamericano este"
-   }
+   },
+   "version_datos": 1
   },
   "s8": {
    "id": "s8",
@@ -2485,7 +2930,8 @@
     },
     "conecta_corredor": true,
     "corredor_nombre": "Corredor del Canal de Panamá"
-   }
+   },
+   "version_datos": 1
   },
   "s9": {
    "id": "s9",
@@ -2728,7 +3174,8 @@
     },
     "conecta_corredor": false,
     "corredor_nombre": null
-   }
+   },
+   "version_datos": 1
   },
   "s10": {
    "id": "s10",
@@ -2976,7 +3423,8 @@
     },
     "conecta_corredor": true,
     "corredor_nombre": "Corredor del Canal de Panamá"
-   }
+   },
+   "version_datos": 1
   },
   "s11": {
    "id": "s11",
@@ -3224,7 +3672,8 @@
     },
     "conecta_corredor": true,
     "corredor_nombre": "Corredor del Canal de Panamá"
-   }
+   },
+   "version_datos": 1
   },
   "s12": {
    "id": "s12",
@@ -3477,7 +3926,8 @@
     },
     "conecta_corredor": true,
     "corredor_nombre": "Corredor biológico mesoamericano este"
-   }
+   },
+   "version_datos": 1
   },
   "s13": {
    "id": "s13",
@@ -3731,7 +4181,8 @@
     },
     "conecta_corredor": true,
     "corredor_nombre": "Corredor biológico mesoamericano este"
-   }
+   },
+   "version_datos": 1
   },
   "s14": {
    "id": "s14",
@@ -3980,7 +4431,8 @@
     },
     "conecta_corredor": true,
     "corredor_nombre": "Corredor del Canal de Panamá"
-   }
+   },
+   "version_datos": 1
   },
   "s15": {
    "id": "s15",
@@ -4228,7 +4680,8 @@
     },
     "conecta_corredor": true,
     "corredor_nombre": "Corredor biológico mesoamericano este"
-   }
+   },
+   "version_datos": 1
   },
   "s16": {
    "id": "s16",
@@ -4481,7 +4934,8 @@
     },
     "conecta_corredor": true,
     "corredor_nombre": "Corredor biológico mesoamericano este"
-   }
+   },
+   "version_datos": 1
   },
   "s17": {
    "id": "s17",
@@ -4728,7 +5182,8 @@
     },
     "conecta_corredor": true,
     "corredor_nombre": "Corredor del Canal de Panamá"
-   }
+   },
+   "version_datos": 1
   },
   "s18": {
    "id": "s18",
@@ -4975,7 +5430,8 @@
     },
     "conecta_corredor": true,
     "corredor_nombre": "Corredor del Canal de Panamá"
-   }
+   },
+   "version_datos": 1
   },
   "s19": {
    "id": "s19",
@@ -5224,7 +5680,8 @@
     },
     "conecta_corredor": true,
     "corredor_nombre": "Corredor del Canal de Panamá"
-   }
+   },
+   "version_datos": 1
   },
   "s20": {
    "id": "s20",
@@ -5467,7 +5924,8 @@
     },
     "conecta_corredor": true,
     "corredor_nombre": "Corredor del Canal de Panamá"
-   }
+   },
+   "version_datos": 1
   },
   "s21": {
    "id": "s21",
@@ -5720,7 +6178,8 @@
     },
     "conecta_corredor": true,
     "corredor_nombre": "Corredor biológico mesoamericano este"
-   }
+   },
+   "version_datos": 1
   },
   "s22": {
    "id": "s22",
@@ -5968,7 +6427,8 @@
     },
     "conecta_corredor": true,
     "corredor_nombre": "Corredor biológico mesoamericano este"
-   }
+   },
+   "version_datos": 1
   },
   "s23": {
    "id": "s23",
@@ -6222,7 +6682,8 @@
     },
     "conecta_corredor": true,
     "corredor_nombre": "Corredor del Canal de Panamá"
-   }
+   },
+   "version_datos": 1
   },
   "s24": {
    "id": "s24",
@@ -6481,7 +6942,8 @@
     },
     "conecta_corredor": true,
     "corredor_nombre": "Corredor biológico mesoamericano este"
-   }
+   },
+   "version_datos": 1
   },
   "s25": {
    "id": "s25",
@@ -6723,7 +7185,8 @@
     },
     "conecta_corredor": false,
     "corredor_nombre": null
-   }
+   },
+   "version_datos": 1
   },
   "s26": {
    "id": "s26",
@@ -6971,7 +7434,8 @@
     },
     "conecta_corredor": true,
     "corredor_nombre": "Corredor Victoriano Lorenzo"
-   }
+   },
+   "version_datos": 1
   },
   "s27": {
    "id": "s27",
@@ -7218,7 +7682,8 @@
     },
     "conecta_corredor": true,
     "corredor_nombre": "Corredor del Canal de Panamá"
-   }
+   },
+   "version_datos": 1
   },
   "s28": {
    "id": "s28",
@@ -7466,7 +7931,8 @@
     },
     "conecta_corredor": true,
     "corredor_nombre": "Corredor del Canal de Panamá"
-   }
+   },
+   "version_datos": 1
   },
   "s29": {
    "id": "s29",
@@ -7714,7 +8180,8 @@
     },
     "conecta_corredor": true,
     "corredor_nombre": "Corredor del Canal de Panamá"
-   }
+   },
+   "version_datos": 1
   },
   "s30": {
    "id": "s30",
@@ -7963,7 +8430,8 @@
     },
     "conecta_corredor": true,
     "corredor_nombre": "Corredor biológico mesoamericano este"
-   }
+   },
+   "version_datos": 1
   },
   "s31": {
    "id": "s31",
@@ -8216,7 +8684,8 @@
     },
     "conecta_corredor": true,
     "corredor_nombre": "Corredor biológico mesoamericano este"
-   }
+   },
+   "version_datos": 1
   },
   "s32": {
    "id": "s32",
@@ -8465,7 +8934,8 @@
     },
     "conecta_corredor": true,
     "corredor_nombre": "Corredor del Canal de Panamá"
-   }
+   },
+   "version_datos": 1
   },
   "s33": {
    "id": "s33",
@@ -8718,7 +9188,8 @@
     },
     "conecta_corredor": true,
     "corredor_nombre": "Corredor biológico mesoamericano este"
-   }
+   },
+   "version_datos": 1
   },
   "s34": {
    "id": "s34",
@@ -8971,7 +9442,8 @@
     },
     "conecta_corredor": true,
     "corredor_nombre": "Corredor biológico mesoamericano este"
-   }
+   },
+   "version_datos": 1
   },
   "s35": {
    "id": "s35",
@@ -9214,7 +9686,8 @@
     },
     "conecta_corredor": true,
     "corredor_nombre": "Corredor del Canal de Panamá"
-   }
+   },
+   "version_datos": 1
   },
   "s36": {
    "id": "s36",
@@ -9457,7 +9930,8 @@
     },
     "conecta_corredor": true,
     "corredor_nombre": "Corredor del Canal de Panamá"
-   }
+   },
+   "version_datos": 1
   },
   "s37": {
    "id": "s37",
@@ -9704,7 +10178,8 @@
     },
     "conecta_corredor": true,
     "corredor_nombre": "Corredor del Canal de Panamá"
-   }
+   },
+   "version_datos": 1
   },
   "s38": {
    "id": "s38",
@@ -9953,7 +10428,8 @@
     },
     "conecta_corredor": true,
     "corredor_nombre": "Corredor del Canal de Panamá"
-   }
+   },
+   "version_datos": 1
   },
   "s39": {
    "id": "s39",
@@ -10201,7 +10677,8 @@
     },
     "conecta_corredor": true,
     "corredor_nombre": "Corredor del Canal de Panamá"
-   }
+   },
+   "version_datos": 1
   },
   "s40": {
    "id": "s40",
@@ -10450,7 +10927,8 @@
     },
     "conecta_corredor": true,
     "corredor_nombre": "Corredor del Canal de Panamá"
-   }
+   },
+   "version_datos": 1
   },
   "s41": {
    "id": "s41",
@@ -10698,7 +11176,8 @@
     },
     "conecta_corredor": true,
     "corredor_nombre": "Corredor del Canal de Panamá"
-   }
+   },
+   "version_datos": 1
   },
   "s42": {
    "id": "s42",
@@ -10947,7 +11426,8 @@
     },
     "conecta_corredor": true,
     "corredor_nombre": "Corredor del Canal de Panamá"
-   }
+   },
+   "version_datos": 1
   },
   "s43": {
    "id": "s43",
@@ -11194,7 +11674,8 @@
     },
     "conecta_corredor": true,
     "corredor_nombre": "Corredor del Canal de Panamá"
-   }
+   },
+   "version_datos": 1
   },
   "s44": {
    "id": "s44",
@@ -11442,7 +11923,8 @@
     },
     "conecta_corredor": true,
     "corredor_nombre": "Corredor biológico mesoamericano este"
-   }
+   },
+   "version_datos": 1
   },
   "s45": {
    "id": "s45",
@@ -11685,7 +12167,8 @@
     },
     "conecta_corredor": true,
     "corredor_nombre": "Corredor del Canal de Panamá"
-   }
+   },
+   "version_datos": 1
   },
   "s46": {
    "id": "s46",
@@ -11933,7 +12416,8 @@
     },
     "conecta_corredor": true,
     "corredor_nombre": "Corredor biológico mesoamericano este"
-   }
+   },
+   "version_datos": 1
   },
   "s47": {
    "id": "s47",
@@ -12186,7 +12670,8 @@
     },
     "conecta_corredor": true,
     "corredor_nombre": "Corredor biológico mesoamericano este"
-   }
+   },
+   "version_datos": 1
   },
   "s48": {
    "id": "s48",
@@ -12429,7 +12914,8 @@
     },
     "conecta_corredor": true,
     "corredor_nombre": "Corredor del Canal de Panamá"
-   }
+   },
+   "version_datos": 1
   },
   "s49": {
    "id": "s49",
@@ -12678,7 +13164,8 @@
     },
     "conecta_corredor": true,
     "corredor_nombre": "Corredor Victoriano Lorenzo"
-   }
+   },
+   "version_datos": 1
   },
   "s50": {
    "id": "s50",
@@ -12932,7 +13419,8 @@
     },
     "conecta_corredor": true,
     "corredor_nombre": "Corredor biológico mesoamericano este"
-   }
+   },
+   "version_datos": 1
   },
   "s51": {
    "id": "s51",
@@ -13196,7 +13684,8 @@
     },
     "conecta_corredor": true,
     "corredor_nombre": "Corredor biológico mesoamericano este"
-   }
+   },
+   "version_datos": 1
   },
   "s52": {
    "id": "s52",
@@ -13435,9 +13924,10 @@
     },
     "conecta_corredor": true,
     "corredor_nombre": "Corredor del Canal de Panamá"
-   }
+   },
+   "version_datos": 1
   }
  },
  "errores": {},
- "generado": "2026-11-22T17:47:57"
+ "generado": "2026-11-22T18:46:51"
 }
