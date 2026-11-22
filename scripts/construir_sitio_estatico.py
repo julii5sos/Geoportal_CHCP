@@ -28,7 +28,8 @@ API_ESTATICA = {
 }
 PAGINAS = {
     "/": "index.html",
-    "/panel": "monitoreo.html",
+    "/panel": "panel.html",
+    "/platform": "plataforma.html",
     "/coberturas": "coberturas.html",
     "/methodology": "metodologia.html",
     "/about": "acerca.html",
@@ -44,14 +45,14 @@ def reescribir_enlaces(html: str, app_completa: str) -> str:
     import re
 
     html = html.replace('"/static/', '"static/').replace("'/static/", "'static/")
-    destinos = {"": "index.html", "panel": "monitoreo.html", "coberturas": "coberturas.html",
+    destinos = {"": "index.html", "panel": "panel.html", "platform": "plataforma.html", "coberturas": "coberturas.html",
                 "methodology": "metodologia.html", "about": "acerca.html", "ficha": "ficha.html",
                 "restauracion": "restauracion.html", "validacion": "validacion.html", "campo": "campo.html"}
 
     def cambiar(m):
         ruta, ancla = m.group(1), m.group(2) or ""
         if ruta == "platform":
-            return f'href="{app_completa}/platform{ancla}"' if app_completa else f'href="monitoreo.html{ancla if ancla != "#results-body" else ""}"'
+            return f'href="{app_completa}/platform{ancla}"' if app_completa else f'href="plataforma.html{ancla if ancla != "#results-body" else ""}"'
         return f'href="{destinos.get(ruta, "index.html")}{ancla}"' if ruta in destinos else m.group(0)
 
     return re.sub(r'href="/([a-z]*)(#[^"]*)?(?:\?[^"]*)?"', cambiar, html)
@@ -86,6 +87,8 @@ def construir(destino: Path, app_completa: str, repo_url: str) -> list[str]:
     shutil.copytree(RAIZ / "webapp" / "static", destino / "static",
                     ignore=shutil.ignore_patterns("__fixture*", "__fx*"))
     (destino / ".nojekyll").write_text("", encoding="utf-8")
+    # Enlaces antiguos: monitoreo.html pasó a llamarse panel.html (estructura del portal modelo).
+    (destino / "monitoreo.html").write_text('<!doctype html><meta charset="utf-8"><meta http-equiv="refresh" content="0; url=panel.html"><title>Panel · Geoportal CHCP</title><script>location.replace("panel.html"+location.search+location.hash)</script>', encoding="utf-8")
     (destino / "404.html").write_text('<!doctype html><meta charset="utf-8"><meta http-equiv="refresh" content="0; url=index.html"><title>Geoportal CHCP</title>', encoding="utf-8")
     return generados
 

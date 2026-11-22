@@ -33,7 +33,7 @@
   }
   function choose(item) {
     writePortalState({territoryId: item.id, territoryName: item.nombre, territoryType: item.tipo});
-    const destino = window.CHCP_STATIC ? 'monitoreo.html' : '/panel';
+    const destino = window.CHCP_STATIC ? 'panel.html' : '/panel';
     window.location.assign(`${destino}#${encodeURIComponent(item.tipo === 'cuenca' ? 'chcp' : item.nombre)}`);
   }
   function renderChoices() {

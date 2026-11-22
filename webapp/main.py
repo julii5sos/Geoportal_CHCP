@@ -199,6 +199,9 @@ def create_app(*, testing: bool = False) -> Flask:
 
     @app.get("/platform")
     def platform():
+        if app.config.get("STATIC_SITE"):
+            # Sitio publicado: capas y resultados precalculados (sin Earth Engine en el navegador).
+            return render_template("plataforma_estatica.html", active="platform", use_map=True, app_page=True)
         return render_template(
             "platform.html",
             active="platform",
@@ -259,7 +262,7 @@ def create_app(*, testing: bool = False) -> Flask:
 
     @app.get("/ficha")
     def ficha():
-        return render_template("ficha.html", active="panel", project_id=resolver_proyecto_gee(), use_map=True, app_page=True)
+        return render_template("ficha.html", active="ficha", project_id=resolver_proyecto_gee(), use_map=True, app_page=True)
 
     @app.get("/campo")
     def campo():

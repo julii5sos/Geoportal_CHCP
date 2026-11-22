@@ -488,3 +488,40 @@ html.app #main-content:has(.pg) { overflow-y:auto; background:#f3f6fa; }
 .cp-como ol { line-height:1.6; padding-left:20px; }
 @media (max-width:900px) { .cp-grid { grid-template-columns:1fr; } #cp-map { height:420px; } .cp-list { max-height:none; } }
 .app-nav .links { gap:2px; } .app-nav .links a { padding-inline:11px; font-size:14px; }
+
+/* ---------------- Menú con submenús (modelo conectividad_canal) ---------------- */
+.dd { position:relative; display:flex; }
+.dd-m { display:none; position:absolute; top:100%; left:0; min-width:310px; background:#fff; border-radius:10px; box-shadow:0 14px 34px rgba(3,28,67,.28); padding:8px; z-index:2000; gap:2px; }
+.dd:hover .dd-m, .dd:focus-within .dd-m { display:grid; }
+.links .dd-m a { color:var(--azul-tinta); text-transform:none; letter-spacing:0; display:flex; flex-direction:column; align-items:flex-start; gap:2px; padding:9px 12px; font-size:14px; white-space:normal; border-radius:7px; box-shadow:none; }
+.links .dd-m a:hover, .links .dd-m a.on { background:var(--azul-suave); }
+.dd-m small { font-weight:500; color:var(--muted); font-size:12px; }
+@media (max-width:1240px) {
+  .dd { flex-direction:column; }
+  .dd-m { display:grid; position:static; box-shadow:none; background:transparent; padding:0 0 6px 16px; min-width:0; }
+  .links .dd-m a { color:#dbe7fb; padding:6px 9px; font-size:13px; } .links .dd-m a:hover, .links .dd-m a.on { background:rgba(255,255,255,.08); }
+  .dd-m small { display:none; }
+}
+/* Páginas de aplicación: el encabezado completo ocupa su altura y el contenido el resto. */
+@media (min-width:901px) {
+  html.app body { display:flex; flex-direction:column; height:100dvh; overflow:hidden; }
+  html.app #main-content { flex:1 1 auto; min-height:0; height:auto !important; }
+  html.app #main-content > main:not(.pg):not(#v-ficha) { height:100% !important; min-height:0 !important; }
+}
+/* Plataforma publicada (capas precalculadas) */
+.pe-terr { padding:12px 16px 4px; }
+.pe-terr select { width:100%; padding:8px 10px; border:1px solid var(--azul-linea); border-radius:8px; font-weight:600; }
+.pe-op { display:flex; flex-direction:column; gap:4px; font-size:12.5px; font-weight:700; color:var(--azul-tinta); padding:8px 4px 4px; }
+.pe-op output { font-weight:500; color:var(--muted); }
+#v-plataforma.pe .maplegend { max-height:58vh; overflow-y:auto; }
+.pe-lg { padding:6px 16px 8px; border-top:1px solid var(--line); font-size:12px; }
+.pe-lg b { display:block; color:var(--azul-tinta); margin-bottom:4px; font-size:12.5px; }
+.pe-lg div { display:flex; align-items:center; gap:7px; padding:1px 0; }
+.pe-lg i { width:12px; height:12px; border-radius:3px; flex:none; }
+.pe-lg .fi-ramp { display:block; } .pe-lg .fi-ramp i { width:auto; height:9px; }
+.pe-prio { border-left:5px solid; background:#f7f9fc; border-radius:10px; padding:12px 14px; display:flex; flex-direction:column; gap:2px; margin-bottom:12px; }
+.pe-prio span { font-size:12px; color:var(--muted); } .pe-prio b { font-size:28px; color:var(--azul-tinta); } .pe-prio b small { font-size:14px; color:var(--muted); font-weight:500; }
+.pe-prio em { font-style:normal; font-weight:700; } .pe-prio > small { font-size:12px; color:#546e7a; }
+.pe-ms { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:12px; }
+.pe-m { border:1px solid var(--line); border-radius:9px; padding:8px 10px; } .pe-m span { display:block; font-size:11.5px; color:var(--muted); } .pe-m b { font-size:16px; color:var(--azul-tinta); } .pe-m small { display:block; font-size:11px; color:var(--muted); }
+.pe-acc { display:flex; flex-direction:column; gap:7px; margin-bottom:10px; } .pe-acc .btn { justify-content:center; gap:7px; }

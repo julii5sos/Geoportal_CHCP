@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}Plataforma SIG · Geoportal de Conectividad Ecológica de la CHCP{% endblock %}
+{% block body %}
+<main id="v-plataforma" class="pe">
+  <aside class="side" id="left-panel">
+    <div class="side-tabs" role="tablist" aria-label="Panel cartográfico">
+      <button role="tab" data-s="capas" aria-selected="true">Capas</button>
+      <button role="tab" data-s="poligono" aria-selected="false">Polígono</button>
+      <button role="tab" data-s="base" aria-selected="false">Mapa base</button>
+    </div>
+    <div class="side-body" id="s-capas">
+      <div class="fld pe-terr"><label for="pe-terr">Territorio</label><select id="pe-terr"><option value="chcp">Toda la cuenca</option></select><span class="hint">Al elegir una subcuenca, los mapas pasan a su resolución detallada.</span></div>
+      <div id="pe-capas"></div>
+    </div>
+    <div class="side-body" id="s-poligono" hidden>
+      <p class="hint-p">Dibujar o subir el polígono de una finca y verificarlo en el momento requiere ejecutar Earth Engine en tiempo real. En esta versión publicada se consultan los resultados ya calculados por cuenca y subcuenca.</p>
+      <div class="fi-pending">La verificación de polígonos propios llegará en una próxima actualización.</div>
+      <p class="hint-p">Mientras tanto puede:</p>
+      <ul class="fi-list"><li>elegir una subcuenca y pulsar <b>Realizar análisis</b>;</li><li>abrir su <b>ficha técnica</b> descargable;</li><li>usar el <b>simulador de restauración</b> para dibujar franjas entre parches.</li></ul>
+    </div>
+    <div class="side-body" id="s-base" hidden><div class="bm" id="pe-bm"></div><p class="hint-p small">El mapa base solo cambia la visualización.</p></div>
+    <div class="side-foot"><button class="btn btn-p" id="pe-run" type="button">Realizar análisis</button></div>
+  </aside>
+  <section class="pmap2" aria-label="Mapa">
+    <div id="smap"></div>
+    <div class="maplegend" id="pe-legend"></div>
+    <div class="coords" id="coords"><span>Lat — · Lon —</span></div>
+    <button class="btn btn-s res-tab" id="pe-reopen" type="button" hidden>Resultados ‹</button>
+  </section>
+  <aside class="res closed" id="pe-res" aria-label="Resultados">
+    <div class="res-h"><div><span class="eyebrow" id="pe-res-eyebrow">Resultados precalculados</span><h2 id="pe-res-title">Seleccione un territorio</h2><p id="pe-res-sub"></p></div><button class="xbtn" id="pe-res-close" type="button" aria-label="Cerrar resultados">›</button></div>
+    <div class="res-b" id="pe-res-b"></div>
+  </aside>
+</main>
+{% endblock %}
+{% block scripts %}<script src="{{ url_for('static', filename='js/plataforma_estatica.js') }}"></script>{% endblock %}

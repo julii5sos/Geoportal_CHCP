@@ -7,7 +7,7 @@
     <select id="fi-select"></select>
     <button class="btn btn-p" id="fi-print" type="button">Descargar PDF / imprimir</button>
     <a class="btn btn-s" id="fi-sim" href="{% if sitio_estatico %}restauracion.html{% else %}{{ url_for('restauracion') }}{% endif %}">Simular restauración</a>
-    <a class="btn btn-s" id="fi-back" href="{% if sitio_estatico %}monitoreo.html{% else %}{{ url_for('panel') }}{% endif %}">Volver al monitoreo</a>
+    <a class="btn btn-s" id="fi-back" href="{{ url_for('panel') }}">Volver al panel</a>
   </div>
   <article class="fi-doc" id="fi-doc" aria-live="polite">
     <p class="fi-loading">Cargando ficha técnica…</p>
