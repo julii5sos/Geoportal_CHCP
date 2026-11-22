@@ -36,6 +36,7 @@ docs/                     Arquitectura, decisiones y registro histórico
 
 | Documento | Contenido |
 |---|---|
+| [docs/PUBLICAR.md](docs/PUBLICAR.md) | Publicación pública en Cloud Run con un comando (`deploy/publicar_cloud_run.ps1`). |
 | [docs/REPRODUCIBILIDAD.md](docs/REPRODUCIBILIDAD.md) | Instalación, acceso a Earth Engine y cadena completa para regenerar resultados. |
 | [docs/DICCIONARIO_CAPAS_SINIA.md](docs/DICCIONARIO_CAPAS_SINIA.md) | **Referencia técnica**: una tabla por asset SINIA con códigos, categorías, colores y verificación. |
 | [docs/VALIDACION_ASSETS_GEE.md](docs/VALIDACION_ASSETS_GEE.md) | Auditoría real de los ocho assets en Earth Engine. |

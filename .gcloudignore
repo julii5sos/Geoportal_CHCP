@@ -1,0 +1,19 @@
+# Archivos que no se suben a Cloud Build al publicar (gcloud run deploy --source .)
+.git
+.gitignore
+.gcloudignore
+__pycache__/
+*.pyc
+.env
+.env.*
+**/credentials*.json
+**/service-account*.json
+**/*.pem
+**/*.p12
+**/*.key
+tests/
+docs/historial/
+docs/validacion/
+.venv/
+output/
+tmp/
