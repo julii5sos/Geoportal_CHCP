@@ -1,5 +1,34 @@
 # Publicar el Geoportal CHCP
 
+El geoportal se publica en **dos versiones gratuitas** que se complementan:
+
+| Versión | Dónde | Contenido | Earth Engine |
+|---|---|---|---|
+| **HTML estática** | GitHub Pages · `https://julii5sos.github.io/Geoportal_CHCP/` | Monitoreo (CHCP y 53 subcuencas), mapas de subcuencas, corredores y puntos críticos, leyendas SINIA y superficies 2019/2021/2023 por subcuenca | No (datos precalculados) |
+| **Completa** | Hugging Face Spaces (opción A) o Cloud Run (opción B) | Todo lo anterior + análisis de polígonos y capas satelitales y SINIA en el mapa | Sí |
+
+## Versión HTML estática (GitHub Pages)
+
+Se construye con `python scripts/construir_sitio_estatico.py` y se publica sola con
+`.github/workflows/pages.yml` en cada cambio de la rama `main`.
+
+Activación (una vez):
+
+1. Fusione la rama `integracion-geoportal` en `main` (pull request en GitHub).
+2. En GitHub: **Settings → Pages → Build and deployment → Source: GitHub Actions**.
+3. (Cuando exista la versión completa) **Settings → Secrets and variables → Actions →
+   Variables → New variable** `CHCP_FULL_APP_URL` = `https://SU_USUARIO-geoportal-chcp.hf.space`.
+   La versión HTML mostrará entonces el enlace «Análisis territorial ↗».
+
+Para actualizar los datos: ejecute `python scripts/precalcular_panel.py` en su
+computadora, suba `data/estadisticas_territoriales.json` a `main` y el sitio se
+reconstruye automáticamente.
+
+Vista previa local: `python scripts/construir_sitio_estatico.py` y luego
+`python -m http.server 8000 --directory sitio` → http://127.0.0.1:8000
+
+## Versión completa
+
 Modo elegido: **público con enlace**. Hay dos opciones:
 
 | | A. Hugging Face Spaces (recomendada) | B. Google Cloud Run |

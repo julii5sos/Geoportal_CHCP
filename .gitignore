@@ -17,3 +17,4 @@ deploy/cloud-run-service.yaml
 *credentials*.json
 *service-account*.json
 data/estadisticas_territoriales.tmp
+sitio/

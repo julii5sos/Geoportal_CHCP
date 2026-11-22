@@ -177,6 +177,15 @@ def create_app(*, testing: bool = False) -> Flask:
             response.headers.setdefault("Cache-Control", "no-store, private")
         return response
 
+    @app.context_processor
+    def static_site_context():
+        return {
+            "sitio_estatico": app.config.get("STATIC_SITE", False),
+            "full_app_url": app.config.get("FULL_APP_URL", ""),
+            "repo_url": app.config.get("REPO_URL", "https://github.com/julii5sos/Geoportal_CHCP"),
+            "static_map": app.config.get("STATIC_API_MAP", {}),
+        }
+
     @app.get("/")
     def index():
         return render_template(

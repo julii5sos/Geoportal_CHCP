@@ -6,6 +6,18 @@
   const hectares = (value, digits = 1) => `${number(value, digits)} ha`;
 
   async function api(path, options = {}) {
+    if (window.CHCP_STATIC) {
+      // Sitio estático (GitHub Pages): solo datos precalculados, sin Earth Engine.
+      const file = window.CHCP_STATIC[path.split('?')[0]];
+      if (!file) {
+        const error = new Error('Disponible solo en la versión completa del geoportal (requiere Earth Engine).');
+        error.status = 501;
+        throw error;
+      }
+      const response = await fetch(file);
+      if (!response.ok) throw new Error(`No se pudo leer ${file} (${response.status}).`);
+      return response.json();
+    }
     const response = await fetch(path, {
       ...options,
       headers: {'Content-Type': 'application/json', ...(options.headers || {})},

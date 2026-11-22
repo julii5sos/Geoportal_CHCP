@@ -79,6 +79,11 @@
     }
   }
   function loadTiles() {
+    if (window.CHCP_STATIC) {
+      $('#cob-tags').innerHTML = `<span class="cob-tag">${esc(productLabel(st.a))} · capa visible en la versión completa${window.CHCP_FULL_URL ? '' : ''}</span>`;
+      $('#cob-swipe').hidden = true;
+      return;
+    }
     $('#cob-tags').innerHTML = `<span id="cob-tag-a" class="cob-tag">${st.compare ? '◧ ' : ''}${esc(productLabel(st.a))}</span>${st.compare ? `<span id="cob-tag-b" class="cob-tag right">${esc(productLabel(st.b))} ◨</span>` : ''}`;
     loadTile('a', st.a, [...st.active[st.a]]);
     if (st.compare) {
@@ -137,7 +142,32 @@
     $('#cob-results-body').innerHTML = html;
     $('#cob-csv').disabled = false;
   }
+  const STATIC_PRODUCTS = { 2019: '2019_general', 2021: '2021_general', 2023: '2023_general' };
+  function staticStats(products) {
+    const name = $('#cob-area').value;
+    const record = Object.values(st.panel?.territorios || {}).find((t) => (name ? t.nombre === name : t.id === 'chcp'));
+    if (!record) throw new Error('No hay indicadores precalculados para este territorio.');
+    const result = products.map((key) => {
+      const item = (record.sinia || []).find((p) => STATIC_PRODUCTS[p.year] === key);
+      if (!item) throw new Error(`La superficie de ${productLabel(key)} solo se calcula en la versión completa. En esta versión están disponibles 2019, 2021 y 2023.`);
+      const legend = legendOf(key);
+      const classes = item.classes.map((c) => { const row = legend.find((r) => r.codigo === c.code) || {}; return { ...c, color: row.color || c.color, status: row.estado, group: row.grupo_derivado }; });
+      const groups = {};
+      classes.forEach((c) => { groups[c.group] = (groups[c.group] || 0) + c.area_ha; });
+      return { product: key, name: product(key).nombre, year: product(key).anio, asset: '', aoi_area_ha: record.area_ha, classified_ha: item.classified_ha,
+        unclassified_or_nodata_ha: item.unclassified_or_nodata_ha, scale_m: product(key).resolucion_m || 10, classes, codes_without_legend: [],
+        derived_groups: Object.entries(groups).filter(([, ha]) => ha > 0).sort((a, b) => b[1] - a[1]).map(([g, ha]) => ({ group: g, label: st.catalog.groups[g].nombre, color: st.catalog.groups[g].color, area_ha: ha, percentage: ha / (item.classified_ha || 1) * 100 })),
+        limitations: product(key).limitaciones || [] };
+    });
+    const comparability = products.length === 2 ? st.catalog.comparability.find((c) => (c.a === products[0] && c.b === products[1]) || (c.a === products[1] && c.b === products[0])) : null;
+    return { area: { label: record.nombre }, result: { products: result, comparability }, warnings: [] };
+  }
   async function computeStats() {
+    if (window.CHCP_STATIC) {
+      try { renderStats(staticStats(st.compare ? [st.a, st.b] : [st.a])); $('#cob-results-sub').textContent += ` · precalculado ${String(st.panel?.generado || '').slice(0, 10)}`; }
+      catch (error) { $('#cob-results-body').innerHTML = `<div class="cob-loading error">${esc(error.message)}</div>`; }
+      return;
+    }
     const products = st.compare ? [st.a, st.b] : [st.a];
     $('#cob-stats').disabled = true;
     $('#cob-results-body').innerHTML = `<div class="cob-loading">Calculando en Earth Engine la superficie de ${products.map(productLabel).map(esc).join(' y ')}…</div>`;
@@ -171,6 +201,7 @@
   // ------------------------------------------------------------- arranque
   try {
     [st.catalog, st.territory] = await Promise.all([api('/api/v1/sinia/catalog'), api('/api/v1/territory')]);
+    if (window.CHCP_STATIC) st.panel = await api('/api/v1/panel/statistics');
   } catch (error) {
     $('#cob-results-body').innerHTML = `<div class="cob-loading error">No se pudo cargar el catálogo: ${esc(error.message)}</div>`;
     return;
@@ -193,6 +224,10 @@
   $('#cob-stats').addEventListener('click', computeStats);
   $('#cob-csv').addEventListener('click', exportCsv);
 
+  if (window.CHCP_STATIC) {
+    $('#cob-stats').textContent = 'Ver superficies';
+    $('#cob-results-sub').innerHTML = `Versión publicada sin Earth Engine: superficies precalculadas de 2019, 2021 y 2023 por subcuenca. Leyendas y estados de verificación de los ocho productos.${window.CHCP_FULL_URL ? ` <a href="${window.CHCP_FULL_URL}/coberturas">Versión completa ↗</a>` : ''}`;
+  }
   basinLayer = L.geoJSON(st.territory.basin, { pane: 'paneRef', style: { color: '#0a4393', weight: 1, dashArray: '4 4', fill: false }, interactive: false }).addTo(map);
   renderLegend(); renderProductInfo(); drawArea(); loadTiles();
   window.CHCP_COBERTURAS = { renderStats, map };

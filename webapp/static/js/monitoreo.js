@@ -225,7 +225,7 @@
     $('#mon-title').textContent = u.nombre;
     $('#mon-crumbs').innerHTML = st.sel === 'chcp' ? '<span>Cuenca del Canal</span>' : `<button type="button" data-go="chcp">Cuenca del Canal</button><span>›</span><span>${esc(u.grupo)}</span><span>›</span><span>${esc(u.nombre)}</span>`;
     $('#mon-lead').innerHTML = lead(u);
-    $('#mon-widgets').innerHTML = VIEWS[st.tab](u) + `<p class="mon-foot">Indicadores precalculados el ${esc((st.data.generado || '').replace('T', ' '))} con ${esc(st.data.metodologia)} · proyecto ${esc(st.data.proyecto)}. <a href="/platform">Analizar un área propia</a></p>`;
+    $('#mon-widgets').innerHTML = VIEWS[st.tab](u) + `<p class="mon-foot">Indicadores precalculados el ${esc((st.data.generado || '').replace('T', ' '))} con ${esc(st.data.metodologia)} · proyecto ${esc(st.data.proyecto)}.${window.CHCP_STATIC ? (window.CHCP_FULL_URL ? ` <a href="${window.CHCP_FULL_URL}/platform">Analizar un área propia ↗</a>` : '') : ' <a href="/platform">Analizar un área propia</a>'}</p>`;
     $$('[data-exp]', $('#mon-widgets')).forEach((b) => b.addEventListener('click', () => { const e = $(`#exp-${b.dataset.exp}`); e.hidden = !e.hidden; }));
     $$('[data-go]').forEach((b) => b.addEventListener('click', () => select(b.dataset.go)));
     styleMap();
