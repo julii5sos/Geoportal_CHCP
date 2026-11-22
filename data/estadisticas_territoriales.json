@@ -52,10 +52,10 @@
     "esri_arboles_final": 238489.80055009015
    },
    "ndvi": {
-    "ndvi_inicial_medio": 0.6469540981305654,
-    "ndvi_final_medio": 0.6737570070133699,
+    "ndvi_inicial_medio": 0.6469540981305653,
+    "ndvi_final_medio": 0.6737570070133702,
     "ndvi_delta_medio": 0.026802908882804868,
-    "ndvi_disminucion": 4049.20344333308
+    "ndvi_disminucion": 4049.2034433330805
    },
    "gedi_altura_m": 11.93113842900976,
    "serie_anual": [
@@ -136,7 +136,7 @@
     },
     {
      "year": 2021,
-     "name": "Cobertura general oficial 2021",
+     "name": "Cobertura general oficial 2021 (vector)",
      "classified_ha": 341044.6571,
      "forest_ha": 208609.5293,
      "forest_pct": 61.1678,
@@ -282,9 +282,9 @@
    },
    "ndvi": {
     "ndvi_inicial_medio": 0.11579943450034352,
-    "ndvi_final_medio": 0.004588375589721638,
+    "ndvi_final_medio": 0.00458837558972164,
     "ndvi_delta_medio": -0.11121105891062184,
-    "ndvi_disminucion": 581.6458610864257
+    "ndvi_disminucion": 581.6458610864256
    },
    "gedi_altura_m": 1.02074223451417,
    "serie_anual": [
@@ -365,7 +365,7 @@
     },
     {
      "year": 2021,
-     "name": "Cobertura general oficial 2021",
+     "name": "Cobertura general oficial 2021 (vector)",
      "classified_ha": 4453.2442,
      "forest_ha": 182.8328,
      "forest_pct": 4.1056,
@@ -489,7 +489,7 @@
    "id": "s1",
    "nombre": "Lago Gatún",
    "grupo": "Lagos",
-   "area_ha": 38171.975136412955,
+   "area_ha": 38171.97513637299,
    "preevaluacion": {
     "puntaje": 4.0,
     "puntaje_maximo": 6.5,
@@ -534,10 +534,10 @@
     "esri_arboles_final": 803.0122318808503
    },
    "ndvi": {
-    "ndvi_inicial_medio": 0.006456277530794123,
-    "ndvi_final_medio": -0.02918106796939097,
-    "ndvi_delta_medio": -0.03563734550018509,
-    "ndvi_disminucion": 887.927199002961
+    "ndvi_inicial_medio": 0.006456277530794126,
+    "ndvi_final_medio": -0.029181067969390986,
+    "ndvi_delta_medio": -0.0356373455001851,
+    "ndvi_disminucion": 887.9271990029612
    },
    "gedi_altura_m": 0.8766862628069668,
    "serie_anual": [
@@ -618,7 +618,7 @@
     },
     {
      "year": 2021,
-     "name": "Cobertura general oficial 2021",
+     "name": "Cobertura general oficial 2021 (vector)",
      "classified_ha": 38011.9488,
      "forest_ha": 1387.1692,
      "forest_pct": 3.6493,
@@ -724,7 +724,7 @@
      "umbral_m": 500.0,
      "numero_nodos": 863,
      "numero_aristas": 2447,
-     "numero_relaciones_mostradas": 817,
+     "numero_relaciones_mostradas": 819,
      "numero_parches_conectados": 858,
      "numero_parches_aislados": 5,
      "porcentaje_parches_aislados": 0.5794,
@@ -733,7 +733,7 @@
      "porcentaje_nodos_componente_mayor": 85.0521,
      "densidad_red": 0.00657879,
      "numero_parches_contexto": 1404,
-     "numero_aristas_contexto": 5037,
+     "numero_aristas_contexto": 5036,
      "numero_conexiones_fuera_area": 1583,
      "numero_parches_continuidad_exterior": 845,
      "distancia_media_conexiones_m": 237.56,
@@ -752,7 +752,7 @@
    "id": "s2",
    "nombre": "Lago Miraflores",
    "grupo": "Cuenca de Miraflores",
-   "area_ha": 9961.47782724967,
+   "area_ha": 9961.47782724972,
    "preevaluacion": {
     "puntaje": 4.0,
     "puntaje_maximo": 6.5,
@@ -799,7 +799,7 @@
    "ndvi": {
     "ndvi_inicial_medio": 0.6839988685372863,
     "ndvi_final_medio": 0.7259266064416838,
-    "ndvi_delta_medio": 0.04192773790439695,
+    "ndvi_delta_medio": 0.041927737904396946,
     "ndvi_disminucion": 66.0787007964369
    },
    "gedi_altura_m": 12.555504474684305,
@@ -881,7 +881,7 @@
     },
     {
      "year": 2021,
-     "name": "Cobertura general oficial 2021",
+     "name": "Cobertura general oficial 2021 (vector)",
      "classified_ha": 9920.1374,
      "forest_ha": 7473.725,
      "forest_pct": 75.3389,
@@ -1134,7 +1134,7 @@
     },
     {
      "year": 2021,
-     "name": "Cobertura general oficial 2021",
+     "name": "Cobertura general oficial 2021 (vector)",
      "classified_ha": 1413.0434,
      "forest_ha": 991.3757,
      "forest_pct": 70.1589,
@@ -1253,7 +1253,7 @@
    "id": "s4",
    "nombre": "Qda. Bonita",
    "grupo": "Cuenca de Alajuela",
-   "area_ha": 509.99854939584975,
+   "area_ha": 509.99854939582946,
    "preevaluacion": {
     "puntaje": 4.0,
     "puntaje_maximo": 6.5,
@@ -1382,7 +1382,7 @@
     },
     {
      "year": 2021,
-     "name": "Cobertura general oficial 2021",
+     "name": "Cobertura general oficial 2021 (vector)",
      "classified_ha": 507.8826,
      "forest_ha": 377.694,
      "forest_pct": 74.3664,
@@ -1501,7 +1501,7 @@
    "id": "s5",
    "nombre": "Qda. Honda",
    "grupo": "Cuenca de Gatún",
-   "area_ha": 720.2634276991685,
+   "area_ha": 720.2634276991636,
    "preevaluacion": {
     "puntaje": 2.0,
     "puntaje_maximo": 6.5,
@@ -1629,7 +1629,7 @@
     },
     {
      "year": 2021,
-     "name": "Cobertura general oficial 2021",
+     "name": "Cobertura general oficial 2021 (vector)",
      "classified_ha": 717.2631,
      "forest_ha": 451.1312,
      "forest_pct": 62.8962,
@@ -1877,7 +1877,7 @@
     },
     {
      "year": 2021,
-     "name": "Cobertura general oficial 2021",
+     "name": "Cobertura general oficial 2021 (vector)",
      "classified_ha": 876.3629,
      "forest_ha": 514.8478,
      "forest_pct": 58.7482,
@@ -2119,7 +2119,7 @@
     },
     {
      "year": 2021,
-     "name": "Cobertura general oficial 2021",
+     "name": "Cobertura general oficial 2021 (vector)",
      "classified_ha": 689.4523,
      "forest_ha": 643.2428,
      "forest_pct": 93.2976,
@@ -2372,7 +2372,7 @@
     },
     {
      "year": 2021,
-     "name": "Cobertura general oficial 2021",
+     "name": "Cobertura general oficial 2021 (vector)",
      "classified_ha": 1533.2711,
      "forest_ha": 1355.0566,
      "forest_pct": 88.3768,
@@ -2621,7 +2621,7 @@
     },
     {
      "year": 2021,
-     "name": "Cobertura general oficial 2021",
+     "name": "Cobertura general oficial 2021 (vector)",
      "classified_ha": 2838.4028,
      "forest_ha": 706.3374,
      "forest_pct": 24.885,
@@ -2863,7 +2863,7 @@
     },
     {
      "year": 2021,
-     "name": "Cobertura general oficial 2021",
+     "name": "Cobertura general oficial 2021 (vector)",
      "classified_ha": 2484.6093,
      "forest_ha": 1712.735,
      "forest_pct": 68.9338,
@@ -3111,7 +3111,7 @@
     },
     {
      "year": 2021,
-     "name": "Cobertura general oficial 2021",
+     "name": "Cobertura general oficial 2021 (vector)",
      "classified_ha": 1743.5617,
      "forest_ha": 1611.017,
      "forest_pct": 92.398,
@@ -3230,7 +3230,7 @@
    "id": "s12",
    "nombre": "Río Aguas Claras",
    "grupo": "Cuenca de Gatún",
-   "area_ha": 3352.7395557116233,
+   "area_ha": 3352.7395557116265,
    "preevaluacion": {
     "puntaje": 4.0,
     "puntaje_maximo": 6.5,
@@ -3278,7 +3278,7 @@
     "ndvi_inicial_medio": 0.779455397235766,
     "ndvi_final_medio": 0.8142524397674579,
     "ndvi_delta_medio": 0.03479704253169118,
-    "ndvi_disminucion": 15.52604801620184
+    "ndvi_disminucion": 15.526048016201841
    },
    "gedi_altura_m": 14.62287971622059,
    "serie_anual": [
@@ -3359,7 +3359,7 @@
     },
     {
      "year": 2021,
-     "name": "Cobertura general oficial 2021",
+     "name": "Cobertura general oficial 2021 (vector)",
      "classified_ha": 3338.8939,
      "forest_ha": 2714.0995,
      "forest_pct": 81.2874,
@@ -3530,7 +3530,7 @@
    },
    "ndvi": {
     "ndvi_inicial_medio": 0.7196013117494627,
-    "ndvi_final_medio": 0.7448961106325064,
+    "ndvi_final_medio": 0.7448961106325065,
     "ndvi_delta_medio": 0.025294798883043545,
     "ndvi_disminucion": 80.47583595056878
    },
@@ -3613,7 +3613,7 @@
     },
     {
      "year": 2021,
-     "name": "Cobertura general oficial 2021",
+     "name": "Cobertura general oficial 2021 (vector)",
      "classified_ha": 6091.2164,
      "forest_ha": 3211.2658,
      "forest_pct": 52.7196,
@@ -3737,7 +3737,7 @@
    "id": "s14",
    "nombre": "Río Baila Monos",
    "grupo": "Cuenca de Gatún",
-   "area_ha": 2835.0856757680544,
+   "area_ha": 2835.085675768056,
    "preevaluacion": {
     "puntaje": 5.5,
     "puntaje_maximo": 6.5,
@@ -3783,9 +3783,9 @@
     "esri_arboles_final": 2394.1335067764367
    },
    "ndvi": {
-    "ndvi_inicial_medio": 0.7578967325600214,
-    "ndvi_final_medio": 0.800004099630837,
-    "ndvi_delta_medio": 0.042107367070815936,
+    "ndvi_inicial_medio": 0.7578967325600212,
+    "ndvi_final_medio": 0.8000040996308367,
+    "ndvi_delta_medio": 0.04210736707081592,
     "ndvi_disminucion": 6.398907860239076
    },
    "gedi_altura_m": 14.889793487165027,
@@ -3867,7 +3867,7 @@
     },
     {
      "year": 2021,
-     "name": "Cobertura general oficial 2021",
+     "name": "Cobertura general oficial 2021 (vector)",
      "classified_ha": 2823.3146,
      "forest_ha": 2351.7193,
      "forest_pct": 83.2964,
@@ -3986,7 +3986,7 @@
    "id": "s15",
    "nombre": "Río Benitez",
    "grupo": "Cuenca de Alajuela",
-   "area_ha": 560.1306850572155,
+   "area_ha": 560.1306850571989,
    "preevaluacion": {
     "puntaje": 4.0,
     "puntaje_maximo": 6.5,
@@ -4115,7 +4115,7 @@
     },
     {
      "year": 2021,
-     "name": "Cobertura general oficial 2021",
+     "name": "Cobertura general oficial 2021 (vector)",
      "classified_ha": 557.8039,
      "forest_ha": 497.5045,
      "forest_pct": 89.1899,
@@ -4280,9 +4280,9 @@
    },
    "ndvi": {
     "ndvi_inicial_medio": 0.7724263917312808,
-    "ndvi_final_medio": 0.8117856980149092,
-    "ndvi_delta_medio": 0.03935930628362852,
-    "ndvi_disminucion": 26.604387024093338
+    "ndvi_final_medio": 0.8117856980149091,
+    "ndvi_delta_medio": 0.03935930628362851,
+    "ndvi_disminucion": 26.604387024093334
    },
    "gedi_altura_m": 19.639199204838686,
    "serie_anual": [
@@ -4363,7 +4363,7 @@
     },
     {
      "year": 2021,
-     "name": "Cobertura general oficial 2021",
+     "name": "Cobertura general oficial 2021 (vector)",
      "classified_ha": 10535.4251,
      "forest_ha": 9271.1805,
      "forest_pct": 88.0001,
@@ -4615,7 +4615,7 @@
     },
     {
      "year": 2021,
-     "name": "Cobertura general oficial 2021",
+     "name": "Cobertura general oficial 2021 (vector)",
      "classified_ha": 1103.1454,
      "forest_ha": 1036.7489,
      "forest_pct": 93.9812,
@@ -4734,7 +4734,7 @@
    "id": "s18",
    "nombre": "Río Casaya",
    "grupo": "Cuenca de Gatún",
-   "area_ha": 984.908140415279,
+   "area_ha": 984.9081404152695,
    "preevaluacion": {
     "puntaje": 2.0,
     "puntaje_maximo": 6.5,
@@ -4862,7 +4862,7 @@
     },
     {
      "year": 2021,
-     "name": "Cobertura general oficial 2021",
+     "name": "Cobertura general oficial 2021 (vector)",
      "classified_ha": 980.8154,
      "forest_ha": 977.8784,
      "forest_pct": 99.7006,
@@ -4981,7 +4981,7 @@
    "id": "s19",
    "nombre": "Río Cañito",
    "grupo": "Cuenca de Gatún",
-   "area_ha": 1189.8266846281235,
+   "area_ha": 1189.826684628143,
    "preevaluacion": {
     "puntaje": 6.0,
     "puntaje_maximo": 6.5,
@@ -5111,7 +5111,7 @@
     },
     {
      "year": 2021,
-     "name": "Cobertura general oficial 2021",
+     "name": "Cobertura general oficial 2021 (vector)",
      "classified_ha": 1184.8804,
      "forest_ha": 702.6139,
      "forest_pct": 59.2983,
@@ -5230,7 +5230,7 @@
    "id": "s20",
    "nombre": "Río Caño Quebrado",
    "grupo": "Cuenca de Gatún",
-   "area_ha": 7467.3283845015885,
+   "area_ha": 7467.3283845016595,
    "preevaluacion": {
     "puntaje": 6.0,
     "puntaje_maximo": 6.5,
@@ -5276,8 +5276,8 @@
     "esri_arboles_final": 1994.1065523453678
    },
    "ndvi": {
-    "ndvi_inicial_medio": 0.6405688177008707,
-    "ndvi_final_medio": 0.6853146364528571,
+    "ndvi_inicial_medio": 0.6405688177008708,
+    "ndvi_final_medio": 0.685314636452857,
     "ndvi_delta_medio": 0.04474581875198603,
     "ndvi_disminucion": 167.7167511645033
    },
@@ -5360,7 +5360,7 @@
     },
     {
      "year": 2021,
-     "name": "Cobertura general oficial 2021",
+     "name": "Cobertura general oficial 2021 (vector)",
      "classified_ha": 7436.317,
      "forest_ha": 1619.7129,
      "forest_pct": 21.7811,
@@ -5473,7 +5473,7 @@
    "id": "s21",
    "nombre": "Río Chagres",
    "grupo": "Cuenca de Alajuela",
-   "area_ha": 32193.43990369018,
+   "area_ha": 32193.43990369017,
    "preevaluacion": {
     "puntaje": 4.0,
     "puntaje_maximo": 6.5,
@@ -5507,20 +5507,20 @@
     "tmf_degradacion": 728.9919101975712,
     "tmf_deforestacion": 83.11189208425144,
     "tmf_recuperacion": 207.92561156226722,
-    "tmf_agua": 12.90360522276046,
+    "tmf_agua": 12.903605222760458,
     "tmf_otra_cobertura": 147.36609895498137
    },
    "hansen_post_2020_ha": 30.81759294215782,
    "esri": {
-    "esri_salida": 133.9542728306908,
-    "esri_ganancia": 309.7179434047648,
+    "esri_salida": 133.95427283069083,
+    "esri_ganancia": 309.717943405696,
     "esri_estable": 31493.483713105805,
-    "esri_arboles_final": 31803.201656510566
+    "esri_arboles_final": 31803.201656511497
    },
    "ndvi": {
-    "ndvi_inicial_medio": 0.7557375122550577,
-    "ndvi_final_medio": 0.8094026514411027,
-    "ndvi_delta_medio": 0.05366513918604493,
+    "ndvi_inicial_medio": 0.7557375122550575,
+    "ndvi_final_medio": 0.8094026514411025,
+    "ndvi_delta_medio": 0.053665139186044916,
     "ndvi_disminucion": 73.4424370402257
    },
    "gedi_altura_m": 22.41992837234483,
@@ -5602,7 +5602,7 @@
     },
     {
      "year": 2021,
-     "name": "Cobertura general oficial 2021",
+     "name": "Cobertura general oficial 2021 (vector)",
      "classified_ha": 32060.6856,
      "forest_ha": 31519.0451,
      "forest_pct": 98.3106,
@@ -5773,7 +5773,7 @@
    "ndvi": {
     "ndvi_inicial_medio": 0.7565997268702199,
     "ndvi_final_medio": 0.8153437582251339,
-    "ndvi_delta_medio": 0.058744031354913746,
+    "ndvi_delta_medio": 0.05874403135491374,
     "ndvi_disminucion": 2.4533352755916815
    },
    "gedi_altura_m": 23.34388288244254,
@@ -5855,7 +5855,7 @@
     },
     {
      "year": 2021,
-     "name": "Cobertura general oficial 2021",
+     "name": "Cobertura general oficial 2021 (vector)",
      "classified_ha": 4641.8539,
      "forest_ha": 4610.0308,
      "forest_pct": 99.3144,
@@ -5974,7 +5974,7 @@
    "id": "s23",
    "nombre": "Río Chilibre",
    "grupo": "Cuenca de Gatún",
-   "area_ha": 7674.774899977891,
+   "area_ha": 7674.774899977756,
    "preevaluacion": {
     "puntaje": 5.5,
     "puntaje_maximo": 6.5,
@@ -6021,7 +6021,7 @@
    },
    "ndvi": {
     "ndvi_inicial_medio": 0.6599627705032094,
-    "ndvi_final_medio": 0.7028944039059976,
+    "ndvi_final_medio": 0.7028944039059974,
     "ndvi_delta_medio": 0.042931633402788084,
     "ndvi_disminucion": 93.29860433773278
    },
@@ -6104,7 +6104,7 @@
     },
     {
      "year": 2021,
-     "name": "Cobertura general oficial 2021",
+     "name": "Cobertura general oficial 2021 (vector)",
      "classified_ha": 7642.9742,
      "forest_ha": 3570.896,
      "forest_pct": 46.7213,
@@ -6358,7 +6358,7 @@
     },
     {
      "year": 2021,
-     "name": "Cobertura general oficial 2021",
+     "name": "Cobertura general oficial 2021 (vector)",
      "classified_ha": 6067.4806,
      "forest_ha": 2234.1676,
      "forest_pct": 36.822,
@@ -6487,7 +6487,7 @@
    "id": "s25",
    "nombre": "Río Ciricito",
    "grupo": "Cuenca de Gatún",
-   "area_ha": 3892.3854247297013,
+   "area_ha": 3892.385424729704,
    "preevaluacion": {
     "puntaje": 4.0,
     "puntaje_maximo": 6.5,
@@ -6527,7 +6527,7 @@
    "hansen_post_2020_ha": 119.96957707998232,
    "esri": {
     "esri_salida": 115.39510536293555,
-    "esri_ganancia": 193.2290787872256,
+    "esri_ganancia": 193.22907878722557,
     "esri_estable": 3398.5673328315615,
     "esri_arboles_final": 3591.7964116187877
    },
@@ -6535,7 +6535,7 @@
     "ndvi_inicial_medio": 0.7628687899488314,
     "ndvi_final_medio": 0.787645952868601,
     "ndvi_delta_medio": 0.024777162919768423,
-    "ndvi_disminucion": 18.602927120145907
+    "ndvi_disminucion": 18.60292712014591
    },
    "gedi_altura_m": 8.972790574813999,
    "serie_anual": [
@@ -6616,7 +6616,7 @@
     },
     {
      "year": 2021,
-     "name": "Cobertura general oficial 2021",
+     "name": "Cobertura general oficial 2021 (vector)",
      "classified_ha": 3876.2048,
      "forest_ha": 1836.8135,
      "forest_pct": 47.3869,
@@ -6729,7 +6729,7 @@
    "id": "s26",
    "nombre": "Río Cirí Grande",
    "grupo": "Cuenca de Gatún",
-   "area_ha": 20920.77415115434,
+   "area_ha": 20920.774151125202,
    "preevaluacion": {
     "puntaje": 4.0,
     "puntaje_maximo": 6.5,
@@ -6761,7 +6761,7 @@
    "jrc_ha": {
     "tmf_estable": 3857.6982942935592,
     "tmf_degradacion": 5117.081407693525,
-    "tmf_deforestacion": 2306.3130042104453,
+    "tmf_deforestacion": 2306.313004210445,
     "tmf_recuperacion": 3612.0127116142526,
     "tmf_agua": 10.051855221624468,
     "tmf_otra_cobertura": 5930.1266809725
@@ -6769,13 +6769,13 @@
    "hansen_post_2020_ha": 554.3302997479366,
    "esri": {
     "esri_salida": 530.7570409626901,
-    "esri_ganancia": 1985.4145133486163,
-    "esri_estable": 16734.742157661418,
+    "esri_ganancia": 1985.414513350479,
+    "esri_estable": 16734.74215765955,
     "esri_arboles_final": 18720.156671010034
    },
    "ndvi": {
-    "ndvi_inicial_medio": 0.7508088018355573,
-    "ndvi_final_medio": 0.7724246023556737,
+    "ndvi_inicial_medio": 0.7508088018355574,
+    "ndvi_final_medio": 0.7724246023556736,
     "ndvi_delta_medio": 0.021615800520116402,
     "ndvi_disminucion": 310.4133720469754
    },
@@ -6783,35 +6783,35 @@
    "serie_anual": [
     {
      "anio": 2020,
-     "jrc_degradacion_ha": 5010.124931285136,
+     "jrc_degradacion_ha": 5010.124931285135,
      "jrc_deforestacion_ha": 2902.5778249614964,
      "jrc_regeneracion_ha": 2219.882323187736,
      "hansen_perdida_ha": null
     },
     {
      "anio": 2021,
-     "jrc_degradacion_ha": 5041.000614074457,
+     "jrc_degradacion_ha": 5041.000614074456,
      "jrc_deforestacion_ha": 2569.06641579209,
-     "jrc_regeneracion_ha": 2985.937787217778,
+     "jrc_regeneracion_ha": 2985.9377872177774,
      "hansen_perdida_ha": 167.70874903789337
     },
     {
      "anio": 2022,
-     "jrc_degradacion_ha": 5054.697878957204,
+     "jrc_degradacion_ha": 5054.697878957203,
      "jrc_deforestacion_ha": 2374.5777551628507,
-     "jrc_regeneracion_ha": 3449.4501653194716,
-     "hansen_perdida_ha": 74.09208815045217
+     "jrc_regeneracion_ha": 3449.450165319471,
+     "hansen_perdida_ha": 74.09208815045216
     },
     {
      "anio": 2023,
      "jrc_degradacion_ha": 5104.031882123591,
      "jrc_deforestacion_ha": 2293.7661096197135,
      "jrc_regeneracion_ha": 3611.571059539796,
-     "hansen_perdida_ha": 122.0843306380744
+     "hansen_perdida_ha": 122.08433063807442
     },
     {
      "anio": 2024,
-     "jrc_degradacion_ha": 5120.842234862347,
+     "jrc_degradacion_ha": 5120.842234862348,
      "jrc_deforestacion_ha": 2294.649584096349,
      "jrc_regeneracion_ha": 3611.482723601044,
      "hansen_perdida_ha": 63.69162897321523
@@ -6858,7 +6858,7 @@
     },
     {
      "year": 2021,
-     "name": "Cobertura general oficial 2021",
+     "name": "Cobertura general oficial 2021 (vector)",
      "classified_ha": 20833.7105,
      "forest_ha": 10425.0741,
      "forest_pct": 50.0394,
@@ -7105,7 +7105,7 @@
     },
     {
      "year": 2021,
-     "name": "Cobertura general oficial 2021",
+     "name": "Cobertura general oficial 2021 (vector)",
      "classified_ha": 371.9464,
      "forest_ha": 369.8152,
      "forest_pct": 99.427,
@@ -7269,8 +7269,8 @@
     "esri_arboles_final": 3316.5075233134935
    },
    "ndvi": {
-    "ndvi_inicial_medio": 0.8059914043836256,
-    "ndvi_final_medio": 0.8183722556746453,
+    "ndvi_inicial_medio": 0.8059914043836254,
+    "ndvi_final_medio": 0.8183722556746452,
     "ndvi_delta_medio": 0.01238085129101885,
     "ndvi_disminucion": 5.766098705037433
    },
@@ -7353,7 +7353,7 @@
     },
     {
      "year": 2021,
-     "name": "Cobertura general oficial 2021",
+     "name": "Cobertura general oficial 2021 (vector)",
      "classified_ha": 3351.7313,
      "forest_ha": 3242.9809,
      "forest_pct": 96.7554,
@@ -7472,7 +7472,7 @@
    "id": "s29",
    "nombre": "Río Frijolita",
    "grupo": "Cuenca de Gatún",
-   "area_ha": 2545.485535577017,
+   "area_ha": 2545.485535579417,
    "preevaluacion": {
     "puntaje": 4.0,
     "puntaje_maximo": 6.5,
@@ -7517,9 +7517,9 @@
     "esri_arboles_final": 2333.04609723915
    },
    "ndvi": {
-    "ndvi_inicial_medio": 0.8006753734651977,
-    "ndvi_final_medio": 0.8137786400953763,
-    "ndvi_delta_medio": 0.013103266630179163,
+    "ndvi_inicial_medio": 0.8006753734651978,
+    "ndvi_final_medio": 0.8137786400953761,
+    "ndvi_delta_medio": 0.013103266630179165,
     "ndvi_disminucion": 10.483122859521004
    },
    "gedi_altura_m": 18.55192847710262,
@@ -7601,7 +7601,7 @@
     },
     {
      "year": 2021,
-     "name": "Cobertura general oficial 2021",
+     "name": "Cobertura general oficial 2021 (vector)",
      "classified_ha": 2534.8932,
      "forest_ha": 2413.7304,
      "forest_pct": 95.2202,
@@ -7766,9 +7766,9 @@
     "esri_arboles_final": 6374.1952863833985
    },
    "ndvi": {
-    "ndvi_inicial_medio": 0.7211258275604046,
-    "ndvi_final_medio": 0.749207799137419,
-    "ndvi_delta_medio": 0.02808197157701452,
+    "ndvi_inicial_medio": 0.7211258275604044,
+    "ndvi_final_medio": 0.7492077991374191,
+    "ndvi_delta_medio": 0.028081971577014517,
     "ndvi_disminucion": 88.65067653607538
    },
    "gedi_altura_m": 7.597247943070109,
@@ -7850,7 +7850,7 @@
     },
     {
      "year": 2021,
-     "name": "Cobertura general oficial 2021",
+     "name": "Cobertura general oficial 2021 (vector)",
      "classified_ha": 8975.403,
      "forest_ha": 4514.9318,
      "forest_pct": 50.3034,
@@ -8014,10 +8014,10 @@
     "esri_arboles_final": 11838.712720297437
    },
    "ndvi": {
-    "ndvi_inicial_medio": 0.7660950264412467,
-    "ndvi_final_medio": 0.8028297319074464,
-    "ndvi_delta_medio": 0.03673470546620028,
-    "ndvi_disminucion": 94.2830795266664
+    "ndvi_inicial_medio": 0.7660950264412468,
+    "ndvi_final_medio": 0.8028297319074466,
+    "ndvi_delta_medio": 0.036734705466200286,
+    "ndvi_disminucion": 94.28307952666638
    },
    "gedi_altura_m": 14.785807769150072,
    "serie_anual": [
@@ -8098,7 +8098,7 @@
     },
     {
      "year": 2021,
-     "name": "Cobertura general oficial 2021",
+     "name": "Cobertura general oficial 2021 (vector)",
      "classified_ha": 13111.4473,
      "forest_ha": 9695.0033,
      "forest_pct": 73.943,
@@ -8222,7 +8222,7 @@
    "id": "s32",
    "nombre": "Río Gigantito",
    "grupo": "Cuenca de Gatún",
-   "area_ha": 1373.0134067164224,
+   "area_ha": 1373.013406716461,
    "preevaluacion": {
     "puntaje": 5.5,
     "puntaje_maximo": 6.5,
@@ -8352,7 +8352,7 @@
     },
     {
      "year": 2021,
-     "name": "Cobertura general oficial 2021",
+     "name": "Cobertura general oficial 2021 (vector)",
      "classified_ha": 1367.3056,
      "forest_ha": 1206.716,
      "forest_pct": 88.255,
@@ -8516,9 +8516,9 @@
     "esri_arboles_final": 2643.054324494199
    },
    "ndvi": {
-    "ndvi_inicial_medio": 0.7662760239962768,
-    "ndvi_final_medio": 0.8110804286343162,
-    "ndvi_delta_medio": 0.04480440463803943,
+    "ndvi_inicial_medio": 0.7662760239962769,
+    "ndvi_final_medio": 0.8110804286343164,
+    "ndvi_delta_medio": 0.04480440463803944,
     "ndvi_disminucion": 6.358286538899751
    },
    "gedi_altura_m": 17.2625565001553,
@@ -8600,7 +8600,7 @@
     },
     {
      "year": 2021,
-     "name": "Cobertura general oficial 2021",
+     "name": "Cobertura general oficial 2021 (vector)",
      "classified_ha": 2935.8725,
      "forest_ha": 2468.4552,
      "forest_pct": 84.0791,
@@ -8769,10 +8769,10 @@
     "esri_arboles_final": 8703.402168993367
    },
    "ndvi": {
-    "ndvi_inicial_medio": 0.7694775022429697,
-    "ndvi_final_medio": 0.8220696005009102,
-    "ndvi_delta_medio": 0.052592098257940284,
-    "ndvi_disminucion": 12.435152615069217
+    "ndvi_inicial_medio": 0.7694775022429701,
+    "ndvi_final_medio": 0.8220696005009104,
+    "ndvi_delta_medio": 0.0525920982579403,
+    "ndvi_disminucion": 12.435152615069219
    },
    "gedi_altura_m": 21.082086086618112,
    "serie_anual": [
@@ -8853,7 +8853,7 @@
     },
     {
      "year": 2021,
-     "name": "Cobertura general oficial 2021",
+     "name": "Cobertura general oficial 2021 (vector)",
      "classified_ha": 9003.9372,
      "forest_ha": 8387.6171,
      "forest_pct": 93.155,
@@ -8977,7 +8977,7 @@
    "id": "s35",
    "nombre": "Río Limón",
    "grupo": "Cuenca de Gatún",
-   "area_ha": 957.3457455927668,
+   "area_ha": 957.3457455927729,
    "preevaluacion": {
     "puntaje": 6.0,
     "puntaje_maximo": 6.5,
@@ -9107,7 +9107,7 @@
     },
     {
      "year": 2021,
-     "name": "Cobertura general oficial 2021",
+     "name": "Cobertura general oficial 2021 (vector)",
      "classified_ha": 953.3777,
      "forest_ha": 215.0601,
      "forest_pct": 22.5577,
@@ -9350,7 +9350,7 @@
     },
     {
      "year": 2021,
-     "name": "Cobertura general oficial 2021",
+     "name": "Cobertura general oficial 2021 (vector)",
      "classified_ha": 4119.9552,
      "forest_ha": 1438.5342,
      "forest_pct": 34.9163,
@@ -9463,7 +9463,7 @@
    "id": "s37",
    "nombre": "Río Mandinga",
    "grupo": "Cuenca de Gatún",
-   "area_ha": 3894.219050153427,
+   "area_ha": 3894.2190501534446,
    "preevaluacion": {
     "puntaje": 2.0,
     "puntaje_maximo": 6.5,
@@ -9508,7 +9508,7 @@
    },
    "ndvi": {
     "ndvi_inicial_medio": 0.7799675696752163,
-    "ndvi_final_medio": 0.8141994931033156,
+    "ndvi_final_medio": 0.8141994931033157,
     "ndvi_delta_medio": 0.034231923428098505,
     "ndvi_disminucion": 4.019508463745119
    },
@@ -9591,7 +9591,7 @@
     },
     {
      "year": 2021,
-     "name": "Cobertura general oficial 2021",
+     "name": "Cobertura general oficial 2021 (vector)",
      "classified_ha": 3878.054,
      "forest_ha": 3664.6537,
      "forest_pct": 94.4972,
@@ -9710,7 +9710,7 @@
    "id": "s38",
    "nombre": "Río Moja Pollo",
    "grupo": "Cuenca de Gatún",
-   "area_ha": 491.50945239262273,
+   "area_ha": 491.50945239262364,
    "preevaluacion": {
     "puntaje": 6.0,
     "puntaje_maximo": 6.5,
@@ -9840,7 +9840,7 @@
     },
     {
      "year": 2021,
-     "name": "Cobertura general oficial 2021",
+     "name": "Cobertura general oficial 2021 (vector)",
      "classified_ha": 489.4631,
      "forest_ha": 159.5853,
      "forest_pct": 32.6042,
@@ -10088,7 +10088,7 @@
     },
     {
      "year": 2021,
-     "name": "Cobertura general oficial 2021",
+     "name": "Cobertura general oficial 2021 (vector)",
      "classified_ha": 1547.7117,
      "forest_ha": 940.6602,
      "forest_pct": 60.7775,
@@ -10207,7 +10207,7 @@
    "id": "s40",
    "nombre": "Río Paja",
    "grupo": "Cuenca de Gatún",
-   "area_ha": 4182.755861555079,
+   "area_ha": 4182.755861555038,
    "preevaluacion": {
     "puntaje": 5.5,
     "puntaje_maximo": 6.5,
@@ -10254,7 +10254,7 @@
    },
    "ndvi": {
     "ndvi_inicial_medio": 0.6926228907821167,
-    "ndvi_final_medio": 0.7572979299962822,
+    "ndvi_final_medio": 0.7572979299962823,
     "ndvi_delta_medio": 0.06467503921416577,
     "ndvi_disminucion": 43.043031644107515
    },
@@ -10337,7 +10337,7 @@
     },
     {
      "year": 2021,
-     "name": "Cobertura general oficial 2021",
+     "name": "Cobertura general oficial 2021 (vector)",
      "classified_ha": 4165.3814,
      "forest_ha": 2555.26,
      "forest_pct": 61.3452,
@@ -10585,7 +10585,7 @@
     },
     {
      "year": 2021,
-     "name": "Cobertura general oficial 2021",
+     "name": "Cobertura general oficial 2021 (vector)",
      "classified_ha": 538.6678,
      "forest_ha": 297.9257,
      "forest_pct": 55.3079,
@@ -10704,7 +10704,7 @@
    "id": "s42",
    "nombre": "Río Palenque II",
    "grupo": "Cuenca de Gatún",
-   "area_ha": 1836.760349145207,
+   "area_ha": 1836.7603491452016,
    "preevaluacion": {
     "puntaje": 5.5,
     "puntaje_maximo": 6.5,
@@ -10834,7 +10834,7 @@
     },
     {
      "year": 2021,
-     "name": "Cobertura general oficial 2021",
+     "name": "Cobertura general oficial 2021 (vector)",
      "classified_ha": 1829.1511,
      "forest_ha": 1074.2571,
      "forest_pct": 58.7298,
@@ -10953,7 +10953,7 @@
    "id": "s43",
    "nombre": "Río Pelón",
    "grupo": "Cuenca de Gatún",
-   "area_ha": 775.4024193221522,
+   "area_ha": 775.4024193221381,
    "preevaluacion": {
     "puntaje": 2.0,
     "puntaje_maximo": 6.5,
@@ -11081,7 +11081,7 @@
     },
     {
      "year": 2021,
-     "name": "Cobertura general oficial 2021",
+     "name": "Cobertura general oficial 2021 (vector)",
      "classified_ha": 772.1859,
      "forest_ha": 770.8845,
      "forest_pct": 99.8315,
@@ -11200,7 +11200,7 @@
    "id": "s44",
    "nombre": "Río Pequení",
    "grupo": "Cuenca de Alajuela",
-   "area_ha": 15972.477985544303,
+   "area_ha": 15972.477985544308,
    "preevaluacion": {
     "puntaje": 4.0,
     "puntaje_maximo": 6.5,
@@ -11230,22 +11230,22 @@
     "lectura_integrada": "Urgencia por cambios: Alta; valor del corredor: Alto; condición estructural: Conectada al umbral."
    },
    "jrc_ha": {
-    "tmf_estable": 13864.723479707684,
+    "tmf_estable": 13864.723479707685,
     "tmf_degradacion": 1183.5536816208103,
     "tmf_deforestacion": 329.044764573434,
     "tmf_recuperacion": 281.9401631589614,
     "tmf_agua": 10.855858645778076,
     "tmf_otra_cobertura": 236.38326936966064
    },
-   "hansen_post_2020_ha": 182.29165475889909,
+   "hansen_post_2020_ha": 182.29165475889906,
    "esri": {
     "esri_salida": 273.8062526108843,
-    "esri_ganancia": 174.24519495263183,
-    "esri_estable": 15431.401392903905,
-    "esri_arboles_final": 15605.646587856538
+    "esri_ganancia": 174.24519495263186,
+    "esri_estable": 15431.40139290111,
+    "esri_arboles_final": 15605.646587853744
    },
    "ndvi": {
-    "ndvi_inicial_medio": 0.7638631558664132,
+    "ndvi_inicial_medio": 0.7638631558664131,
     "ndvi_final_medio": 0.8092917709274536,
     "ndvi_delta_medio": 0.04542861506104074,
     "ndvi_disminucion": 44.25451409217983
@@ -11329,7 +11329,7 @@
     },
     {
      "year": 2021,
-     "name": "Cobertura general oficial 2021",
+     "name": "Cobertura general oficial 2021 (vector)",
      "classified_ha": 15906.6862,
      "forest_ha": 15070.9096,
      "forest_pct": 94.7458,
@@ -11497,7 +11497,7 @@
     "ndvi_inicial_medio": 0.647012931533752,
     "ndvi_final_medio": 0.7257340118042024,
     "ndvi_delta_medio": 0.07872108027045097,
-    "ndvi_disminucion": 14.869488423665345
+    "ndvi_disminucion": 14.869488423665347
    },
    "gedi_altura_m": 3.29015520793476,
    "serie_anual": [
@@ -11578,7 +11578,7 @@
     },
     {
      "year": 2021,
-     "name": "Cobertura general oficial 2021",
+     "name": "Cobertura general oficial 2021 (vector)",
      "classified_ha": 3088.2868,
      "forest_ha": 658.7375,
      "forest_pct": 21.3302,
@@ -11736,10 +11736,10 @@
     "esri_arboles_final": 8120.107162574551
    },
    "ndvi": {
-    "ndvi_inicial_medio": 0.7522719325545848,
-    "ndvi_final_medio": 0.8044400345672947,
-    "ndvi_delta_medio": 0.052168102012710126,
-    "ndvi_disminucion": 19.256113896005665
+    "ndvi_inicial_medio": 0.7522719325545849,
+    "ndvi_final_medio": 0.8044400345672948,
+    "ndvi_delta_medio": 0.05216810201271013,
+    "ndvi_disminucion": 19.25611389600566
    },
    "gedi_altura_m": 21.617459784026394,
    "serie_anual": [
@@ -11820,7 +11820,7 @@
     },
     {
      "year": 2021,
-     "name": "Cobertura general oficial 2021",
+     "name": "Cobertura general oficial 2021 (vector)",
      "classified_ha": 8181.9248,
      "forest_ha": 7835.067,
      "forest_pct": 95.7607,
@@ -11939,7 +11939,7 @@
    "id": "s47",
    "nombre": "Río Salamanca",
    "grupo": "Cuenca de Alajuela",
-   "area_ha": 1130.7996886890578,
+   "area_ha": 1130.7996886890585,
    "preevaluacion": {
     "puntaje": 4.0,
     "puntaje_maximo": 6.5,
@@ -12068,7 +12068,7 @@
     },
     {
      "year": 2021,
-     "name": "Cobertura general oficial 2021",
+     "name": "Cobertura general oficial 2021 (vector)",
      "classified_ha": 1126.1177,
      "forest_ha": 824.6422,
      "forest_pct": 73.2288,
@@ -12322,7 +12322,7 @@
     },
     {
      "year": 2021,
-     "name": "Cobertura general oficial 2021",
+     "name": "Cobertura general oficial 2021 (vector)",
      "classified_ha": 3782.3442,
      "forest_ha": 1232.4292,
      "forest_pct": 32.5837,
@@ -12435,7 +12435,7 @@
    "id": "s49",
    "nombre": "Río Trinidad",
    "grupo": "Cuenca de Gatún",
-   "area_ha": 19907.17312778229,
+   "area_ha": 19907.173127779384,
    "preevaluacion": {
     "puntaje": 5.5,
     "puntaje_maximo": 6.5,
@@ -12482,8 +12482,8 @@
    },
    "ndvi": {
     "ndvi_inicial_medio": 0.7335932090841203,
-    "ndvi_final_medio": 0.7667969584182031,
-    "ndvi_delta_medio": 0.033203749334082294,
+    "ndvi_final_medio": 0.7667969584182027,
+    "ndvi_delta_medio": 0.03320374933408227,
     "ndvi_disminucion": 130.4076190907797
    },
    "gedi_altura_m": 8.729041205514786,
@@ -12565,7 +12565,7 @@
     },
     {
      "year": 2021,
-     "name": "Cobertura general oficial 2021",
+     "name": "Cobertura general oficial 2021 (vector)",
      "classified_ha": 19824.3182,
      "forest_ha": 9260.5933,
      "forest_pct": 46.7133,
@@ -12730,10 +12730,10 @@
     "esri_arboles_final": 6063.8493110465415
    },
    "ndvi": {
-    "ndvi_inicial_medio": 0.7480968653090581,
+    "ndvi_inicial_medio": 0.7480968653090578,
     "ndvi_final_medio": 0.7708285844159013,
-    "ndvi_delta_medio": 0.022731719106842584,
-    "ndvi_disminucion": 115.729393148684
+    "ndvi_delta_medio": 0.022731719106842588,
+    "ndvi_disminucion": 115.72939314868398
    },
    "gedi_altura_m": 10.117985061375418,
    "serie_anual": [
@@ -12814,7 +12814,7 @@
     },
     {
      "year": 2021,
-     "name": "Cobertura general oficial 2021",
+     "name": "Cobertura general oficial 2021 (vector)",
      "classified_ha": 7779.3047,
      "forest_ha": 5416.2311,
      "forest_pct": 69.6236,
@@ -12938,7 +12938,7 @@
    "id": "s51",
    "nombre": "Subcuenca L. Gatún",
    "grupo": "Cuenca de Gatún",
-   "area_ha": 47117.9064528997,
+   "area_ha": 47117.9064528959,
    "preevaluacion": {
     "puntaje": 5.5,
     "puntaje_maximo": 6.5,
@@ -12971,23 +12971,23 @@
    "jrc_ha": {
     "tmf_estable": 20957.906578225273,
     "tmf_degradacion": 4538.442419130224,
-    "tmf_deforestacion": 3898.968650868798,
-    "tmf_recuperacion": 4048.7311325633946,
+    "tmf_deforestacion": 3898.9686508687973,
+    "tmf_recuperacion": 4048.731132563394,
     "tmf_agua": 1213.1427175398555,
     "tmf_otra_cobertura": 12256.227173603953
    },
    "hansen_post_2020_ha": 1059.2043191590592,
    "esri": {
-    "esri_salida": 2408.1997207414092,
+    "esri_salida": 2408.199720741409,
     "esri_ganancia": 2381.208297256289,
-    "esri_estable": 26510.863853175062,
-    "esri_arboles_final": 28892.07215043136
+    "esri_estable": 26510.86385317879,
+    "esri_arboles_final": 28892.072150435084
    },
    "ndvi": {
     "ndvi_inicial_medio": 0.7333103250764287,
-    "ndvi_final_medio": 0.7597082242612045,
+    "ndvi_final_medio": 0.7597082242612047,
     "ndvi_delta_medio": 0.02639789918477605,
-    "ndvi_disminucion": 696.0246317850269
+    "ndvi_disminucion": 696.0246317850268
    },
    "gedi_altura_m": 10.979327685203808,
    "serie_anual": [
@@ -13000,38 +13000,38 @@
     },
     {
      "anio": 2021,
-     "jrc_degradacion_ha": 4319.918461366639,
-     "jrc_deforestacion_ha": 4032.800744438346,
-     "jrc_regeneracion_ha": 3617.4991364957664,
-     "hansen_perdida_ha": 231.62473529361046
+     "jrc_degradacion_ha": 4319.91846136664,
+     "jrc_deforestacion_ha": 4032.8007444383456,
+     "jrc_regeneracion_ha": 3617.499136495767,
+     "hansen_perdida_ha": 231.62473529361043
     },
     {
      "anio": 2022,
-     "jrc_degradacion_ha": 4328.104909263053,
+     "jrc_degradacion_ha": 4328.104909263055,
      "jrc_deforestacion_ha": 3906.5373896438696,
      "jrc_regeneracion_ha": 3940.4040777411833,
-     "hansen_perdida_ha": 115.1739814568384
+     "hansen_perdida_ha": 115.17398145683839
     },
     {
      "anio": 2023,
-     "jrc_degradacion_ha": 4448.811108907355,
+     "jrc_degradacion_ha": 4448.811108907356,
      "jrc_deforestacion_ha": 3876.513639892462,
-     "jrc_regeneracion_ha": 4036.290686181217,
+     "jrc_regeneracion_ha": 4036.290686181218,
      "hansen_perdida_ha": 423.8819529919356
     },
     {
      "anio": 2024,
      "jrc_degradacion_ha": 4534.499775158921,
      "jrc_deforestacion_ha": 3889.456573931346,
-     "jrc_regeneracion_ha": 4041.848691747588,
-     "hansen_perdida_ha": 168.54485475987778
+     "jrc_regeneracion_ha": 4041.8486917475875,
+     "hansen_perdida_ha": 168.5448547598778
     },
     {
      "anio": 2025,
-     "jrc_degradacion_ha": 4538.442419130224,
-     "jrc_deforestacion_ha": 3898.968650868798,
-     "jrc_regeneracion_ha": 4048.7311325633946,
-     "hansen_perdida_ha": 119.97879374062313
+     "jrc_degradacion_ha": 4538.442419130223,
+     "jrc_deforestacion_ha": 3898.9686508687973,
+     "jrc_regeneracion_ha": 4048.731132563394,
+     "hansen_perdida_ha": 119.97879374062315
     }
    ],
    "sinia": [
@@ -13068,7 +13068,7 @@
     },
     {
      "year": 2021,
-     "name": "Cobertura general oficial 2021",
+     "name": "Cobertura general oficial 2021 (vector)",
      "classified_ha": 46920.587,
      "forest_ha": 30846.5993,
      "forest_pct": 65.7421,
@@ -13174,7 +13174,7 @@
      "umbral_m": 500.0,
      "numero_nodos": 1289,
      "numero_aristas": 4569,
-     "numero_relaciones_mostradas": 1216,
+     "numero_relaciones_mostradas": 1217,
      "numero_parches_conectados": 1284,
      "numero_parches_aislados": 5,
      "porcentaje_parches_aislados": 0.3879,
@@ -13328,7 +13328,7 @@
     },
     {
      "year": 2021,
-     "name": "Cobertura general oficial 2021",
+     "name": "Cobertura general oficial 2021 (vector)",
      "classified_ha": 21.5657,
      "forest_ha": 3.8595,
      "forest_pct": 17.8965,
@@ -13439,5 +13439,5 @@
   }
  },
  "errores": {},
- "generado": "2026-11-21T18:20:02"
+ "generado": "2026-11-22T17:47:57"
 }
