@@ -96,7 +96,7 @@
     prioridades: { name: 'Puntaje de preevaluación (0–6.5)', value: (t) => t.preevaluacion?.puntaje, palette: SEQ.red, breaks: [1, 2, 3, 4.5], fmt: (v) => number(v, 1) },
     sinia: { name: 'Bosques y otras tierras boscosas · SINIA 2021 (%)', value: (t) => sinia(t, 2021)?.forest_pct, palette: SEQ.green, breaks: [40, 55, 70, 85], fmt: (v) => pct(v, 0) },
     cambio: { name: 'Deforestación + degradación JRC 2025 (% del área)', value: (t) => (t.area_ha ? ((t.jrc_ha.tmf_deforestacion || 0) + (t.jrc_ha.tmf_degradacion || 0)) / t.area_ha * 100 : null), palette: SEQ.red, breaks: [5, 10, 20, 30], fmt: (v) => pct(v, 0) },
-    conectividad: { name: 'Parches aislados 2021 (%)', value: isolatedPct, palette: SEQ.purple, breaks: [5, 15, 30, 50], fmt: (v) => pct(v, 0) },
+    conectividad: { name: 'Densidad de borde del bosque 2021 (m/ha) · mayor = más fragmentado', value: (t) => t.estructura_2021?.metricas_clase?.densidad_borde_m_ha, palette: SEQ.purple, breaks: [35, 50, 75, 90], fmt: (v) => number(v, 0) },
     corredores: { name: 'Área dentro de corredores (%)', value: (t) => t.corredores?.porcentaje, palette: SEQ.blue, breaks: [5, 15, 30, 60], fmt: (v) => pct(v, 0) },
   };
   function colorFor(theme, value) {
@@ -180,13 +180,34 @@
     if (u.preevaluacion?.lectura_integrada) html += wg('lectura', 'Lectura integrada', `<p class="s">${esc(u.preevaluacion.lectura_integrada)}</p>`);
     return html;
   }
+  function viewConectividadCuenca(u) {
+    const rows = subs().filter((t) => t.estructura_2021);
+    const sum = (f) => rows.reduce((acc, t) => acc + (f(t) || 0), 0);
+    const c = (t) => t.estructura_2021.metricas_clase, r = (t) => t.estructura_2021.metricas_red;
+    const bosque = sum((t) => c(t).area_total_bosque_ha), paisaje = sum((t) => t.area_ha);
+    const parches = sum((t) => c(t).numero_parches), aislados = sum((t) => r(t).numero_parches_aislados);
+    const componentes = sum((t) => r(t).numero_componentes), aristas = sum((t) => r(t).numero_aristas);
+    const borde = sum((t) => (c(t).densidad_borde_m_ha || 0) * (t.area_ha || 0)) / (paisaje || 1);
+    const conectadas = rows.filter((t) => r(t).numero_componentes === 1).length;
+    let html = wg('conn-cuenca', 'Fragmentación y conectividad · resumen de las 53 subcuencas', `<div class="cards3"><div class="mc"><span>Bosque oficial 2021</span><b>${hectares(bosque)}</b><small>${pct(bosque / (paisaje || 1) * 100)} de las subcuencas</small></div><div class="mc"><span>Parches</span><b>${number(parches, 0)}</b><small>${number(parches / (paisaje || 1) * 100, 2)} / 100 ha</small></div><div class="mc"><span>Densidad de borde</span><b>${number(borde, 1)}</b><small>m/ha (ponderada por área)</small></div><div class="mc"><span>Componentes de red</span><b>${number(componentes, 0)}</b><small>${number(aristas, 0)} conexiones</small></div><div class="mc"><span>Parches aislados</span><b>${number(aislados, 0)}</b><small>${pct(aislados / (parches || 1) * 100)} a ${number(st.data.umbral_conectividad_m, 0)} m</small></div><div class="mc"><span>Subcuencas en una sola red</span><b>${conectadas} de ${rows.length}</b><small>todo su bosque conectado</small></div></div><p class="note">Suma de los resultados de cada subcuenca. Un parche que cruza el límite entre dos subcuencas se cuenta en ambas, por lo que los totales son aproximados. A ${number(st.data.umbral_conectividad_m, 0)} m casi no hay parches aislados: la diferencia entre subcuencas está en cuánto se fragmenta el bosque (borde, número y tamaño de parches).</p>`,
+      'Conectividad estructural potencial: parches de «Bosques y Otras Tierras Boscosas» (SINIA 2021) unidos cuando la distancia entre bordes es menor que el umbral. No demuestra movimiento de fauna.');
+    const top = (value, fmt, label, desc = true) => {
+      const list = rows.slice().sort((a, b) => (desc ? value(b) - value(a) : value(a) - value(b))).slice(0, 8);
+      return `<ol class="rank">${list.map((t, i) => `<li><span class="pos">${i + 1}</span><button type="button" data-go="${t.id}">${esc(t.nombre)}</button><b>${fmt(value(t))}</b></li>`).join('')}</ol><p class="note">${label}</p>`;
+    };
+    html += wg('top-borde', 'Subcuencas con bosque más fragmentado', top((t) => c(t).densidad_borde_m_ha || 0, (v) => `${number(v, 0)} m/ha`, 'Mayor densidad de borde: más perímetro de bosque por hectárea, señal de fragmentación.'));
+    html += wg('top-lpi', 'Subcuencas con menor parche dominante', top((t) => c(t).indice_parche_mayor_pct || 0, (v) => pct(v), 'Índice de parche mayor: porcentaje del paisaje que ocupa el parche de bosque más grande. Valores bajos indican bosque repartido en piezas.', false));
+    html += wg('top-comp', 'Subcuencas con la red más dividida', top((t) => r(t).numero_componentes || 0, (v) => `${number(v, 0)} componentes`, 'Número de redes separadas de parches al umbral elegido.'));
+    return html;
+  }
   function viewConectividad(u) {
+    if (u.id === 'chcp') return viewConectividadCuenca(u);
     const s = u.estructura_2021;
-    if (!s) return wg('conn-none', 'Conectividad estructural 2021', `<p class="s">${u.id === 'chcp' ? 'Para la cuenca completa la red de parches se consulta por subcuenca. Seleccione una subcuenca o use la plataforma de análisis.' : 'No se precalculó la estructura para este territorio.'}</p>`);
+    if (!s) return wg('conn-none', 'Conectividad estructural 2021', '<p class="s">No se precalculó la estructura para este territorio.</p>');
     const c = s.metricas_clase, r = s.metricas_red;
     let html = wg('frag', 'Fragmentación · bosque oficial 2021', `<div class="cards3"><div class="mc"><span>Bosque</span><b>${hectares(c.area_total_bosque_ha)}</b><small>${pct(c.porcentaje_paisaje_bosque)} del paisaje</small></div><div class="mc"><span>Parches</span><b>${number(c.numero_parches, 0)}</b><small>${number(c.densidad_parches_por_100ha, 2)} / 100 ha</small></div><div class="mc"><span>Parche mayor</span><b>${pct(c.indice_parche_mayor_pct)}</b><small>del paisaje</small></div><div class="mc"><span>Densidad de borde</span><b>${number(c.densidad_borde_m_ha, 1)}</b><small>m/ha</small></div><div class="mc"><span>Tamaño medio</span><b>${hectares(c.area_media_parche_ha)}</b><small>mediana ${hectares(c.area_mediana_parche_ha)}</small></div><div class="mc"><span>Forma media</span><b>${number(c.indice_forma_medio, 2)}</b></div></div>`, 'Cobertura vectorial SINIA 2021 (Bosques y Otras Tierras Boscosas) disuelta en parches ecológicos antes de medir.');
-    html += wg('red', `Red estructural · umbral ${number(r.umbral_m || st.data.umbral_conectividad_m, 0)} m`, `<div class="cards3"><div class="mc"><span>Componentes</span><b>${number(r.numero_componentes, 0)}</b></div><div class="mc"><span>Conexiones</span><b>${number(r.numero_aristas, 0)}</b><small>media ${number(r.distancia_media_conexiones_m, 0)} m</small></div><div class="mc"><span>Aislados</span><b>${number(r.numero_parches_aislados, 0)}</b><small>${pct(isolatedPct(u))}</small></div></div>${bars([{ label: 'En red', value: (c.numero_parches || 0) - (r.numero_parches_aislados || 0), color: '#225ea8' }, { label: 'Aislados', value: r.numero_parches_aislados || 0, color: '#d0442c' }], (v) => `${number(v, 0)} parches`)}<p class="note">Conectividad estructural potencial por distancia entre bordes; no demuestra movimiento de fauna. ${s.conecta_corredor ? `Existe una cadena estructural hacia ${esc(s.corredor_nombre || 'un corredor publicado')}.` : ''}</p>`);
-    html += wg('rank-conn', 'Comparación entre subcuencas', ranking(u, isolatedPct, (v) => pct(v), 'porcentaje de parches aislados'));
+    html += wg('red', `Red estructural · umbral ${number(r.umbral_m || st.data.umbral_conectividad_m, 0)} m`, `<div class="cards3"><div class="mc"><span>Componentes</span><b>${number(r.numero_componentes, 0)}</b><small>${pct(r.porcentaje_nodos_componente_mayor)} en el mayor</small></div><div class="mc"><span>Conexiones</span><b>${number(r.numero_aristas, 0)}</b><small>media ${number(r.distancia_media_conexiones_m, 0)} m</small></div><div class="mc"><span>Aislados</span><b>${number(r.numero_parches_aislados, 0)}</b><small>${pct(isolatedPct(u))}</small></div></div>${bars([{ label: 'En red', value: (c.numero_parches || 0) - (r.numero_parches_aislados || 0), color: '#225ea8' }, { label: 'Aislados', value: r.numero_parches_aislados || 0, color: '#d0442c' }], (v) => `${number(v, 0)} parches`)}<p class="note">Conectividad estructural potencial por distancia entre bordes; no demuestra movimiento de fauna. ${s.conecta_corredor ? `Existe una cadena estructural hacia ${esc(s.corredor_nombre || 'un corredor publicado')}.` : ''}</p>`);
+    html += wg('rank-conn', 'Comparación entre subcuencas', ranking(u, (t) => t.estructura_2021?.metricas_clase?.densidad_borde_m_ha, (v) => `${number(v, 0)} m/ha`, 'densidad de borde (fragmentación)'));
     return html;
   }
   function viewCorredores(u) {
