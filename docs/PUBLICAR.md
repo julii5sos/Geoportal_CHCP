@@ -1,7 +1,52 @@
 # Publicar el Geoportal CHCP
 
-Modo elegido: **público con enlace** en Google Cloud Run, dentro del proyecto
-`geoportal-513817` (proyecto exclusivo de esta aplicación).
+Modo elegido: **público con enlace**. Hay dos opciones:
+
+| | A. Hugging Face Spaces (recomendada) | B. Google Cloud Run |
+|---|---|---|
+| Costo | **Gratis**, sin tarjeta | Capa gratuita; requiere facturación activa |
+| Recursos | 2 vCPU, 16 GB RAM | 2 vCPU, 2 GB RAM, escala a cero |
+| Inactividad | Se duerme tras 48 h sin visitas; despierta en ~1 min | Arranca en segundos |
+| Credencial de Earth Engine | Clave JSON guardada como **secreto** del Space | Identidad de Cloud Run sin clave |
+| Comando | `python scripts/publicar_huggingface.py` | `deploy\publicar_cloud_run.ps1` |
+
+> Los «300 USD» que muestra Google Cloud al activar la facturación son **crédito
+> gratuito de prueba**, no un cobro. Aun así, la opción A no requiere facturación.
+
+## Opción A — Hugging Face Spaces (gratis)
+
+### A.1 Cuenta y token de Hugging Face
+
+1. Cree una cuenta gratuita en https://huggingface.co.
+2. En https://huggingface.co/settings/tokens cree un token de tipo **Write** y cópielo.
+
+### A.2 Cuenta de servicio de Earth Engine (consola web, sin instalar nada)
+
+1. Abra https://console.cloud.google.com/iam-admin/serviceaccounts?project=geoportal-513817
+2. **Crear cuenta de servicio** → nombre `geoportal-web` → Crear y continuar.
+3. Asigne los roles **Earth Engine Resource Viewer** y **Service Usage Consumer** → Listo.
+4. Abra la cuenta creada → pestaña **Claves** → Agregar clave → Crear clave nueva → **JSON**.
+   Se descarga un archivo `.json`.
+5. **Guárdelo fuera de la carpeta del proyecto** (por ejemplo, en `Descargas`). Nunca lo
+   suba a GitHub ni lo comparta: da acceso a su cuota de Earth Engine.
+
+Si la consola dice que la creación de claves está deshabilitada, use la opción B.
+
+### A.3 Publicar
+
+```powershell
+pip install huggingface_hub
+python scripts/publicar_huggingface.py --usuario SU_USUARIO_HF --clave "C:\Users\...\Downloads\geoportal-513817-xxxx.json"
+```
+
+El script verifica la clave contra Earth Engine, crea el Space público, guarda la clave
+como secreto, configura los límites de uso y sube el código (sin pruebas, historial ni
+credenciales). La dirección queda como `https://SU_USUARIO_HF-geoportal-chcp.hf.space`.
+
+Para publicar una versión nueva repita el comando **sin** `--clave` (el secreto se
+conserva). Para revocar el acceso a Earth Engine, elimine la clave en la consola.
+
+## Opción B — Google Cloud Run
 
 ## Qué se publica
 
