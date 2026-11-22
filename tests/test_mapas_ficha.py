@@ -78,3 +78,23 @@ class SitiosTests(unittest.TestCase):
         self.assertEqual([x["fuentes"] for x in s], [3, 2, 1])
         self.assertEqual(s[0]["id"], mf.identificador_sitio("s5", 9.16, -79.82))
         self.assertEqual(s[0]["id"], "s5-16008200")
+
+
+class CodificacionTests(unittest.TestCase):
+    def test_ida_y_vuelta_continuo_y_categorias(self):
+        import numpy as np
+        for clave, valores, tolerancia in (("ndvi_cambio", [-0.31, 0.0, 0.42], 0.004), ("eri", [0.0, 0.5, 0.99], 0.002), ("gedi", [0.0, 12.3, 40.1], 0.125)):
+            codec = mf.CODIFICACION_VALORES[clave]
+            q = mf.codificar(np.array([valores + [mf.SIN_DATO]]), codec)
+            self.assertEqual(q.dtype, np.uint8)
+            self.assertEqual(q[0, -1], mf.SIN_VALOR)
+            v = mf.decodificar(q, codec)
+            self.assertTrue(np.allclose(v[0, :-1], valores, atol=tolerancia))
+            self.assertTrue(np.isnan(v[0, -1]))
+        q = mf.codificar(np.array([[1, 6, mf.SIN_DATO]]), mf.CODIFICACION_VALORES["jrc_2025"])
+        self.assertEqual(q.tolist(), [[1, 6, 255]])
+        self.assertTrue(mf.png_gris(q).startswith(b"\x89PNG"))
+
+    def test_todas_las_capas_de_indice_tienen_codificacion(self):
+        for clave in ("jrc_2025", "hansen", "esri_cambio", "ndvi_cambio", "eri", "sinia_2021", "coincidencia", "riparia", "gedi", "aux"):
+            self.assertIn(clave, mf.CODIFICACION_VALORES)

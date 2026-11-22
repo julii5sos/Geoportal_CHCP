@@ -297,7 +297,7 @@ def create_app(*, testing: bool = False) -> Flask:
 
     @app.get("/api/v1/panel/maps/<identificador>/<archivo>")
     def api_panel_map(identificador: str, archivo: str):
-        if not re.fullmatch(r"[A-Za-z0-9_-]{1,40}", identificador) or not re.fullmatch(r"[a-z0-9_]{1,40}\.(png|json)", archivo):
+        if not re.fullmatch(r"[A-Za-z0-9_-]{1,40}", identificador) or not re.fullmatch(r"[a-z0-9_]{1,40}(\.v)?\.(png|json)", archivo):
             return jsonify(error="Solicitud no válida."), 400
         path = PANEL_STATISTICS_PATH.parent / "mapas" / identificador / archivo
         if not path.exists():

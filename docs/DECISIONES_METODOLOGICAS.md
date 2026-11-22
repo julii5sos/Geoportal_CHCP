@@ -79,3 +79,16 @@ decisión explícita del equipo.
 - **Red hídrica.** Se reutiliza la misma definición del ERI: cauces MERIT Hydro con área de drenaje ≥ 1 km². La distancia al cauce se interpola (bilineal) desde la malla de 90 m, por lo que las franjas de 30, 50 y 100 m son indicativas. Los ríos dibujados son HydroSHEDS (drenaje ≥ 10 km²). Si se dispone de hidrografía local (IGNTG, ACP), debe sustituir a MERIT mediante un asset del proyecto.
 - **Bosque ripario.** SINIA 2021 (oficial, la misma base de la conectividad) y árboles ESRI 2024 como segunda fuente. Las orillas sin bosque se describen por clases de pendiente (0–15 %, 15–30 %, ≥ 30 %, Copernicus DEM 30 m); no es un modelo de erosión ni de caudal.
 - **Simulador de restauración.** Recalcula en el navegador componentes, parches aislados y el IIC binario (misma fórmula que `metricas_paisaje.py`, verificada en `tests/test_red_conectividad_js.py`). Una franja restaurada se modela como un enlace nuevo; su superficie no se suma al hábitat (resultado conservador). Las brechas candidatas combinan las del motor y el enlace más corto entre cada par de redes (≤ max(4 × umbral, 2 km)), medido entre vértices. La priorización ordena por ganancia de IIC por hectárea con el ancho elegido (30/60/100 m). Es un resultado estructural: no considera resistencia del paisaje, tenencia ni costos.
+
+## Análisis de polígonos propios sin Earth Engine en tiempo real (2026-11-22)
+
+- **Precálculo:** el precálculo de cada subcuenca guarda, además de los mapas coloreados, **mapas de valores** sin pérdida (`data/mapas/<id>/<capa>.v.png`, escala de grises).
+  - Capas: JRC 2025, Hansen 2021–2025, cambio ESRI, SINIA 2021, coincidencias, franja riparia, ERI, cambio de NDVI y altura GEDI.
+  - Una capa auxiliar de bits marca la línea base arbórea Hansen, el NDVI válido, el descenso fuerte de NDVI y el GEDI válido.
+  - La codificación se publica en `codificacion_valores`.
+- **Cálculo en el navegador:** al dibujar o subir un polígono, el navegador lo rasteriza sobre la malla de cada subcuenca que toca, suma superficies por clase y aplica **exactamente** las reglas MT-2026.7: señales, puntaje, consistencia y prioridad de visita con corredores del Almanaque Azul. `tests/test_analisis_poligono_js.py` compara 300 casos con `metodologia_indice.py`.
+- **Red de parches:** usa los parches oficiales 2021 que toca el polígono y sus enlaces precalculados (umbral de 500 m).
+- **Limitaciones:**
+  - El píxel es de 10 a 30 m según la subcuenca. En polígonos menores de ~20 píxeles las superficies son aproximadas.
+  - Los resultados corresponden a la fecha del último precálculo.
+  - La versión con Earth Engine sigue siendo la referencia para áreas fuera de la CHCP o para parámetros distintos.

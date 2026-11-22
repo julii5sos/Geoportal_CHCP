@@ -90,6 +90,20 @@ CAPAS: list[dict[str, Any]] = [
 ]
 CAPAS_POR_CLAVE = {c["clave"]: c for c in CAPAS}
 
+# Codificación de valores (PNG en escala de grises, sin pérdida) para el análisis de
+# polígonos en el navegador: valor = minimo + q · paso; 255 = fuera del territorio
+# o sin dato. Las categorías se guardan con su código original.
+SIN_VALOR = 255
+CODIFICACION_VALORES: dict[str, dict[str, Any]] = {
+    **{c["clave"]: {"tipo": "categorias"} for c in CAPAS if c["tipo"] == "categorias"},
+    "ndvi_cambio": {"tipo": "continuo", "minimo": -1.0, "paso": 0.008},
+    "eri": {"tipo": "continuo", "minimo": 0.0, "paso": 0.004},
+    "gedi": {"tipo": "continuo", "minimo": 0.0, "paso": 0.25},
+    # bits: 1 línea base arbórea Hansen 2020 · 2 NDVI válido · 4 descenso fuerte de NDVI · 8 GEDI válido
+    "aux": {"tipo": "bits", "bits": {"linea_base": 1, "ndvi_valido": 2, "ndvi_descenso": 4, "gedi_valido": 8}},
+}
+CAPAS_SOLO_VALOR = ("gedi", "aux")
+
 
 # ---------------------------------------------------------------------------
 # Imágenes de Earth Engine (una banda por capa).
@@ -140,6 +154,21 @@ def _imagen_capa(clave: str, geometria, ee):
         fin, _ = _estado_y_mascara_valida_ee("esri_lulc", PERIODOS_ANALISIS["esri_final"], geometria, ee_module=ee)
         post, _, _ = _hansen(geometria, ee)
         return _coincidence(jrc, post, ini, fin, geometria, ee).selfMask()
+    if clave == "gedi":
+        from chcp.gee.evaluacion_ecologica import _gedi
+        return _gedi(geometria, ee)
+    if clave == "aux":
+        from chcp.gee.evaluacion_ecologica import _gedi
+        from chcp.nucleo.metodologia_indice import UMBRALES_INDICE
+        _, _, base = _hansen(geometria, ee)
+        inicial = _ndvi(PERIODOS_ANALISIS["ndvi_inicial"], geometria, ee)
+        final = _ndvi(PERIODOS_ANALISIS["ndvi_final"], geometria, ee)
+        valido = inicial.mask().And(final.mask())
+        descenso = (inicial.gte(UMBRALES_INDICE["ndvi_vigor_inicial_minimo"])
+                    .And(final.subtract(inicial).lte(UMBRALES_INDICE["ndvi_delta_disminucion"])).And(valido))
+        gedi_valido = _gedi(geometria, ee).mask()
+        return (ee.Image(0).add(base.unmask(0).gt(0)).add(valido.unmask(0).multiply(2))
+                .add(descenso.unmask(0).multiply(4)).add(gedi_valido.unmask(0).gt(0).multiply(8)))
     if clave == "riparia":
         distancia = _distancia_cauce_m(ee)
         bosque = _bosque_sinia_2021(ee)
@@ -234,6 +263,37 @@ def colorear(valores, capa: dict[str, Any]):
     return rgba
 
 
+def codificar(valores, codec: dict[str, Any]):
+    """Matriz de valores → uint8 (255 = sin dato) según CODIFICACION_VALORES."""
+    import numpy as np
+
+    v = np.asarray(valores, dtype="float64")
+    validos = np.isfinite(v) & (v != SIN_DATO)
+    if codec["tipo"] == "continuo":
+        q = np.round((v - codec["minimo"]) / codec["paso"])
+    else:
+        q = np.round(v)
+    q = np.clip(np.where(validos, q, SIN_VALOR), 0, 254).astype("uint8")
+    q[~validos] = SIN_VALOR
+    return q
+
+
+def decodificar(q, codec: dict[str, Any]):
+    import numpy as np
+
+    q = np.asarray(q, dtype="float64")
+    v = codec["minimo"] + q * codec["paso"] if codec["tipo"] == "continuo" else q.copy()
+    return np.where(q == SIN_VALOR, np.nan, v)
+
+
+def png_gris(q) -> bytes:
+    from PIL import Image
+
+    salida = io.BytesIO()
+    Image.fromarray(q, "L").save(salida, format="PNG", optimize=True)
+    return salida.getvalue()
+
+
 def png(rgba) -> bytes:
     from PIL import Image
 
@@ -260,16 +320,22 @@ def generar_mapas(geojson: dict[str, Any], destino, *, ee_module, capas: list[st
     geometria = ee.Geometry(geojson.get("geometry", geojson), proj="EPSG:4326", geodesic=False)
     malla = malla_mercator(geojson)
     disponibles, errores = [], {}
-    for clave in capas or [c["clave"] for c in CAPAS]:
+    valores_ok = []
+    for clave in capas or [c["clave"] for c in CAPAS] + list(CAPAS_SOLO_VALOR):
         try:
             valores = descargar_valores(_imagen_capa(clave, geometria, ee), geometria, malla, ee)
-            (destino / f"{clave}.png").write_bytes(png(colorear(valores, CAPAS_POR_CLAVE[clave])))
-            disponibles.append(clave)
+            if clave in CAPAS_POR_CLAVE:
+                (destino / f"{clave}.png").write_bytes(png(colorear(valores, CAPAS_POR_CLAVE[clave])))
+                disponibles.append(clave)
+            if clave in CODIFICACION_VALORES:
+                (destino / f"{clave}.v.png").write_bytes(png_gris(codificar(valores, CODIFICACION_VALORES[clave])))
+                valores_ok.append(clave)
         except Exception as exc:  # una capa fallida no impide las demás
             errores[clave] = f"{type(exc).__name__}: {exc}"[:300]
             registro(f"    mapa {clave}: {errores[clave]}")
     return {"limites": malla["limites"], "tamano_pixel_m": malla["tamano_pixel_m"],
-            "capas": disponibles, "errores": errores}
+            "dimensiones": [malla["grid"]["dimensions"]["width"], malla["grid"]["dimensions"]["height"]],
+            "capas": disponibles, "valores": valores_ok, "errores": errores}
 
 
 # ---------------------------------------------------------------------------

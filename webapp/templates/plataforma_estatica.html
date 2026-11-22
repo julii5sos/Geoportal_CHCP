@@ -13,10 +13,19 @@
       <div id="pe-capas"></div>
     </div>
     <div class="side-body" id="s-poligono" hidden>
-      <p class="hint-p">Dibujar o subir el polígono de una finca y verificarlo en el momento requiere ejecutar Earth Engine en tiempo real. En esta versión publicada se consultan los resultados ya calculados por cuenca y subcuenca.</p>
-      <div class="fi-pending">La verificación de polígonos propios llegará en una próxima actualización.</div>
-      <p class="hint-p">Mientras tanto puede:</p>
-      <ul class="fi-list"><li>elegir una subcuenca y pulsar <b>Realizar análisis</b>;</li><li>abrir su <b>ficha técnica</b> descargable;</li><li>usar el <b>simulador de restauración</b> para dibujar franjas entre parches.</li></ul>
+      <p class="hint-p">Dibuje o suba el polígono de una finca o parcela y verifíquelo en el momento con los resultados ya calculados para toda la cuenca: señales satelitales de cambio, preevaluación MT-2026.7, prioridad de visita, corredores, parches de bosque, NDVI, ERI y franjas riparias.</p>
+      <div class="pbtns">
+        <button class="btn btn-s" id="pg-draw" type="button">Dibujar en el mapa</button>
+        <label class="btn btn-s" for="pg-file">Subir archivo</label>
+        <input id="pg-file" type="file" accept=".geojson,.json,.kml" hidden>
+      </div>
+      <p class="hint-p small">Formatos: GeoJSON o KML. Para dibujar, haga clic en cada vértice y doble clic (o «Terminar») para cerrar. Solo se analiza la parte dentro de la CHCP.</p>
+      <div class="pinfo" id="pg-info" hidden></div>
+      <div class="pbtns">
+        <button class="btn btn-p" id="pg-run" type="button" disabled>Verificar polígono</button>
+        <button class="btn btn-s" id="pg-clear" type="button" disabled>Borrar</button>
+      </div>
+      <p class="hint-p small">El cálculo se hace en su navegador con los mapas de valores precalculados (píxel de 10 a 30 m según la subcuenca); no envía el polígono a ningún servidor.</p>
     </div>
     <div class="side-body" id="s-base" hidden><div class="bm" id="pe-bm"></div><p class="hint-p small">El mapa base solo cambia la visualización.</p></div>
     <div class="side-foot"><button class="btn btn-p" id="pe-run" type="button">Realizar análisis</button></div>
@@ -25,6 +34,8 @@
     <div id="smap"></div>
     <div class="maplegend" id="pe-legend"></div>
     <div class="coords" id="coords"><span>Lat — · Lon —</span></div>
+    <div class="drawbar" id="pg-drawbar" hidden><b>Dibujando polígono</b><span id="pg-n">0 vértices</span><button class="btn btn-s" id="pg-undo" type="button">Deshacer</button><button class="btn btn-p" id="pg-end" type="button">Terminar</button><button class="btn btn-s" id="pg-cancel" type="button">Cancelar</button></div>
+    <div class="busy" id="pg-busy" hidden><div class="busy-c"><b>Analizando el polígono</b><div class="bar"><i id="pg-bar"></i></div><p id="pg-paso">Leyendo los mapas de valores…</p></div></div>
     <button class="btn btn-s res-tab" id="pe-reopen" type="button" hidden>Resultados ‹</button>
   </section>
   <aside class="res closed" id="pe-res" aria-label="Resultados">
@@ -33,4 +44,4 @@
   </aside>
 </main>
 {% endblock %}
-{% block scripts %}<script src="{{ url_for('static', filename='js/plataforma_estatica.js') }}"></script>{% endblock %}
+{% block scripts %}<script src="{{ url_for('static', filename='js/red_conectividad.js') }}"></script><script src="{{ url_for('static', filename='js/analisis_poligono.js') }}"></script><script src="{{ url_for('static', filename='js/plataforma_estatica.js') }}"></script>{% endblock %}

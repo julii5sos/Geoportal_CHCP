@@ -38,7 +38,7 @@ from webapp.models import (  # noqa: E402
 from webapp.service import (  # noqa: E402
     _initialize_ee, resolve_area, run_ecological_evaluation, run_eri, run_integrated_evaluation, run_sinia_coverages,
 )
-from chcp.gee.mapas_ficha import CAPAS, calcular_riparia, generar_mapas, rios_principales, sitios_verificacion  # noqa: E402
+from chcp.gee.mapas_ficha import CAPAS, CODIFICACION_VALORES, calcular_riparia, generar_mapas, rios_principales, sitios_verificacion  # noqa: E402
 import ee  # noqa: E402
 
 from chcp.gee.gee_config import desactivar_teselas  # noqa: E402
@@ -215,7 +215,7 @@ def main() -> int:
     args = parser.parse_args()
 
     datos = {"metodologia": METODOLOGIA_VERSION, "version_datos": VERSION_DATOS, "proyecto": os.environ["GEE_PROJECT_ID"],
-             "umbral_conectividad_m": args.distancia, "capas_mapa": CAPAS, "territorios": {}, "errores": {}}
+             "umbral_conectividad_m": args.distancia, "capas_mapa": CAPAS, "codificacion_valores": CODIFICACION_VALORES, "territorios": {}, "errores": {}}
     if SALIDA.exists() and not args.rehacer:
         previo = json.loads(SALIDA.read_text(encoding="utf-8"))
         if previo.get("metodologia") == METODOLOGIA_VERSION and previo.get("version_datos") == VERSION_DATOS:
