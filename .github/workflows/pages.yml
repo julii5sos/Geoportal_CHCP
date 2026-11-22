@@ -7,6 +7,10 @@ name: Publicar sitio estático
 on:
   push:
     branches: [main]
+  workflow_run:
+    workflows: ["Actualizar datos con Earth Engine"]
+    types: [completed]
+    branches: [main]
   workflow_dispatch:
 
 permissions:
@@ -23,6 +27,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: main
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
