@@ -31,10 +31,16 @@ Vista previa local: `python scripts/construir_sitio_estatico.py` y luego
 
 Modo elegido: **público con enlace**. Hay dos opciones:
 
-| | A. Hugging Face Spaces (recomendada) | B. Google Cloud Run |
+> **Actualización 2026-11-22:** Hugging Face exige ahora una suscripción PRO para
+> Spaces Docker (error 402 «Payment Required»). La opción recomendada pasa a ser
+> **Google Cloud Run (B)**, que el proyecto ya tiene habilitada con facturación y cuya
+> capa gratuita mensual cubre un uso bajo. La opción A queda documentada por si se
+> dispone de una cuenta PRO.
+
+| | A. Hugging Face Spaces (requiere PRO) | B. Google Cloud Run (recomendada) |
 |---|---|---|
-| Costo | **Gratis**, sin tarjeta | Capa gratuita; requiere facturación activa |
-| Recursos | 2 vCPU, 16 GB RAM | 2 vCPU, 2 GB RAM, escala a cero |
+| Costo | Suscripción PRO | Capa gratuita mensual; requiere facturación activa |
+| Recursos | 2 vCPU, 16 GB RAM | 1 vCPU, 2 GB RAM, escala a cero |
 | Inactividad | Se duerme tras 48 h sin visitas; despierta en ~1 min | Arranca en segundos |
 | Credencial de Earth Engine | Clave JSON guardada como **secreto** del Space | Identidad de Cloud Run sin clave |
 | Comando | `python scripts/publicar_huggingface.py` | `deploy\publicar_cloud_run.ps1` |
@@ -108,7 +114,9 @@ Para publicar una versión nueva, repita el paso 3.
 ## Recomendado: alerta de presupuesto
 
 Consola de Google Cloud → Facturación → Presupuestos y alertas → crear un presupuesto
-para `geoportal-513817` (por ejemplo, 10 USD/mes) con avisos al 50 %, 90 % y 100 %.
+para `geoportal-513817` (por ejemplo, 1 USD/mes) con avisos al 50 %, 90 % y 100 %.
+Una alerta avisa, pero no detiene el servicio: si llega, retire el acceso público o
+el servicio con los comandos de «Ajustes».
 Cloud Run cobra por uso; con tráfico bajo suele quedar dentro de la capa gratuita.
 
 ## Si falla Earth Engine
