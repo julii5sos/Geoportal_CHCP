@@ -9,9 +9,9 @@ Ministerio de Ambiente, Dirección de Información Ambiental, abril de 2022.
    en la leyenda numerada oficial, pero su valor de píxel no se ha comprobado espacialmente
    (no aparecen en la cuenca). No se presentan como oficiales.
 2. Exactitud oficial (sección 10, Cuadros 3–5, pp. 57–61): matriz de confusión frente al
-   «Mapatón 2020» (9 800 muestras). Se guarda en data/validacion/exactitud_oficial_mcbyus2021.json
-   con exactitudes de usuario y de productor, y un resumen bosque / no bosque derivado de la
-   matriz (por conteos, sin ponderar por área).
+   «Mapatón 2020» (9 800 muestras). Se guarda solo como documentación de auditoría en
+   docs/auditoria/datos/C_exactitud_oficial_mcbyus2021.json: no se publica en el geoportal porque
+   no está confirmado que el asset sea la versión evaluada (hallazgo B5).
 3. Coberturas en la Cuenca del Canal (Cuadro N° 26, p. 85), para comparar con el asset.
 
 Idempotente: python scripts/aplicar_informe_mcbyus2021.py
@@ -24,7 +24,7 @@ from pathlib import Path
 
 RAIZ = Path(__file__).resolve().parents[1]
 LEYENDAS = RAIZ / "data" / "leyendas_sinia.json"
-EXACTITUD = RAIZ / "data" / "validacion" / "exactitud_oficial_mcbyus2021.json"
+EXACTITUD = RAIZ / "docs" / "auditoria" / "datos" / "C_exactitud_oficial_mcbyus2021.json"
 
 INFORME = ("MiAMBIENTE, Dirección de Información Ambiental (2022). Informe Final del Mapa de Cobertura "
            "Boscosa y Uso de Suelo 2021, de Panamá. Abril de 2022.")

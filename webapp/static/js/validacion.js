@@ -14,22 +14,6 @@
     conteos: [[66, 0, 5, 4], [0, 55, 8, 12], [1, 0, 153, 11], [2, 1, 9, 313]],
   };
 
-  // ------------------------------------------------------------ evaluación oficial (MiAMBIENTE)
-  function renderOficial(e) {
-    const b = e.bosque_y_otras_tierras_boscosas;
-    const filas = e.clases.slice().sort((x, y) => y.muestras_referencia - x.muestras_referencia);
-    $('#va-oficial').innerHTML = `
-      <p>El propio informe del mapa compara 9 800 muestras con el <b>Mapatón 2020</b>, la interpretación de imágenes de alta resolución del Inventario Nacional de Gases de Efecto Invernadero. Son cifras de todo el país, no de la cuenca, y no sustituyen la validación independiente de esta página.</p>
-      <div class="va-kpis"><div><span>Exactitud global (33 categorías agrupadas en 12)</span><b>${pct(e.exactitud_global, 1)}</b><small>kappa ${number(e.kappa, 3)}</small></div>
-        <div><span>Bosque y otras tierras boscosas frente al resto</span><b>${pct(b.exactitud_global, 1)}</b><small>usuario ${pct(b.exactitud_usuario_bosque)} · productor ${pct(b.exactitud_productor_bosque)}</small></div></div>
-      <table class="fi-table"><thead><tr><th>Clase del Mapatón</th><th>Exactitud de usuario<small>de cada 100 puntos del mapa, cuántos aciertan</small></th><th>Exactitud de productor<small>de cada 100 puntos de referencia, cuántos capta el mapa</small></th><th>Muestras</th></tr></thead><tbody>
-      ${filas.map((f) => `<tr><td>${esc(f.nombre)}</td><td>${pct(f.exactitud_usuario)}</td><td>${pct(f.exactitud_productor)}</td><td>${number(f.muestras_referencia, 0)}</td></tr>`).join('')}
-      </tbody></table>
-      <p class="rs-note"><b>Cómo leerlo:</b> el bosque maduro se cartografía bien (88 % de usuario). El bosque secundario (52 %) y el rastrojo (28 %) se confunden mucho entre sí y con el pasto, así que los límites entre esas clases son la parte menos confiable del mapa. Al agrupar en «bosque y otras tierras boscosas» frente al resto, que es la base de los parches de conectividad, el acuerdo sube a ${pct(b.exactitud_global, 1)}.</p>
-      <details class="rs-supuestos"><summary>Limitaciones de esta evaluación</summary><ul>${e.limitaciones.map((x) => `<li>${esc(x)}</li>`).join('')}<li>${esc(b.nota)}</li></ul><p class="rs-note">Fuente: ${esc(e.fuente)}</p></details>`;
-    $('#va-oficial-sec').hidden = false;
-  }
-
   async function obtener(ruta, tipo = 'json') {
     const r = await fetch(valFile(ruta));
     if (!r.ok) throw new Error(String(r.status));
@@ -173,7 +157,6 @@
 
   // ------------------------------------------------------------ inicio
   try { st.indice = await obtener('indice.json'); } catch (_) { st.indice = { mapas: [] }; }
-  obtener('exactitud_oficial_mcbyus2021.json').then(renderOficial).catch(() => {});
   if (!st.indice.mapas.length) {
     $('#va-mapa').innerHTML = '<option>Sin muestras generadas</option>';
     $('#va-diseno').innerHTML = '<p class="fi-pending">Todavía no se ha generado ninguna muestra de validación. En GitHub: <b>Actions → «Generar muestra de validación»</b> (elija «senal_perdida»). Tarda unos minutos y crea los puntos a interpretar.</p>';

@@ -9,6 +9,29 @@
   const mapFile = (id, file) => (window.CHCP_STATIC ? `datos/mapas/${encodeURIComponent(id)}/${file}` : `/api/v1/panel/maps/${encodeURIComponent(id)}/${file}`);
 
   const valFile = (ruta) => (window.CHCP_STATIC ? `datos/validacion/${ruta}` : `/api/v1/validacion/${ruta}`);
+  // ¿Hay una «Actualizar datos con Earth Engine» en curso? (API pública de GitHub, sin credenciales).
+  // `pendiente()` devuelve la frase para los textos de «se calculará…» según la respuesta.
+  const REPO_DATOS = 'julii5sos/Geoportal_CHCP';
+  let actualizacion = null, actualizacionPromesa = null;
+  function consultarActualizacion() {
+    if (actualizacionPromesa) return actualizacionPromesa;
+    const ctl = typeof AbortController !== 'undefined' ? new AbortController() : null;
+    const t = ctl ? setTimeout(() => ctl.abort(), 3000) : null;
+    actualizacionPromesa = fetch(`https://api.github.com/repos/${REPO_DATOS}/actions/workflows/actualizar-datos.yml/runs?status=in_progress&per_page=1`,
+      { headers: { Accept: 'application/vnd.github+json' }, signal: ctl?.signal })
+      .then((r) => (r.ok ? r.json() : null))
+      .then((j) => { const run = j?.workflow_runs?.[0]; actualizacion = run ? { desde: run.run_started_at, url: run.html_url } : null; return actualizacion; })
+      .catch(() => null)
+      .finally(() => t && clearTimeout(t));
+    return actualizacionPromesa;
+  }
+  function pendiente(prep = 'en') {
+    if (!actualizacion) return `${prep} la próxima actualización de datos con Earth Engine`;
+    const d = new Date(actualizacion.desde);
+    const hora = d.toLocaleTimeString('es-PA', { hour: '2-digit', minute: '2-digit' });
+    const dia = d.toDateString() === new Date().toDateString() ? 'hoy' : d.toLocaleDateString('es-PA', { day: 'numeric', month: 'short' });
+    return `${prep} la actualización de datos con Earth Engine que está en curso (iniciada ${dia} a las ${hora}); los resultados aparecerán al terminar`;
+  }
   const hidroFile = (archivo) => (window.CHCP_STATIC ? `datos/hidrografia/${archivo}` : `/api/v1/hidrografia/${archivo}`);
 
   // Procedencia visible de cada resultado (auditoría D): tipo A, B o C, fecha y versión.
@@ -89,6 +112,6 @@
     burger.setAttribute('aria-expanded', String(open));
   });
 
-  window.CHCP = {$, $$, escapeHtml, number, hectares, api, mapFile, valFile, hidroFile, procedencia, toast, readPortalState, writePortalState, normalizeSearch};
+  window.CHCP = {$, $$, escapeHtml, number, hectares, api, mapFile, valFile, hidroFile, consultarActualizacion, pendiente, procedencia, toast, readPortalState, writePortalState, normalizeSearch};
 })();
 

@@ -48,7 +48,7 @@
 El informe final del Mapa de Cobertura Boscosa y Uso de Suelo 2021 (sección 10, Cuadros N° 3–5) compara el mapa con 9 800 muestras del **Mapatón 2020**, la interpretación de imágenes de alta resolución del Inventario Nacional de Gases de Efecto Invernadero. La interpretaron tres especialistas que no participaron en el mapa.
 
 - **Matriz:** transcrita en `scripts/aplicar_informe_mcbyus2021.py`. Reproduce exactamente las cifras publicadas: exactitud global **70.3 %** y **kappa 0.615**.
-- **Datos para la interfaz:** `data/validacion/exactitud_oficial_mcbyus2021.json`, que se muestra en la página de Validación y en el simulador.
+- **Datos:** `docs/auditoria/datos/C_exactitud_oficial_mcbyus2021.json`. **No se publica en el geoportal** (decisión del 2026-11-23): no se puede confirmar que el asset del proyecto sea la versión evaluada en el informe (B.7), así que mostrar esa exactitud podría atribuirle al mapa en uso una cifra que no le corresponde.
 
 | Clase (Mapatón) | Exactitud de usuario | Exactitud de productor | Muestras de referencia |
 |---|---:|---:|---:|
@@ -84,4 +84,4 @@ El informe final del Mapa de Cobertura Boscosa y Uso de Suelo 2021 (sección 10,
 - **Escala nacional:** no hay cifras de la cuenca.
 - **Versión del mapa:** evalúa la versión del informe (abril de 2022). El asset del proyecto difiere de esa versión en la cuenca (B.7).
 
-Por eso se muestra como **evaluación oficial de referencia** y no como validación del geoportal (condiciones 3 y 6 de la auditoría).
+Por todo ello queda solo como referencia documental de la auditoría y no como validación del geoportal (condiciones 3 y 6). La exactitud del mapa en uso dependerá de la validación independiente de la sección 4.
