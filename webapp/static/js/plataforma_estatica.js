@@ -24,7 +24,7 @@
       { k: 'subcuencas', nombre: 'Límites de subcuencas', nota: '53 subcuencas del Canal de Panamá.', grupo: 'Territorio', disponible: true, color: '#0a4393' },
       { k: 'corredores', nombre: 'Corredores · Almanaque Azul', nota: 'Corredores de conectividad publicados, por categoría.', grupo: 'Territorio', disponible: true, color: '#9ccc65' },
       { k: 'puntos', nombre: 'Puntos críticos · Almanaque Azul', nota: 'Amenazas a la conectividad señaladas por el Almanaque Azul.', grupo: 'Territorio', disponible: true, color: '#f04438' },
-      { k: 'rios', nombre: 'Ríos principales', nota: 'HydroSHEDS, drenaje ≥ 10 km².', grupo: 'Territorio', disponible: !!conMapas()?.mapas?.rios, color: '#1f78b4' },
+      { k: 'rios', nombre: 'Ríos', nota: conMapas()?.mapas?.rios_fuente || 'HydroSHEDS, drenaje ≥ 10 km².', grupo: 'Territorio', disponible: !!conMapas()?.mapas?.rios, color: '#1f78b4' },
       { k: 'sitios', nombre: 'Sitios para verificación de campo', nota: 'Manchas con señales de pérdida, priorizadas por fuentes coincidentes.', grupo: 'Territorio', disponible: Object.values(st.data.territorios).some((x) => x?.sitios?.length), color: '#6a1b9a' },
       ...raster,
       { k: 'parches', nombre: 'Parches de bosque 2021 por importancia', nota: 'Bosque oficial SINIA 2021; color según su papel en la red.', grupo: 'Fragmentación y conectividad', disponible: st.id !== 'chcp' && !!st.geo, color: '#1b5e20' },

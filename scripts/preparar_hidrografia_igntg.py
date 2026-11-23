@@ -5,9 +5,14 @@ topográficos 1:25 000), en EPSG:32617. Por ejemplo:
     Redhidrologica_2022.shp   ríos principales (STR_ORDER 1)
     Redhidrologica2_2022.shp  red secundaria de ríos y quebradas (STR_ORDER 2)
 
-Salida (no se publica el vector original, solo el derivado):
-    data/hidrografia/riparia_igntg.v.png   distancia al cauce por clases, malla EPSG:3857
-    data/hidrografia/riparia_igntg.json    malla, clases, fuente y longitudes por tipo
+Salida:
+    data/hidrografia/riparia_igntg.v.png      distancia al cauce por clases, malla EPSG:3857
+    data/hidrografia/riparia_igntg.json       malla, clases, fuente y longitudes por tipo
+    data/hidrografia/rios_igntg_chcp.geojson  cauces recortados a la cuenca + 2 km (WGS 84),
+                                              simplificados a 5 m, con nombre y tipo
+
+La red del IGNTG es de acceso abierto (confirmado por el equipo del proyecto); se cita al
+IGNTG como productor.
 
 Clases de la banda ribereña (por lado del cauce), con celdas de 20 m:
     1 cauce: celda atravesada por la línea (≈ ±10 m, el mínimo legal de la franja protectora
@@ -74,6 +79,8 @@ def main(argv=None) -> int:
     ancho, alto = math.ceil((x1 - x0) / paso), math.ceil((y1 - y0) / paso)
     x1, y0 = x0 + ancho * paso, y1 - alto * paso
 
+    a_wgs_xy = Transformer.from_crs(32617, 4326, always_xy=True).transform
+    rios = []
     lienzo = Image.new("1", (ancho, alto), 0)
     dibujo = ImageDraw.Draw(lienzo)
     km = {}
@@ -90,6 +97,19 @@ def main(argv=None) -> int:
                 continue
             dentro = geom.intersection(zona)
             tipo = registro.record["TYPE"] or "Sin tipo"
+            atributos = registro.record.as_dict()
+            visible = dentro.simplify(5, preserve_topology=False)
+            if not visible.is_empty:
+                geo = transform(a_wgs_xy, visible).__geo_interface__
+                redondear = lambda c: [round(c[0], 6), round(c[1], 6)] if isinstance(c[0], float) else [redondear(x) for x in c]  # noqa: E731
+                rios.append({"type": "Feature", "properties": {
+                    "nombre": atributos.get("NAME") or None,
+                    "nombre_alt": atributos.get("ALT_NAME") or None,
+                    "tipo": tipo,
+                    "tributario_de": atributos.get("TRIBUTARY") or None,
+                    "red": "principal" if str(atributos.get("STR_ORDER")) == "1" else "secundaria",
+                    "longitud_km": round(dentro.length / 1000, 3),
+                }, "geometry": {"type": geo["type"], "coordinates": redondear(list(map(list, geo["coordinates"])) if geo["type"] == "LineString" else [list(map(list, l)) for l in geo["coordinates"]])}})
             km[tipo] = km.get(tipo, 0.0) + geom.intersection(cuenca).length / 1000
             n += 1
             partes = getattr(dentro, "geoms", [dentro])
@@ -128,7 +148,8 @@ def main(argv=None) -> int:
         "derechos": "Instituto Geográfico Nacional Tommy Guardia.",
         "capas": capas,
         "procesado": date.today().isoformat(),
-        "nota": "Producto derivado: distancia al cauce por clases. No se redistribuye el vector original.",
+        "nota": "Banda ribereña derivada (distancia al cauce por clases) y cauces recortados a la cuenca + 2 km. "
+                "Fuente de acceso abierto según el equipo del proyecto; cite al IGNTG.",
         "referencia_legal": "Ley 1 de 1994 (Ley Forestal), art. 23: franja protectora a cada lado de ríos y "
                             "quebradas igual o mayor al ancho del cauce y nunca menor de 10 m.",
         "crs": "EPSG:3857",
@@ -141,6 +162,10 @@ def main(argv=None) -> int:
         "km_en_cuenca_por_tipo": {k: round(v, 1) for k, v in sorted(km.items())},
         "superficie_banda_acumulada_ha": banda,
     }
+    (DESTINO / "rios_igntg_chcp.geojson").write_text(json.dumps(
+        {"type": "FeatureCollection", "fuente": meta["fuente"], "features": rios},
+        ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
+    meta["tramos_publicados"] = len(rios)
     (DESTINO / "riparia_igntg.json").write_text(json.dumps(meta, ensure_ascii=False, indent=1), encoding="utf-8")
     print(json.dumps({k: meta[k] for k in ("dimensiones", "km_en_cuenca_por_tipo", "superficie_banda_acumulada_ha")},
                      ensure_ascii=False), file=sys.stderr)

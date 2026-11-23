@@ -336,6 +336,12 @@ def submallas(grid: dict[str, Any], partes: int) -> list[tuple[int, int, dict[st
     return bloques
 
 
+def _reintentable(exc: Exception) -> bool:
+    """Errores de Earth Engine que se resuelven pidiendo la malla en mosaicos más pequeños."""
+    texto = str(exc).lower()
+    return "too large" in texto or "memory limit" in texto or "computation timed out" in texto
+
+
 def descargar_valores(imagen, geometria, malla: dict[str, Any], ee, partes: int = 1):
     """Matriz float de la capa en la malla (fuera del territorio = SIN_DATO).
 
@@ -350,7 +356,7 @@ def descargar_valores(imagen, geometria, malla: dict[str, Any], ee, partes: int 
         try:
             return ee.data.computePixels({"expression": expresion, "fileFormat": "NUMPY_NDARRAY", "grid": grid})["v"]
         except Exception as exc:  # noqa: BLE001
-            if "too large" not in str(exc).lower():
+            if not _reintentable(exc):
                 raise
             return descargar_valores(imagen, geometria, malla, ee, partes=3)
     salida = np.full((grid["dimensions"]["height"], grid["dimensions"]["width"]), SIN_DATO, dtype="float64")
@@ -358,7 +364,7 @@ def descargar_valores(imagen, geometria, malla: dict[str, Any], ee, partes: int 
         try:
             bloque = ee.data.computePixels({"expression": expresion, "fileFormat": "NUMPY_NDARRAY", "grid": sub})["v"]
         except Exception as exc:  # noqa: BLE001
-            if "too large" not in str(exc).lower() or partes >= 9:
+            if not _reintentable(exc) or partes >= 9:
                 raise
             bloque = descargar_valores(imagen, geometria, {"grid": sub}, ee, partes=3)
         salida[fila:fila + bloque.shape[0], col:col + bloque.shape[1]] = bloque

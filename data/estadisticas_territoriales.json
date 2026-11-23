@@ -708,7 +708,8 @@
      "eri": "EEException: User memory limit exceeded.",
      "aux": "EEException: User memory limit exceeded."
     },
-    "rios": 472
+    "rios": 749,
+    "rios_fuente": "IGNTG 2022 · hidrografía 1:25 000"
    },
    "riparia": {
     "longitud_cauces_km": 1969.6,
@@ -2315,7 +2316,8 @@
      "aux"
     ],
     "errores": {},
-    "rios": 14
+    "rios": 30,
+    "rios_fuente": "IGNTG 2022 · hidrografía 1:25 000"
    },
    "sitios": [
     {
@@ -3460,7 +3462,8 @@
      "aux"
     ],
     "errores": {},
-    "rios": 3
+    "rios": 3,
+    "rios_fuente": "HydroSHEDS · drenaje ≥ 10 km²"
    },
    "sitios": [
     {
@@ -4105,7 +4108,8 @@
      "aux"
     ],
     "errores": {},
-    "rios": 6
+    "rios": 3,
+    "rios_fuente": "IGNTG 2022 · hidrografía 1:25 000"
    },
    "sitios": [
     {
@@ -4763,7 +4767,8 @@
      "aux"
     ],
     "errores": {},
-    "rios": 0
+    "rios": 0,
+    "rios_fuente": "HydroSHEDS · drenaje ≥ 10 km²"
    },
    "sitios": [
     {
@@ -5366,7 +5371,8 @@
      "aux"
     ],
     "errores": {},
-    "rios": 1
+    "rios": 1,
+    "rios_fuente": "HydroSHEDS · drenaje ≥ 10 km²"
    },
    "sitios": [
     {
@@ -6012,7 +6018,8 @@
      "aux"
     ],
     "errores": {},
-    "rios": 2
+    "rios": 3,
+    "rios_fuente": "IGNTG 2022 · hidrografía 1:25 000"
    },
    "sitios": [
     {
@@ -7138,7 +7145,8 @@
     "errores": {
      "eri": "EEException: Computation timed out."
     },
-    "rios": 4
+    "rios": 6,
+    "rios_fuente": "IGNTG 2022 · hidrografía 1:25 000"
    },
    "sitios": [
     {
@@ -7770,7 +7778,8 @@
      "aux"
     ],
     "errores": {},
-    "rios": 3
+    "rios": 1,
+    "rios_fuente": "IGNTG 2022 · hidrografía 1:25 000"
    },
    "sitios": [
     {
@@ -8407,7 +8416,8 @@
     "errores": {
      "eri": "EEException: Computation timed out."
     },
-    "rios": 9
+    "rios": 8,
+    "rios_fuente": "IGNTG 2022 · hidrografía 1:25 000"
    },
    "sitios": [
     {
@@ -9045,7 +9055,8 @@
     "errores": {
      "eri": "EEException: Computation timed out."
     },
-    "rios": 8
+    "rios": 17,
+    "rios_fuente": "IGNTG 2022 · hidrografía 1:25 000"
    },
    "sitios": [
     {
@@ -9678,7 +9689,8 @@
     "errores": {
      "eri": "EEException: Computation timed out."
     },
-    "rios": 5
+    "rios": 12,
+    "rios_fuente": "IGNTG 2022 · hidrografía 1:25 000"
    },
    "sitios": [
     {
@@ -10238,7 +10250,8 @@
      "aux"
     ],
     "errores": {},
-    "rios": 2
+    "rios": 2,
+    "rios_fuente": "HydroSHEDS · drenaje ≥ 10 km²"
    },
    "sitios": [
     {
@@ -10875,7 +10888,8 @@
      "aux"
     ],
     "errores": {},
-    "rios": 19
+    "rios": 38,
+    "rios_fuente": "IGNTG 2022 · hidrografía 1:25 000"
    },
    "sitios": [
     {
@@ -11434,7 +11448,8 @@
      "aux"
     ],
     "errores": {},
-    "rios": 4
+    "rios": 6,
+    "rios_fuente": "IGNTG 2022 · hidrografía 1:25 000"
    },
    "sitios": [
     {
@@ -11979,7 +11994,8 @@
      "aux"
     ],
     "errores": {},
-    "rios": 1
+    "rios": 2,
+    "rios_fuente": "IGNTG 2022 · hidrografía 1:25 000"
    },
    "sitios": [
     {
@@ -12612,7 +12628,8 @@
      "aux"
     ],
     "errores": {},
-    "rios": 1
+    "rios": 5,
+    "rios_fuente": "IGNTG 2022 · hidrografía 1:25 000"
    },
    "sitios": [
     {
@@ -13239,7 +13256,8 @@
     "errores": {
      "eri": "EEException: Computation timed out."
     },
-    "rios": 9
+    "rios": 13,
+    "rios_fuente": "IGNTG 2022 · hidrografía 1:25 000"
    },
    "sitios": [
     {
@@ -13876,7 +13894,8 @@
      "aux"
     ],
     "errores": {},
-    "rios": 47
+    "rios": 146,
+    "rios_fuente": "IGNTG 2022 · hidrografía 1:25 000"
    },
    "sitios": [
     {
@@ -14422,7 +14441,8 @@
     "errores": {
      "eri": "EEException: Computation timed out."
     },
-    "rios": 5
+    "rios": 6,
+    "rios_fuente": "IGNTG 2022 · hidrografía 1:25 000"
    },
    "sitios": [
     {
@@ -15060,7 +15080,8 @@
     "errores": {
      "eri": "EEException: Computation timed out."
     },
-    "rios": 9
+    "rios": 11,
+    "rios_fuente": "IGNTG 2022 · hidrografía 1:25 000"
    },
    "sitios": [
     {
@@ -15703,7 +15724,8 @@
      "aux"
     ],
     "errores": {},
-    "rios": 10
+    "rios": 4,
+    "rios_fuente": "IGNTG 2022 · hidrografía 1:25 000"
    },
    "sitios": [
     {

@@ -49,7 +49,24 @@ class HidrografiaIgntgTests(unittest.TestCase):
             self.assertGreater(hist[1], 150)
             self.assertTrue(hist[3] > 0 and hist[4] > 0 and hist[5] > hist[3])
             self.assertIn("Tommy Guardia", meta["fuente"])
-            self.assertNotIn("geometry", json.dumps(meta))
+            rios = json.loads((h.DESTINO / "rios_igntg_chcp.geojson").read_text())
+            self.assertEqual(len(rios["features"]), 1)
+            self.assertEqual(rios["features"][0]["properties"]["nombre"], "Río de prueba")
+            self.assertAlmostEqual(rios["features"][0]["properties"]["longitud_km"], 4.0, delta=0.05)
+
+
+class RiosTerritorioTests(unittest.TestCase):
+    def test_recorte_a_una_subcuenca(self):
+        from chcp.territorio import hidrografia
+        from chcp.territorio.territorio_local import coleccion_subcuencas
+
+        if not hidrografia.disponible():
+            self.skipTest("sin red del IGNTG")
+        sub = next(f for f in coleccion_subcuencas()["features"] if f["properties"]["id"] == "s1")
+        r = hidrografia.rios_igntg(sub)
+        self.assertGreater(len(r["features"]), 10)
+        self.assertEqual(r["fuente"], hidrografia.FUENTE_RIOS)
+        self.assertTrue(any(f["properties"]["nombre"] == "Río Chagres" for f in r["features"]))
 
 
 class RutaHidrografiaTests(unittest.TestCase):

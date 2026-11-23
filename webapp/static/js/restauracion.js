@@ -107,6 +107,8 @@
       g.eachLayer((l) => { l.bindTooltip(`Enlace propuesto (franja hipotética) de ${number(x.d, 0)} m × ${x.ancho} m (${hectares(x.d * x.ancho / 10_000, 2)} hipotéticas), efectividad supuesta ${number(efectividad(x.ancho) * 100, 0)} %. Clic para quitar.`); l.on('click', () => agregar(x)); });
       return g;
     })).addTo(map);
+    // Los ríos van sobre los parches (se ven dentro del bosque) y bajo brechas y enlaces.
+    if (st.capaRios) { st.capaRios.bringToFront(); st.capas.candidatos?.eachLayer?.((g) => g.eachLayer?.((l) => l.bringToFront?.())); st.capas.restaurado?.eachLayer?.((g) => g.eachLayer?.((l) => l.bringToFront?.())); }
   }
   function clicParche(id) {
     if (st.rutas.activo) { rutasDesde(id); return; }
@@ -577,7 +579,7 @@
     $('#rs-unir').disabled = false; $('#rs-rutas-btn').disabled = false;
     try { st.rios = await (await fetch(mapFile(id, 'rios.json'))).json(); } catch (_) { st.rios = null; }
     if (st.capaRios) st.map.removeLayer(st.capaRios);
-    st.capaRios = st.rios ? L.geoJSON(st.rios, { style: { color: '#1f78b4', weight: 2, opacity: 0.9 }, interactive: false }).addTo(st.map) : null;
+    st.capaRios = st.rios ? L.geoJSON(st.rios, { style: { color: '#1f78b4', weight: 2, opacity: 0.9 }, onEachFeature: (f, l) => l.bindTooltip(esc(((f) => [f.properties.nombre || `${f.properties.tipo || 'Cauce'} sin nombre en la cartografía`, f.properties.nombre_alt && `(${f.properties.nombre_alt})`, f.properties.tributario_de && `· afluente del ${f.properties.tributario_de}`].filter(Boolean).join(' '))(f)), { sticky: true }) }).addTo(st.map) : null;
     const red = st.geo.red;
     st.umbral = st.umbral || red.umbral_m || st.data.umbral_conectividad_m || 500;
     st.ampliada = red.version >= 2 && Array.isArray(red.nodos) && Array.isArray(red.aristas_ampliadas);
@@ -670,7 +672,7 @@
     </ul></div>
     <div class="rs-lg-grupo"><h3>Referencia</h3><ul>
       ${item(sim('<line x1="3" y1="8" x2="31" y2="8" stroke="#fff" stroke-width="3"/>', '#5b6b5e'), 'Límite de la subcuenca', '')}
-      ${item(sim('<path d="M3 11 C10 3, 18 13, 31 5" fill="none" stroke="#1f78b4" stroke-width="2.4"/>'), 'Ríos principales', '')}
+      ${item(sim('<path d="M3 11 C10 3, 18 13, 31 5" fill="none" stroke="#1f78b4" stroke-width="2.4"/>'), 'Ríos', 'IGNTG 2022 (1:25 000); HydroSHEDS donde el IGNTG no tiene cauces')}
       ${item(sim('<rect x="3" y="2" width="28" height="12" rx="2" fill="#ce93d8" fill-opacity="0.45" stroke="#4a148c" stroke-width="1.4"/>'), 'Corredor Biológico Mesoamericano', 'tramos dentro y cerca de la cuenca')}
       ${item(`<svg class="rs-sym" viewBox="0 0 34 16" aria-hidden="true">${['Alta', 'Mediana', 'Media-baja'].map((k, n) => `<rect x="${2 + n * 11}" y="2" width="9" height="12" rx="1.5" fill="${colorCorr[k]}" fill-opacity="0.3" stroke="${colorCorr[k]}" stroke-width="1.2"/>`).join('')}</svg>`, 'Corredores (Almanaque Azul)', 'conectividad alta · mediana · media-baja')}
     </ul></div>`;

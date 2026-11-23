@@ -12,7 +12,7 @@
   }
  ],
  "procesado": "2026-11-23",
- "nota": "Producto derivado: distancia al cauce por clases. No se redistribuye el vector original.",
+ "nota": "Banda ribereña derivada (distancia al cauce por clases) y cauces recortados a la cuenca + 2 km. Fuente de acceso abierto según el equipo del proyecto; cite al IGNTG.",
  "referencia_legal": "Ley 1 de 1994 (Ley Forestal), art. 23: franja protectora a cada lado de ríos y quebradas igual o mayor al ancho del cauce y nunca menor de 10 m.",
  "crs": "EPSG:3857",
  "limites": [
@@ -63,5 +63,6 @@
   "Franja de 30 m": 21653.9,
   "Franja de 50 m": 32795.4,
   "Franja de 100 m": 65318.1
- }
+ },
+ "tramos_publicados": 950
 }

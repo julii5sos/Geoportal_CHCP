@@ -135,6 +135,31 @@ class BloquesTests(unittest.TestCase):
         self.assertEqual(v.shape, (malla["grid"]["dimensions"]["height"], malla["grid"]["dimensions"]["width"]))
         self.assertTrue((v == 1).all())
 
+    def test_reintenta_en_mosaicos_si_se_agota_la_memoria(self):
+        import numpy as np
+
+        import chcp.gee.mapas_ficha as mf
+
+        class Img:
+            def toFloat(self): return self
+            def clip(self, g): return self
+            def unmask(self, v): return self
+            def rename(self, n): return self
+
+        class Datos:
+            def computePixels(self, req):
+                d = req["grid"]["dimensions"]
+                if d["width"] > 400:
+                    raise Exception("User memory limit exceeded.")
+                return {"v": np.full((d["height"], d["width"]), 2.0)}
+
+        class EE:
+            data = Datos()
+        malla = mf.malla_mercator(CUADRADO)
+        v = mf.descargar_valores(Img(), None, malla, EE)
+        self.assertTrue((v == 2).all())
+        self.assertFalse(mf._reintentable(Exception("Image.select: band not found")))
+
 
 class GenerarMapasTests(unittest.TestCase):
     def test_genera_todas_las_capas_en_paralelo_y_aisla_errores(self):
