@@ -174,6 +174,17 @@ def _compactar(territorio: dict, evaluacion: dict, estructura: dict | None, corr
     }
 
 
+def _rios_territorio(geometria, *, ee_module=None):
+    """Ríos del IGNTG recortados al territorio; HydroSHEDS solo si el IGNTG no tiene cauces allí."""
+    from chcp.territorio import hidrografia
+
+    if hidrografia.disponible():
+        rios = hidrografia.rios_igntg(geometria)
+        if rios["features"]:
+            return rios, hidrografia.FUENTE_RIOS
+    return rios_principales(geometria, ee_module=ee_module or ee), "HydroSHEDS · drenaje ≥ 10 km²"
+
+
 def _mapas_y_riparia(territorio: dict, registro: dict) -> None:
     """Mapas temáticos PNG, ríos principales y franjas riparias (complementarios)."""
     geometria, _ = resolve_area(AreaSelection(**territorio["area"]))
@@ -182,12 +193,13 @@ def _mapas_y_riparia(territorio: dict, registro: dict) -> None:
     registro["mapas"] = generar_mapas(geometria, destino, ee_module=ee,
                                       max_pixeles=MAX_PIXELES_CUENCA if territorio["id"] == "chcp" else MAX_PIXELES_LADO)
     try:
-        rios = rios_principales(geometria, ee_module=ee)
+        rios, fuente = _rios_territorio(geometria)
         (destino / "rios.json").write_text(json.dumps(
-            {"type": "FeatureCollection", "features": [
+            {"type": "FeatureCollection", "fuente": fuente, "features": [
                 {**f, "geometry": {"type": f["geometry"]["type"], "coordinates": _redondear(f["geometry"]["coordinates"])}}
                 for f in rios["features"]]}, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
         registro["mapas"]["rios"] = len(rios["features"])
+        registro["mapas"]["rios_fuente"] = fuente
     except Exception as exc:
         registro["mapas"]["rios"] = None
         print(f"    ríos: {exc}")

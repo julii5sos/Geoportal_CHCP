@@ -9,6 +9,7 @@
   const mapFile = (id, file) => (window.CHCP_STATIC ? `datos/mapas/${encodeURIComponent(id)}/${file}` : `/api/v1/panel/maps/${encodeURIComponent(id)}/${file}`);
 
   const valFile = (ruta) => (window.CHCP_STATIC ? `datos/validacion/${ruta}` : `/api/v1/validacion/${ruta}`);
+  const hidroFile = (archivo) => (window.CHCP_STATIC ? `datos/hidrografia/${archivo}` : `/api/v1/hidrografia/${archivo}`);
 
   // Procedencia visible de cada resultado (auditoría D): tipo A, B o C, fecha y versión.
   const TIPOS_PROCESAMIENTO = { A: 'Calculado con Earth Engine en este momento', B: 'Precalculado con Earth Engine', C: 'Estimación local en su navegador (derivada de resultados precalculados)' };
@@ -88,6 +89,6 @@
     burger.setAttribute('aria-expanded', String(open));
   });
 
-  window.CHCP = {$, $$, escapeHtml, number, hectares, api, mapFile, valFile, procedencia, toast, readPortalState, writePortalState, normalizeSearch};
+  window.CHCP = {$, $$, escapeHtml, number, hectares, api, mapFile, valFile, hidroFile, procedencia, toast, readPortalState, writePortalState, normalizeSearch};
 })();
 

@@ -102,9 +102,12 @@ CODIFICACION_VALORES: dict[str, dict[str, Any]] = {
     # bits: 1 línea base arbórea Hansen 2020 · 2 NDVI válido · 4 descenso fuerte de NDVI · 8 GEDI válido
     # Clase original de ESRI 10 m 2024 (7 = área construida); la usan las rutas al corredor.
     "esri_2024": {"tipo": "categorias"},
+    # Código original del raster SINIA 2021 detallado (cobertura y uso del suelo, 10 m). La
+    # correspondencia código → categoría se lee de data/leyendas_sinia.json (solo verificadas).
+    "sinia_2021_detalle": {"tipo": "categorias"},
     "aux": {"tipo": "bits", "bits": {"linea_base": 1, "ndvi_valido": 2, "ndvi_descenso": 4, "gedi_valido": 8}},
 }
-CAPAS_SOLO_VALOR = ("gedi", "aux", "esri_2024")
+CAPAS_SOLO_VALOR = ("gedi", "aux", "esri_2024", "sinia_2021_detalle")
 
 
 # ---------------------------------------------------------------------------
@@ -156,6 +159,12 @@ def _imagen_capa(clave: str, geometria, ee):
         fin, _ = _estado_y_mascara_valida_ee("esri_lulc", PERIODOS_ANALISIS["esri_final"], geometria, ee_module=ee)
         post, _, _ = _hansen(geometria, ee)
         return _coincidence(jrc, post, ini, fin, geometria, ee).selfMask()
+    if clave == "sinia_2021_detalle":
+        from chcp.catalogos.catalogo_assets_sinia import ASSETS_SINIA
+
+        ficha = ASSETS_SINIA["2021_detallado"]
+        codigo = ee.Image(ficha["asset_id"]).select([0])
+        return codigo.updateMask(codigo.neq(int(ficha.get("nodata") or 255)))
     if clave == "esri_2024":
         fin, valida = _estado_y_mascara_valida_ee("esri_lulc", PERIODOS_ANALISIS["esri_final"], geometria, ee_module=ee)
         return fin.updateMask(valida)
@@ -327,6 +336,12 @@ def submallas(grid: dict[str, Any], partes: int) -> list[tuple[int, int, dict[st
     return bloques
 
 
+def _reintentable(exc: Exception) -> bool:
+    """Errores de Earth Engine que se resuelven pidiendo la malla en mosaicos más pequeños."""
+    texto = str(exc).lower()
+    return "too large" in texto or "memory limit" in texto or "computation timed out" in texto
+
+
 def descargar_valores(imagen, geometria, malla: dict[str, Any], ee, partes: int = 1):
     """Matriz float de la capa en la malla (fuera del territorio = SIN_DATO).
 
@@ -341,7 +356,7 @@ def descargar_valores(imagen, geometria, malla: dict[str, Any], ee, partes: int 
         try:
             return ee.data.computePixels({"expression": expresion, "fileFormat": "NUMPY_NDARRAY", "grid": grid})["v"]
         except Exception as exc:  # noqa: BLE001
-            if "too large" not in str(exc).lower():
+            if not _reintentable(exc):
                 raise
             return descargar_valores(imagen, geometria, malla, ee, partes=3)
     salida = np.full((grid["dimensions"]["height"], grid["dimensions"]["width"]), SIN_DATO, dtype="float64")
@@ -349,7 +364,7 @@ def descargar_valores(imagen, geometria, malla: dict[str, Any], ee, partes: int 
         try:
             bloque = ee.data.computePixels({"expression": expresion, "fileFormat": "NUMPY_NDARRAY", "grid": sub})["v"]
         except Exception as exc:  # noqa: BLE001
-            if "too large" not in str(exc).lower() or partes >= 9:
+            if not _reintentable(exc) or partes >= 9:
                 raise
             bloque = descargar_valores(imagen, geometria, {"grid": sub}, ee, partes=3)
         salida[fila:fila + bloque.shape[0], col:col + bloque.shape[1]] = bloque

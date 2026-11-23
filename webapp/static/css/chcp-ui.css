@@ -599,3 +599,15 @@ html.app #main-content:has(.pg) { overflow-y:auto; background:#f3f6fa; }
 .rs-plan-l small { display:block; color:var(--muted); }
 .rs-table td small { display:block; font-size:11px; color:var(--muted); }
 .rs-prior .rs-rangos span { color:var(--muted); font-weight:500; font-size:11px; }
+.rs-capas { display:flex; flex-wrap:wrap; gap:6px 18px; align-items:center; background:#fff; border:1px solid var(--line); border-radius:12px; padding:10px 16px; margin:10px 0 0; }
+.rs-capas-t { font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); font-weight:700; }
+.rs-capas .rs-check { margin:0; }
+#rs-rib-nota:empty, #rs-cob-leyenda:empty { display:none; }
+#rs-cob-leyenda { flex-basis:100%; }
+.rs-cob-l { list-style:none; margin:4px 0; padding:0; display:grid; grid-template-columns:repeat(auto-fill, minmax(230px, 1fr)); gap:3px 14px; font-size:12px; }
+.rs-cob-l li { display:flex; align-items:center; gap:6px; }
+.rs-cob-l i { width:14px; height:14px; border-radius:3px; border:1px solid rgba(0,0,0,.25); flex:0 0 14px; }
+.rs-cob-l small { margin-left:auto; color:var(--muted); }
+.rs-corta { display:block; font-size:11.5px; color:#6d4c41; margin-top:2px; font-weight:500; }
+.rs-rutas-t tr.rs-sub td { font-size:12px; color:#4e342e; padding-top:0; border-top:0; }
+.rs-rutas-t tr.rs-sub.on td { background:#f6effa; }

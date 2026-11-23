@@ -76,7 +76,7 @@ decisión explícita del equipo.
 ## Mapas de la ficha, análisis ripario y simulador de restauración (2026-11-22)
 
 - **Mapas temáticos.** Ocho capas por territorio (SINIA 2021, JRC TMF 2025, Hansen 2021–2025, cambio ESRI 2017→2024, cambio NDVI 2020→2025, ERI, señales coincidentes y franja riparia) se piden a Earth Engine con `computePixels` en una malla Web Mercator (≤ 900 px por lado, ≥ 10 m) y se colorean con leyendas fijas en `chcp/gee/mapas_ficha.py`. Son ilustraciones: las superficies siguen calculándose a la resolución nativa de cada fuente.
-- **Red hídrica.** Se reutiliza la misma definición del ERI: cauces MERIT Hydro con área de drenaje ≥ 1 km². La distancia al cauce se interpola (bilineal) desde la malla de 90 m, por lo que las franjas de 30, 50 y 100 m son indicativas. Los ríos dibujados son HydroSHEDS (drenaje ≥ 10 km²). Si se dispone de hidrografía local (IGNTG, ACP), debe sustituir a MERIT mediante un asset del proyecto.
+- **Red hídrica.** Se reutiliza la misma definición del ERI: cauces MERIT Hydro con área de drenaje ≥ 1 km². La distancia al cauce se interpola (bilineal) desde la malla de 90 m, por lo que las franjas de 30, 50 y 100 m son indicativas. Desde 2026-11-23 los ríos dibujados son los del IGNTG (ver «Hidrografía oficial»). Para que el análisis ripario use también el IGNTG, la red debe subirse como asset del proyecto.
 - **Bosque ripario.** SINIA 2021 (oficial, la misma base de la conectividad) y árboles ESRI 2024 como segunda fuente. Las orillas sin bosque se describen por clases de pendiente (0–15 %, 15–30 %, ≥ 30 %, Copernicus DEM 30 m); no es un modelo de erosión ni de caudal.
 - **Simulador de restauración.** Recalcula en el navegador componentes, parches aislados y el IIC binario (misma fórmula que `metricas_paisaje.py`, verificada en `tests/test_red_conectividad_js.py`). Una franja restaurada se modela como un enlace nuevo; su superficie no se suma al hábitat (resultado conservador). Las brechas candidatas combinan las del motor y el enlace más corto entre cada par de redes (≤ max(4 × umbral, 2 km)), medido entre vértices. La priorización ordena por ganancia de IIC por hectárea con el ancho elegido (30/60/100 m). Es un resultado estructural: no considera resistencia del paisaje, tenencia ni costos.
 
@@ -151,3 +151,51 @@ Detalle y estado en `docs/auditoria/E_COHERENCIA_ECOLOGICA.md` (tabla de limitac
   - el enlace más corto entre las redes que se forman con 250 m, que con umbrales mayores acortan caminos.
   - Al menos un extremo debe estar en la subcuenca.
 - **Plan voraz:** hasta 8 pasos; en cada uno se elige la mayor ganancia × efectividad / ha sobre la red ya modificada. No garantiza el óptimo combinatorio.
+
+## Hidrografía oficial y cobertura detallada en las rutas al corredor (2026-11-23)
+
+### Red hidrográfica del IGNTG
+
+- **Fuente:** Instituto Geográfico Nacional Tommy Guardia, «Hidrografía y drenajes» 2022, de los mapas topográficos 1:25 000 (EPSG:32617). Se usaron dos capas:
+  - `Redhidrologica_2022`: 52 ríos principales en todo el país, 7 en la cuenca.
+  - `Redhidrologica2_2022`: 18 405 tramos de ríos y quebradas, 861 en la cuenca.
+
+  En total, unos 2 570 km de cauces dentro de la CHCP.
+- **Producto derivado:** `scripts/preparar_hidrografia_igntg.py` genera `data/hidrografia/riparia_igntg.v.png` y su `.json`. Es una malla EPSG:3857 de 20 m sobre la cuenca más 2 km, con la distancia al cauce por clases:
+  - 1 = cauce (≈ ±10 m);
+  - 3 = ≤ 30 m;
+  - 4 = ≤ 50 m;
+  - 5 = ≤ 100 m.
+
+  También genera `data/hidrografia/rios_igntg_chcp.geojson`: los cauces recortados a la cuenca + 2 km, simplificados a 5 m, con nombre, nombre alternativo, tipo, afluente de y red (principal o secundaria). La red del IGNTG es de **acceso abierto** (confirmado por el equipo del proyecto, 2026-11-23); se cita al IGNTG como productor.
+- **Ríos dibujados:** `rios.json` de cada territorio se recorta localmente de esa red (`chcp/territorio/hidrografia.py`, sin Earth Engine) y sustituye a HydroSHEDS. Solo se recurre a HydroSHEDS en las subcuencas donde el IGNTG no cartografía cauces (5 de las 25 con mapas en esta versión). La fuente queda en `mapas.rios_fuente`.
+- **Uso:** la franja ribereña de las rutas es de **≤ 50 m** a cada lado del cauce. La Ley 1 de 1994 (Ley Forestal), art. 23, protege a cada lado de ríos y quebradas una franja igual o mayor al ancho del cauce y nunca menor de 10 m. La banda de 50 m es mayor que ese mínimo legal porque la malla de rutas tiene celdas de 40 a 80 m, y coincide con una de las bandas del análisis ripario del geoportal.
+- **Remuestreo:** a la malla de la cuenca se pasa con el mínimo de 2 × 2 submuestras, para no perder cauces estrechos. En la reducción de la malla de rutas, una celda es ribereña si al menos el 25 % de sus subceldas lo son.
+- **Pendiente:** el análisis ripario de la ficha (ERI) sigue con MERIT Hydro. Pasarlo al IGNTG exige subir la red como asset de Earth Engine.
+
+### Cobertura y uso del suelo 2021 detallada (SINIA–MiAMBIENTE)
+
+- **Nueva capa de valores** `sinia_2021_detalle` en los mapas precalculados, tomada del raster `SINIA_2021_USO_SUELO_RASTER10M`. La correspondencia código → categoría se lee de `data/leyendas_sinia.json`: los 18 códigos presentes en la CHCP están verificados espacialmente. Un código no verificado se muestra como «Código N (sin verificar)».
+- **Composición de lo que corta un corredor:**
+  - en cada brecha se muestrea la línea sobre la malla completa;
+  - en cada ruta se recorren sus celdas.
+
+  En ambos casos se suma la longitud **fuera del bosque** por código detallado («Corta: Pasto 70 % · Área poblada 20 %…»). Donde falta el código, se usa la clase del modelo.
+- **Base forestal:** la categoría general «Bosques y otras tierras boscosas» incluye en la cuenca unas 7 845 ha de plantaciones (códigos 7 y 8) y 2 793 ha de rastrojo (código 9), según el inventario de `docs/DICCIONARIO_CAPAS_SINIA.md`. Las métricas oficiales siguen usando la categoría general. Las rutas las distinguen cuando está la capa detallada.
+
+### Resistencias de las rutas (supuesto del modelo, sin calibrar con especies)
+
+| Clase | Regla | Resistencia |
+|---|---|---|
+| Bosque de ribera | Bosque natural o secundario a ≤ 50 m de un cauce del IGNTG | 0,5 |
+| Bosque | SINIA general 1, JRC sin perturbación | 1 |
+| Bosque degradado | SINIA general 1 con JRC 2 o 3 | 2 |
+| Plantación | Detallado 7 u 8 | 3 |
+| Regeneración o rastrojo | Detallado 9, o JRC 4 | 5 |
+| Ribera sin bosque | Otras tierras a ≤ 50 m de un cauce | 10 |
+| Otras tierras | Pasto, cultivos, vegetación herbácea, etc. | 25 |
+| Zona construida | Detallado 28 (poblada), 29 (infraestructura), 30 (minería), o ESRI 2024 clase 7 | 100 |
+| Agua | Detallado 27, SINIA general 3 o JRC 5 | 1 000 |
+
+- La ribera sin bosque tiene una resistencia menor que las otras tierras: así la ruta tiende a seguir los ríos donde habría que restaurar, que son franjas protegidas por ley.
+- Las rutas informan los km por ribera con bosque, los km de ribera sin bosque y los km por plantación.
