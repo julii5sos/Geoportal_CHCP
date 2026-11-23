@@ -111,7 +111,7 @@
     const reutiliza = !st.vistaPol && st.id !== 'chcp' && fuente.id === 'chcp' && hayMapa;
     const mixto = st.vistaPol && fuentes[0].id === 'chcp' && hayMapa;
     aviso.hidden = !reutiliza && !mixto;
-    if (mixto) aviso.innerHTML = `Parte del polígono cae en subcuencas sin mapas detallados: allí se muestra el mapa de la cuenca completa (píxel de ${number(st.data.territorios.chcp.mapas.tamano_pixel_m, 0)} m).`;
+    if (mixto) aviso.innerHTML = `Parte del polígono cae en subcuencas sin mapas detallados: allí se muestra el mapa de la cuenca completa (píxel de ${number(st.data.territorios.chcp.mapas.tamano_pixel_m, 0)} m), solo como referencia visual: esa parte no entra en las cifras. Los mapas detallados se generan ${window.CHCP.pendiente()}.`;
     if (reutiliza) aviso.innerHTML = `Los mapas detallados de ${esc(t().nombre)} aún no se han generado: se muestra el mapa de la cuenca completa (píxel de ${number(fuente.mapas.tamano_pixel_m, 0)} m) recortado a la subcuenca. Se reemplazará por la versión de 10–30 m ${window.CHCP.pendiente()}.`;
     leyenda(orden);
   }
