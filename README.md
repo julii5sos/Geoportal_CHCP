@@ -105,8 +105,9 @@ Las decisiones metodológicas y sus justificaciones están en
   estimación local, con su fecha de cálculo.
 - **Categorías oficiales sin inventar:** las leyendas SINIA solo muestran correspondencias
   verificadas. Ver el [diccionario de capas](docs/DICCIONARIO_CAPAS_SINIA.md).
-- **Validación estadística de los mapas:** diseño de muestreo estratificado (Olofsson et al.,
-  2014) preparado; la interpretación está prevista para una próxima actualización.
+- **Validación estadística de los mapas (en curso):** muestra aleatoria estratificada (Olofsson et al.,
+  2014) interpretada a ciegas sobre imágenes satelitales de alta resolución, con revisión de un segundo
+  intérprete. Ver el [protocolo](docs/PROTOCOLO_VALIDACION.md).
 
 ## Cómo se actualiza
 

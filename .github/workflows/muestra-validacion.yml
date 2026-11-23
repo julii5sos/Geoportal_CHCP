@@ -23,7 +23,7 @@ permissions:
   contents: write
 
 concurrency:
-  group: actualizar-datos
+  group: muestra-validacion   # solo escribe data/validacion: no espera a la actualización de datos
   cancel-in-progress: false
 
 jobs:

@@ -2,11 +2,11 @@
 {% block title %}Validación e incertidumbre · Geoportal CHCP{% endblock %}
 {% block body %}
 <main id="v-validacion" class="pg" data-project="{{ project_id }}">
-  <p class="in-aviso va-proxima" role="note"><b>Próxima actualización.</b> <span>Esta sección todavía no forma parte de la versión publicada: la evaluación de exactitud de los mapas se incorporará más adelante. Se conserva aquí para el equipo técnico.</span></p>
+  <p class="in-aviso va-proxima" role="note"><b>Validación en curso.</b> <span>La exactitud se evalúa interpretando, a ciegas, puntos al azar sobre imágenes satelitales de alta resolución (Google Earth Pro, Sentinel-2). Mientras no se complete la muestra y la revisión de un segundo intérprete, los resultados se muestran como <b>preliminares</b>.</span></p>
   <header class="pg-head">
     <span class="rs-kicker">Evaluar · confiabilidad</span>
     <h1>¿Qué tan confiables son los mapas?</h1>
-    <p>Ningún mapa satelital es perfecto. Aquí se compara una muestra de puntos del mapa con lo que realmente se observa en imágenes de alta resolución o en campo. Con esa comparación se estima <b>cuánto acierta cada clase</b> y <b>cuál es la superficie real, con su margen de error</b>, siguiendo las buenas prácticas de FAO (Olofsson et al., 2014).</p>
+    <p>Ningún mapa satelital es perfecto. Aquí se compara una muestra de puntos del mapa con lo que realmente se observa en imágenes satelitales de alta resolución (no requiere ir a campo). Con esa comparación se estima <b>cuánto acierta cada clase</b> y <b>cuál es la superficie real, con su margen de error</b>, siguiendo las buenas prácticas de FAO (Olofsson et al., 2014).</p>
     <div class="va-steps">
       <div><b>1</b><span>Muestra aleatoria estratificada por clase del mapa</span></div>
       <div><b>2</b><span>Interpretación «a ciegas» de cada punto</span></div>
