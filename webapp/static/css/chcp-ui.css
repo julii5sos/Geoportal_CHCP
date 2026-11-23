@@ -869,3 +869,19 @@ html.app #main-content:has(.pg) { overflow-y:auto; background:#f3f6fa; }
 .pe-lg-modo { display:inline-flex; border:1px solid var(--azul-linea); border-radius:999px; overflow:hidden; margin:4px 0 6px; }
 .pe-lg-modo button { border:0; background:#fff; color:var(--azul); font-weight:700; font-size:12px; padding:4px 12px; cursor:pointer; }
 .pe-lg-modo button[aria-pressed="true"] { background:var(--azul); color:#fff; }
+/* Validación: recortes Sentinel-2 sin nubes y series por punto */
+.va-img { margin-bottom:12px; }
+.va-chips { display:grid; grid-template-columns:repeat(3, 1fr); gap:8px; }
+.va-chip { margin:0; }
+.va-chip > div { position:relative; aspect-ratio:1; border-radius:8px; overflow:hidden; background:#dfe6ef; }
+.va-chip img { width:100%; height:100%; object-fit:cover; image-rendering:pixelated; display:block; }
+.va-chip i { position:absolute; left:50%; top:50%; transform:translate(-50%, -50%); border:2px solid #ffeb3b; box-shadow:0 0 0 1px rgba(0,0,0,.5); min-width:6px; min-height:6px; }
+.va-chip-sin::after { content:'Sin imagen despejada'; position:absolute; inset:0; display:grid; place-items:center; font-size:12px; color:#5b6675; }
+.va-chip-sin img { display:none; }
+.va-chip figcaption { text-align:center; font-weight:800; font-size:13px; color:var(--azul-tinta); margin-top:3px; }
+.va-series { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:8px; }
+.va-series > div { background:#fff; border:1px solid var(--line); border-radius:8px; padding:8px 10px; }
+.va-series b { display:block; font-size:12.5px; color:var(--azul-tinta); }
+.va-series small { display:block; font-size:11px; color:#6b7686; line-height:1.35; margin-bottom:2px; }
+.va-sin-img { font-size:12.5px; color:#5d4a00; background:#fff8e1; border:1px solid #f3d36b; border-radius:8px; padding:8px 10px; }
+@media (max-width:900px) { .va-series { grid-template-columns:1fr; } }

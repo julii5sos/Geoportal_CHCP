@@ -3,7 +3,8 @@
 (async function () {
   const { $, $$, escapeHtml: esc, number, valFile } = window.CHCP;
   const V = window.CHCP_VALIDACION;
-  const st = { indice: null, mapa: null, diseno: null, estratos: null, muestra: [], resultados: null, i: 0, map: null };
+  const st = { indice: null, mapa: null, diseno: null, estratos: null, muestra: [], resultados: null, i: 0, map: null, imagenes: null, series: null };
+  const G = window.CHCP_GRAF;
   const pct = (v, d = 0) => (v == null ? '—' : `${number(v * 100, d)} %`);
   const ha = (v) => `${number(v, 0)} ha`;
 
@@ -67,13 +68,23 @@
   }
   function descargar(nombre, texto, tipo) { const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([texto], { type: tipo })); a.download = nombre; a.click(); URL.revokeObjectURL(a.href); }
   const campoClase = () => (st.revisor ? 'clase_referencia_2' : 'clase_referencia');
+  /** Recortes Sentinel-2 sin nubes de varios años y series NDVI / radar del punto. */
+  function panelImagenes(p) {
+    if (!st.imagenes) return '<p class="va-sin-img">Las imágenes sin nubes de Sentinel-2 aún no se han preparado para esta muestra (Actions → «Generar muestra de validación» con «Solo preparar las imágenes»).</p>';
+    const I = st.imagenes, lado = I.recorte.lado_m, celda = (st.diseno.escala_m / lado) * 100;
+    const chips = I.anios_recortes.map((a) => `<figure class="va-chip"><div><img src="${valFile(`${st.mapa}/imagenes/${encodeURIComponent(p.id)}_${a}.jpg`)}" alt="Sentinel-2 ${a} sin nubes alrededor del punto" loading="lazy" onerror="this.parentNode.classList.add('va-chip-sin')"><i style="width:${celda}%;height:${celda}%"></i></div><figcaption>${a}</figcaption></figure>`).join('');
+    const s = st.series?.[p.id];
+    const lineas = s ? `<div class="va-series"><div><b>NDVI por año</b><small>Sentinel-2 sin nubes · una caída fuerte sugiere desmonte</small>${G.linea({ anios: I.anios_series, valores: I.anios_series.map((a) => s.ndvi?.[a] ?? null), min: 0, max: 1, alto: 120 })}</div>
+      <div><b>Radar VH por año (dB)</b><small>Sentinel-1 atraviesa las nubes · una caída de varios dB sugiere pérdida de dosel</small>${G.linea({ anios: I.anios_series, valores: I.anios_series.map((a) => s.vh?.[a] ?? null), color: '#5e3c99', decimales: 1, alto: 120 })}</div></div>` : '';
+    return `<div class="va-img"><div class="va-chips">${chips}</div><p class="rs-note">Sentinel-2 sin nubes: mediana de los píxeles despejados de cada año, ${lado} m de lado; el recuadro es la celda de ${st.diseno.escala_m} m evaluada.</p>${lineas}</div>`;
+  }
   function renderInterpretacion() {
     const cont = $('#va-int');
     if (!st.muestra.length) { cont.innerHTML = '<p class="fi-pending">La muestra aún no se ha generado. En GitHub: Actions → «Generar muestra de validación».</p>'; return; }
     const hechos = st.muestra.filter((p) => p[campoClase()]).length;
     const p = st.muestra[st.i];
     cont.innerHTML = `<div class="va-int">
-      <div class="va-int-map"><div id="va-map"></div><p class="rs-note">Imagen: Esri World Imagery (fecha única). Para ver el cambio 2020–2025 use <a target="_blank" rel="noopener" href="https://earth.google.com/web/@${p.lat},${p.lon},300a,800d,35y,0h,0t,0r">Google Earth</a> o Google Earth Pro con imágenes históricas (<a href="${valFile(`${st.mapa}/muestra.kml`)}" download>KML</a>).</p></div>
+      <div class="va-int-map">${panelImagenes(p)}<div id="va-map"></div><p class="rs-note">Imagen: Esri World Imagery (fecha única). Para ver el cambio 2020–2025 use <a target="_blank" rel="noopener" href="https://earth.google.com/web/@${p.lat},${p.lon},300a,800d,35y,0h,0t,0r">Google Earth</a> o Google Earth Pro con imágenes históricas (<a href="${valFile(`${st.mapa}/muestra.kml`)}" download>KML</a>).</p></div>
       <div class="va-int-form">
         <div class="va-prog"><span>Punto <b>${st.i + 1}</b> de ${st.muestra.length} · ${esc(p.id)}</span><i><b style="width:${hechos / st.muestra.length * 100}%"></b></i><small>${hechos} interpretados</small></div>
         <p class="rs-note">${number(p.lat, 5)}, ${number(p.lon, 5)} · el recuadro amarillo es el píxel de ${st.diseno.escala_m} m evaluado.</p>
@@ -87,6 +98,7 @@
         <div class="va-nav"><button class="btn btn-s" id="va-desc" type="button">Descargar muestra.csv</button><label class="btn btn-s va-file">Continuar desde un CSV<input type="file" id="va-cont" accept=".csv" hidden></label></div>
       </div></div>`;
     if (st.map) st.map.remove();
+    if (G) G.activarTooltips($('#va-int'));
     st.map = L.map('va-map', { zoomControl: true });
     L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', { attribution: 'Esri World Imagery', maxZoom: 19 }).addTo(st.map);
     const m = st.diseno.escala_m / 2, dLat = m / 110540, dLon = m / (111320 * Math.cos(p.lat * Math.PI / 180));
@@ -99,7 +111,7 @@
       if (st.revisor) p.interprete_2 = $('#va-interprete').value; else p.interprete = $('#va-interprete').value;
       try { localStorage.setItem('chcp-interprete', p.interprete); } catch (_) { /* */ }
       if (p[campoClase()] && !p.fecha) p.fecha = new Date().toISOString().slice(0, 10);
-      if (p[campoClase()] && !p.fuente_imagen) p.fuente_imagen = 'Esri World Imagery / Google Earth';
+      if (p[campoClase()] && !p.fuente_imagen) p.fuente_imagen = st.imagenes ? 'Sentinel-2 sin nubes (mediana anual) / Sentinel-1' : 'Esri World Imagery / Google Earth';
       guardarLocal();
     };
     $$('.va-clases button').forEach((b) => b.addEventListener('click', () => { p[campoClase()] = b.dataset.c; guardar(); if (st.i < st.muestra.length - 1) st.i += 1; renderInterpretacion(); }));
@@ -141,6 +153,8 @@
       st.estratos = null;  // interpretación ciega: la clase del mapa no se descarga en esta página
       st.muestra = V.leerCsv(await obtener(`${clave}/muestra.csv`, 'text')).map((f) => ({ ...f, lon: Number(f.lon), lat: Number(f.lat) }));
     } catch (_) { st.diseno = null; st.muestra = []; }
+    // Imágenes sin nubes (Sentinel-2) y series NDVI / radar por punto, si ya se prepararon.
+    [st.imagenes, st.series] = await Promise.all([obtener(`${clave}/imagenes/indice.json`).catch(() => null), obtener(`${clave}/imagenes/series.json`).catch(() => null)]);
     if (!st.diseno) return;
     cargarLocal();
     const d = st.diseno;
