@@ -9,7 +9,10 @@
   const st = {
     data: null, territory: null, id: null, geo: null, areas: null, aristas: [], umbral: 500, paisaje: 0,
     prep: null, candidatos: [], esc: 'A', escenarios: { A: [], B: [] }, unir: null, map: null, capas: {},
+    rutas: { activo: false, base: null, capa: null, ultimo: null, tolerancia: 0.1 },
   };
+  const RC = window.CHCP_RUTAS;
+  const P = window.CHCP_POLIGONO;
   const pct = (v, d = 1) => `${number(v, d)} %`;
   // mejor = 'alto' o 'bajo': colorea en verde la mejora y en rojo el empeoramiento
   const delta = (v, base, d = 1, suf = '', mejor = 'alto') => {
@@ -75,6 +78,7 @@
     })).addTo(map);
   }
   function clicParche(id) {
+    if (st.rutas.activo) { rutasDesde(id); return; }
     if (st.unir === null) return;
     if (st.unir === true) { st.unir = id; $('#rs-hint').textContent = `Parche #${id} elegido. Ahora haga clic en el segundo parche.`; dibujar(); return; }
     if (st.unir === id) return;
@@ -155,9 +159,166 @@
     const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `escenarios_restauracion_${st.id}.geojson`; a.click(); URL.revokeObjectURL(a.href);
   }
 
+
+  // ---------------------------------------------------------------- rutas al Corredor Mesoamericano
+  // Tipo C: rutas de menor costo calculadas en el navegador sobre los rasters de cobertura
+  // precalculados de toda la cuenca (ver rutas_corredor.js para el modelo de resistencia).
+  const MAX_LADO_RUTAS = 1000;
+  function cargarImagen(url) {
+    return new Promise((ok, mal) => { const im = new Image(); im.onload = () => ok(im); im.onerror = () => mal(new Error(url)); im.src = url; });
+  }
+  async function bytes(url) {
+    const im = await cargarImagen(url);
+    const c = document.createElement('canvas'); c.width = im.naturalWidth; c.height = im.naturalHeight;
+    const ctx = c.getContext('2d', { willReadFrequently: true }); ctx.drawImage(im, 0, 0);
+    const d = ctx.getImageData(0, 0, c.width, c.height).data;
+    const out = new Uint8Array(c.width * c.height);
+    for (let i = 0; i < out.length; i += 1) out[i] = d[i * 4];
+    return { v: out, w: c.width, h: c.height };
+  }
+  const tramosMeso = () => (st.territory.corridors?.features || []).filter((f) => f.properties.es_mesoamericano || /mesoamericano/i.test(f.properties.nombre || ''));
+  const nombreTramo = (f) => String(f.properties.nombre || '').replace(/^Corredor biol[oó]gico mesoamericano\s*/i, '').replace(/^./, (c) => c.toUpperCase()) || 'Tramo';
+
+  async function baseRutas() {
+    if (st.rutas.base) return st.rutas.base;
+    const m = st.data.territorios.chcp?.mapas;
+    if (!m?.valores?.includes('sinia_2021')) throw new Error('La cuenca todavía no tiene los mapas de cobertura precalculados.');
+    const leer = (c) => (m.valores.includes(c) ? bytes(mapFile('chcp', `${c}.v.png`)).catch(() => null) : Promise.resolve(null));
+    const [sinia, jrc, esri] = await Promise.all(['sinia_2021', 'jrc_2025', 'esri_2024'].map(leer));
+    if (!sinia) throw new Error('No se pudo leer la cobertura SINIA 2021 de la cuenca.');
+    const w0 = sinia.w, h0 = sinia.h, f = Math.max(1, Math.ceil(Math.max(w0, h0) / MAX_LADO_RUTAS));
+    const red = (x) => (x && x.w === w0 && x.h === h0 ? RC.reducir(x.v, w0, h0, f).v : null);
+    const s0 = RC.reducir(sinia.v, w0, h0, f), w = s0.w, h = s0.h;
+    const { clase, res } = RC.superficie({ sinia: s0.v, jrc: red(jrc), esri: red(esri) }, w * h);
+    const aPix0 = P.transformador(m.limites, w0, h0);
+    const aPixel = (lon, lat) => aPix0(lon, lat).map((v) => v / f);
+    const [[sur, oeste], [norte, este]] = m.limites;
+    const Rm = 6378137, merc = (lon, lat) => [Rm * lon * Math.PI / 180, Rm * Math.log(Math.tan(Math.PI / 4 + lat * Math.PI / 360))];
+    const [x0, y0] = merc(oeste, sur), [x1, y1] = merc(este, norte);
+    const aLonLat = (px, py) => { const x = x0 + px * f / w0 * (x1 - x0), y = y1 - py * f / h0 * (y1 - y0); return [x / Rm * 180 / Math.PI, (2 * Math.atan(Math.exp(y / Rm)) - Math.PI / 2) * 180 / Math.PI]; };
+    const paso = (m.tamano_pixel_m || 100) * f;
+    const tramos = tramosMeso().map((feat) => {
+      const celdas = RC.rasterizar(feat, aPixel, w, h);
+      let n = 0; for (let i = 0; i < celdas.length; i += 1) n += celdas[i] && Number.isFinite(res[i]) ? 1 : 0;
+      return { nombre: nombreTramo(feat), celdas, n, ...(n ? RC.costoAcumulado(res, w, h, celdas, paso) : {}) };
+    });
+    st.rutas.base = { w, h, f, paso, clase, res, aPixel, aLonLat, tramos, construido: Boolean(red(esri)) };
+    return st.rutas.base;
+  }
+
+  function lineaRuta(b, ruta) {
+    // Centros de celda, quitando los puntos intermedios de tramos rectos.
+    const pts = ruta.map((i) => [i % b.w, Math.floor(i / b.w)]);
+    const out = [];
+    pts.forEach((p, k) => {
+      if (k > 0 && k < pts.length - 1) {
+        const a = pts[k - 1], c = pts[k + 1];
+        if (p[0] - a[0] === c[0] - p[0] && p[1] - a[1] === c[1] - p[1]) return;
+      }
+      const [lon, lat] = b.aLonLat(p[0] + 0.5, p[1] + 0.5);
+      out.push([lat, lon]);
+    });
+    return out;
+  }
+
+  function imagenFranja(b, mascara) {
+    const c = document.createElement('canvas'); c.width = b.w; c.height = b.h;
+    const ctx = c.getContext('2d'), img = ctx.createImageData(b.w, b.h);
+    for (let i = 0; i < mascara.length; i += 1) if (mascara[i]) { img.data[i * 4] = 123; img.data[i * 4 + 1] = 31; img.data[i * 4 + 2] = 162; img.data[i * 4 + 3] = 95; }
+    ctx.putImageData(img, 0, 0);
+    const [o, n] = b.aLonLat(0, 0), [e, s] = b.aLonLat(b.w, b.h);
+    return L.imageOverlay(c.toDataURL(), [[s, o], [n, e]], { className: 'rs-franja', interactive: false });
+  }
+
+  function limpiarRutas() {
+    if (st.rutas.capa) st.map.removeLayer(st.rutas.capa);
+    st.rutas.capa = null; st.rutas.ultimo = null;
+    $('#rs-rutas').innerHTML = ''; $('#rs-rutas').hidden = true;
+  }
+
+  async function rutasDesde(id) {
+    const caja = $('#rs-rutas');
+    caja.hidden = false;
+    caja.innerHTML = '<p class="rs-note">Calculando rutas de menor costo hacia el Corredor Biológico Mesoamericano…</p>';
+    await new Promise((r) => setTimeout(r, 30));
+    let b;
+    try { b = await baseRutas(); } catch (error) { caja.innerHTML = `<p class="rs-warn">${esc(error.message)}</p>`; return; }
+    const feat = st.geo.parches.features.find((x) => x.properties.patch_id === id);
+    let parche = RC.rasterizar(feat, b.aPixel, b.w, b.h);
+    if (!parche.some((v, i) => v && Number.isFinite(b.res[i]))) {
+      // Parche menor que una celda: se usa la celda de su primer vértice.
+      const [lon, lat] = (feat.geometry.type === 'MultiPolygon' ? feat.geometry.coordinates[0][0][0] : feat.geometry.coordinates[0][0]);
+      const [px, py] = b.aPixel(lon, lat).map(Math.floor);
+      parche = new Uint8Array(b.w * b.h); if (px >= 0 && py >= 0 && px < b.w && py < b.h) parche[py * b.w + px] = 1;
+    }
+    const desdeParche = RC.costoAcumulado(b.res, b.w, b.h, parche, b.paso);
+    const rutas = b.tramos.filter((t) => t.n).map((t) => {
+      const dentro = t.celdas.some((v, i) => v && parche[i]);
+      const ini = RC.mejorCelda(t.costo, parche);
+      if (ini < 0 || !Number.isFinite(t.costo[ini])) return { tramo: t, alcanzable: false };
+      const ruta = RC.trazar(t.previo, ini);
+      return { tramo: t, alcanzable: true, dentro, ruta, optimo: t.costo[ini], resumen: RC.resumir(ruta, b.clase, b.w, b.paso) };
+    }).sort((x, y) => (x.alcanzable ? x.optimo : Infinity) - (y.alcanzable ? y.optimo : Infinity));
+    st.rutas.ultimo = { id, area: feat.properties.area_ha, rutas, desdeParche };
+    pintarRutas();
+  }
+
+  function pintarRutas() {
+    const b = st.rutas.base, u = st.rutas.ultimo;
+    if (!b || !u) return;
+    if (st.rutas.capa) st.map.removeLayer(st.rutas.capa);
+    const capas = [];
+    const mejor = u.rutas.find((r) => r.alcanzable && !r.dentro);
+    if (mejor) {
+      const fr = RC.franja(u.desdeParche.costo, mejor.tramo.costo, mejor.optimo, st.rutas.tolerancia);
+      capas.push(imagenFranja(b, fr.mascara));
+    }
+    const lineas = [];
+    // Se dibujan de la última a la primera para que la ruta de menor costo quede encima.
+    u.rutas.filter((r) => r.alcanzable && !r.dentro).map((r, k) => [r, k]).reverse().forEach(([r, k]) => {
+      const ll = lineaRuta(b, r.ruta);
+      lineas.push(...ll);
+      const principal = k === 0;
+      capas.push(L.polyline(ll, { color: '#fff', weight: principal ? 7 : 5, opacity: 0.9, interactive: false }));
+      const linea = L.polyline(ll, { color: '#7b1fa2', weight: principal ? 4 : 3, dashArray: principal ? null : '8 6' });
+      linea.bindTooltip(`Ruta ${principal ? 'de menor costo' : 'alternativa'} al tramo ${esc(r.tramo.nombre)}: ${number(r.resumen.longitud_km, 1)} km, ${number(r.resumen.fuera_bosque_km, 1)} km fuera del bosque`);
+      capas.push(linea);
+      capas.push(L.circleMarker(ll[ll.length - 1], { radius: 6, color: '#fff', weight: 2, fillColor: '#7b1fa2', fillOpacity: 1 }).bindTooltip(`Llega al Corredor Mesoamericano · tramo ${esc(r.tramo.nombre)}`));
+    });
+    st.rutas.capa = L.layerGroup(capas).addTo(st.map);
+    if (lineas.length && !u.encuadrado) { st.map.fitBounds(L.latLngBounds(lineas).extend(st.borde.getBounds()), { padding: [24, 24] }); u.encuadrado = true; }
+    const filas = u.rutas.map((r, k) => {
+      if (!r.alcanzable) return `<tr><td>${esc(r.tramo.nombre)}</td><td colspan="5">Sin ruta posible dentro de la cuenca.</td></tr>`;
+      if (r.dentro) return `<tr><td>${esc(r.tramo.nombre)}</td><td colspan="5"><b>El parche ya está dentro de este tramo del corredor.</b></td></tr>`;
+      const x = r.resumen, km = (v) => (v > 0 ? `${number(v, 1)} km` : '—');
+      return `<tr${k === 0 ? ' class="on"' : ''}><td>${esc(r.tramo.nombre)}${k === 0 ? '<small>menor costo</small>' : ''}</td><td>${number(x.longitud_km, 1)} km</td><td>${km(x.km.bosque + x.km.bosque_degradado)}</td><td><b>${km(x.fuera_bosque_km)}</b>${x.tramos_fuera_bosque ? `<small>en ${x.tramos_fuera_bosque} tramo${x.tramos_fuera_bosque > 1 ? 's' : ''}</small>` : ''}</td><td>${km(x.km.agua)}</td><td>${b.construido ? km(x.km.construido) : '<small>sin capa</small>'}</td></tr>`;
+    }).join('');
+    const r = RC.RESISTENCIA;
+    const sinTramos = !u.rutas.length;
+    $('#rs-rutas').innerHTML = `
+      <div class="rs-res-head"><h2>Rutas del parche #${u.id} al Corredor Biológico Mesoamericano</h2><button class="btn btn-s" type="button" id="rs-rutas-cerrar">Quitar rutas</button></div>
+      ${window.CHCP.procedencia(st.data, 'C', st.data.territorios.chcp, '<span>Rutas de menor costo calculadas en su navegador</span>')}
+      ${sinTramos ? '<p class="rs-warn">Ningún tramo del Corredor Mesoamericano cae dentro de la cuenca.</p>' : `
+      <table class="fi-table rs-table rs-rutas-t"><thead><tr><th>Tramo de destino</th><th>Longitud</th><th>Por bosque</th><th>Fuera del bosque<small>a restaurar</small></th><th>Sobre agua</th><th>Zona construida</th></tr></thead><tbody>${filas}</tbody></table>
+      <label class="rs-field rs-tol">Franja de alternativas<select id="rs-tol">${[0.05, 0.1, 0.2].map((t) => `<option value="${t}"${t === st.rutas.tolerancia ? ' selected' : ''}>hasta ${t * 100} % más costosas que la mejor ruta</option>`).join('')}</select></label>`}
+      <details class="rs-supuestos"><summary>Cómo se calculan y qué no dicen</summary>
+        <ul>
+          <li>Ruta de <b>menor costo</b> sobre la cobertura de toda la cuenca (SINIA 2021 y JRC 2025${b.construido ? ', zonas construidas de ESRI 2024' : ''}), con celdas de unos ${number(b.paso, 0)} m. Resistencias supuestas: bosque ${r.bosque}, bosque degradado ${r.bosque_degradado}, regeneración ${r.regeneracion}, otras tierras ${r.otras_tierras}${b.construido ? `, construido ${r.construido}` : ''}, agua ${r.agua}.</li>
+          <li>Los valores de resistencia son un supuesto del modelo, no una medición ni un dato de una especie concreta. Cambiarlos puede cambiar la ruta.</li>
+          <li>La <b>franja morada</b> reúne las celdas por las que pasan rutas casi tan buenas como la mejor. Donde es ancha hay varias opciones; donde se estrecha, el paso es obligado.</li>
+          <li>Solo se evalúa dentro de la cuenca. ${b.tramos.filter((t) => !t.n).map((t) => `El tramo ${esc(t.nombre)} queda fuera de ella.`).join(' ')}${b.construido ? '' : ' Las zonas urbanas todavía no se distinguen de otras tierras; se incorporarán en la próxima actualización de datos.'}</li>
+          <li>Es una ruta hipotética: no es un corredor oficial ni garantiza que la fauna la use. Antes de restaurar hay que verificar en campo, la tenencia de la tierra y el uso actual.</li>
+        </ul>
+        <p class="rs-note">Tramos del corredor: capa del Almanaque Azul de Panamá.</p>
+      </details>`;
+    $('#rs-rutas-cerrar').addEventListener('click', limpiarRutas);
+    $('#rs-tol')?.addEventListener('change', (e) => { st.rutas.tolerancia = Number(e.target.value); pintarRutas(); });
+  }
+
   // ---------------------------------------------------------------- carga
   async function cargar(id) {
     st.id = id;
+    limpiarRutas();
     const t = st.data.territorios[id];
     $('#rs-select').value = id;
     $('#rs-results').innerHTML = '<p class="rs-note">Cargando la red de bosque…</p>';
@@ -172,13 +333,14 @@
     if (!st.geo?.red?.aristas || !st.geo.parches?.features?.length) {
       st.areas = null; st.unir = null;
       $('#rs-unir').classList.remove('on'); $('#rs-unir').disabled = true; $('#rs-hint').textContent = '';
+      st.rutas.activo = false; $('#rs-rutas-btn').classList.remove('on'); $('#rs-rutas-btn').disabled = true;
       const listas = disponibles().filter((x) => x.id !== id).slice(0, 8);
       $('#rs-results').innerHTML = `<p class="rs-warn"><b>${esc(t?.nombre || id)}</b> todavía no tiene su red de parches calculada, por eso no aparecen parches para unir. Se generará en la actualización de datos con Earth Engine. Mientras tanto puede revisar su <a href="${window.CHCP_STATIC ? 'ficha.html' : '/ficha'}?id=${encodeURIComponent(id)}">ficha técnica</a>.</p>${listas.length ? `<p class="rs-note">Subcuencas con la red ya disponible: ${listas.map((x) => `<button type="button" class="rs-ir" data-id="${esc(x.id)}">${esc(x.nombre)}</button>`).join(' ')}</p>` : ''}`;
       $$('#rs-results .rs-ir').forEach((b) => b.addEventListener('click', () => elegir(b.dataset.id)));
       $('#rs-prior').innerHTML = ''; $('#rs-list').innerHTML = '';
       return;
     }
-    $('#rs-unir').disabled = false;
+    $('#rs-unir').disabled = false; $('#rs-rutas-btn').disabled = false;
     try { st.rios = await (await fetch(mapFile(id, 'rios.json'))).json(); } catch (_) { st.rios = null; }
     if (st.capaRios) st.map.removeLayer(st.capaRios);
     st.capaRios = st.rios ? L.geoJSON(st.rios, { style: { color: '#1f78b4', weight: 2, opacity: 0.9 }, interactive: false }).addTo(st.map) : null;
@@ -216,6 +378,7 @@
   L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', { attribution: 'Esri World Imagery', maxZoom: 18 }).addTo(st.map);
   const colorCorr = { Alta: '#1b5e20', Mediana: '#9ccc65', 'Media-baja': '#ffb74d' };
   L.geoJSON(st.territory.corridors, { style: (f) => ({ color: colorCorr[f.properties.categoria_etiqueta] || '#7fae00', weight: 1.2, fillColor: colorCorr[f.properties.categoria_etiqueta] || '#a1d303', fillOpacity: 0.12 }), onEachFeature: (f, l) => l.bindTooltip(`${f.properties.nombre} · conectividad ${f.properties.categoria_etiqueta} (Almanaque Azul)`) }).addTo(st.map);
+  L.geoJSON({ type: 'FeatureCollection', features: tramosMeso() }, { style: { color: '#4a148c', weight: 1.6, fillColor: '#ce93d8', fillOpacity: 0.22 }, interactive: false }).addTo(st.map);
   // Leyenda: cada símbolo se dibuja con el mismo estilo que usa el mapa.
   const sim = (contenido, fondo) => `<svg class="rs-sym" viewBox="0 0 34 16" aria-hidden="true">${fondo ? `<rect width="34" height="16" rx="3" fill="${fondo}"/>` : ''}${contenido}</svg>`;
   const caja = (c, borde = '#0b3d17', op = 0.85) => `<rect x="4" y="2" width="26" height="12" rx="2" fill="${c}" fill-opacity="${op}" stroke="${borde}" stroke-width="1"/>`;
@@ -230,9 +393,15 @@
       ${item(sim('<line x1="5" y1="8" x2="29" y2="8" stroke="#e53935" stroke-width="3" stroke-dasharray="5 4"/><circle cx="5" cy="8" r="3.2" fill="#e53935" stroke="#fff"/><circle cx="29" cy="8" r="3.2" fill="#e53935" stroke="#fff"/>'), 'Brecha candidata', 'haga clic para añadirla al escenario')}
       ${item(sim('<line x1="3" y1="8" x2="31" y2="8" stroke="#7cb342" stroke-width="8" stroke-linecap="round"/><line x1="3" y1="8" x2="31" y2="8" stroke="#fff" stroke-width="1.6" stroke-dasharray="4 3"/>'), 'Enlace propuesto', 'hipotético: aún no es bosque')}
     </ul></div>
+    <div class="rs-lg-grupo"><h3>Rutas al corredor</h3><ul>
+      ${item(sim('<line x1="3" y1="8" x2="31" y2="8" stroke="#fff" stroke-width="6"/><line x1="3" y1="8" x2="31" y2="8" stroke="#7b1fa2" stroke-width="3.5"/>'), 'Ruta de menor costo', 'evita agua y zonas sin bosque')}
+      ${item(sim('<line x1="3" y1="8" x2="31" y2="8" stroke="#fff" stroke-width="5"/><line x1="3" y1="8" x2="31" y2="8" stroke="#7b1fa2" stroke-width="2.6" stroke-dasharray="6 4"/>'), 'Ruta a otro tramo', 'más costosa que la principal')}
+      ${item(sim('<rect x="2" y="3" width="30" height="10" rx="2" fill="#7b1fa2" fill-opacity="0.38"/>'), 'Franja de alternativas', 'rutas casi igual de buenas')}
+    </ul></div>
     <div class="rs-lg-grupo"><h3>Referencia</h3><ul>
       ${item(sim('<line x1="3" y1="8" x2="31" y2="8" stroke="#fff" stroke-width="3"/>', '#5b6b5e'), 'Límite de la subcuenca', '')}
       ${item(sim('<path d="M3 11 C10 3, 18 13, 31 5" fill="none" stroke="#1f78b4" stroke-width="2.4"/>'), 'Ríos principales', '')}
+      ${item(sim('<rect x="3" y="2" width="28" height="12" rx="2" fill="#ce93d8" fill-opacity="0.45" stroke="#4a148c" stroke-width="1.4"/>'), 'Corredor Biológico Mesoamericano', 'tramos dentro y cerca de la cuenca')}
       ${item(`<svg class="rs-sym" viewBox="0 0 34 16" aria-hidden="true">${['Alta', 'Mediana', 'Media-baja'].map((k, n) => `<rect x="${2 + n * 11}" y="2" width="9" height="12" rx="1.5" fill="${colorCorr[k]}" fill-opacity="0.3" stroke="${colorCorr[k]}" stroke-width="1.2"/>`).join('')}</svg>`, 'Corredores (Almanaque Azul)', 'conectividad alta · mediana · media-baja')}
     </ul></div>`;
   const subs = Object.values(st.data.territorios).filter((t) => t && t.id !== 'chcp').sort((a, b) => a.nombre.localeCompare(b.nombre, 'es'));
@@ -251,7 +420,15 @@
     $$('#rs-scen button').forEach((x) => x.setAttribute('aria-selected', String(x === b)));
     if (st.areas) actualizar();
   }));
+  $('#rs-rutas-btn').addEventListener('click', (e) => {
+    st.rutas.activo = !st.rutas.activo;
+    e.currentTarget.classList.toggle('on', st.rutas.activo);
+    if (st.rutas.activo) { st.unir = null; $('#rs-unir').classList.remove('on'); }
+    $('#rs-hint').textContent = st.rutas.activo ? 'Haga clic en un parche para ver sus rutas al Corredor Mesoamericano.' : '';
+    if (st.areas) dibujar();
+  });
   $('#rs-unir').addEventListener('click', (e) => {
+    st.rutas.activo = false; $('#rs-rutas-btn').classList.remove('on');
     st.unir = st.unir === null ? true : null;
     e.currentTarget.classList.toggle('on', st.unir !== null);
     $('#rs-hint').textContent = st.unir ? 'Haga clic en el primer parche.' : '';

@@ -100,9 +100,11 @@ CODIFICACION_VALORES: dict[str, dict[str, Any]] = {
     "eri": {"tipo": "continuo", "minimo": 0.0, "paso": 0.004},
     "gedi": {"tipo": "continuo", "minimo": 0.0, "paso": 0.25},
     # bits: 1 línea base arbórea Hansen 2020 · 2 NDVI válido · 4 descenso fuerte de NDVI · 8 GEDI válido
+    # Clase original de ESRI 10 m 2024 (7 = área construida); la usan las rutas al corredor.
+    "esri_2024": {"tipo": "categorias"},
     "aux": {"tipo": "bits", "bits": {"linea_base": 1, "ndvi_valido": 2, "ndvi_descenso": 4, "gedi_valido": 8}},
 }
-CAPAS_SOLO_VALOR = ("gedi", "aux")
+CAPAS_SOLO_VALOR = ("gedi", "aux", "esri_2024")
 
 
 # ---------------------------------------------------------------------------
@@ -154,6 +156,9 @@ def _imagen_capa(clave: str, geometria, ee):
         fin, _ = _estado_y_mascara_valida_ee("esri_lulc", PERIODOS_ANALISIS["esri_final"], geometria, ee_module=ee)
         post, _, _ = _hansen(geometria, ee)
         return _coincidence(jrc, post, ini, fin, geometria, ee).selfMask()
+    if clave == "esri_2024":
+        fin, valida = _estado_y_mascara_valida_ee("esri_lulc", PERIODOS_ANALISIS["esri_final"], geometria, ee_module=ee)
+        return fin.updateMask(valida)
     if clave == "gedi":
         from chcp.gee.evaluacion_ecologica import _gedi
         return _gedi(geometria, ee)

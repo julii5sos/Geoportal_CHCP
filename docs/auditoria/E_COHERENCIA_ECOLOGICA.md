@@ -52,6 +52,21 @@ Las superficies eran correctas.
   - *No mide:* la conectividad ecológica potencial para especies, la conectividad funcional demostrada ni la restauración efectiva.
 - **Sin beneficios atribuidos:** no se atribuye ningún beneficio a especies.
 
+### Limitaciones del simulador identificadas en la revisión del 2026-11-22
+
+Siguen abiertas. Mientras lo estén, el simulador se presenta como **exploratorio**.
+
+1. **Beneficio independiente del ancho:** el ancho de la franja solo cambia la superficie, no la ganancia de IIC. Por eso la priorización «por hectárea» favorece siempre la franja más angosta, que es la de menor función ecológica por efecto de borde.
+2. **Umbral único de 500 m:** no está ligado a una especie o grupo funcional y no hay análisis de sensibilidad (por ejemplo con 250, 500 y 1 000 m).
+3. **Distancia euclidiana:** no considera la resistencia de la matriz, así que una brecha puede cruzar agua o zonas urbanas. Las rutas al Corredor Mesoamericano (E.2.1) introducen la resistencia, pero solo para esas rutas.
+4. **Efecto de borde del área de análisis:** los parches se recortan en el límite de la subcuenca, sin margen exterior. Además, el IIC se normaliza por el área de cada subcuenca y no es comparable entre subcuencas.
+5. **Selección de candidatas heurística:** hasta 80 brechas, evaluadas una a una. No es una optimización de combinaciones.
+6. **Base forestal sin validar:** la exactitud de SINIA 2021 depende de la validación pendiente (C).
+
+### E.2.1 Rutas de menor costo al Corredor Biológico Mesoamericano
+
+Se añadieron como respuesta parcial a la limitación 3. La metodología está en `docs/DECISIONES_METODOLOGICAS.md`. Es un procesamiento tipo C con resistencias supuestas y explícitas en la interfaz. No se presenta como corredor oficial ni como conectividad funcional demostrada.
+
 ## E.3 ERI y corredores
 
 El código coincide con `METODOLOGIA.md` en pesos (35/25/20/20), normalizaciones (altura / 35 m, pendiente / 45°, distancia / 1 km), ventana de 1,5 km y cauces de MERIT con ≥ 1 km². Hallazgos que **no** cambian la fórmula, porque cambiarla exige una versión ERI-2:

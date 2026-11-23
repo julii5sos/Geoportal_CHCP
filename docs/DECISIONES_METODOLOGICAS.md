@@ -92,3 +92,39 @@ decisión explícita del equipo.
   - El píxel es de 10 a 30 m según la subcuenca. En polígonos menores de ~20 píxeles las superficies son aproximadas.
   - Los resultados corresponden a la fecha del último precálculo.
   - La versión con Earth Engine sigue siendo la referencia para áreas fuera de la CHCP o para parámetros distintos.
+
+## Rutas de menor costo al Corredor Biológico Mesoamericano (2026-11-22)
+
+- **Objetivo:** desde un parche de bosque del simulador, mostrar por dónde conectaría con el Corredor Biológico Mesoamericano cruzando la menor cantidad posible de terreno hostil. Responde en parte a la limitación de distancia euclidiana del simulador (auditoría E.2, punto 3).
+- **Destinos:** los tramos mesoamericanos de la capa de corredores del Almanaque Azul (`es_mesoamericano`).
+  - **Tramo este:** unas 89 000 ha dentro de la cuenca.
+  - **Tramo San Lorenzo:** unas 777 ha dentro de la cuenca.
+  - **Tramo oeste:** a unos 16 km de la cuenca; no se evalúa.
+- **Superficie de resistencia:** mapas de valores precalculados de la cuenca completa (`data/mapas/chcp`), reducidos por moda a ≤ 1 000 celdas por lado. Valores relativos al bosque sin perturbación:
+
+  | Cobertura | Fuente | Resistencia |
+  |---|---|---|
+  | Bosque | SINIA 1 con JRC 1 | 1 |
+  | Bosque degradado | SINIA 1 con JRC 2 o 3 | 2 |
+  | Regeneración | SINIA 2 con JRC 4 | 5 |
+  | Otras tierras | SINIA 2 | 25 |
+  | Área construida | ESRI 2024, clase 7 | 100 |
+  | Agua | SINIA 3 o JRC 5 | 1 000 |
+  | Sin dato (fuera de la cuenca) | — | sin paso |
+
+  Son un **supuesto del modelo** (escala ordinal de opinión experta, práctica habitual según Zeller et al. 2012). No se calibraron con datos de movimiento de ninguna especie. La capa ESRI 2024 (`esri_2024`, solo valores) se genera a partir de la actualización de datos posterior a este cambio; mientras falte, el área construida cuenta como «otras tierras» y la interfaz lo indica.
+- **Algoritmo:**
+  - Costo acumulado (Dijkstra, 8 vecinos, costo de paso = media de las resistencias × longitud) desde cada tramo.
+  - La ruta parte de la celda del parche con menor costo y sigue las celdas previas.
+  - La **franja de alternativas** reúne las celdas donde costo(parche → celda) + costo(celda → tramo) ≤ (1 + t) × costo óptimo, con t = 5, 10 o 20 %. Es un corredor de menor costo al estilo de Linkage Mapper.
+- **Resultados por ruta:**
+  - longitud total;
+  - kilómetros por bosque;
+  - kilómetros fuera del bosque («a restaurar») y número de tramos continuos fuera del bosque;
+  - kilómetros sobre agua y sobre área construida.
+- **Pruebas:** `tests/test_rutas_corredor_js.py`.
+- **Limitaciones:**
+  - Celdas de unos 40 a 230 m según la versión de los datos.
+  - Solo dentro de la cuenca.
+  - No considera tenencia de la tierra, carreteras (salvo como área construida) ni pendiente.
+  - Una ruta hipotética no garantiza su uso por la fauna y requiere verificación en campo.

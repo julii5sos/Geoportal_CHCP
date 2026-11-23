@@ -15,6 +15,7 @@
         <li>Las líneas rojas discontinuas son <b>brechas candidatas</b>. Haga clic en una para restaurarla en el escenario activo.</li>
         <li>También puede <b>unir dos parches</b>: pulse el botón y luego haga clic en dos parches.</li>
         <li>El simulador recalcula la red y compara el escenario actual con sus propuestas.</li>
+        <li>Con <b>Rutas al Corredor Mesoamericano</b>, haga clic en un parche para ver por dónde conectaría con el corredor cruzando la menor cantidad de terreno sin bosque.</li>
       </ol>
     </details>
     <div class="rs-block">
@@ -26,6 +27,7 @@
         <button class="btn btn-s" id="rs-unir" type="button">Unir dos parches</button>
         <label>Ancho de la franja<select id="rs-ancho"><option value="30">30 m</option><option value="60" selected>60 m</option><option value="100">100 m</option></select></label>
         <button class="btn btn-s" id="rs-limpiar" type="button">Vaciar escenario</button>
+        <button class="btn btn-s rs-rutas-btn" id="rs-rutas-btn" type="button">Rutas al Corredor Mesoamericano</button>
       </div>
       <p class="rs-hint" id="rs-hint"></p>
       <ul class="rs-list" id="rs-list"></ul>
@@ -35,8 +37,9 @@
   <section class="rs-main">
     <div id="rs-map"></div>
     <div class="rs-legend" id="rs-legend"></div>
+    <div class="rs-results rs-rutas" id="rs-rutas" aria-live="polite" hidden></div>
     <div class="rs-results" id="rs-results" aria-live="polite"></div>
   </section>
 </main>
 {% endblock %}
-{% block scripts %}<script src="{{ url_for('static', filename='js/red_conectividad.js') }}"></script><script src="{{ url_for('static', filename='js/restauracion.js') }}"></script>{% endblock %}
+{% block scripts %}<script src="{{ url_for('static', filename='js/red_conectividad.js') }}"></script><script src="{{ url_for('static', filename='js/analisis_poligono.js') }}"></script><script src="{{ url_for('static', filename='js/rutas_corredor.js') }}"></script><script src="{{ url_for('static', filename='js/restauracion.js') }}"></script>{% endblock %}
