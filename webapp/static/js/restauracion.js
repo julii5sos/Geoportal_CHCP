@@ -693,15 +693,19 @@
     $$('#rs-scen button').forEach((x) => x.setAttribute('aria-selected', String(x === b)));
     if (st.areas) actualizar();
   }));
-  $('#rs-rutas-btn').addEventListener('click', (e) => {
-    st.rutas.activo = !st.rutas.activo;
-    e.currentTarget.classList.toggle('on', st.rutas.activo);
-    if (st.rutas.activo) { st.unir = null; $('#rs-unir').classList.remove('on'); }
-    $('#rs-hint').textContent = st.rutas.activo ? 'Haga clic en un parche para ver sus rutas al Corredor Mesoamericano.' : '';
+  // Dos modos excluyentes: restaurar brechas (clic en líneas o «Unir dos parches») y rutas al corredor.
+  function modo(rutas) {
+    st.rutas.activo = rutas;
+    $('#rs-rutas-btn').classList.toggle('on', rutas); $('#rs-rutas-btn').setAttribute('aria-checked', String(rutas));
+    $('#rs-modo-rest').classList.toggle('on', !rutas); $('#rs-modo-rest').setAttribute('aria-checked', String(!rutas));
+    if (rutas) { st.unir = null; $('#rs-unir').classList.remove('on'); }
+    $('#rs-hint').textContent = rutas ? 'Haga clic en un parche del mapa para ver sus rutas al Corredor Mesoamericano.' : '';
     if (st.areas) dibujar();
-  });
+  }
+  $('#rs-rutas-btn').addEventListener('click', () => modo(true));
+  $('#rs-modo-rest').addEventListener('click', () => modo(false));
   $('#rs-unir').addEventListener('click', (e) => {
-    st.rutas.activo = false; $('#rs-rutas-btn').classList.remove('on');
+    if (st.rutas.activo) modo(false);
     st.unir = st.unir === null ? true : null;
     e.currentTarget.classList.toggle('on', st.unir !== null);
     $('#rs-hint').textContent = st.unir ? 'Haga clic en el primer parche.' : '';
@@ -716,7 +720,25 @@
   $('#rs-excluir').addEventListener('change', () => { if (st.areas) prioridades(); });
   $('#rs-plan-btn').addEventListener('click', () => { if (st.areas) plan(); });
   fetch(window.CHCP.valFile('indice.json')).then((r) => (r.ok ? r.json() : null)).then((j) => { st.validacion = (j?.mapas || []).find((x) => x.mapa === 'sinia_2021') || null; if (st.areas) actualizar(); }).catch(() => {});
-  const pedido = new URLSearchParams(location.search).get('id');
+  const parametros = new URLSearchParams(location.search), pedido = parametros.get('id');
   const conRed = listas.find((t) => (t.estructura_2021?.metricas_red?.numero_componentes || 0) > 1) || listas[0] || subs[0];
-  cargar(st.data.territorios[pedido] ? pedido : conRed.id);
+  await cargar(st.data.territorios[pedido] ? pedido : conRed.id);
+  if (parametros.get('modo') === 'rutas' && !$('#rs-rutas-btn').disabled) modo(true);
+
+  // ---------------------------------------------------------------- recorrido guiado
+  const PASOS = [
+    { titulo: 'Qué hace el simulador', texto: '<p>Permite probar <b>dónde restaurar bosque</b> para volver a conectar parches aislados, y medir cuánto mejoraría la conectividad.</p><p>Todo lo que propone es <b>hipotético</b>: sirve para comparar opciones antes de ir a campo.</p>' },
+    { sel: '#rs-paso1', titulo: '1. Elija la subcuenca', texto: 'Las subcuencas marcadas como «pendientes» aún no tienen su red de bosque calculada.' },
+    { sel: '#rs-map', titulo: 'El mapa', texto: '<p>Cada color es una <b>red de bosque</b>: parches lo bastante cerca para considerarse conectados. Las <b>líneas rojas discontinuas</b> son brechas que convendría cerrar; las grises cruzan agua o zonas urbanas.</p><p>En azul, los ríos del IGNTG.</p>' },
+    { sel: '#rs-paso2', titulo: '2. Elija qué quiere hacer', texto: '<b>Restaurar brechas</b>: haga clic en una línea roja para añadir esa franja de restauración. <b>Rutas al corredor</b>: haga clic en un parche y verá por dónde conectaría con el Corredor Biológico Mesoamericano.' },
+    { sel: '#rs-paso3', titulo: '3. Arme dos escenarios', texto: 'Cada franja que añade va al escenario activo (A o B). Así puede comparar, por ejemplo, «pocas franjas anchas» contra «muchas angostas». El ancho cambia la superficie que habría que restaurar.' },
+    { sel: '#rs-paso4', titulo: 'Sugerencias', texto: 'Las brechas que más mejoran la red por hectárea. «Robusta» significa que sigue siendo buena con distintos supuestos. El <b>plan</b> elige varias seguidas teniendo en cuenta cómo se combinan.' },
+    { sel: '#rs-results', titulo: 'Resultados', texto: 'Compara el estado actual con sus escenarios: cuántas redes quedan, cuánto bosque queda conectado y cuánto mejora la conectividad (IIC y conectividad equivalente).' },
+    { sel: '.rs-capas', titulo: 'Capas de contexto', texto: 'Active la <b>cobertura y uso del suelo 2021</b> para ver qué hay en las brechas (pasto, cultivos, poblados…) o los <b>ríos y su franja ribereña</b>.' },
+    { sel: '#rs-avanzado', titulo: 'Opciones avanzadas', texto: 'Para quien quiera cambiar los supuestos: distancia entre parches, ancho funcional de un corredor y exclusión de brechas sobre agua. Los valores por defecto son los del método original.' },
+    { titulo: 'Recuerde', texto: '<p>El simulador mide <b>conectividad estructural</b> (la disposición del bosque), no comprueba que la fauna se desplace. Antes de restaurar hay que verificar en campo, la tenencia de la tierra y el uso actual.</p>' },
+  ];
+  const recorrido = () => window.CHCP_TOUR?.iniciar(PASOS, { clave: 'simulador', textoFin: 'Entendido' });
+  $('#rs-ayuda').addEventListener('click', recorrido);
+  window.CHCP_TOUR?.invitar('simulador', 'Le explicamos el simulador en 1 minuto.', recorrido);
 })();

@@ -138,7 +138,7 @@
     const d = n.ndvi_delta_medio ?? (n.ndvi_final_medio - n.ndvi_inicial_medio);
     const lectura = d <= -0.05 ? 'El vigor medio de la vegetación disminuyó de forma apreciable.' : d >= 0.05 ? 'El vigor medio de la vegetación aumentó.' : 'El vigor medio se mantuvo prácticamente estable.';
     const parte = t.area_ha ? n.ndvi_disminucion / t.area_ha * 100 : null;
-    return `<section class="fi-sec fi-two"><div><h2>${icon('trend', 22)} Vigor de la vegetación · NDVI Sentinel-2</h2>
+    return `<section class="fi-sec fi-two" id="fi-vigor"><div><h2>${icon('trend', 22)} Vigor de la vegetación · NDVI Sentinel-2</h2>
       ${bars([{ l: 'NDVI 2020', v: n.ndvi_inicial_medio, c: '#a6d96a' }, { l: 'NDVI 2025', v: n.ndvi_final_medio, c: d < 0 ? '#d8b365' : '#1a9850' }], (v) => number(v, 2))}
       <p><b>${lectura}</b> Cambio medio ${d > 0 ? '+' : ''}${number(d, 3)}. ${hectares(n.ndvi_disminucion)}${parte == null ? '' : ` (${pct(parte, 1)} del territorio)`} tuvieron un descenso fuerte (≥ 0.15) partiendo de vegetación vigorosa.</p></div>
       <div><h3>Cómo leer el NDVI</h3><ul class="fi-list"><li>Va de −1 a 1; la vegetación densa y sana suele estar entre 0.6 y 0.9.</li><li>Es la quinta fuente del índice de preevaluación (peso 0.5): solo suma cuando el descenso es extenso.</li><li>Un descenso aislado no prueba deforestación: puede ser cosecha, sequía, quema o nubes residuales. Por eso se contrasta con JRC, Hansen y ESRI en el mapa de señales coincidentes.</li></ul></div></section>`;
@@ -208,7 +208,7 @@
       <section class="fi-sec fi-map-sec"><h2>${icon('map', 22)} Mapa de la subcuenca</h2><div id="fi-map"></div><p class="fi-pending" id="fi-map-nota" hidden></p>
         <div class="fi-legend"><span><i style="background:#1b5e20"></i>Parche clave (conectividad alta)</span><span><i style="background:#66bb6a"></i>Parche de importancia media</span><span><i style="background:#c5e1a5"></i>Parche de importancia baja</span><span><i class="dash"></i>Brecha candidata a reconexión</span><span><i style="background:#1f78b4;height:3px"></i>Ríos (${esc(t.mapas?.rios_fuente || 'IGNTG 2022 · hidrografía 1:25 000')})</span><span><i style="background:#1b5e2033;border:1.5px solid #1b5e20"></i>Corredor Almanaque Azul · conectividad alta</span><span><i style="background:#9ccc6533;border:1.5px solid #9ccc65"></i>· mediana</span><span><i style="background:#ffb74d33;border:1.5px solid #ffb74d"></i>· media-baja</span><span><i class="pt"></i>Punto crítico (Almanaque Azul)</span></div></section>
       <section class="fi-sec fi-gal-sec"><h2>${icon('layers', 22)} Mapas temáticos</h2><p class="fi-note">Cada mapa muestra una fuente distinta sobre el mismo territorio. Ríos y corredores del Almanaque Azul se superponen como referencia.</p>${seccionGaleria(t)}</section>
-      <section class="fi-sec"><h2>${icon('chart', 22)} Indicadores y comparación con las demás subcuencas</h2><p class="fi-note">Verde: mejor que la mayoría de subcuencas; ámbar: intermedio; rojo: entre las más desfavorables. La comparación es relativa a la CHCP, no un umbral normativo.</p><div class="fi-inds">${indicadores}</div></section>
+      <section class="fi-sec" id="fi-indicadores"><h2>${icon('chart', 22)} Indicadores y comparación con las demás subcuencas</h2><p class="fi-note">Verde: mejor que la mayoría de subcuencas; ámbar: intermedio; rojo: entre las más desfavorables. La comparación es relativa a la CHCP, no un umbral normativo.</p><div class="fi-inds">${indicadores}</div></section>
       ${seccionRelativa(t)}
       <section class="fi-sec fi-two"><div><h2>${icon('forest', 22)} Dinámica del bosque · JRC 2025</h2>${donut(jrc, hectares(t.area_ha, 0))}</div>
         <div><h2>${icon('trend', 22)} Evolución 2020–2025 (ha)</h2>${serie.length ? line(serie, [{ k: 'jrc_degradacion_ha', l: 'Degradado (JRC)', c: '#f28e2b' }, { k: 'jrc_regeneracion_ha', l: 'Regeneración (JRC)', c: '#3d8b37' }, { k: 'jrc_deforestacion_ha', l: 'Deforestado (JRC)', c: '#2f7ee0' }]) : ''}
@@ -217,7 +217,7 @@
         <div><h2>${icon('forest', 22)} Árboles y altura del dosel</h2><ul class="fi-list"><li><b>ESRI 2017→2024:</b> ${hectares(t.esri?.esri_salida)} pasaron de árboles a otra clase y ${hectares(t.esri?.esri_ganancia)} de otra clase a árboles; ${hectares(t.esri?.esri_estable)} se mantuvieron con árboles.</li><li><b>Altura media del dosel (GEDI):</b> ${t.gedi_altura_m == null ? 'sin muestras suficientes' : `${number(t.gedi_altura_m, 1)} m`}. ${t.gedi_altura_m == null ? '' : t.gedi_altura_m >= 20 ? 'Dosel alto, típico de bosque maduro.' : t.gedi_altura_m >= 10 ? 'Dosel intermedio: bosque secundario o intervenido.' : 'Dosel bajo: vegetación joven, rastrojo o áreas abiertas.'}</li></ul></div></section>
       ${seccionNdvi(t)}
       ${seccionEri(t)}
-      <section class="fi-sec"><h2>${icon('network', 22)} Fragmentación y conectividad · bosque oficial 2021</h2>
+      <section class="fi-sec" id="fi-estructura"><h2>${icon('network', 22)} Fragmentación y conectividad · bosque oficial 2021</h2>
         ${e ? `<div class="fi-kv"><div><span>Parches</span><b>${number(e.metricas_clase.numero_parches, 0)}</b></div><div><span>Bosque</span><b>${hectares(e.metricas_clase.area_total_bosque_ha)}</b></div><div><span>Redes separadas</span><b>${number(e.metricas_red.numero_componentes, 0)}</b></div><div><span>Conexiones</span><b>${number(e.metricas_red.numero_aristas, 0)}</b></div><div><span>Aislados</span><b>${number(e.metricas_red.numero_parches_aislados, 0)}</b></div><div><span>Cohesión</span><b>${mp?.cohesion == null ? '—' : number(mp.cohesion, 1)}</b></div><div><span>IIC</span><b>${mp?.iic == null ? '—' : number(mp.iic, 4)}</b></div><div><span>Distancia entre parches</span><b>${mp?.enn_medio_m == null ? '—' : `${number(mp.enn_medio_m, 0)} m`}</b></div></div>
         <h3>Bosque interior (área núcleo)</h3>${nucleoTabla}
         ${diic.length ? `<h3>Parches más importantes para la red (dIIC)</h3><table class="fi-table"><thead><tr><th>Parche</th><th>Superficie</th><th>Aporte a la conectividad</th><th>Función</th></tr></thead><tbody>${diic.map((x) => `<tr><td>#${x.parche_id}</td><td>${hectares(x.area_ha)}</td><td>${pct(x.diic_pct)}</td><td>${x.es_puente ? 'Puente entre grupos' : 'Gran hábitat'}</td></tr>`).join('')}</tbody></table><p class="fi-note">dIIC: cuánto bajaría el índice integral de conectividad si se perdiera el parche (Pascual-Hortal y Saura, 2006). Distancia umbral ${number(mp.umbral_m, 0)} m.</p>` : ''}` : '<p>Sin estructura calculada.</p>'}</section>
@@ -241,6 +241,7 @@
         <dt>IIC / dIIC</dt><dd>Índice de conectividad del paisaje y cuánto aporta cada parche a ella.</dd><dt>NDVI</dt><dd>Índice de vigor de la vegetación calculado con imágenes Sentinel-2.</dd><dt>ERI</dt><dd>Índice indicativo de resiliencia ecológica (0–100).</dd><dt>Franja riparia</dt><dd>Faja de terreno a cada lado de un río o quebrada.</dd><dt>Almanaque Azul</dt><dd>Atlas que publica los corredores de conectividad y puntos críticos usados como referencia.</dd><dt>Conectividad estructural</dt><dd>Basada en la disposición del bosque; no demuestra que la fauna se desplace.</dd></dl></section>
       <footer class="fi-foot">Geoportal CHCP · Datos: JRC TMF, Hansen GFC, ESRI LULC, Copernicus Sentinel-2, GEDI, SINIA–MiAMBIENTE, Almanaque Azul · Procesado en Google Earth Engine (proyecto ${esc(st.data.proyecto)}) · Preevaluación indicativa: no predice deforestación ni certifica cumplimiento.</footer>`;
     drawMap(t);
+    if (location.hash && /^#fi-/.test(location.hash)) requestAnimationFrame(() => document.querySelector(location.hash)?.scrollIntoView({ block: 'start' }));
   }
   function referencias(map, puntos) {
     L.geoJSON(st.territory.corridors, { style: (f) => { const c = COLOR_CORREDOR[f.properties.categoria_etiqueta] || '#7fae00'; return { color: c, weight: 1.5, fillColor: c, fillOpacity: 0.14 }; }, onEachFeature: (f, l) => l.bindTooltip(`${f.properties.nombre} · conectividad ${f.properties.categoria_etiqueta} (Almanaque Azul)`) }).addTo(map);
@@ -299,7 +300,7 @@
     const t = st.data.territorios[id];
     if (!t) return;
     $('#fi-select').value = id;
-    history.replaceState(null, '', `${location.pathname}?id=${encodeURIComponent(id)}`);
+    history.replaceState(null, '', `${location.pathname}?id=${encodeURIComponent(id)}${/^#fi-/.test(location.hash) ? location.hash : ''}`);
     document.title = `Ficha técnica · ${t.nombre} · Geoportal CHCP`;
     const sim = $('#fi-sim');
     if (sim) { sim.hidden = id === 'chcp'; sim.href = `${sim.getAttribute('href').split('?')[0]}?id=${encodeURIComponent(id)}`; }
@@ -318,4 +319,19 @@
   $('#fi-print').addEventListener('click', () => window.print());
   const id = new URLSearchParams(location.search).get('id');
   select(st.data.territorios[id] ? id : (list.find((t) => t.id !== 'chcp') || list[0]).id);
+
+  // ---------------------------------------------------------------- recorrido guiado
+  const PASOS_FICHA = [
+    { titulo: 'La ficha técnica', texto: '<p>Resume en una página lo que dicen los datos satelitales sobre una subcuenca: si ha perdido bosque, cómo está el que queda y qué tan conectado está. Se puede descargar en PDF.</p>' },
+    { sel: '.fi-score', titulo: 'La preevaluación', texto: 'Puntaje de 0 a 6,5 que suma señales de deterioro de varias fuentes según reglas transparentes. «Alta» significa <b>prioridad para verificar en campo</b>, no daño confirmado.' },
+    { sel: '#fi-map', titulo: 'El mapa', texto: 'Parches de bosque oficial 2021 por importancia para la conectividad, brechas que convendría cerrar, ríos del IGNTG y corredores del Almanaque Azul.' },
+    { sel: '.fi-gal-sec', titulo: 'Mapas temáticos', texto: 'Cada mapa muestra una fuente distinta sobre el mismo territorio: cobertura oficial, estado del bosque (JRC), pérdida (Hansen), cambio (ESRI), vigor (NDVI) y dónde coinciden las señales.' },
+    { sel: '#fi-indicadores', titulo: 'Comparación con las demás subcuencas', texto: 'Cada indicador dice si esta subcuenca está mejor o peor que las otras. Verde = más favorable; rojo = de las más afectadas.' },
+    { sel: '#fi-estructura', titulo: 'Fragmentación', texto: 'Cuántos parches hay, cuánto bosque interior queda (lejos del borde) y qué parches sostienen la red.' },
+    { sel: '.fi-actions', titulo: 'Qué hacer', texto: 'Líneas de acción sugeridas a partir de los indicadores, con enlace al simulador para probar escenarios de restauración.' },
+    { titulo: 'Recuerde', texto: '<p>Es una <b>evaluación preliminar</b> con datos satelitales. La sección «Confiabilidad e incertidumbre» explica las limitaciones de cada fuente.</p>' },
+  ];
+  const recorridoFicha = () => window.CHCP_TOUR?.iniciar(PASOS_FICHA, { clave: 'ficha', textoFin: 'Entendido' });
+  $('#fi-ayuda')?.addEventListener('click', recorridoFicha);
+  setTimeout(() => window.CHCP_TOUR?.invitar('ficha', 'Le explicamos cómo leer la ficha en 1 minuto.', recorridoFicha), 1200);
 })();

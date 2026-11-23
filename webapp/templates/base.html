@@ -64,6 +64,7 @@
 {% if sitio_estatico %}<script>window.CHCP_STATIC = {{ static_map|tojson }}; window.CHCP_FULL_URL = {{ (full_app_url or "")|tojson }};</script>{% endif %}
 <script src="{{ url_for('static', filename='js/icons.js') }}"></script>
 <script src="{{ url_for('static', filename='js/common.js') }}"></script>
+<script src="{{ url_for('static', filename='js/tour.js') }}"></script>
 {% block scripts %}{% endblock %}
 </body>
 </html>

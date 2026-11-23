@@ -612,3 +612,83 @@ html.app #main-content:has(.pg) { overflow-y:auto; background:#f3f6fa; }
 .rs-rutas-t tr.rs-sub td { font-size:12px; color:#4e342e; padding-top:0; border-top:0; }
 .rs-rutas-t tr.rs-sub.on td { background:#f6effa; }
 .leaflet-image-layer.cob-raster { image-rendering: pixelated; }
+
+/* ---------------------------------------------------------------- portada guiada */
+.in-tour-btn { white-space:nowrap; }
+.in-aviso { display:flex; gap:12px; align-items:flex-start; margin:22px 0 4px; padding:14px 18px; border-radius:12px; background:#fff8e1; border:1px solid #f3d27a; color:#5d4300; font-size:14px; line-height:1.5; }
+.in-aviso b { white-space:nowrap; color:#7a5200; }
+.in-aviso em { font-style:normal; font-weight:700; }
+.in-area { display:flex; align-items:center; gap:10px; justify-content:center; margin:0 auto 20px; font-weight:700; color:var(--azul-tinta); }
+.in-area select { min-width:280px; padding:9px 12px; border:1px solid var(--azul-linea); border-radius:8px; background:#fff; font-weight:600; }
+.in-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(255px, 1fr)); gap:14px; }
+.in-q { display:flex; flex-direction:column; gap:6px; padding:18px 18px 16px; border:1px solid var(--line); border-radius:14px; background:#fff; color:var(--ink); text-decoration:none; box-shadow:var(--shadow); transition:transform .15s, border-color .15s, box-shadow .15s; cursor:pointer; position:relative; }
+.in-q:hover, .in-q:focus-visible { transform:translateY(-2px); border-color:var(--verde); box-shadow:0 10px 28px rgba(10,30,70,.12); }
+.in-q b { font-size:16px; line-height:1.25; color:var(--azul-tinta); }
+.in-q small { font-size:13px; color:var(--muted); line-height:1.45; }
+.in-q i { font-style:normal; font-size:11.5px; font-weight:700; color:var(--azul-medio); margin-top:auto; padding-top:6px; letter-spacing:.02em; }
+.in-q small.in-nota { font-size:11.5px; color:#7a5200; }
+.in-q-dest { background:linear-gradient(180deg, #f4fbe9 0%, #fff 60%); border-color:#cfe8a6; }
+.in-ic { font-size:26px; line-height:1; }
+.in-confianza { text-align:center; margin-top:18px; color:var(--muted); }
+.in-confianza a { font-weight:700; cursor:pointer; }
+.in-flujo { list-style:none; margin:0; padding:0; display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:16px; counter-reset:paso; }
+.in-flujo li { background:#fff; border-radius:14px; padding:20px 18px; border:1px solid var(--line); position:relative; }
+.in-flujo li > b { display:inline-flex; width:34px; height:34px; border-radius:50%; align-items:center; justify-content:center; background:var(--azul); color:#fff; font-size:16px; margin-bottom:10px; }
+.in-flujo h3 { font-size:16px; color:var(--azul-tinta); margin-bottom:6px; }
+.in-flujo p { font-size:13.5px; color:var(--muted); }
+.in-cta { display:flex; gap:10px; justify-content:center; margin-top:22px; flex-wrap:wrap; }
+.in-fuentes { list-style:none; margin:16px 0 0; padding:0; display:grid; gap:9px; }
+.in-fuentes li { display:grid; grid-template-columns:150px 1fr; gap:10px; font-size:13.5px; padding-bottom:8px; border-bottom:1px dashed var(--line); }
+.in-fuentes b { color:var(--azul-tinta); }
+.in-fuentes span { color:var(--muted); }
+.in-dos { display:grid; grid-template-columns:repeat(auto-fit, minmax(300px, 1fr)); gap:16px; }
+.in-dos > div { background:#fff; border-radius:14px; padding:20px 22px; border:1px solid var(--line); }
+.in-dos h3 { font-size:17px; margin-bottom:8px; }
+.in-dos ul { margin:0; padding-left:20px; display:grid; gap:7px; font-size:14px; }
+.in-si { border-top:4px solid var(--ok) !important; } .in-si h3 { color:var(--ok); }
+.in-no { border-top:4px solid var(--rojo) !important; } .in-no h3 { color:var(--rojo); }
+.in-faq-l { max-width:860px; margin:0 auto; display:grid; gap:10px; }
+.in-faq-l details { background:#fff; border:1px solid var(--line); border-radius:12px; padding:14px 18px; }
+.in-faq-l summary { cursor:pointer; font-weight:700; color:var(--azul-tinta); }
+.in-faq-l details p { margin-top:10px; color:var(--muted); font-size:14px; }
+@media (max-width:700px) { .in-fuentes li { grid-template-columns:1fr; gap:2px; } .in-area { flex-direction:column; align-items:stretch; } .in-area select { min-width:0; } }
+
+/* ---------------------------------------------------------------- recorrido guiado */
+.tour-capa { position:fixed; inset:0; z-index:5000; }
+.tour-foco { position:fixed; border-radius:12px; box-shadow:0 0 0 9999px rgba(6,22,48,.62); outline:3px solid var(--verde); transition:all .25s ease; pointer-events:none; }
+.tour-capa:has(.tour-foco[style*="display: none"]) { background:rgba(6,22,48,.62); }
+.tour-caja { position:fixed; background:#fff; border-radius:14px; padding:16px 18px 14px; box-shadow:0 18px 50px rgba(0,0,0,.35); transition:top .25s, left .25s; }
+.tour-cab { display:flex; justify-content:space-between; align-items:center; font-size:11.5px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:var(--azul-medio); }
+.tour-x { border:0; background:none; font-size:22px; line-height:1; cursor:pointer; color:var(--muted); padding:0 4px; }
+.tour-caja h3 { margin:6px 0 6px; font-size:18px; color:var(--azul-tinta); }
+.tour-txt { font-size:14px; line-height:1.5; color:var(--ink); }
+.tour-txt p + p { margin-top:8px; }
+.tour-pie { display:flex; justify-content:space-between; align-items:center; margin-top:14px; gap:10px; }
+.tour-pie .btn { padding:7px 14px; font-size:13px; }
+.tour-puntos { display:flex; gap:5px; }
+.tour-puntos i { width:7px; height:7px; border-radius:50%; background:var(--azul-linea); }
+.tour-puntos i.on { background:var(--azul); }
+.tour-invitacion { position:fixed; right:20px; bottom:20px; z-index:4000; max-width:320px; background:#fff; border-radius:14px; padding:14px 16px; box-shadow:0 14px 40px rgba(10,30,70,.25); border-left:5px solid var(--verde); display:grid; gap:6px; font-size:13.5px; animation:tour-entra .35s ease; }
+.tour-invitacion b { color:var(--azul-tinta); font-size:15px; }
+.tour-invitacion div { display:flex; gap:8px; margin-top:4px; }
+.tour-invitacion .btn { padding:6px 12px; font-size:13px; }
+@keyframes tour-entra { from { transform:translateY(20px); opacity:0; } to { transform:none; opacity:1; } }
+.ayuda-btn { display:inline-flex; align-items:center; gap:6px; border:1px solid var(--azul-linea); background:#fff; color:var(--azul); border-radius:999px; padding:5px 12px; font-size:12.5px; font-weight:700; cursor:pointer; }
+.ayuda-btn:hover { background:var(--azul-suave); }
+.hero .acts .in-tour-btn { align-self:flex-end; height:auto; padding:12px 20px; border-radius:999px; margin-bottom:26px; }
+/* simulador: pasos y modos */
+.rs-top { display:flex; justify-content:space-between; align-items:center; gap:8px; flex-wrap:wrap; }
+.rs-paso-t { display:block; font-weight:700; color:var(--azul-tinta); font-size:13.5px; margin-bottom:8px; }
+.rs-modos { display:grid; gap:8px; }
+.rs-modo { text-align:left; border:1.5px solid var(--line); background:#fff; border-radius:10px; padding:10px 12px; cursor:pointer; display:grid; gap:2px; }
+.rs-modo b { color:var(--azul-tinta); font-size:14px; }
+.rs-modo small { color:var(--muted); font-size:12px; }
+.rs-modo.on { border-color:var(--azul); background:var(--azul-suave); box-shadow:inset 4px 0 0 var(--azul); }
+#rs-rutas-btn.rs-modo.on { border-color:#7b1fa2; background:#f6effa; box-shadow:inset 4px 0 0 #7b1fa2; }
+.rs-modo:disabled { opacity:.45; cursor:not-allowed; }
+.rs-link { border:0; background:none; color:var(--azul); text-decoration:underline; cursor:pointer; font-size:12.5px; padding:4px 0; }
+.rs-avanzado { margin:0 16px 16px; display:grid; gap:10px; }
+.rs-avanzado[open] { padding-bottom:12px; }
+.rs-avanzado .rs-field { margin-top:8px; }
+@media print { .ayuda-btn, .tour-invitacion, .tour-capa { display:none !important; } }
+.in-identidad { font-size:12px; color:var(--faint); margin:4px 0 8px; } .in-identidad code { font-size:11.5px; }
