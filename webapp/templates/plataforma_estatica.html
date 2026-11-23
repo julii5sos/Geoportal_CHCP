@@ -4,16 +4,17 @@
 <main id="v-plataforma" class="pe">
   <aside class="side" id="left-panel">
     <div class="side-tabs" role="tablist" aria-label="Panel cartográfico">
-      <button role="tab" data-s="capas" aria-selected="true">Capas</button>
-      <button role="tab" data-s="poligono" aria-selected="false">Polígono</button>
+      <button role="tab" data-s="capas" aria-selected="true">Temas</button>
+      <button role="tab" data-s="poligono" aria-selected="false">Mi geometría</button>
       <button role="tab" data-s="base" aria-selected="false">Mapa base</button>
     </div>
     <div class="side-body" id="s-capas">
-      <div class="fld pe-terr"><label for="pe-terr">Territorio</label><select id="pe-terr"><option value="chcp">Toda la cuenca</option></select><span class="hint">Al elegir una subcuenca, los mapas pasan a su resolución detallada.</span></div>
-      <div id="pe-capas"></div>
+      <div class="fld pe-terr"><label for="pe-terr">Territorio</label><select id="pe-terr"><option value="chcp">Toda la cuenca</option></select><span class="hint">También puede hacer clic en una subcuenca del mapa.</span></div>
+      <div id="pe-temas" class="tm-lista"></div>
+      <div id="pe-mis" class="tm-mis" hidden></div>
     </div>
     <div class="side-body" id="s-poligono" hidden>
-      <p class="hint-p">Dibuje o suba el polígono de una finca o parcela y verifíquelo en el momento con los resultados ya calculados para toda la cuenca: señales satelitales de cambio, preevaluación MT-2026.7, prioridad de visita, corredores, parches de bosque, NDVI, ERI y franjas riparias.</p>
+      <p class="hint-p">Dibuje o suba el polígono de una finca o parcela. Después elija qué analizar: verá las mismas gráficas que para una subcuenca (preevaluación, series por año, comparación de años, fragmentación y corredores), calculadas dentro de su polígono.</p>
       <div class="pbtns">
         <button class="btn btn-s" id="pg-draw" type="button">Dibujar en el mapa</button>
         <label class="btn btn-s" for="pg-file">Subir archivo</label>
@@ -34,6 +35,7 @@
     <div id="smap"></div>
     <div class="maplegend" id="pe-legend"></div>
     <div class="pe-aviso" id="pe-aviso" hidden></div>
+    <div class="pe-anios" id="pe-anios" hidden></div>
     <div class="coords" id="coords"><span>Lat — · Lon —</span></div>
     <div class="drawbar" id="pg-drawbar" hidden><b>Dibujando polígono</b><span id="pg-n">0 vértices</span><button class="btn btn-s" id="pg-undo" type="button">Deshacer</button><button class="btn btn-p" id="pg-end" type="button">Terminar</button><button class="btn btn-s" id="pg-cancel" type="button">Cancelar</button></div>
     <div class="busy" id="pg-busy" hidden><div class="busy-c"><b>Analizando el polígono</b><div class="bar"><i id="pg-bar"></i></div><p id="pg-paso">Leyendo los mapas de valores…</p></div></div>
@@ -52,4 +54,4 @@
   </div>
 </div>
 {% endblock %}
-{% block scripts %}<script src="{{ url_for('static', filename='js/red_conectividad.js') }}"></script><script src="{{ url_for('static', filename='js/analisis_poligono.js') }}"></script><script src="{{ url_for('static', filename='js/plataforma_estatica.js') }}"></script>{% endblock %}
+{% block scripts %}<script src="{{ url_for('static', filename='js/red_conectividad.js') }}"></script><script src="{{ url_for('static', filename='js/analisis_poligono.js') }}"></script><script src="{{ url_for('static', filename='js/graficas.js') }}"></script><script src="{{ url_for('static', filename='js/plataforma_estatica.js') }}"></script>{% endblock %}

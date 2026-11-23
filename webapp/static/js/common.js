@@ -32,6 +32,7 @@
     const dia = d.toDateString() === new Date().toDateString() ? 'hoy' : d.toLocaleDateString('es-PA', { day: 'numeric', month: 'short' });
     return `${prep} la actualización de datos con Earth Engine que está en curso (iniciada ${dia} a las ${hora}); los resultados aparecerán al terminar`;
   }
+  const serieFile = (ruta) => (window.CHCP_STATIC ? `datos/series/${ruta}` : `/api/v1/series/${ruta}`);
   const hidroFile = (archivo) => (window.CHCP_STATIC ? `datos/hidrografia/${archivo}` : `/api/v1/hidrografia/${archivo}`);
 
   // Procedencia visible de cada resultado (auditoría D): tipo A, B o C, fecha y versión.
@@ -128,6 +129,6 @@
     if (document.body) avisar(); else document.addEventListener('DOMContentLoaded', avisar);
   }
 
-  window.CHCP = {$, $$, escapeHtml, number, hectares, api, mapFile, valFile, hidroFile, consultarActualizacion, pendiente, procedencia, toast, readPortalState, writePortalState, normalizeSearch};
+  window.CHCP = {$, $$, escapeHtml, number, hectares, api, mapFile, valFile, hidroFile, serieFile, consultarActualizacion, pendiente, procedencia, toast, readPortalState, writePortalState, normalizeSearch};
 })();
 

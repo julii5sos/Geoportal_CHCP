@@ -1,9 +1,11 @@
-/* Plataforma SIG del sitio publicado: capas precalculadas por cuenca y subcuenca
-   (sin Earth Engine en el navegador). Misma estructura que la plataforma completa:
-   Capas · Polígono · Mapa base, mapa central y panel de resultados. */
+/* Plataforma SIG del sitio publicado, organizada por temas (como MapBiomas): a la izquierda
+   los temas y «Mi geometría»; en el centro el mapa con su leyenda y la barra de años; a la
+   derecha las gráficas del tema para la cuenca, la subcuenca o el polígono elegido.
+   Todo sale de resultados precalculados con Earth Engine; no hay Earth Engine en el navegador. */
 (async function () {
-  const { $, $$, escapeHtml: esc, number, hectares, api, mapFile } = window.CHCP;
+  const { $, $$, escapeHtml: esc, number, hectares, api, mapFile, serieFile } = window.CHCP;
   const icon = window.CHCP_ICON || (() => '');
+  const G = window.CHCP_GRAF;
   const PRIO = { Alta: '#d0442c', Media: '#f28e2b', Preventiva: '#fabc20', Baja: '#77cc09' };
   const COLOR_CORREDOR = { Alta: '#1b5e20', Mediana: '#9ccc65', 'Media-baja': '#ffb74d' };
   const BASES = [
@@ -11,10 +13,15 @@
     ['satelite', 'Satélite', 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', '#3d5a40'],
     ['topo', 'Topográfico', 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}', '#d9e4c8'],
   ];
-  const st = { data: null, territory: null, id: 'chcp', map: null, base: null, activas: new Set(['cuenca']), opacidad: 0.85, capas: {}, geo: null, rios: null, vistaPol: null, analisisMapa: null };
+  const st = { data: null, territory: null, series: null, est: {}, id: 'chcp', map: null, base: null, activas: new Set(['cuenca']), opacidad: 0.85, capas: {}, geo: null, vistaPol: null,
+    tema: 'preev', modo: null, aux: new Set(), anio: {}, ocultas: {}, comparar: {}, rankClase: {}, analisis: [] };
   const pct = (v, d = 0) => (v == null ? '—' : `${number(v, d)} %`);
   const t = () => st.data.territorios[st.id];
   const conMapas = () => (t()?.mapas?.capas?.length ? t() : st.data.territorios.chcp);
+  const enlace = (ruta) => (window.CHCP_STATIC ? `${ruta}.html` : `/${ruta}`);
+  const tarjeta = (n, v, s2 = '') => `<div class="pe-m"><span>${n}</span><b>${v}</b>${s2 ? `<small>${s2}</small>` : ''}</div>`;
+  const tabla = (cab, filas) => `<table class="fi-table pe-t"><thead><tr>${cab.map((c) => `<th>${c}</th>`).join('')}</tr></thead><tbody>${filas.map((f) => `<tr>${f.map((c) => `<td>${c}</td>`).join('')}</tr>`).join('')}</tbody></table>`;
+  const NOMBRES_FUENTE = { tmf: 'JRC TMF', hansen: 'Hansen GFC', esri: 'ESRI LULC', gedi: 'GEDI', ndvi: 'NDVI Sentinel-2' };
   // Con un polígono analizado, los mapas salen de las subcuencas que toca (y de la cuenca
   // completa debajo si alguna aún no tiene mapas detallados), recortados al polígono.
   function fuentesMapa() {
@@ -25,53 +32,144 @@
   }
   const geoParches = () => (st.vistaPol ? st.vistaPol.geo : st.id !== 'chcp' ? st.geo : null);
 
-  // ------------------------------------------------------------ catálogo de capas
+  // ------------------------------------------------------------ temas (columna izquierda)
+  // Un tema a la vez, como en MapBiomas: cada tema activa su mapa, su leyenda, su barra de
+  // años (si tiene serie anual) y sus gráficas en el panel de la derecha.
+  const TEMAS = [
+    { grupo: 'Cambio de cobertura', items: [
+      { k: 'preev', t: 'Preevaluación MT-2026.7', i: 'shield', capas: ['r:coincidencia'], d: 'Las cinco fuentes juntas: dónde coinciden las señales de pérdida de JRC, Hansen y ESRI, con NDVI y GEDI como apoyo. Puntaje 0–6,5.' },
+      { k: 'jrc', t: 'Bosque tropical · JRC TMF', i: 'forest', prod: 'jrc', capas: ['r:jrc_2025'], d: 'Estado del bosque húmedo cada año desde 1990: sin perturbación, degradado, deforestado o en regeneración (Landsat, 30 m).' },
+      { k: 'hansen', t: 'Pérdida arbórea · Hansen', i: 'loss', prod: 'hansen', capas: ['r:hansen'], d: 'Año en que se perdió la cobertura arbórea, 2001–2025 (Landsat, 30 m). El índice usa solo 2021–2025.' },
+      { k: 'esri', t: 'Cobertura y uso · ESRI', i: 'layers', prod: 'esri', capas: ['r:esri_cambio'], d: 'Clase de cobertura de cada año, 2017–2025 (Sentinel-2, 10 m): árboles, pastizal, cultivos, área construida, agua…' },
+      { k: 'ndvi', t: 'Vigor de la vegetación · NDVI', i: 'sprout', prod: 'ndvi', capas: ['r:ndvi_cambio'], d: 'Vigor de la vegetación de cada año, 2017–2025 (Sentinel-2): de sin vegetación activa a vegetación densa.' },
+      { k: 'gedi', t: 'Altura del dosel · GEDI', i: 'trend', capas: ['v:gedi'], d: 'Altura media del dosel (láser GEDI, 100 m). Referencia estructural fija, sin serie anual.' },
+    ] },
+    { grupo: 'Cobertura oficial', items: [
+      { k: 'sinia', t: 'Cobertura oficial · SINIA', i: 'polygon', capas: ['r:sinia_2021'], d: 'Bosques y otras tierras boscosas de MiAMBIENTE (2021). Base de la fragmentación y la conectividad.' },
+    ] },
+    { grupo: 'Paisaje y conectividad', items: [
+      { k: 'frag', t: 'Fragmentación y conectividad', i: 'network', capas: ['parches', 'brechas'], d: 'Parches del bosque oficial 2021, su importancia en la red y las brechas candidatas a reconexión.' },
+      { k: 'corr', t: 'Corredores biológicos', i: 'route', capas: ['corredores', 'puntos'], d: 'Corredores del Almanaque Azul, Corredor Biológico Mesoamericano y puntos críticos.' },
+      { k: 'rip', t: 'Ríos y franjas riparias', i: 'leaf', capas: ['rios', 'r:riparia'], d: 'Bosque en franjas de 30, 50 y 100 m junto a los cauces (hidrografía IGNTG).' },
+      { k: 'eri', t: 'Resiliencia ecológica (ERI)', i: 'sprout', capas: ['r:eri'], d: 'Índice indicativo 0–100 de integridad, conectividad local, relieve y cercanía a ríos.' },
+    ] },
+  ];
+  const TEMA = Object.fromEntries(TEMAS.flatMap((g) => g.items.map((x) => [x.k, x])));
+  const AUXILIARES = ['subcuencas', 'corredores', 'puntos', 'rios', 'sitios'];
+
+  // ------------------------------------------------------------ catálogo de capas fijas
   function catalogo() {
-    const raster = (st.data.capas_mapa || []).map((c) => ({ k: `r:${c.clave}`, nombre: c.titulo, nota: c.lectura, grupo: 'Bosque, cambio y resiliencia', disponible: fuentesMapa().some((f) => f?.mapas?.capas?.includes(c.clave)), capa: c }));
+    const raster = (st.data.capas_mapa || []).map((c) => ({ k: `r:${c.clave}`, nombre: c.titulo, nota: c.lectura, disponible: fuentesMapa().some((f) => f?.mapas?.capas?.includes(c.clave)), capa: c }));
     return [
-      { k: 'cuenca', nombre: 'Límite de la cuenca', nota: 'Cuenca Hidrográfica del Canal de Panamá. Pase el cursor para ver cada subcuenca; haga clic para elegirla.', grupo: 'Territorio', disponible: true, color: '#0a4393' },
-      { k: 'preevaluacion', nombre: 'Preevaluación por subcuenca', nota: 'Puntaje MT-2026.7 (0–6,5) de cada subcuenca.', grupo: 'Territorio', disponible: true, color: '#d0442c' },
-      { k: 'subcuencas', nombre: 'Límites de subcuencas', nota: '53 subcuencas del Canal de Panamá.', grupo: 'Territorio', disponible: true, color: '#0a4393' },
-      { k: 'corredores', nombre: 'Corredores · Almanaque Azul', nota: 'Corredores de conectividad publicados, por categoría.', grupo: 'Territorio', disponible: true, color: '#9ccc65' },
-      { k: 'puntos', nombre: 'Puntos críticos · Almanaque Azul', nota: 'Amenazas a la conectividad señaladas por el Almanaque Azul.', grupo: 'Territorio', disponible: true, color: '#f04438' },
-      { k: 'rios', nombre: 'Ríos', nota: conMapas()?.mapas?.rios_fuente || 'IGNTG 2022 · hidrografía 1:25 000', grupo: 'Territorio', disponible: fuentesMapa().some((f) => f?.mapas?.rios), color: '#1f78b4' },
-      { k: 'sitios', nombre: 'Sitios para verificación de campo', nota: 'Manchas con señales de pérdida, priorizadas por fuentes coincidentes.', grupo: 'Territorio', disponible: Object.values(st.data.territorios).some((x) => x?.sitios?.length), color: '#6a1b9a' },
+      { k: 'subcuencas', nombre: 'Límites de subcuencas', disponible: true, color: '#0a4393' },
+      { k: 'corredores', nombre: 'Corredores · Almanaque Azul', disponible: true, color: '#9ccc65' },
+      { k: 'puntos', nombre: 'Puntos críticos · Almanaque Azul', disponible: true, color: '#f04438' },
+      { k: 'rios', nombre: 'Ríos (IGNTG 2022)', disponible: fuentesMapa().some((f) => f?.mapas?.rios), color: '#1f78b4' },
+      { k: 'sitios', nombre: 'Sitios para verificación de campo', disponible: Object.values(st.data.territorios).some((x) => x?.sitios?.length), color: '#6a1b9a' },
       ...raster,
-      { k: 'parches', nombre: 'Parches de bosque 2021 por importancia', nota: 'Bosque oficial SINIA 2021; color según su papel en la red.', grupo: 'Fragmentación y conectividad', disponible: !!geoParches(), color: '#1b5e20' },
-      { k: 'brechas', nombre: 'Brechas candidatas a reconexión', nota: 'Parches aislados y su vecino más cercano.', grupo: 'Fragmentación y conectividad', disponible: !!geoParches(), color: '#ff5252' },
+      { k: 'parches', nombre: 'Parches de bosque 2021 por importancia', disponible: !!geoParches(), color: '#1b5e20' },
+      { k: 'brechas', nombre: 'Brechas candidatas a reconexión', disponible: !!geoParches(), color: '#ff5252' },
     ];
   }
-  function renderCapas() {
-    const grupos = {};
-    catalogo().forEach((c) => { (grupos[c.grupo] ||= []).push(c); });
-    const aviso = st.vistaPol ? `<div class="pe-vista"><b>Vista del polígono dibujado</b><span>Los mapas se muestran solo dentro del polígono.</span><button type="button" class="btn btn-s" id="pe-ver-terr">Ver la subcuenca completa</button></div>` : '';
-    $('#pe-capas').innerHTML = aviso + Object.entries(grupos).map(([g, items], i) => `<div class="lg ${items.some((x) => st.activas.has(x.k) && x.disponible) ? 'open' : ''}"><button type="button"><span>${esc(g)}</span><span class="cnt">${items.filter((x) => st.activas.has(x.k)).length || ''}</span><i class="chev"></i></button><div class="lg-items">${items.map((c) => `<div class="ly ${c.disponible ? '' : 'layer-disabled'}"><div class="ly-h"><span class="tg"><input type="checkbox" data-k="${c.k}" ${st.activas.has(c.k) && c.disponible ? 'checked' : ''} ${c.disponible ? '' : 'disabled'} aria-label="Mostrar ${esc(c.nombre)}"><span></span></span><i class="layer-color" style="background:${c.capa ? (c.capa.paleta ? `linear-gradient(90deg,${c.capa.paleta.join(',')})` : c.capa.leyenda[0].color) : c.color}"></i><label class="nm">${esc(c.nombre)}<small>${esc(c.disponible ? c.nota : (c.k === 'parches' || c.k === 'brechas') ? 'Elija una subcuenca.' : `Se genera ${window.CHCP.pendiente()}.`)}</small></label></div></div>`).join('')}${i === 1 ? `<label class="pe-op">Opacidad de los mapas <output>${Math.round(st.opacidad * 100)} %</output><input type="range" id="pe-op" min="20" max="100" step="5" value="${st.opacidad * 100}"></label>` : ''}</div></div>`).join('');
-    $$('#pe-capas .lg > button').forEach((b) => b.addEventListener('click', () => b.parentElement.classList.toggle('open')));
-    $('#pe-ver-terr')?.addEventListener('click', () => { st.vistaPol = null; renderCapas(); dibujar(); });
-    $$('#pe-capas [data-k]').forEach((x) => x.addEventListener('change', () => { x.checked ? st.activas.add(x.dataset.k) : st.activas.delete(x.dataset.k); st.analisisMapa = null; $$('#pe-res-b .pe-nav a').forEach((n) => n.setAttribute('aria-current', 'false')); dibujar(); renderCapas(); }));
-    $('#pe-op')?.addEventListener('input', (e) => { st.opacidad = e.target.value / 100; e.target.previousElementSibling.textContent = `${e.target.value} %`; Object.entries(st.capas).forEach(([k, l]) => k.startsWith('r:') && l.eachLayer((x) => x.setOpacity(st.opacidad))); });
+
+  // ------------------------------------------------------------ series anuales
+  // Territorios cuyas series se usan: la cuenca o subcuenca elegida, o las subcuencas que toca el polígono.
+  const idsVista = () => (st.vistaPol ? st.vistaPol.ids : [st.id]);
+  const prodInfo = (prod) => st.series?.productos?.[prod];
+  function haySerie(prod) {
+    if (!prod || !prodInfo(prod)) return false;
+    return idsVista().some((id) => st.series.territorios?.[id]?.mapas?.[prod]);
+  }
+  const ANIO_INICIAL = { jrc: 2025, hansen: 2025, esri: 2024, ndvi: 2025 };
+  const anioActual = (prod) => st.anio[prod] ?? ANIO_INICIAL[prod] ?? prodInfo(prod)?.anios?.slice(-1)[0];
+  function capasTema() {
+    const T = TEMA[st.tema];
+    const s = new Set(['cuenca', ...st.aux]);
+    if (T.prod && haySerie(T.prod)) s.add(`s:${T.prod}`);
+    else (T.capas || []).forEach((c) => s.add(c));
+    return s;
+  }
+  const cacheBytes = new Map();
+  function bytesCache(url) {
+    if (!cacheBytes.has(url)) cacheBytes.set(url, bytes(url).catch((e) => { cacheBytes.delete(url); throw e; }));
+    return cacheBytes.get(url);
+  }
+  const hex = (c) => [1, 3, 5].map((i) => parseInt(c.slice(i, i + 2), 16));
+  /** Tabla valor → color para colorear un PNG de valores (null = transparente). */
+  function lutSerie(prod, anio) {
+    const lut = new Array(256).fill(null), ocultas = st.ocultas[prod] || new Set();
+    prodInfo(prod).clases.forEach((c) => {
+      if (ocultas.has(c.valor)) return;
+      if (prod === 'hansen' && c.valor > anio - 2000) return; // pérdida acumulada hasta el año elegido
+      lut[c.valor] = hex(c.color);
+    });
+    return lut;
+  }
+  const GEDI_CLASES = [[0, 5, '#edf8e9', 'Menos de 5 m'], [5, 10, '#bae4b3', '5–10 m'], [10, 15, '#74c476', '10–15 m'], [15, 20, '#31a354', '15–20 m'], [20, 99, '#006d2c', '20 m o más']];
+  function lutGedi() {
+    const c = st.data.codificacion_valores?.gedi, lut = new Array(256).fill(null);
+    if (!c) return lut;
+    for (let q = 0; q < 255; q += 1) { const v = c.minimo + q * c.paso; const k = GEDI_CLASES.find(([a, b]) => v >= a && v < b); if (k) lut[q] = hex(k[2]); }
+    return lut;
+  }
+  function colorear({ v, w, h }, lut) {
+    const c = document.createElement('canvas'); c.width = w; c.height = h;
+    const ctx = c.getContext('2d'), img = ctx.createImageData(w, h), d = img.data;
+    for (let i = 0; i < v.length; i += 1) { const k = lut[v[i]]; if (k) { const j = i * 4; d[j] = k[0]; d[j + 1] = k[1]; d[j + 2] = k[2]; d[j + 3] = 255; } }
+    ctx.putImageData(img, 0, 0);
+    return c.toDataURL();
+  }
+  async function capaSerie(prod) {
+    const anio = anioActual(prod), lut = lutSerie(prod, anio), grupo = L.layerGroup();
+    for (const id of idsVista()) {
+      const meta = st.series.territorios?.[id]?.mapas?.[prod];
+      if (!meta) continue;
+      const archivo = prod === 'hansen' ? 'hansen.v.png' : `${prod}_${anio}.v.png`;
+      try {
+        const b = await bytesCache(serieFile(`mapas/${id}/${archivo}`));
+        L.imageOverlay(colorear(b, lut), meta.limites, { opacity: st.opacidad, interactive: false, pane: 'rasters', className: 'pe-raster' }).addTo(grupo);
+      } catch (_) { /* mapa de ese año aún no calculado */ }
+    }
+    return grupo;
+  }
+  async function capaGedi() {
+    const grupo = L.layerGroup(), lut = lutGedi();
+    for (const f of fuentesMapa().filter((x) => x?.mapas?.valores?.includes('gedi'))) {
+      try { const b = await bytesCache(mapFile(f.id, 'gedi.v.png')); L.imageOverlay(colorear(b, lut), f.mapas.limites, { opacity: st.opacidad, interactive: false, pane: 'rasters', className: 'pe-raster' }).addTo(grupo); } catch (_) { /* sin GEDI */ }
+    }
+    return grupo;
+  }
+  /** Superficies por año de un producto para la vista actual (territorio o polígono). */
+  async function datosSerie(prod) {
+    if (!haySerie(prod)) return null;
+    if (st.vistaPol) return seriePoligono(prod);
+    if (!(st.id in st.est)) st.est[st.id] = await fetch(serieFile(`estadisticas/${st.id}.json`)).then((r) => (r.ok ? r.json() : null)).catch(() => null);
+    return st.est[st.id]?.[prod] || null;
   }
 
   // ------------------------------------------------------------ mapa
+  let turnoDibujo = 0;
   async function dibujar() {
+    const turno = ++turnoDibujo;
     const map = st.map;
-    Object.values(st.capas).forEach((l) => map.removeLayer(l));
-    st.capas = {};
+    st.activas = capasTema();
+    const nuevas = {};
     const fuente = conMapas(), fuentes = fuentesMapa();
     const orden = catalogo().filter((c) => c.disponible && st.activas.has(c.k));
+    for (const k of [...st.activas].filter((x) => x.startsWith('s:'))) nuevas[k] = await capaSerie(k.slice(2));
+    if (st.activas.has('v:gedi')) nuevas['v:gedi'] = await capaGedi();
+    if (turno !== turnoDibujo) return; // otra petición más reciente ya está dibujando
+    Object.values(st.capas).forEach((l) => map.removeLayer(l));
+    st.capas = nuevas;
+    Object.values(nuevas).forEach((l) => l.addTo(map));
     for (const c of orden.filter((x) => x.k.startsWith('r:'))) {
       st.capas[c.k] = L.layerGroup(fuentes.filter((f) => f.mapas.capas.includes(c.capa.clave)).map((f) => L.imageOverlay(mapFile(f.id, `${c.capa.clave}.png`), f.mapas.limites, { opacity: st.opacidad, interactive: false, pane: 'rasters', className: 'pe-raster' }))).addTo(map);
-    }
-    if (st.activas.has('preevaluacion')) {
-      // Debajo del velo (se recorta con la subcuenca) y transparente sobre ella si hay mapas activos.
-      const hayRaster = orden.some((c) => c.k.startsWith('r:'));
-      st.capas.preevaluacion = L.geoJSON(st.territory.subbasins, { pane: 'rasters', style: (f) => { const p = st.data.territorios[f.properties.id]?.preevaluacion; const propia = st.vistaPol ? st.vistaPol.ids.includes(f.properties.id) : f.properties.id === st.id; return { color: '#fff', weight: 0.8, fillColor: PRIO[p?.prioridad] || '#e5e9f0', fillOpacity: propia && hayRaster ? 0 : 0.55 }; }, onEachFeature: clicSubcuenca }).addTo(map);
     }
     if (st.activas.has('cuenca')) {
       // Solo el contorno de la cuenca (y de la subcuenca elegida). Las 53 subcuencas quedan
       // invisibles: se resaltan al pasar el cursor y se eligen con un clic.
       const grupo = L.layerGroup().addTo(map); st.capas.cuenca = grupo;
-      if (!st.vistaPol && !st.activas.has('subcuencas') && !st.activas.has('preevaluacion')) {
+      if (!st.vistaPol && !st.activas.has('subcuencas')) {
         const base = { color: '#0a4393', weight: 0, fillOpacity: 0, opacity: 0 };
         L.geoJSON(st.territory.subbasins, { style: base, onEachFeature: (f, l) => { clicSubcuenca(f, l); l.on('mouseover', () => l.setStyle({ weight: 1.5, opacity: 0.9 })); l.on('mouseout', () => l.setStyle(base)); } }).addTo(grupo);
       }
@@ -80,7 +178,7 @@
       if (elegida) L.geoJSON(elegida, { style: { color: '#f5b700', weight: 3, fill: false }, interactive: false }).addTo(grupo);
     }
     if (st.activas.has('subcuencas')) {
-      st.capas.subcuencas = L.geoJSON(st.territory.subbasins, { style: (f) => ({ color: f.properties.id === st.id && !st.vistaPol ? '#ffd54f' : '#0a4393', weight: f.properties.id === st.id && !st.vistaPol ? 3 : 1, fill: !st.activas.has('preevaluacion'), fillOpacity: 0 }), onEachFeature: clicSubcuenca }).addTo(map);
+      st.capas.subcuencas = L.geoJSON(st.territory.subbasins, { style: (f) => ({ color: f.properties.id === st.id && !st.vistaPol ? '#ffd54f' : '#0a4393', weight: f.properties.id === st.id && !st.vistaPol ? 3 : 1, fillOpacity: 0 }), onEachFeature: clicSubcuenca }).addTo(map);
     }
     if (st.activas.has('corredores')) st.capas.corredores = L.geoJSON(st.territory.corridors, { style: (f) => { const c = COLOR_CORREDOR[f.properties.categoria_etiqueta] || '#7fae00'; return { color: c, weight: 1.4, fillColor: c, fillOpacity: 0.15 }; }, onEachFeature: (f, l) => l.bindTooltip(`${esc(f.properties.nombre)} · conectividad ${esc(f.properties.categoria_etiqueta)}`) }).addTo(map);
     if (st.activas.has('rios')) {
@@ -114,105 +212,380 @@
     if (mixto) aviso.innerHTML = `Parte del polígono cae en subcuencas sin mapas detallados: allí se muestra el mapa de la cuenca completa (píxel de ${number(st.data.territorios.chcp.mapas.tamano_pixel_m, 0)} m), solo como referencia visual: esa parte no entra en las cifras. Los mapas detallados se generan ${window.CHCP.pendiente()}.`;
     if (reutiliza) aviso.innerHTML = `Los mapas detallados de ${esc(t().nombre)} aún no se han generado: se muestra el mapa de la cuenca completa (píxel de ${number(fuente.mapas.tamano_pixel_m, 0)} m) recortado a la subcuenca. Se reemplazará por la versión de 10–30 m ${window.CHCP.pendiente()}.`;
     leyenda(orden);
+    barraAnios();
   }
   function clicSubcuenca(f, l) {
     const x = st.data.territorios[f.properties.id];
     l.bindTooltip(`${esc(f.properties.nombre)}${x ? ` · ${number(x.preevaluacion.puntaje, 1)} pts (${esc(x.preevaluacion.prioridad)})` : ''}`, { sticky: true });
-    l.on('click', () => { if (!pg.dibujando) seleccionar(f.properties.id, true); });
+    l.on('click', () => { if (!pg.dibujando) seleccionar(f.properties.id); });
   }
+
+  // ------------------------------------------------------------ leyenda flotante
   function leyenda(orden) {
-    const bloques = orden.map((c) => {
+    const T = TEMA[st.tema];
+    const prod = T.prod && haySerie(T.prod) ? T.prod : null;
+    let cuerpo = '';
+    if (prod) {
+      const info = prodInfo(prod), ocultas = st.ocultas[prod] || new Set();
+      cuerpo = prod === 'hansen'
+        ? `<div class="pe-lg"><b>Año de la pérdida</b><div class="fi-ramp"><i style="background:linear-gradient(90deg,${info.clases.map((c) => c.color).join(',')})"></i><span><em>2001</em><em>${anioActual(prod)}</em></span></div><p class="pe-lg-nota">Pérdida acumulada de 2001 hasta el año elegido.</p></div>`
+        : `<div class="pe-lg"><b>${esc(info.corto)} · ${anioActual(prod)}</b>${info.clases.map((c) => `<label class="pe-lg-cl"><input type="checkbox" data-cl="${c.valor}" ${ocultas.has(c.valor) ? '' : 'checked'}><i style="background:${c.color}"></i>${esc(c.etiqueta)}</label>`).join('')}<p class="pe-lg-nota">Desmarque una clase para ocultarla en el mapa.</p></div>`;
+    } else if (st.tema === 'gedi') {
+      cuerpo = `<div class="pe-lg"><b>Altura media del dosel</b>${GEDI_CLASES.map(([, , c, n]) => `<div><i style="background:${c}"></i>${n}</div>`).join('')}</div>`;
+    }
+    const bloques = orden.filter((c) => !AUXILIARES.includes(c.k) || c.k === 'corredores' || c.k === 'puntos').map((c) => {
       if (c.capa) {
         const ley = c.capa.tipo === 'continuo' ? `<div class="fi-ramp"><i style="background:linear-gradient(90deg,${c.capa.paleta.join(',')})"></i><span>${c.capa.leyenda.map((x) => `<em>${esc(x.etiqueta)}</em>`).join('')}</span></div>` : c.capa.leyenda.map((x) => `<div><i style="background:${x.color}"></i>${esc(x.etiqueta)}</div>`).join('');
         return `<div class="pe-lg"><b>${esc(c.capa.titulo)}</b>${ley}</div>`;
       }
-      if (c.k === 'preevaluacion') return `<div class="pe-lg"><b>Preevaluación</b>${Object.entries(PRIO).map(([k, v]) => `<div><i style="background:${v}"></i>${k}</div>`).join('')}</div>`;
       if (c.k === 'corredores') return `<div class="pe-lg"><b>Corredores (Almanaque Azul)</b>${Object.entries(COLOR_CORREDOR).map(([k, v]) => `<div><i style="background:${v}"></i>${k}</div>`).join('')}</div>`;
       if (c.k === 'parches') return '<div class="pe-lg"><b>Parches por importancia</b><div><i style="background:#1b5e20"></i>Alta</div><div><i style="background:#66bb6a"></i>Media</div><div><i style="background:#c5e1a5"></i>Baja</div></div>';
       return `<div class="pe-lg"><div><i style="background:${c.color}"></i>${esc(c.nombre)}</div></div>`;
     });
-    $('#pe-legend').innerHTML = `<button type="button" class="legend-head" aria-expanded="true"><b>${st.analisisMapa ? `Mapa: ${esc(ANALISIS[st.analisisMapa].t.replace(/ \(.*\)/, ''))}` : `Capas activas (${orden.length})`}</b><i class="chev"></i></button><div class="legend-body">${bloques.join('') || '<p class="legend-empty">Active una capa.</p>'}</div>`;
+    const aux = catalogo().filter((c) => AUXILIARES.includes(c.k));
+    $('#pe-legend').innerHTML = `<button type="button" class="legend-head" aria-expanded="true"><b>${esc(T.t)}</b><i class="chev"></i></button><div class="legend-body">${cuerpo}${bloques.join('')}
+      <label class="pe-op">Opacidad <output>${Math.round(st.opacidad * 100)} %</output><input type="range" id="pe-op" min="20" max="100" step="5" value="${st.opacidad * 100}"></label>
+      <details class="pe-aux" ${st.aux.size ? 'open' : ''}><summary>Capas auxiliares${st.aux.size ? ` (${st.aux.size})` : ''}</summary>${aux.map((c) => `<label class="pe-lg-cl ${c.disponible ? '' : 'layer-disabled'}"><input type="checkbox" data-aux="${c.k}" ${st.aux.has(c.k) ? 'checked' : ''} ${c.disponible ? '' : 'disabled'}><i style="background:${c.color}"></i>${esc(c.nombre)}</label>`).join('')}</details></div>`;
     $('#pe-legend .legend-head').addEventListener('click', (e) => { const b = e.currentTarget; const o = b.getAttribute('aria-expanded') === 'true'; b.setAttribute('aria-expanded', String(!o)); b.nextElementSibling.hidden = o; });
+    $$('#pe-legend [data-cl]').forEach((x) => x.addEventListener('change', () => { const s = (st.ocultas[prod] ||= new Set()); const v = Number(x.dataset.cl); x.checked ? s.delete(v) : s.add(v); dibujar(); }));
+    $$('#pe-legend [data-aux]').forEach((x) => x.addEventListener('change', () => { x.checked ? st.aux.add(x.dataset.aux) : st.aux.delete(x.dataset.aux); dibujar(); }));
+    $('#pe-op')?.addEventListener('input', (e) => { st.opacidad = e.target.value / 100; e.target.previousElementSibling.textContent = `${e.target.value} %`; Object.entries(st.capas).forEach(([k, l]) => (k.startsWith('r:') || k.startsWith('s:') || k.startsWith('v:')) && l.eachLayer((x) => x.setOpacity?.(st.opacidad))); });
   }
 
-  // ------------------------------------------------------------ análisis a elegir
-  // Como en la plataforma completa, la persona elige el área y qué análisis consultar;
-  // cada análisis activa sus capas y muestra solo su sección de resultados.
-  const ANALISIS = {
-    preevaluacion: { t: 'Preevaluación territorial (MT-2026.7)', d: 'Señales JRC, Hansen, ESRI, GEDI y NDVI; puntaje (máx. 6,5), consistencia entre fuentes y prioridad de visita con corredores.', i: 'shield', capas: ['r:coincidencia'], pol: true },
-    cambio: { t: 'Cambio de cobertura', d: 'Estado del bosque JRC 2025, evolución 2020–2025, pérdida Hansen por año, cambio de árboles ESRI y NDVI.', i: 'trend', capas: ['r:jrc_2025'], pol: true },
-    fragmentacion: { t: 'Fragmentación', d: 'Parches del bosque oficial 2021: número, parche mayor, borde, bosque interior, distancia entre parches y cohesión.', i: 'forest', capas: ['parches'], pol: true },
-    conectividad: { t: 'Conectividad estructural', d: 'Redes de parches a 500 m, parches aislados, IIC y parches clave (dIIC). Conectividad potencial, no movimiento de fauna.', i: 'network', capas: ['parches', 'brechas'], pol: true },
-    corredores: { t: 'Corredores · Almanaque Azul', d: 'Superficie dentro de corredores, Corredor Biológico Mesoamericano y puntos críticos.', i: 'map', capas: ['corredores', 'puntos'], pol: true },
-    eri: { t: 'Resiliencia ecológica (ERI)', d: 'Índice indicativo 0–100 con sus cuatro componentes.', i: 'sprout', capas: ['r:eri'], pol: true },
-    riparia: { t: 'Ríos y franjas riparias', d: 'Bosque en franjas de 30, 50 y 100 m junto a los cauces y orillas sin bosque por pendiente.', i: 'leaf', capas: ['rios', 'r:riparia'], pol: true },
-    sinia: { t: 'Coberturas oficiales SINIA', d: 'Bosque en los productos oficiales 2019, 2021 y 2023 (productos independientes).', i: 'layers', capas: ['r:sinia_2021'], pol: true },
-    relativa: { t: 'Intensidad relativa del cambio (experimental)', d: 'Pérdida reciente, salida de árboles, legado JRC y vigor en proporción al bosque, comparados con la CHCP.', i: 'chart', capas: [], pol: false },
-  };
-  const wiz = { paso: 0, area: 'territorio', sel: new Set(['preevaluacion']) };
-  const enlace = (ruta) => (window.CHCP_STATIC ? `${ruta}.html` : `/${ruta}`);
-  const tarjeta = (n, v, s2 = '') => `<div class="pe-m"><span>${n}</span><b>${v}</b>${s2 ? `<small>${s2}</small>` : ''}</div>`;
-  const tabla = (cab, filas) => `<table class="fi-table pe-t"><thead><tr>${cab.map((c) => `<th>${c}</th>`).join('')}</tr></thead><tbody>${filas.map((f) => `<tr>${f.map((c) => `<td>${c}</td>`).join('')}</tr>`).join('')}</tbody></table>`;
-  const NOMBRES_FUENTE = { tmf: 'JRC TMF', hansen: 'Hansen GFC', esri: 'ESRI LULC', gedi: 'GEDI', ndvi: 'NDVI Sentinel-2' };
+  // ------------------------------------------------------------ barra de años
+  let reproduciendo = null;
+  function barraAnios() {
+    const T = TEMA[st.tema], barra = $('#pe-anios');
+    const prod = T.prod && haySerie(T.prod) ? T.prod : null;
+    if (!prod) {
+      barra.hidden = !T.prod;
+      if (T.prod) barra.innerHTML = `<span class="pe-anios-sin">Serie anual de ${esc(T.t.split('·').pop().trim())}: se genera con el flujo «Series anuales» de GitHub Actions. Mientras tanto el mapa muestra el período fijo del índice.</span>`;
+      return;
+    }
+    const anios = prodInfo(prod).anios, a = anioActual(prod);
+    if (barra.dataset.prod !== prod || !$('#pe-anio')) {
+      barra.dataset.prod = prod;
+      barra.innerHTML = `<button type="button" class="pe-play" id="pe-play" aria-label="Reproducir los años">${icon('play', 16)}</button><span class="pe-anios-ext">${anios[0]}</span><input type="range" id="pe-anio" min="${anios[0]}" max="${anios[anios.length - 1]}" step="1" aria-label="Año"><span class="pe-anios-ext">${anios[anios.length - 1]}</span><output id="pe-anio-v"></output>`;
+      $('#pe-anio').addEventListener('input', (e) => { $('#pe-anio-v').textContent = e.target.value; });
+      $('#pe-anio').addEventListener('change', (e) => ponerAnio(prod, Number(e.target.value)));
+      $('#pe-play').addEventListener('click', () => {
+        if (reproduciendo) { clearInterval(reproduciendo); reproduciendo = null; $('#pe-play').classList.remove('on'); return; }
+        $('#pe-play').classList.add('on');
+        let i = anios[0] === anioActual(prod) || anioActual(prod) === anios[anios.length - 1] ? 0 : anios.indexOf(anioActual(prod));
+        reproduciendo = setInterval(() => { if (i >= anios.length) { clearInterval(reproduciendo); reproduciendo = null; $('#pe-play')?.classList.remove('on'); return; } ponerAnio(prod, anios[i], false); i += 1; }, 900);
+      });
+    }
+    barra.hidden = false;
+    $('#pe-anio').value = a; $('#pe-anio-v').textContent = a;
+  }
+  async function ponerAnio(prod, anio, conPanel = true) {
+    st.anio[prod] = anio;
+    await dibujar();
+    if (conPanel) renderPanel(); else actualizarMarcaAnio(prod, anio);
+  }
+  function actualizarMarcaAnio(prod, anio) {
+    $$('#pe-res-b .g-col[data-anio]').forEach((g) => g.classList.toggle('g-atenuada', Number(g.dataset.anio) !== anio));
+  }
+  // ------------------------------------------------------------ columna de temas
+  function renderTemas() {
+    $('#pe-temas').innerHTML = TEMAS.map((g) => `<div class="tm-g"><h3>${esc(g.grupo)}</h3>${g.items.map((x) => {
+      const serie = x.prod && st.series?.productos?.[x.prod];
+      const periodo = serie ? `${serie.anios[0]}–${serie.anios[serie.anios.length - 1]}` : '';
+      return `<div class="tm ${x.k === st.tema ? 'on' : ''}"><button type="button" class="tm-b" data-tema="${x.k}" aria-pressed="${x.k === st.tema}">${icon(x.i, 18)}<span>${esc(x.t)}${periodo ? `<small>${periodo}</small>` : ''}</span></button><button type="button" class="tm-i" data-info="${x.k}" aria-label="Qué muestra ${esc(x.t)}" aria-expanded="false">i</button><p class="tm-d" hidden>${esc(x.d)}</p></div>`;
+    }).join('')}</div>`).join('');
+    $$('#pe-temas [data-tema]').forEach((b) => b.addEventListener('click', () => elegirTema(b.dataset.tema)));
+    $$('#pe-temas [data-info]').forEach((b) => b.addEventListener('click', () => { const p = b.nextElementSibling; p.hidden = !p.hidden; b.setAttribute('aria-expanded', String(!p.hidden)); }));
+  }
+  async function elegirTema(k) {
+    if (reproduciendo) { clearInterval(reproduciendo); reproduciendo = null; }
+    st.tema = k; st.modo = null;
+    renderTemas();
+    await dibujar();
+    renderPanel();
+  }
 
+  // ------------------------------------------------------------ panel de la derecha
+  const ttl = (n, sub = '') => `<div class="pc-h"><h3>${n}</h3>${sub ? `<p>${sub}</p>` : ''}</div>`;
+  const card = (html, cls = '') => `<section class="pc ${cls}">${html}</section>`;
+  const nombreVista = () => (st.vistaPol ? `Polígono de ${hectares(pg.resultado?.area_dibujada_ha ?? P.areaHa(pg.geo), 1)}` : t().nombre);
+  let turnoPanel = 0;
+  async function renderPanel() {
+    const turno = ++turnoPanel;
+    const T = TEMA[st.tema], poli = !!st.vistaPol, x = t(), R0 = pg.resultado;
+    $('#pe-res-eyebrow').textContent = st.modo ? `Análisis · ${TIPOS[st.modo.tipo].t}` : poli ? 'Mi geometría · estimación local' : 'Explorar';
+    $('#pe-res-title').textContent = nombreVista();
+    $('#pe-res-sub').textContent = poli ? `En ${R0?.subcuencas?.join(', ') || '—'}` : `${hectares(x.area_ha)} · ${x.grupo}`;
+    $('#pe-res-b').innerHTML = '<p class="pc-cargando">Preparando las gráficas…</p>';
+    let html = '';
+    try {
+      if (T.prod) html = await panelSerie(T);
+      else if (st.tema === 'preev') html = panelPreev();
+      else html = await panelOtro(st.tema);
+    } catch (err) { html = `<p class="fi-pending">No se pudo preparar este tema: ${esc(err.message)}</p>`; }
+    if (turno !== turnoPanel) return;
+    const proc = poli && R0 ? window.CHCP.procedencia(st.data, 'C', null, `<span>Malla de ${number(R0.pixel_m, 0)} m · error de borde ${number(R0.error_borde * 100, 1)} %</span>`) : window.CHCP.procedencia(st.data, 'B', x);
+    const acciones = poli
+      ? `<button class="btn btn-s" id="pg-json" type="button">${icon('download', 16)} Resultados (JSON)</button><button class="btn btn-s" id="pg-geo" type="button">${icon('map', 16)} Polígono (GeoJSON)</button>`
+      : `<a class="btn btn-s" href="${enlace('ficha')}?id=${encodeURIComponent(x.id)}">${icon('doc', 16)} Ficha técnica</a>${x.id !== 'chcp' ? `<a class="btn btn-s" href="${enlace('restauracion')}?id=${encodeURIComponent(x.id)}">${icon('route', 16)} Simular restauración</a>` : ''}`;
+    $('#pe-res-b').innerHTML = `${proc}${html}<div class="pe-acc pe-acc-fila">${acciones}</div><p class="hint-p small">Evaluación preliminar con datos satelitales: orienta una revisión y no sustituye la verificación de campo.</p>`;
+    G.activarTooltips($('#pe-res-b'));
+    enlazarPanel();
+    $('#pe-res').classList.remove('closed'); $('#pe-reopen').hidden = true;
+  }
+  function enlazarPanel() {
+    $$('#pe-res-b [data-clic] .g-col[data-anio]').forEach((g) => g.addEventListener('click', () => { const prod = TEMA[st.tema].prod; if (prod) ponerAnio(prod, Number(g.dataset.anio)); }));
+    $$('#pe-res-b [data-cmp]').forEach((s) => s.addEventListener('change', () => { const prod = TEMA[st.tema].prod; const c = (st.comparar[prod] ||= {}); c[s.dataset.cmp] = Number(s.value); renderPanel(); }));
+    $('#pe-rank-cl')?.addEventListener('change', (e) => { st.rankClase[TEMA[st.tema].prod] = Number(e.target.value); renderPanel(); });
+    $$('#pe-res-b [data-ir-tema]').forEach((b) => b.addEventListener('click', () => elegirTema(b.dataset.irTema)));
+    if (st.vistaPol && pg.resultado) {
+      const bajar = (nombre, texto, tipo) => { const el = document.createElement('a'); el.href = URL.createObjectURL(new Blob([texto], { type: tipo })); el.download = nombre; el.click(); URL.revokeObjectURL(el.href); };
+      $('#pg-json')?.addEventListener('click', () => { const { acc, ...resto } = pg.resultado; bajar('analisis_poligono.json', JSON.stringify({ procesamiento: { tipo: 'C', descripcion: 'Estimación local derivada de resultados precalculados (tipo B)', base: st.data.procesamiento, error_borde_estimado: pg.resultado.error_borde, pixel_m: pg.resultado.pixel_m }, metodologia: st.data.metodologia, datos: st.data.generado, poligono: pg.geo, ...resto, series_anuales: pg.series, superficies_ha: { jrc: acc.jrc, hansen_por_anio: acc.hansen, esri: acc.esri, sinia_2021: acc.sinia, coincidencia: acc.coincidencia, riparia: acc.riparia } }, null, 1), 'application/json'); });
+      $('#pg-geo')?.addEventListener('click', () => bajar('poligono.geojson', JSON.stringify({ type: 'Feature', properties: { area_ha: pg.resultado.area_dibujada_ha }, geometry: pg.geo }), 'application/geo+json'));
+    }
+  }
+
+  // ---- temas con serie anual
+  const PERIODO_COMPARAR = { jrc: [2020, 2025], esri: [2017, 2024], ndvi: [2020, 2025] };
+  const CLASE_RANKING = { jrc: 3, esri: 2, ndvi: 5 };
+  async function panelSerie(T) {
+    const prod = T.prod, datos = await datosSerie(prod);
+    if (!datos) return panelSinSerie(T);
+    const info = prodInfo(prod), anios = info.anios, anio = anioActual(prod);
+    const cabecera = card(`<p class="pc-lectura">${esc(info.lectura)}</p><p class="pc-fuente">${esc(info.fuente)} · ${info.resolucion_m} m. En el índice MT-2026.7: ${esc(info.periodo_indice)}.</p>`, 'pc-intro');
+    if (prod === 'hansen') return cabecera + panelHansen(info, datos);
+    const por = datos.por_anio || {};
+    const clases = info.clases.filter((c) => anios.some((a) => (por[a]?.[c.valor] || 0) > 0));
+    const filasAnio = clases.map((c) => ({ etiqueta: c.etiqueta, color: c.color, valor: por[anio]?.[c.valor] || 0 }));
+    const totalAnio = filasAnio.reduce((s, f) => s + f.valor, 0);
+    const series = clases.map((c) => ({ etiqueta: c.etiqueta, color: c.color, valores: anios.map((a) => por[a]?.[c.valor] || 0) }));
+    const cmp = { a: st.comparar[prod]?.a ?? PERIODO_COMPARAR[prod][0], b: st.comparar[prod]?.b ?? PERIODO_COMPARAR[prod][1] };
+    const opciones = (sel) => anios.map((a) => `<option ${a === sel ? 'selected' : ''}>${a}</option>`).join('');
+    const filasCmp = clases.map((c) => ({ etiqueta: c.etiqueta, color: c.color, a: por[cmp.a]?.[c.valor] || 0, b: por[cmp.b]?.[c.valor] || 0 }));
+    const comparar = card(`${ttl(`Comparar ${cmp.a} y ${cmp.b}`, 'Cuánto cambió cada clase entre los dos años.')}
+      <div class="pc-sel"><label>Desde<select data-cmp="a">${opciones(cmp.a)}</select></label><label>Hasta<select data-cmp="b">${opciones(cmp.b)}</select></label></div>
+      ${G.mancuernas({ filas: filasCmp, anioA: cmp.a, anioB: cmp.b })}
+      ${G.tablaDatos(['Clase', String(cmp.a), String(cmp.b), 'Cambio'], filasCmp.map((f) => [esc(f.etiqueta), G.ha(f.a), G.ha(f.b), `${f.b - f.a >= 0 ? '+' : '−'}${G.ha(Math.abs(f.b - f.a))}`]))}`);
+    let html = cabecera;
+    const primero = st.modo?.tipo === 'comparar';
+    if (primero) html += comparar;
+    html += card(`${ttl(`Superficie por clase · ${anio}`, `${G.ha(totalAnio)} con dato. Cambie el año con la barra del mapa o pulsando una columna.`)}${G.barrasClases(filasAnio)}`);
+    html += card(`${ttl(`Evolución ${anios[0]}–${anios[anios.length - 1]}`, 'Superficie de cada clase por año.')}
+      ${G.serieApilada({ anios, series, marcado: anio, alClic: true })}
+      <div class="g-ley">${series.map((s) => `<span><i style="background:${s.color}"></i>${esc(s.etiqueta)}</span>`).join('')}</div>
+      ${G.tablaDatos(['Año', ...clases.map((c) => c.etiqueta)], anios.map((a, i) => [a, ...series.map((s) => G.ha(s.valores[i]))]))}`);
+    if (prod === 'ndvi' && datos.ndvi_medio) {
+      html += card(`${ttl('NDVI medio por año', 'Promedio del territorio (−1 a 1). Una caída puede deberse a cosecha, sequía o nubes.')}${G.linea({ anios, valores: anios.map((a) => datos.ndvi_medio[a]) })}`);
+    }
+    if (!primero) html += comparar;
+    html += await panelRanking(prod, info, anio);
+    return html;
+  }
+  function panelHansen(info, datos) {
+    const anios = info.anios, por = datos.perdida_por_anio || {};
+    const valores = anios.map((a) => por[a] || 0);
+    const reciente = anios.filter((a) => a >= 2021).reduce((s, a) => s + (por[a] || 0), 0);
+    const previa = anios.filter((a) => a <= 2020).reduce((s, a) => s + (por[a] || 0), 0);
+    const base = datos.cobertura_arborea_2000_ha;
+    const maxA = anios.reduce((m, a) => ((por[a] || 0) > (por[m] || 0) ? a : m), anios[0]);
+    return card(`${ttl('Pérdida de cobertura arbórea')}
+      <div class="pe-ms">${tarjeta('2021–2025 (usada en el índice)', G.ha(reciente), base ? `${pct(reciente / base * 100, 2)} de la cobertura arbórea del año 2000` : '')}${tarjeta('2001–2020', G.ha(previa), 'antes del corte del 31/12/2020')}${tarjeta('Año con más pérdida', String(maxA), G.ha(por[maxA] || 0))}</div>`)
+      + card(`${ttl('Pérdida por año', 'En azul, los años que cuenta el índice (2021–2025); en gris, los anteriores al corte del 31/12/2020.')}${G.columnas({ anios, valores, enfasis: (a) => a >= 2021, nota: 'Pérdida Hansen por año' })}${G.tablaDatos(['Año', 'Pérdida'], anios.map((a, i) => [a, G.ha(valores[i])]))}`);
+  }
+  function panelSinSerie(T) {
+    const x = t(), poli = !!st.vistaPol, R0 = pg.resultado;
+    const aviso = `<p class="pc-aviso">Las gráficas año por año de esta fuente se generan con el flujo «Series anuales» de GitHub Actions. Mientras tanto se muestran las cifras del período que usa el índice.</p>`;
+    if (poli && R0) return aviso + card(SECCIONES_P.cambio(R0));
+    if (T.prod === 'jrc') {
+      const j = x.jrc_ha || {}, serie = x.serie_anual || [];
+      const filas = [['Bosque sin perturbación', j.tmf_estable, '#1d6b35'], ['Bosque degradado', j.tmf_degradacion, '#f28e2b'], ['Deforestado', j.tmf_deforestacion, '#fabc20'], ['Regeneración', j.tmf_recuperacion, '#a6d96a'], ['Agua', j.tmf_agua, '#5aa9e6'], ['Otra cobertura', j.tmf_otra_cobertura, '#d7c2a1']].map(([etiqueta, valor, color]) => ({ etiqueta, valor: valor || 0, color }));
+      return aviso + card(`${ttl('Estado del bosque · 2025')}${G.barrasClases(filas)}`) + (serie.length ? card(`${ttl('Degradado y deforestado por año', 'Clases acumuladas desde 1990.')}${G.serieApilada({ anios: serie.map((r) => r.anio), series: [{ etiqueta: 'Deforestado', color: '#fabc20', valores: serie.map((r) => r.jrc_deforestacion_ha || 0) }, { etiqueta: 'Degradado', color: '#f28e2b', valores: serie.map((r) => r.jrc_degradacion_ha || 0) }] })}<div class="g-ley"><span><i style="background:#fabc20"></i>Deforestado</span><span><i style="background:#f28e2b"></i>Degradado</span></div>`) : '');
+    }
+    if (T.prod === 'hansen') {
+      const serie = (x.serie_anual || []).filter((r) => r.hansen_perdida_ha != null);
+      return aviso + card(`${ttl('Pérdida por año (2021–2025)')}${serie.length ? G.columnas({ anios: serie.map((r) => r.anio), valores: serie.map((r) => r.hansen_perdida_ha) }) : '<p class="g-vacio">Sin datos.</p>'}<p class="pc-fuente">Total 2021–2025: ${G.ha(x.hansen_post_2020_ha || 0)}</p>`);
+    }
+    if (T.prod === 'esri') {
+      const e = x.esri || {};
+      return aviso + card(`${ttl('Árboles 2017 → 2024')}${G.barrasClases([{ etiqueta: 'Árboles en ambos años', valor: e.esri_estable || 0, color: '#397d49' }, { etiqueta: 'Árboles → otra clase', valor: e.esri_salida || 0, color: '#d7301f' }, { etiqueta: 'Otra clase → árboles', valor: e.esri_ganancia || 0, color: '#2b8cbe' }])}`);
+    }
+    const n = x.ndvi || {};
+    return aviso + card(`${ttl('NDVI 2020 → 2025')}<div class="pe-ms">${tarjeta('NDVI medio 2020', number(n.ndvi_inicial_medio, 2))}${tarjeta('NDVI medio 2025', number(n.ndvi_final_medio, 2))}${tarjeta('Descenso fuerte', G.ha(n.ndvi_disminucion || 0), 'caída ≥ 0,15')}</div>`);
+  }
+  async function panelRanking(prod, info, anio) {
+    if (st.vistaPol || st.id !== 'chcp') return '';
+    const clase = st.rankClase[prod] ?? CLASE_RANKING[prod];
+    const ids = Object.keys(st.data.territorios).filter((k) => k !== 'chcp' && st.series.territorios?.[k]?.superficies?.includes(prod));
+    if (!ids.length) return '';
+    await Promise.all(ids.filter((k) => !(k in st.est)).map(async (k) => { st.est[k] = await fetch(serieFile(`estadisticas/${k}.json`)).then((r) => (r.ok ? r.json() : null)).catch(() => null); }));
+    const filas = ids.map((k) => {
+      const por = st.est[k]?.[prod]?.por_anio?.[anio] || {};
+      const total = Object.values(por).reduce((s, v) => s + v, 0);
+      return { k, nombre: st.data.territorios[k].nombre, ha: por[clase] || 0, pct: total ? (por[clase] || 0) / total * 100 : 0 };
+    }).filter((f) => f.ha > 0).sort((a, b) => b.pct - a.pct).slice(0, 10);
+    const c = info.clases.find((x) => x.valor === clase);
+    const max = Math.max(...filas.map((f) => f.pct), 1e-9);
+    return card(`${ttl('Subcuencas con mayor proporción', `Porcentaje de cada subcuenca en la clase elegida, ${anio}.`)}
+      <div class="pc-sel"><label>Clase<select id="pe-rank-cl">${info.clases.map((x) => `<option value="${x.valor}" ${x.valor === clase ? 'selected' : ''}>${esc(x.etiqueta)}</option>`).join('')}</select></label></div>
+      <div class="g-barras">${filas.map((f) => `<div class="g-fila" tabindex="0" data-tip="${esc(`<b>${number(f.pct, 1)} %</b> · ${G.ha(f.ha)}<br>${f.nombre}`)}"><span class="g-nombre">${esc(f.nombre)}</span><span class="g-pista"><b style="width:${f.pct / max * 100}%;background:${c?.color || '#0a4393'}"></b></span><span class="g-valor">${number(f.pct, 1)} %</span></div>`).join('') || '<p class="g-vacio">Sin datos para esa clase.</p>'}</div>`);
+  }
+
+  // ---- preevaluación: las cinco fuentes con el mismo peso visual
+  function panelPreev() {
+    const poli = !!st.vistaPol, R0 = pg.resultado, x = t(), U = P.UMBRALES;
+    let p, d;
+    if (poli && R0) {
+      const m = R0.metricas, a = R0.acc;
+      p = { puntaje: R0.puntaje, max: 6.5, prioridad: R0.prioridad, visita: R0.visita.prioridad_visita, consistencia: R0.consistencia.nivel, senales: R0.senales, aportes: R0.aportes };
+      d = { jrc: [1, 2, 3, 4, 5, 6].map((k) => a.jrc[k] || 0), hansen: [21, 22, 23, 24, 25].map((k) => a.hansen[k] || 0), esri: { salida: a.esri[1] || 0, ganancia: a.esri[2] || 0, estable: a.esri[3] || 0 },
+        ndvi: { ini: null, fin: null, delta: R0.ndvi_delta_medio, descenso: m.ndvi_disminucion_ha, valido: m.ndvi_cobertura_valida_pct }, gedi: { altura: R0.disponibilidad?.gedi ? m.gedi_altura_media_m : null, valido: m.gedi_cobertura_valida_pct } };
+    } else {
+      const e = x.preevaluacion, j = x.jrc_ha || {};
+      p = { puntaje: e.puntaje, max: e.puntaje_maximo, prioridad: e.prioridad, visita: e.prioridad_visita, consistencia: e.consistencia, senales: e.senales || {}, aportes: e.aportes || {} };
+      const serie = Object.fromEntries((x.serie_anual || []).map((r) => [r.anio, r.hansen_perdida_ha]));
+      d = { jrc: [j.tmf_estable, j.tmf_degradacion, j.tmf_deforestacion, j.tmf_recuperacion, j.tmf_agua, j.tmf_otra_cobertura].map((v) => v || 0), hansen: [2021, 2022, 2023, 2024, 2025].map((y) => serie[y] || 0),
+        esri: { salida: x.esri?.esri_salida || 0, ganancia: x.esri?.esri_ganancia || 0, estable: x.esri?.esri_estable || 0 },
+        ndvi: { ini: x.ndvi?.ndvi_inicial_medio, fin: x.ndvi?.ndvi_final_medio, delta: x.ndvi?.ndvi_delta_medio, descenso: x.ndvi?.ndvi_disminucion || 0 }, gedi: { altura: x.gedi_altura_m } };
+    }
+    const JRC_C = [['Sin perturbación', '#1d6b35'], ['Degradado', '#f28e2b'], ['Deforestado', '#fabc20'], ['Regeneración', '#a6d96a'], ['Agua', '#5aa9e6'], ['Otra cobertura', '#d7c2a1']];
+    const estado = (k) => (p.senales[k] ? `<span class="pc-estado on"><i class="pc-dot"></i>Señal activa · +${number(p.aportes?.[k] ?? 0, 1)}</span>` : '<span class="pc-estado">Sin señal · +0</span>');
+    const fuente = (k, nombre, periodo, umbral, cuerpo, tema) => `<article class="pc-fuente-c ${p.senales[k] ? 'on' : ''}"><header><b>${nombre}</b><small>${periodo}</small>${estado(k)}</header>${cuerpo}<p class="pc-umbral">Se activa con: ${umbral}</p>${tema ? `<button type="button" class="rs-link" data-ir-tema="${tema}">Ver la serie en el mapa</button>` : ''}</article>`;
+    const jrcFilas = JRC_C.map(([n, c], i) => ({ etiqueta: n, color: c, valor: d.jrc[i] }));
+    const html = `
+      ${card(`<div class="pc-hero"><div><span>Puntaje MT-2026.7</span><b>${number(p.puntaje, 1)}<small> / ${number(p.max, 1)}</small></b></div><em class="pc-prio" style="--c:${PRIO[p.prioridad] || '#90a4ae'}">${esc(p.prioridad)}</em></div>
+        <div class="pc-puntos">${Object.entries({ tmf: 'JRC', hansen: 'Hansen', esri: 'ESRI', gedi: 'GEDI', ndvi: 'NDVI' }).map(([k, n]) => `<span class="${p.senales[k] ? 'on' : ''}" title="${n}: ${p.senales[k] ? 'señal activa' : 'sin señal'}"><i style="flex-grow:${{ tmf: 2, hansen: 2, esri: 1.5, gedi: 0.5, ndvi: 0.5 }[k]}"></i>${n}</span>`).join('')}</div>
+        <p class="pc-lectura">Prioridad de visita: <b>${esc(p.visita)}</b> · ${esc(p.consistencia)}. Cada fuente suma una sola vez; el mapa muestra dónde coinciden JRC, Hansen y ESRI.</p>`, 'pc-score')}
+      <div class="pc-fuentes">
+        ${fuente('tmf', 'JRC TMF', 'estado 2025 · 30 m', `deforestado ≥ ${U.jrc_deforestacion_ha} ha o ≥ ${U.jrc_deforestacion_pct} %; degradado ≥ ${U.jrc_degradacion_ha} ha o ≥ ${U.jrc_degradacion_pct} %`, `${G.segmentada(jrcFilas)}<p class="pc-dato"><b>${G.ha(d.jrc[2])}</b> deforestado · <b>${G.ha(d.jrc[1])}</b> degradado <small>(acumulado desde 1990)</small></p>`, 'jrc')}
+        ${fuente('hansen', 'Hansen GFC', 'pérdida 2021–2025 · 30 m', `pérdida ≥ ${U.hansen_post_2020_ha} ha`, `${G.columnas({ anios: [2021, 2022, 2023, 2024, 2025], valores: d.hansen, alto: 110, nota: 'Pérdida Hansen 2021–2025' })}<p class="pc-dato"><b>${G.ha(d.hansen.reduce((s, v) => s + v, 0))}</b> perdidas en 2021–2025</p>`, 'hansen')}
+        ${fuente('esri', 'ESRI LULC', 'árboles 2017 → 2024 · 10 m', `salida de árboles ≥ ${U.esri_salida_arboles_ha} ha y ≥ ${U.esri_salida_arboles_pct} %`, `${G.barrasClases([{ etiqueta: 'Árboles → otra clase', valor: d.esri.salida, color: '#d7301f' }, { etiqueta: 'Otra clase → árboles', valor: d.esri.ganancia, color: '#2b8cbe' }], { total: d.esri.salida + d.esri.ganancia + d.esri.estable })}<p class="pc-dato">Balance: <b>${d.esri.ganancia - d.esri.salida >= 0 ? '+' : '−'}${G.ha(Math.abs(d.esri.ganancia - d.esri.salida))}</b> de árboles</p>`, 'esri')}
+        ${fuente('ndvi', 'NDVI Sentinel-2', '2020 → 2025 · 10 m', `caída ≥ 0,15 desde NDVI ≥ 0,4 en ≥ ${U.ndvi_disminucion_ha} ha y ≥ ${U.ndvi_disminucion_pct} %`, `<div class="pc-par">${d.ndvi.ini != null ? `<span><small>2020</small><b>${number(d.ndvi.ini, 2)}</b></span><i>→</i><span><small>2025</small><b>${number(d.ndvi.fin, 2)}</b></span>` : `<span><small>Cambio medio</small><b>${d.ndvi.delta == null ? '—' : `${d.ndvi.delta > 0 ? '+' : ''}${number(d.ndvi.delta, 3)}`}</b></span>`}<span><small>Descenso fuerte</small><b>${G.ha(d.ndvi.descenso || 0)}</b></span></div>`, 'ndvi')}
+        ${fuente('gedi', 'GEDI', 'altura del dosel · 100 m', `altura media < ${U.gedi_dosel_bajo_m} m (con ≥ ${U.gedi_cobertura_minima_pct} % de datos válidos)`, d.gedi.altura == null ? '<p class="pc-dato">Sin cobertura GEDI suficiente.</p>' : `<div class="pc-meter" title="Altura media ${number(d.gedi.altura, 1)} m; umbral ${U.gedi_dosel_bajo_m} m"><i style="width:${Math.min(d.gedi.altura / 30 * 100, 100)}%"></i><b style="left:${U.gedi_dosel_bajo_m / 30 * 100}%"></b></div><p class="pc-dato"><b>${number(d.gedi.altura, 1)} m</b> de altura media · umbral ${U.gedi_dosel_bajo_m} m</p>`, 'gedi')}
+      </div>
+      ${!poli && x.id !== 'chcp' && x.indicadores_relativos?.valores ? card(`<details><summary><b>Intensidad relativa del cambio</b> <span class="exp-tag">experimental</span></summary>${SECCIONES_T.relativa(x)}</details>`) : ''}`;
+    return html;
+  }
+
+  // ---- otros temas
+  async function panelOtro(k) {
+    const poli = !!st.vistaPol, R0 = pg.resultado, x = t();
+    if (k === 'frag') {
+      if (poli && R0 && R0.fragmentacion === null) { R0.fragmentacion = await fragmentacionPoligono(); }
+      return poli && R0 ? card(`${ttl('Fragmentación')}${SECCIONES_P.fragmentacion(R0)}`) + card(`${ttl('Conectividad')}${SECCIONES_P.conectividad(R0)}`)
+        : card(`${ttl('Fragmentación del bosque oficial 2021')}${SECCIONES_T.fragmentacion(x)}`) + card(`${ttl('Conectividad estructural')}${SECCIONES_T.conectividad(x)}`);
+    }
+    if (k === 'corr') return card(`${ttl('Corredores biológicos')}${poli && R0 ? SECCIONES_P.corredores(R0) : SECCIONES_T.corredores(x)}`);
+    if (k === 'rip') return card(`${ttl('Franjas riparias')}${poli && R0 ? SECCIONES_P.riparia(R0) : SECCIONES_T.riparia(x)}`);
+    if (k === 'eri') return card(`${ttl('Resiliencia ecológica (ERI)')}${poli && R0 ? SECCIONES_P.eri(R0) : SECCIONES_T.eri(x)}`);
+    if (k === 'gedi') {
+      const altura = poli && R0 ? (R0.disponibilidad?.gedi ? R0.metricas.gedi_altura_media_m : null) : x.gedi_altura_m;
+      return card(`${ttl('Altura media del dosel')}${altura == null ? '<p class="g-vacio">Sin cobertura GEDI suficiente.</p>' : `<div class="pc-meter pc-meter-g"><i style="width:${Math.min(altura / 30 * 100, 100)}%"></i><b style="left:${P.UMBRALES.gedi_dosel_bajo_m / 30 * 100}%"></b></div><p class="pc-dato"><b>${number(altura, 1)} m</b> · la línea marca el umbral de dosel bajo (${P.UMBRALES.gedi_dosel_bajo_m} m) del índice</p>`}<p class="pc-fuente">GEDI es un láser espacial con muestras discontinuas; la altura es una referencia estructural, no fecha el cambio.</p>`);
+    }
+    if (k === 'sinia') {
+      if (poli && R0) return card(`${ttl('Cobertura oficial SINIA 2021')}${SECCIONES_P.sinia(R0)}`);
+      const s21 = (x.sinia || []).find((s) => s.year === 2021);
+      return (s21 ? card(`${ttl('Cobertura oficial SINIA 2021')}${G.barrasClases(s21.classes.map((c) => ({ etiqueta: c.label, color: c.color, valor: c.area_ha })))}`) : '')
+        + card(`${ttl('Bosque en los productos oficiales', 'Productos independientes: la diferencia entre años no mide pérdida ni ganancia.')}${SECCIONES_T.sinia(x)}<p><a href="${enlace('coberturas')}">Ver los ocho productos SINIA →</a></p>`);
+    }
+    return '';
+  }
+
+  // ------------------------------------------------------------ «Realizar análisis»
+  const TIPOS = {
+    preev: { t: 'Preevaluación del cambio', i: 'shield', d: 'Las cinco fuentes (JRC, Hansen, ESRI, NDVI y GEDI), su puntaje MT-2026.7 y la prioridad de visita.' },
+    comparar: { t: 'Comparar dos años', i: 'trend', d: 'Elija una fuente y dos años: cuánto cambió cada clase, con su serie completa.' },
+    frag: { t: 'Fragmentación y conectividad', i: 'network', d: 'Parches del bosque oficial, borde, bosque interior y red de conectividad.' },
+    corr: { t: 'Corredores y ríos', i: 'route', d: 'Corredores biológicos, Corredor Mesoamericano, puntos críticos y franjas riparias.' },
+  };
+  const wiz = { paso: 0, tipo: 'preev', prod: 'jrc', a: 2020, b: 2025, area: 'territorio' };
+  const pasosWiz = () => (wiz.tipo === 'comparar' ? ['Tipo de análisis', 'Fuente y años', 'Territorio', 'Revisión'] : ['Tipo de análisis', 'Territorio', 'Revisión']);
   function abrirAsistente(area) {
-    wiz.paso = area ? 1 : 0;
-    if (area) wiz.area = area; else if (!pg.geo) wiz.area = 'territorio';
+    wiz.paso = 0;
+    wiz.area = area || (st.vistaPol && pg.geo ? 'poligono' : 'territorio');
     $('#pe-modal').hidden = false;
     pintarAsistente();
   }
   function pintarAsistente() {
-    const pasos = ['Área', 'Análisis', 'Revisar'];
+    const pasos = pasosWiz(), paso = pasos[wiz.paso];
     $('#pe-stp').innerHTML = pasos.map((n, k) => `<li class="${k === wiz.paso ? 'cur' : k < wiz.paso ? 'ok' : ''}"><i>${k < wiz.paso ? '✓' : k + 1}</i>${n}</li>`).join('');
-    const x = t(), poli = wiz.area === 'poligono';
     let html = '';
-    if (wiz.paso === 0) {
-      html = `<h3>¿Qué área quiere analizar?</h3>
-        <label class="opt"><input type="radio" name="pe-area" value="territorio" ${!poli ? 'checked' : ''}>${icon('map', 20)}<div><b>Cuenca o subcuenca</b><span>Resultados precalculados con Earth Engine (tipo B).</span>
-          <select id="pe-wiz-terr" class="pe-wiz-sel">${$('#pe-terr').innerHTML}</select></div></label>
-        <label class="opt ${pg.geo ? '' : 'layer-disabled'}"><input type="radio" name="pe-area" value="poligono" ${poli ? 'checked' : ''} ${pg.geo ? '' : 'disabled'}>${icon('target', 20)}<div><b>Polígono propio</b><span>${pg.geo ? `Polígono de ${hectares(P.areaHa(pg.geo), 1)} dibujado o subido. Estimación local en su navegador (tipo C).` : 'Primero dibuje o suba un polígono en la pestaña «Polígono».'}</span></div></label>`;
-    } else if (wiz.paso === 1) {
-      html = `<h3>¿Qué análisis quiere consultar?</h3><p class="sub">Puede elegir uno o varios. Cada uno activa sus capas en el mapa y muestra solo su sección de resultados.</p>
-        <div class="pe-wiz-acc"><button type="button" class="btn btn-s" id="pe-todos">Seleccionar todos</button><button type="button" class="btn btn-s" id="pe-ninguno">Ninguno</button></div>
-        ${Object.entries(ANALISIS).map(([k, a]) => { const ok = !poli || a.pol; return `<label class="opt ${ok ? '' : 'layer-disabled'}"><input type="checkbox" value="${k}" ${wiz.sel.has(k) && ok ? 'checked' : ''} ${ok ? '' : 'disabled'}>${icon(a.i, 20)}<div><b>${esc(a.t)}</b><span>${esc(ok ? a.d : 'Disponible solo para cuenca o subcuenca.')}</span></div></label>`; }).join('')}`;
+    if (paso === 'Tipo de análisis') {
+      html = `<h3>¿Qué quiere analizar?</h3><div class="wz-tipos">${Object.entries(TIPOS).map(([k, x]) => `<label class="opt wz-t"><input type="radio" name="wz-tipo" value="${k}" ${wiz.tipo === k ? 'checked' : ''}>${icon(x.i, 22)}<div><b>${x.t}</b><span>${x.d}</span></div></label>`).join('')}</div>`;
+    } else if (paso === 'Fuente y años') {
+      const disp = ['jrc', 'esri', 'ndvi'].filter((k) => st.series?.productos?.[k]);
+      if (!disp.includes(wiz.prod)) wiz.prod = disp[0] || 'jrc';
+      const anios = prodInfo(wiz.prod)?.anios || [];
+      if (!anios.includes(wiz.a)) wiz.a = PERIODO_COMPARAR[wiz.prod]?.[0] ?? anios[0];
+      if (!anios.includes(wiz.b)) wiz.b = PERIODO_COMPARAR[wiz.prod]?.[1] ?? anios[anios.length - 1];
+      html = disp.length ? `<h3>Fuente y años</h3><div class="wz-tipos">${disp.map((k) => `<label class="opt"><input type="radio" name="wz-prod" value="${k}" ${wiz.prod === k ? 'checked' : ''}>${icon(TEMA[k].i, 20)}<div><b>${esc(prodInfo(k).nombre)}</b><span>${prodInfo(k).anios[0]}–${prodInfo(k).anios.slice(-1)[0]} · ${prodInfo(k).resolucion_m} m</span></div></label>`).join('')}</div>
+        <div class="pc-sel wz-anios"><label>Desde<select id="wz-a">${anios.map((a) => `<option ${a === wiz.a ? 'selected' : ''}>${a}</option>`).join('')}</select></label><label>Hasta<select id="wz-b">${anios.map((a) => `<option ${a === wiz.b ? 'selected' : ''}>${a}</option>`).join('')}</select></label></div>`
+        : `<p class="pc-aviso">Las series por año aún no se han generado (flujo «Series anuales» de GitHub Actions). Elija otro tipo de análisis por ahora.</p>`;
+    } else if (paso === 'Territorio') {
+      const poli = wiz.area === 'poligono';
+      html = `<h3>¿Dónde?</h3>
+        <label class="opt"><input type="radio" name="pe-area" value="territorio" ${!poli ? 'checked' : ''}>${icon('map', 20)}<div><b>Cuenca o subcuenca</b><span>Resultados precalculados con Earth Engine.</span><select id="pe-wiz-terr" class="pe-wiz-sel">${$('#pe-terr').innerHTML}</select></div></label>
+        <label class="opt ${pg.geo ? '' : 'layer-disabled'}"><input type="radio" name="pe-area" value="poligono" ${poli ? 'checked' : ''} ${pg.geo ? '' : 'disabled'}>${icon('target', 20)}<div><b>Mi geometría</b><span>${pg.geo ? `Polígono de ${hectares(P.areaHa(pg.geo), 1)}. Estimación local en su navegador.` : 'Dibuje o suba un polígono en la pestaña «Mi geometría».'}</span></div></label>`;
     } else {
-      const elegidos = [...wiz.sel].filter((k) => !poli || ANALISIS[k].pol);
-      html = `<h3>Revisar y consultar</h3><dl class="rev"><dt>Área</dt><dd>${poli ? `Polígono propio (${hectares(P.areaHa(pg.geo), 1)})` : esc(x.nombre)}</dd><dt>Análisis</dt><dd>${elegidos.map((k) => esc(ANALISIS[k].t)).join('<br>') || '—'}</dd><dt>Procesamiento</dt><dd>${poli ? 'Tipo C · estimación local sobre mapas precalculados' : `Tipo B · precalculado con Earth Engine (${esc(String(st.data.generado || '').slice(0, 10))})`}</dd></dl>
-        <p class="sub">${poli ? 'El cálculo se hace en su navegador; el polígono no se envía a ningún servidor.' : 'No se ejecuta Earth Engine en este momento: se consultan los resultados ya calculados para este territorio.'}</p>`;
+      const poli = wiz.area === 'poligono';
+      html = `<h3>Revisión</h3><dl class="rev"><dt>Análisis</dt><dd>${TIPOS[wiz.tipo].t}</dd>${wiz.tipo === 'comparar' ? `<dt>Fuente</dt><dd>${esc(prodInfo(wiz.prod)?.nombre || '')}</dd><dt>Años</dt><dd>${wiz.a} y ${wiz.b}</dd>` : ''}<dt>Territorio</dt><dd>${poli ? `Mi geometría (${hectares(P.areaHa(pg.geo), 1)})` : esc(t().nombre)}</dd><dt>Procesamiento</dt><dd>${poli ? 'Estimación local sobre los mapas precalculados' : `Precalculado con Earth Engine (${esc(String(st.data.generado || '').slice(0, 10))})`}</dd></dl>`;
     }
     $('#pe-wiz').innerHTML = html;
     $('#pe-back').hidden = wiz.paso === 0;
-    $('#pe-next').textContent = wiz.paso === 2 ? 'Consultar resultados' : 'Siguiente';
-    $('#pe-next').disabled = wiz.paso === 2 && ![...wiz.sel].some((k) => !poli || ANALISIS[k].pol);
+    $('#pe-next').textContent = wiz.paso === pasos.length - 1 ? 'Ver resultados' : 'Siguiente';
+    $('#pe-next').disabled = paso === 'Fuente y años' && !st.series?.productos;
+    $$('#pe-wiz [name=wz-tipo]').forEach((r) => r.addEventListener('change', () => { wiz.tipo = r.value; pintarAsistente(); }));
+    $$('#pe-wiz [name=wz-prod]').forEach((r) => r.addEventListener('change', () => { wiz.prod = r.value; wiz.a = null; wiz.b = null; pintarAsistente(); }));
+    $('#wz-a')?.addEventListener('change', (e) => { wiz.a = Number(e.target.value); });
+    $('#wz-b')?.addEventListener('change', (e) => { wiz.b = Number(e.target.value); });
     $$('#pe-wiz [name=pe-area]').forEach((r) => r.addEventListener('change', () => { wiz.area = r.value; }));
-    $('#pe-wiz-terr')?.addEventListener('change', (e) => { seleccionar(e.target.value); wiz.area = 'territorio'; $$('#pe-wiz [name=pe-area]').forEach((r) => { r.checked = r.value === 'territorio'; }); });
-    if ($('#pe-wiz-terr')) $('#pe-wiz-terr').value = st.id;
-    $$('#pe-wiz input[type=checkbox]').forEach((c) => c.addEventListener('change', () => { c.checked ? wiz.sel.add(c.value) : wiz.sel.delete(c.value); }));
-    $('#pe-todos')?.addEventListener('click', () => { Object.keys(ANALISIS).forEach((k) => wiz.sel.add(k)); pintarAsistente(); });
-    $('#pe-ninguno')?.addEventListener('click', () => { wiz.sel.clear(); pintarAsistente(); });
+    if ($('#pe-wiz-terr')) { $('#pe-wiz-terr').value = st.id; $('#pe-wiz-terr').addEventListener('change', (e) => { st.id = e.target.value; $('#pe-terr').value = st.id; wiz.area = 'territorio'; $$('#pe-wiz [name=pe-area]').forEach((r) => { r.checked = r.value === 'territorio'; }); }); }
   }
   async function ejecutarAsistente() {
     $('#pe-modal').hidden = true;
     const poli = wiz.area === 'poligono';
-    const elegidos = Object.keys(ANALISIS).filter((k) => wiz.sel.has(k) && (!poli || ANALISIS[k].pol));
-    // El mapa muestra un análisis a la vez (el primero); las pestañas de resultados lo cambian.
-    st.analisisMapa = elegidos[0] || null;
-    st.activas = capasAnalisis(st.analisisMapa, poli);
+    const tema = { preev: 'preev', frag: 'frag', corr: 'corr', comparar: wiz.prod }[wiz.tipo];
+    if (wiz.tipo === 'comparar') st.comparar[wiz.prod] = { a: Math.min(wiz.a, wiz.b), b: Math.max(wiz.a, wiz.b) };
     if (poli) {
-      try { await analizarPoligono(elegidos); } catch (err) { $('#pg-busy').hidden = true; mostrarError(`Error al analizar: ${err.message}`); return; }
-      if (!pg.resultado) return;
+      if (!pg.resultado) {
+        try { await analizarPoligono(); } catch (err) { $('#pg-busy').hidden = true; mostrarError(`Error al analizar: ${err.message}`); return; }
+        if (!pg.resultado) return;
+      } else st.vistaPol = st.vistaPol || pg.vista;
       st.map.fitBounds(pg.capa.getBounds(), { padding: [40, 40], maxZoom: 16 });
-    } else st.vistaPol = null;
-    renderCapas(); await dibujar();
-    renderResultados(poli ? 'poligono' : 'territorio', elegidos);
+    } else {
+      st.vistaPol = null;
+      await seleccionar(st.id, false);
+    }
+    st.tema = tema; st.modo = { tipo: wiz.tipo };
+    renderTemas();
+    await dibujar();
+    await renderPanel();
+    const nombre = poli ? `Mi geometría (${hectares(P.areaHa(pg.geo), 1)})` : t().nombre;
+    const entrada = { tipo: wiz.tipo, tema, poli, id: st.id, nombre, extra: wiz.tipo === 'comparar' ? `${prodInfo(wiz.prod)?.corto} ${st.comparar[wiz.prod].a}–${st.comparar[wiz.prod].b}` : '' };
+    st.analisis = [entrada, ...st.analisis.filter((e) => !(e.tipo === entrada.tipo && e.tema === entrada.tema && e.poli === entrada.poli && e.id === entrada.id))].slice(0, 8);
+    renderMisAnalisis();
   }
-  function capasAnalisis(k, poli) { return new Set([...(poli ? [] : ['cuenca']), ...(k ? ANALISIS[k].capas : [])]); }
-  function verEnMapa(k) {
-    st.analisisMapa = k; st.activas = capasAnalisis(k, !!st.vistaPol);
-    $$('#pe-res-b .pe-nav a').forEach((a) => a.setAttribute('aria-current', String(a.dataset.k === k)));
-    renderCapas(); dibujar();
+  function renderMisAnalisis() {
+    const caja = $('#pe-mis');
+    caja.hidden = !st.analisis.length;
+    caja.innerHTML = `<h3>Sus análisis</h3>${st.analisis.map((e, i) => `<div class="mis"><button type="button" data-mis="${i}"><b>${TIPOS[e.tipo].t}</b><span>${esc(e.nombre)}${e.extra ? ` · ${esc(e.extra)}` : ''}</span></button><button type="button" class="mis-x" data-mis-x="${i}" aria-label="Quitar">×</button></div>`).join('')}`;
+    $$('#pe-mis [data-mis]').forEach((b) => b.addEventListener('click', async () => {
+      const e = st.analisis[Number(b.dataset.mis)];
+      if (e.poli && !pg.resultado) return;
+      if (e.poli) st.vistaPol = pg.vista; else { st.vistaPol = null; await seleccionar(e.id, false); }
+      st.tema = e.tema; st.modo = { tipo: e.tipo };
+      renderTemas(); await dibujar(); renderPanel();
+    }));
+    $$('#pe-mis [data-mis-x]').forEach((b) => b.addEventListener('click', () => { st.analisis.splice(Number(b.dataset.misX), 1); renderMisAnalisis(); }));
   }
 
+  async function seleccionar(id, conPanel = true) {
+    st.id = st.data.territorios[id] ? id : 'chcp';
+    $('#pe-terr').value = st.id;
+    st.vistaPol = null; st.modo = null;
+    st.geo = st.id !== 'chcp' ? await geometria(st.id) : null;
+    const f = st.id === 'chcp' ? st.territory.basin : st.territory.subbasins.features.find((x) => x.properties.id === st.id);
+    if (f) st.map.fitBounds(L.geoJSON(f).getBounds(), { padding: [20, 20] });
+    if (conPanel) { await dibujar(); renderPanel(); }
+  }
   // ------------------------------------------------------------ secciones de resultados
   function senalesHtml(senales, aportes, detalle) {
     return `<ul class="pe-sig">${Object.keys(NOMBRES_FUENTE).map((k) => `<li class="${senales[k] ? 'on' : ''}"><b>${senales[k] ? '✓' : '·'} ${NOMBRES_FUENTE[k]}</b> <span>+${senales[k] ? number(aportes?.[k] ?? 0, 1) : '0'}</span><small>${detalle[k] || ''}</small></li>`).join('')}</ul>`;
@@ -270,57 +643,6 @@
     sinia: (R0) => { const a = R0.acc.sinia, area = R0.metricas.area_ha || 1; return tabla(['SINIA 2021', 'Superficie', '%'], [[1, 'Bosques y otras tierras boscosas'], [2, 'Otras tierras'], [3, 'Cuerpos de agua']].map(([k, n]) => [n, hectares(a[k] || 0, 2), pct((a[k] || 0) / area * 100, 1)])); },
   };
 
-  function renderResultados(modo, elegidos) {
-    const poli = modo === 'poligono', x = t(), R0 = pg.resultado;
-    if (poli && !R0) return;
-    $('#pe-res-eyebrow').textContent = poli ? 'Polígono propio · estimación local' : 'Resultados precalculados';
-    $('#pe-res-title').textContent = poli ? `Polígono de ${hectares(R0.area_dibujada_ha, R0.area_dibujada_ha < 10 ? 2 : 1)}` : x.nombre;
-    $('#pe-res-sub').textContent = poli ? `En ${R0.subcuencas.join(', ')}` : `${hectares(x.area_ha)} · ${x.grupo}`;
-    const secciones = elegidos.map((k) => `<section class="pe-sec" id="pe-sec-${k}"><h3>${icon(ANALISIS[k].i, 18)} ${esc(ANALISIS[k].t)}${elegidos.length > 1 && ANALISIS[k].capas.length ? `<button type="button" class="rs-link pe-ver" data-ver="${k}">Ver en el mapa</button>` : ''}</h3>${poli ? SECCIONES_P[k](R0) : SECCIONES_T[k](x)}</section>`).join('');
-    const avisos = poli ? `${R0.sin_datos.length ? `<p class="rs-warn">Sin mapas de valores todavía en: ${esc(R0.sin_datos.join(', '))}. Esa parte no se analizó.</p>` : ''}` : '';
-    const proc = poli ? window.CHCP.procedencia(st.data, 'C', null, `<span>Malla de ${number(R0.pixel_m, 0)} m · error de borde ${number(R0.error_borde * 100, 1)} %</span>`) : window.CHCP.procedencia(st.data, 'B', x);
-    $('#pe-res-b').innerHTML = `${elegidos.length > 1 ? `<p class="pe-nav-nota">Elija un análisis para verlo en el mapa:</p><nav class="pe-nav">${elegidos.map((k) => `<a href="#pe-sec-${k}" data-k="${k}" aria-current="${k === st.analisisMapa}">${esc(ANALISIS[k].t.replace(/ \(.*\)/, ''))}</a>`).join('')}</nav>` : ''}${avisos}${proc}${secciones}
-      <div class="pe-acc">
-        <button class="btn btn-s" id="pe-cambiar" type="button">${icon('filter', 16)} Cambiar análisis</button>
-        ${poli ? `<button class="btn btn-p" id="pg-json" type="button">${icon('download', 16)} Descargar resultados (JSON)</button><button class="btn btn-s" id="pg-geo" type="button">${icon('map', 16)} Descargar polígono (GeoJSON)</button>`
-        : `<a class="btn btn-p" href="${enlace('ficha')}?id=${encodeURIComponent(x.id)}">${icon('doc', 16)} Ficha técnica completa</a>${x.id !== 'chcp' ? `<a class="btn btn-s" href="${enlace('campo')}?id=${encodeURIComponent(x.id)}">${icon('clipboard', 16)} Sitios de campo</a>` : ''}`}
-      </div>
-      <p class="hint-p small">${poli ? 'Estimación local (tipo C) sobre los mapas precalculados; no es un cálculo de Earth Engine en este momento.' : 'Resultados precalculados con Google Earth Engine.'} Indicativos: orientan una revisión y no sustituyen la verificación de campo.</p>`;
-    $$('#pe-res-b .pe-nav a').forEach((a) => a.addEventListener('click', (e) => { e.preventDefault(); verEnMapa(a.dataset.k); $(a.getAttribute('href')).scrollIntoView({ behavior: 'smooth', block: 'start' }); }));
-    $$('#pe-res-b .pe-sec [data-ver]').forEach((b) => b.addEventListener('click', () => verEnMapa(b.dataset.ver)));
-    $('#pe-cambiar').addEventListener('click', () => abrirAsistente(poli ? 'poligono' : 'territorio'));
-    if (poli) {
-      const bajar = (nombre, texto, tipo) => { const el = document.createElement('a'); el.href = URL.createObjectURL(new Blob([texto], { type: tipo })); el.download = nombre; el.click(); URL.revokeObjectURL(el.href); };
-      $('#pg-json').addEventListener('click', () => { const { acc, ...resto } = pg.resultado; bajar('analisis_poligono.json', JSON.stringify({ procesamiento: { tipo: 'C', descripcion: 'Estimación local derivada de resultados precalculados (tipo B)', base: st.data.procesamiento, error_borde_estimado: pg.resultado.error_borde, pixel_m: pg.resultado.pixel_m }, analisis: elegidos, metodologia: st.data.metodologia, datos: st.data.generado, poligono: pg.geo, ...resto, superficies_ha: { jrc: acc.jrc, hansen_por_anio: acc.hansen, esri: acc.esri, sinia_2021: acc.sinia, coincidencia: acc.coincidencia, riparia: acc.riparia } }, null, 1), 'application/json'); });
-      $('#pg-geo').addEventListener('click', () => bajar('poligono.geojson', JSON.stringify({ type: 'Feature', properties: { area_ha: pg.resultado.area_dibujada_ha }, geometry: pg.geo }), 'application/geo+json'));
-    }
-    $('#pe-res').classList.remove('closed');
-    $('#pe-reopen').hidden = true;
-  }
-  function territorioPreparado() {
-    const x = t();
-    $('#pe-res-eyebrow').textContent = 'Territorio preparado';
-    $('#pe-res-title').textContent = x.nombre;
-    $('#pe-res-sub').textContent = `${hectares(x.area_ha)} · ${x.grupo}`;
-    $('#pe-res-b').innerHTML = `<div class="empty-result"><h3>Elija qué analizar</h3><p>Pulse <b>Realizar análisis</b> para elegir uno o varios análisis: preevaluación, cambio de cobertura, fragmentación, conectividad, corredores, ERI, franjas riparias, coberturas SINIA o intensidad relativa.</p><button class="btn btn-p" type="button" id="pe-abrir-2">Realizar análisis</button></div>`;
-    $('#pe-abrir-2').addEventListener('click', () => abrirAsistente('territorio'));
-    $('#pe-res').classList.remove('closed');
-    $('#pe-reopen').hidden = true;
-  }
-
-  async function seleccionar(id, abrir = false) {
-    st.id = st.data.territorios[id] ? id : 'chcp';
-    $('#pe-terr').value = st.id;
-    st.vistaPol = null;
-    st.geo = st.id !== 'chcp' ? await geometria(st.id) : null;
-    const f = st.id === 'chcp' ? st.territory.basin : st.territory.subbasins.features.find((x) => x.properties.id === st.id);
-    if (f) st.map.fitBounds(L.geoJSON(f).getBounds(), { padding: [20, 20] });
-    renderCapas();
-    await dibujar();
-    if (abrir) territorioPreparado();
-  }
-
-
   // ------------------------------------------------------------ polígono propio
   const P = window.CHCP_POLIGONO, RED = window.CHCP_RED;
   const CAPAS_VALOR = ['aux', 'jrc_2025', 'hansen', 'esri_cambio', 'sinia_2021', 'coincidencia', 'riparia', 'eri', 'ndvi_cambio', 'gedi'];
@@ -350,9 +672,38 @@
     if (nuevo) poligonoNuevo();
   }
   // Un polígono nuevo deja de mostrar el análisis anterior y abre directamente la elección de análisis.
+  /** Superficies por año dentro del polígono, a partir de los mapas por año de cada subcuenca. */
+  async function seriePoligono(prod) {
+    pg.series ||= {};
+    if (pg.series[prod]) return pg.series[prod];
+    const info = prodInfo(prod);
+    const salida = prod === 'hansen' ? { perdida_por_anio: {}, cobertura_arborea_2000_ha: null } : { por_anio: {} };
+    for (const id of st.vistaPol.ids) {
+      const meta = st.series.territorios?.[id]?.mapas?.[prod];
+      const f = st.territory.subbasins.features.find((x) => x.properties.id === id);
+      if (!meta || !f) continue;
+      const [w, h] = meta.dimensiones;
+      const a = P.transformador(meta.limites, w, h);
+      const mp = rasterizar(pg.geo, a, w, h), ms = rasterizar(f, a, w, h);
+      const lista = []; for (let i = 0; i < w * h; i += 1) if (mp[i * 4 + 3] > 127 && ms[i * 4 + 3] > 127) lista.push(i);
+      const dentro = Int32Array.from(lista), haPx = meta.tamano_pixel_m ** 2 / 10000;
+      for (const anio of (prod === 'hansen' ? [null] : info.anios)) {
+        let b;
+        try { b = await bytesCache(serieFile(`mapas/${id}/${prod === 'hansen' ? 'hansen.v.png' : `${prod}_${anio}.v.png`}`)); } catch (_) { continue; }
+        const cuenta = new Float64Array(256);
+        for (let k = 0; k < dentro.length; k += 1) cuenta[b.v[dentro[k]]] += 1;
+        for (let v = 0; v < 255; v += 1) {
+          if (!cuenta[v]) continue;
+          if (prod === 'hansen') { if (v >= 1) { const y = 2000 + v; salida.perdida_por_anio[y] = (salida.perdida_por_anio[y] || 0) + cuenta[v] * haPx; } } else { const dd = (salida.por_anio[anio] ||= {}); dd[v] = (dd[v] || 0) + cuenta[v] * haPx; }
+        }
+      }
+    }
+    pg.series[prod] = salida;
+    return salida;
+  }
   function poligonoNuevo() {
-    pg.resultado = null;
-    if (st.vistaPol) { st.vistaPol = null; renderCapas(); dibujar(); }
+    pg.resultado = null; pg.series = {}; pg.vista = null;
+    if (st.vistaPol) { st.vistaPol = null; st.modo = null; dibujar(); }
     abrirAsistente('poligono');
   }
   function cargarImagen(url) {
@@ -475,7 +826,8 @@
       await new Promise((ok) => setTimeout(ok, 30));
       frag = await fragmentacionPoligono();
     }
-    st.vistaPol = { ids: subs.map((f) => f.properties.id), geo: mapaP.parches.length ? { parches: { type: 'FeatureCollection', features: mapaP.parches }, brechas: { type: 'FeatureCollection', features: mapaP.brechas } } : null };
+    pg.series = {};
+    st.vistaPol = pg.vista = { ids: subs.map((f) => f.properties.id), geo: mapaP.parches.length ? { parches: { type: 'FeatureCollection', features: mapaP.parches }, brechas: { type: 'FeatureCollection', features: mapaP.brechas } } : null };
     pg.resultado = { ...P.evaluar(acc, estructura), acc, estructura, fragmentacion: frag, error_borde: errorBorde, perimetro_m: perimetro, area_dibujada_ha: P.areaHa(pg.geo), subcuencas: subs.map((f) => f.properties.nombre), sin_datos: sinDatos.map((f) => f.properties.nombre), pixel_m: acc.pixeles_m.length ? Math.max(...acc.pixeles_m) : null };
     $('#pg-busy').hidden = true;
   }
@@ -490,7 +842,7 @@
     $('#pg-undo').addEventListener('click', () => { pg.vertices.pop(); dibujoVista(); });
     $('#pg-end').addEventListener('click', () => terminarDibujo(true));
     $('#pg-cancel').addEventListener('click', () => terminarDibujo(false));
-    $('#pg-clear').addEventListener('click', () => { pg.geo = null; pg.vertices = []; pg.resultado = null; dibujoVista(); mostrarPoligono(); if (st.vistaPol) { st.vistaPol = null; renderCapas(); dibujar(); } });
+    $('#pg-clear').addEventListener('click', () => { pg.geo = null; pg.vertices = []; pg.resultado = null; pg.series = {}; pg.vista = null; dibujoVista(); mostrarPoligono(); st.analisis = st.analisis.filter((e) => !e.poli); renderMisAnalisis(); if (st.vistaPol) { st.vistaPol = null; st.modo = null; dibujar(); renderPanel(); } });
     $('#pg-run').addEventListener('click', () => abrirAsistente('poligono'));
     $('#pg-file').addEventListener('change', async (e) => {
       const archivo = e.target.files[0]; if (!archivo) return;
@@ -504,8 +856,12 @@
     });
   }
 
+
   // ------------------------------------------------------------ inicio
-  try { [st.data, st.territory] = await Promise.all([api('/api/v1/panel/statistics'), api('/api/v1/territory'), window.CHCP.consultarActualizacion()]); } catch (error) { $('#pe-capas').innerHTML = `<p class="fi-pending">No se pudieron cargar los datos: ${esc(error.message)}</p>`; return; }
+  try {
+    [st.data, st.territory, st.series] = await Promise.all([api('/api/v1/panel/statistics'), api('/api/v1/territory'),
+      fetch(serieFile('indice.json')).then((r) => (r.ok ? r.json() : null)).catch(() => null), window.CHCP.consultarActualizacion()]);
+  } catch (error) { $('#pe-temas').innerHTML = `<p class="fi-pending">No se pudieron cargar los datos: ${esc(error.message)}</p>`; return; }
   st.map = L.map('smap', { zoomControl: true });
   // Orden de dibujo: mapas (350) < velo fuera de la subcuenca (380) < vectores (400).
   st.map.createPane('rasters').style.zIndex = 350;
@@ -517,17 +873,19 @@
   st.map.on('mousemove', (e) => { $('#coords').innerHTML = `${icon('target', 16)}<span>Lat ${e.latlng.lat.toFixed(4)} · Lon ${e.latlng.lng.toFixed(4)}</span>`; });
   const subs = Object.values(st.data.territorios).filter((x) => x && x.id !== 'chcp').sort((a, b) => a.nombre.localeCompare(b.nombre, 'es'));
   $('#pe-terr').innerHTML += subs.map((x) => `<option value="${x.id}">${esc(x.nombre)}</option>`).join('');
-  $('#pe-terr').addEventListener('change', (e) => seleccionar(e.target.value, true));
+  $('#pe-terr').addEventListener('change', (e) => seleccionar(e.target.value));
   $$('.side-tabs [data-s]').forEach((b) => b.addEventListener('click', () => { $$('.side-tabs [data-s]').forEach((x) => x.setAttribute('aria-selected', String(x === b))); ['capas', 'poligono', 'base'].forEach((k) => { $(`#s-${k}`).hidden = k !== b.dataset.s; }); }));
   $('#pe-run').addEventListener('click', () => abrirAsistente());
   $('#pe-modal-x').addEventListener('click', () => { $('#pe-modal').hidden = true; });
   $('#pe-back').addEventListener('click', () => { wiz.paso = Math.max(0, wiz.paso - 1); pintarAsistente(); });
-  $('#pe-next').addEventListener('click', () => { if (wiz.paso < 2) { wiz.paso += 1; pintarAsistente(); } else ejecutarAsistente(); });
+  $('#pe-next').addEventListener('click', () => { if (wiz.paso < pasosWiz().length - 1) { wiz.paso += 1; pintarAsistente(); } else ejecutarAsistente(); });
   $('#pe-res-close').addEventListener('click', () => { $('#pe-res').classList.add('closed'); $('#pe-reopen').hidden = false; });
   $('#pe-reopen').addEventListener('click', () => { $('#pe-res').classList.remove('closed'); $('#pe-reopen').hidden = true; });
   iniciarPoligono();
   // El panel de resultados se abre y se cierra con una transición: el mapa se reajusta solo.
   if (typeof ResizeObserver !== 'undefined') new ResizeObserver(() => st.map.invalidateSize()).observe($('#smap'));
-  const pedido = new URLSearchParams(location.search).get('id') || location.hash.slice(1);
-  await seleccionar(pedido || 'chcp', !!pedido);
+  const params = new URLSearchParams(location.search);
+  if (params.get('tema') && TEMA[params.get('tema')]) st.tema = params.get('tema');
+  renderTemas();
+  await seleccionar(params.get('id') || location.hash.slice(1) || 'chcp');
 })();
