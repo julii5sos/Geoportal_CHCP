@@ -14,7 +14,7 @@
       <div class="territory-results" id="territory-results" role="listbox" hidden></div>
       <p class="territory-search-status" id="territory-search-status" role="status">La cuenca completa y sus {{ subbasin_count }} subcuencas.</p>
     </div>
-    <button class="btn btn-o in-tour-btn" type="button" id="in-tour">▶ Recorrido de 1 minuto</button>
+    <button class="btn btn-o in-tour-btn" type="button" id="in-tour"><span data-icon="play" aria-hidden="true"></span>Recorrido de 1 minuto</button>
   {% endcall %}
 
   <div class="wrap">
@@ -30,21 +30,21 @@
         <p>Primero elija el área; cada tarjeta abre la herramienta que responde esa pregunta para esa área.</p></div>
       <label class="in-area">Área<select id="in-area"><option value="chcp">Toda la Cuenca del Canal</option></select></label>
       <div class="in-grid">
-        <a class="in-q" data-destino="ficha" data-ancla="#fi-indicadores"><span class="in-ic">🌳</span><b>¿Ha perdido bosque esta zona?</b>
+        <a class="in-q" data-destino="ficha" data-ancla="#fi-indicadores"><span class="in-ic" data-icon="loss" aria-hidden="true"></span><b>¿Ha perdido bosque esta zona?</b>
           <small>Pérdida, degradación y deforestación recientes (2021–2025), comparadas con las demás subcuencas.</small><i>JRC TMF · Hansen · ESRI</i></a>
-        <a class="in-q" data-destino="panel"><span class="in-ic">🛰️</span><b>¿Coinciden varias fuentes en la señal de cambio?</b>
+        <a class="in-q" data-destino="panel"><span class="in-ic" data-icon="layers" aria-hidden="true"></span><b>¿Coinciden varias fuentes en la señal de cambio?</b>
           <small>Si dos o más satélites marcan lo mismo, la señal es más fuerte. Mapa de señales coincidentes.</small><i>JRC · Hansen · ESRI · NDVI</i></a>
-        <a class="in-q" data-destino="ficha" data-ancla="#fi-vigor"><span class="in-ic">🌿</span><b>¿El bosque que queda está sano?</b>
+        <a class="in-q" data-destino="ficha" data-ancla="#fi-vigor"><span class="in-ic" data-icon="trend" aria-hidden="true"></span><b>¿El bosque que queda está sano?</b>
           <small>Vigor de la vegetación y altura del dosel: un bosque puede seguir en pie pero estar degradado.</small><i>Sentinel-2 NDVI · GEDI</i></a>
-        <a class="in-q" data-destino="ficha" data-ancla="#fi-estructura"><span class="in-ic">🧩</span><b>¿Qué tan fragmentado está el bosque?</b>
+        <a class="in-q" data-destino="ficha" data-ancla="#fi-estructura"><span class="in-ic" data-icon="network" aria-hidden="true"></span><b>¿Qué tan fragmentado está el bosque?</b>
           <small>Cuántos parches hay, cuánto bosque interior queda y qué tan conectados están entre sí.</small><i>SINIA 2021 · métricas de paisaje</i></a>
-        <a class="in-q in-q-dest" data-destino="restauracion"><span class="in-ic">🔗</span><b>¿Dónde restaurar para reconectarlo?</b>
+        <a class="in-q in-q-dest" data-destino="restauracion"><span class="in-ic" data-icon="sprout" aria-hidden="true"></span><b>¿Dónde restaurar para reconectarlo?</b>
           <small>Simule franjas de restauración y vea cuánto mejora la conectividad. Compare dos escenarios.</small><i>Simulador de restauración</i></a>
-        <a class="in-q in-q-dest" data-destino="restauracion" data-modo="rutas"><span class="in-ic">🦋</span><b>¿Cómo conectar un bosque con el Corredor Mesoamericano?</b>
+        <a class="in-q in-q-dest" data-destino="restauracion" data-modo="rutas"><span class="in-ic" data-icon="route" aria-hidden="true"></span><b>¿Cómo conectar un bosque con el Corredor Mesoamericano?</b>
           <small>Rutas que siguen los ríos con bosque y evitan el agua y las zonas urbanas.</small><i>Simulador · ríos IGNTG · Almanaque Azul</i></a>
-        <a class="in-q" data-destino="coberturas"><span class="in-ic">🗺️</span><b>¿Qué dice la cartografía oficial?</b>
+        <a class="in-q" data-destino="coberturas"><span class="in-ic" data-icon="map" aria-hidden="true"></span><b>¿Qué dice la cartografía oficial?</b>
           <small>Los mapas de cobertura de MiAMBIENTE de 1992 a 2023 y su superficie por categoría.</small><i>SINIA – MiAMBIENTE</i></a>
-        <a class="in-q" data-destino="platform"><span class="in-ic">✏️</span><b>¿Y si quiero analizar mi propia área?</b>
+        <a class="in-q" data-destino="platform"><span class="in-ic" data-icon="polygon" aria-hidden="true"></span><b>¿Y si quiero analizar mi propia área?</b>
           <small>Dibuje un polígono o suba un KML y obtenga el mismo análisis para esa área.</small><i>Plataforma</i></a>
       </div>
       <p class="in-confianza">¿Qué tan confiables son estos resultados? <a data-destino="validacion">Vea cómo se validan los mapas →</a></p>

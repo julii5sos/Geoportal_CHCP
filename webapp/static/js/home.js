@@ -85,6 +85,9 @@
   });
   document.addEventListener('click', (event) => { if (!document.getElementById('territory-search').contains(event.target)) closeResults(); });
 
+  // Íconos de línea del geoportal (sin emojis).
+  document.querySelectorAll('[data-icon]').forEach((el) => { el.innerHTML = window.CHCP_ICON?.(el.dataset.icon, el.classList.contains('in-ic') ? 24 : 16) || ''; });
+
   // ------------------------------------------------------------ preguntas: área y destinos
   function llenarAreas(territory) {
     const sel = document.getElementById('in-area');
