@@ -1,0 +1,54 @@
+{
+ "mapa": "senal_perdida",
+ "titulo": "Señal de pérdida de bosque 2021–2025 del geoportal (≥ 2 fuentes)",
+ "descripcion": "Pérdida = al menos dos de: JRC (bosque sin perturbación en 2020 y deforestado o degradado en 2025), Hansen (pérdida 2021–2025) y ESRI (árboles 2017 → otra clase 2024). Bosque = JRC sin perturbación en 2025 y ninguna fuente. No bosque = el resto. Período de referencia 2021–2025 (ESRI cubre 2017–2024).",
+ "leyenda": [
+  {
+   "codigo": 1,
+   "clave": "perdida",
+   "etiqueta": "Pérdida o degradación 2021–2025",
+   "color": "#c62828",
+   "guia": "Había bosque a fines de 2020 y entre 2021 y 2025 se observa desmonte, quema, apertura del dosel o caminos nuevos."
+  },
+  {
+   "codigo": 2,
+   "clave": "bosque",
+   "etiqueta": "Bosque",
+   "color": "#2e7d32",
+   "guia": "Dosel arbóreo continuo durante 2020–2025 (incluye bosque secundario cerrado y plantaciones con dosel cerrado)."
+  },
+  {
+   "codigo": 3,
+   "clave": "no_bosque",
+   "etiqueta": "No bosque",
+   "color": "#d7c2a1",
+   "guia": "Pasto, cultivo, rastrojo bajo, suelo, construcción o agua durante 2020–2025."
+  }
+ ],
+ "territorio": "Cuenca Hidrográfica del Canal de Panamá",
+ "areas_ha": {
+  "1": 1380.26,
+  "2": 135943.74,
+  "3": 203705.38
+ },
+ "n_planeado": 498,
+ "asignacion": {
+  "1": 75,
+  "2": 169,
+  "3": 254
+ },
+ "n_obtenido": {
+  "1": 75,
+  "2": 169,
+  "3": 254
+ },
+ "error_objetivo": 0.015,
+ "minimo_por_estrato": 75,
+ "semilla": 2026,
+ "escala_m": 30,
+ "proyecto": "geoportal-513817",
+ "generado": "2026-11-23T21:06:43",
+ "metodo": "Muestreo aleatorio estratificado por clase del mapa; estimadores de Olofsson et al. (2014).",
+ "version_mapa": 2,
+ "reglas_interpretacion": "Interpretación ciega (sin abrir estratos.csv ni capas del geoportal), píxel centrado en el punto, fecha de imagen registrada; 0 = sin evidencia suficiente (se excluye y se informa); revisión de al menos 10 % de los puntos y de todos los de confianza baja por un segundo intérprete."
+}

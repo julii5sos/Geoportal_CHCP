@@ -1,0 +1,23 @@
+{
+ "mapa": "senal_perdida",
+ "titulo": "Señal de pérdida de bosque 2021–2025 del geoportal (≥ 2 fuentes)",
+ "total_puntos": 498,
+ "interpretados": 0,
+ "por_estrato": {
+  "1": 0,
+  "2": 0,
+  "3": 0
+ },
+ "valores_no_reconocidos": [],
+ "control_calidad": {
+  "sin_evidencia_excluidos": 0,
+  "desacuerdos_pendientes": 0,
+  "revisados_segundo_interprete": 0,
+  "acuerdo_entre_interpretes_pct": null,
+  "puntos_sin_fecha_de_imagen": 0
+ },
+ "actualizado": "2026-11-23T21:19:17",
+ "resultado": null,
+ "estado": "sin_interpretaciones",
+ "mensaje": "Se necesitan al menos 2 puntos interpretados en cada estrato para calcular resultados."
+}
