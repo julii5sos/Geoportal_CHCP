@@ -57,7 +57,7 @@ def main() -> int:
     parser.add_argument("--pausa", type=float, default=0.15)
     args = parser.parse_args()
 
-    inicializar_earth_engine()
+    inicializar_earth_engine(ee)
     desactivar_teselas(ee)
     sesion = requests.Session()
     meta = sesion.get(f"{REST}/{CAPA}", params={"f": "json"}, timeout=60).json()
