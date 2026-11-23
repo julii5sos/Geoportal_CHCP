@@ -69,14 +69,54 @@
   function descargar(nombre, texto, tipo) { const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([texto], { type: tipo })); a.download = nombre; a.click(); URL.revokeObjectURL(a.href); }
   const campoClase = () => (st.revisor ? 'clase_referencia_2' : 'clase_referencia');
   /** Recortes Sentinel-2 sin nubes de varios años y series NDVI / radar del punto. */
+  const urlChip = (p, a, ir) => valFile(`${st.mapa}/imagenes/${encodeURIComponent(p.id)}_${a}${ir ? '_ir' : ''}.jpg`);
+  const BANDAS_NDVI = [{ desde: 0.6, hasta: 1, etiqueta: 'bosque o vegetación densa', color: '#1b7837' }, { desde: 0.2, hasta: 0.6, etiqueta: 'pasto, cultivo, rastrojo', color: '#d8b365' }, { desde: -0.2, hasta: 0.2, etiqueta: 'agua, suelo o construcción', color: '#2166ac' }];
+  const BANDAS_VH = [{ desde: -16, hasta: -8, etiqueta: 'típico de bosque', color: '#1b7837' }, { desde: -22, hasta: -16, etiqueta: 'pasto, cultivo o suelo', color: '#d8b365' }, { desde: -32, hasta: -22, etiqueta: 'agua (superficie lisa)', color: '#2166ac' }];
   function panelImagenes(p) {
     if (!st.imagenes) return '<p class="va-sin-img">Las imágenes sin nubes de Sentinel-2 aún no se han preparado para esta muestra (Actions → «Generar muestra de validación» con «Solo preparar las imágenes»).</p>';
     const I = st.imagenes, lado = I.recorte.lado_m, celda = (st.diseno.escala_m / lado) * 100;
-    const chips = I.anios_recortes.map((a) => `<figure class="va-chip"><div><img src="${valFile(`${st.mapa}/imagenes/${encodeURIComponent(p.id)}_${a}.jpg`)}" alt="Sentinel-2 ${a} sin nubes alrededor del punto" loading="lazy" onerror="this.parentNode.classList.add('va-chip-sin')"><i style="width:${celda}%;height:${celda}%"></i></div><figcaption>${a}</figcaption></figure>`).join('');
+    const ir = st.infrarrojo && I.infrarrojo;
+    const chips = I.anios_recortes.map((a) => `<figure class="va-chip"><button type="button" class="va-chip-b" data-ampliar aria-label="Ampliar las imágenes"><img src="${urlChip(p, a, ir)}" alt="Sentinel-2 ${a} sin nubes alrededor del punto" loading="lazy" onerror="this.parentNode.classList.add('va-chip-sin')"><i style="width:${celda}%;height:${celda}%"></i></button><figcaption>${a}</figcaption></figure>`).join('');
     const s = st.series?.[p.id];
-    const lineas = s ? `<div class="va-series"><div><b>NDVI por año</b><small>Sentinel-2 sin nubes · una caída fuerte sugiere desmonte</small>${G.linea({ anios: I.anios_series, valores: I.anios_series.map((a) => s.ndvi?.[a] ?? null), min: 0, max: 1, alto: 120 })}</div>
-      <div><b>Radar VH por año (dB)</b><small>Sentinel-1 atraviesa las nubes · una caída de varios dB sugiere pérdida de dosel</small>${G.linea({ anios: I.anios_series, valores: I.anios_series.map((a) => s.vh?.[a] ?? null), color: '#5e3c99', decimales: 1, alto: 120 })}</div></div>` : '';
-    return `<div class="va-img"><div class="va-chips">${chips}</div><p class="rs-note">Sentinel-2 sin nubes: mediana de los píxeles despejados de cada año, ${lado} m de lado; el recuadro es la celda de ${st.diseno.escala_m} m evaluada.</p>${lineas}</div>`;
+    const lineas = s ? `<div class="va-series"><div><b>NDVI por año</b><small>Bosque estable ≈ 0,7–0,9. Una caída fuerte <b>y sostenida</b> sugiere desmonte; valores bajos todos los años indican agua, suelo o construcción.</small>${G.linea({ anios: I.anios_series, valores: I.anios_series.map((a) => s.ndvi?.[a] ?? null), min: -0.2, max: 1, alto: 130, bandas: BANDAS_NDVI, marcasY: [0, 0.5, 1] })}</div>
+      <div><b>Radar VH por año (dB)</b><small>Atraviesa las nubes. Una caída de más de 3 dB que se mantiene sugiere pérdida de dosel; variaciones menores de 2 dB son ruido. Muy bajo todos los años = agua.</small>${G.linea({ anios: I.anios_series, valores: I.anios_series.map((a) => s.vh?.[a] ?? null), color: '#5e3c99', min: -32, max: -8, decimales: 1, alto: 130, bandas: BANDAS_VH, marcasY: [-30, -20, -10] })}</div></div>` : '';
+    return `<div class="va-img"><div class="va-img-bar"><span>Sentinel-2 sin nubes (mediana de cada año), ${lado} m de lado; el recuadro es la celda de ${st.diseno.escala_m} m evaluada.</span>
+      ${I.infrarrojo ? `<div class="pe-lg-modo" role="radiogroup" aria-label="Combinación de bandas"><button type="button" data-ir="0" aria-pressed="${!ir}">Color natural</button><button type="button" data-ir="1" aria-pressed="${!!ir}">Infrarrojo</button></div>` : ''}
+      <button type="button" class="btn btn-s va-amp" data-ampliar>Ampliar (tecla A)</button></div>
+      <div class="va-chips">${chips}</div>${ir ? '<p class="rs-note">Infrarrojo (SWIR · NIR · rojo): vegetación en verde brillante, suelo desnudo o pasto seco en rosado o marrón, <b>agua en negro o azul oscuro</b>.</p>' : ''}${lineas}</div>`;
+  }
+  /** Vista ampliada: los años lado a lado, grandes, con el mismo recuadro. */
+  function ampliar(p) {
+    const I = st.imagenes; if (!I) return;
+    const celda = (st.diseno.escala_m / I.recorte.lado_m) * 100;
+    let ir = !!(st.infrarrojo && I.infrarrojo), sola = null;
+    const caja = document.createElement('div');
+    caja.className = 'va-lb'; caja.setAttribute('role', 'dialog'); caja.setAttribute('aria-label', 'Imágenes ampliadas');
+    const pintar = () => {
+      const anios = sola == null ? I.anios_recortes : [sola];
+      caja.innerHTML = `<div class="va-lb-c"><header><b>Punto ${esc(p.id)}</b>
+        ${I.infrarrojo ? `<div class="pe-lg-modo"><button type="button" data-lir="0" aria-pressed="${!ir}">Color natural</button><button type="button" data-lir="1" aria-pressed="${ir}">Infrarrojo</button></div>` : ''}
+        <div class="pe-lg-modo"><button type="button" data-sola="" aria-pressed="${sola == null}">Lado a lado</button>${I.anios_recortes.map((a) => `<button type="button" data-sola="${a}" aria-pressed="${sola === a}">${a}</button>`).join('')}</div>
+        <button type="button" class="va-lb-x" aria-label="Cerrar">×</button></header>
+        <div class="va-lb-imgs ${sola == null ? '' : 'una'}">${anios.map((a) => `<figure><div><img src="${urlChip(p, a, ir)}" alt="Sentinel-2 ${a}"><i style="width:${celda}%;height:${celda}%"></i></div><figcaption>${a}</figcaption></figure>`).join('')}</div>
+        <p class="rs-note">Pulse un año para verlo solo y compare alternando entre años (teclas ← →). Esc para cerrar.</p></div>`;
+      caja.querySelector('.va-lb-x').onclick = cerrar;
+      caja.querySelectorAll('[data-lir]').forEach((b) => { b.onclick = () => { ir = b.dataset.lir === '1'; st.infrarrojo = ir; pintar(); }; });
+      caja.querySelectorAll('[data-sola]').forEach((b) => { b.onclick = () => { sola = b.dataset.sola ? Number(b.dataset.sola) : null; pintar(); }; });
+    };
+    const teclas = (e) => {
+      if (e.key === 'Escape') cerrar();
+      else if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+        const xs = I.anios_recortes, n = xs.length, k = xs.indexOf(sola);
+        sola = e.key === 'ArrowRight' ? xs[k < 0 ? 0 : (k + 1) % n] : xs[k < 0 ? n - 1 : (k - 1 + n) % n];
+        pintar(); e.preventDefault();
+      }
+    };
+    function cerrar() { document.removeEventListener('keydown', teclas, true); caja.remove(); renderInterpretacion(); }
+    caja.addEventListener('click', (e) => { if (e.target === caja) cerrar(); });
+    document.addEventListener('keydown', teclas, true);
+    document.body.appendChild(caja);
+    pintar();
   }
   function renderInterpretacion() {
     const cont = $('#va-int');
@@ -99,6 +139,8 @@
       </div></div>`;
     if (st.map) st.map.remove();
     if (G) G.activarTooltips($('#va-int'));
+    $$('#va-int [data-ampliar]').forEach((b) => b.addEventListener('click', () => ampliar(p)));
+    $$('#va-int [data-ir]').forEach((b) => b.addEventListener('click', () => { st.infrarrojo = b.dataset.ir === '1'; renderInterpretacion(); }));
     st.map = L.map('va-map', { zoomControl: true });
     L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', { attribution: 'Esri World Imagery', maxZoom: 19 }).addTo(st.map);
     const m = st.diseno.escala_m / 2, dLat = m / 110540, dLon = m / (111320 * Math.cos(p.lat * Math.PI / 180));
@@ -181,6 +223,12 @@
     $('#va-mapa').addEventListener('change', (e) => cargarMapa(e.target.value));
     await cargarMapa(st.indice.mapas[0].mapa);
   }
+  document.addEventListener('keydown', (e) => {
+    if ((e.key !== 'a' && e.key !== 'A') || e.ctrlKey || e.metaKey || e.altKey) return;
+    if (e.target.closest('input, select, textarea, [contenteditable]') || document.querySelector('.va-lb')) return;
+    const p = st.muestra[st.i];
+    if (p && st.imagenes && $('#va-int .va-img')) { e.preventDefault(); ampliar(p); }
+  });
   $('#va-archivo').addEventListener('change', async (e) => {
     if (!st.diseno) { $('#va-propio').innerHTML = '<p class="rs-warn">Primero debe existir una muestra generada (diseño y estratos).</p>'; return; }
     const archivos = [...e.target.files];

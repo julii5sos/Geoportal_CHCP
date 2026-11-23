@@ -873,15 +873,30 @@ html.app #main-content:has(.pg) { overflow-y:auto; background:#f3f6fa; }
 .va-img { margin-bottom:12px; }
 .va-chips { display:grid; grid-template-columns:repeat(3, 1fr); gap:8px; }
 .va-chip { margin:0; }
-.va-chip > div { position:relative; aspect-ratio:1; border-radius:8px; overflow:hidden; background:#dfe6ef; }
-.va-chip img { width:100%; height:100%; object-fit:cover; image-rendering:pixelated; display:block; }
-.va-chip i { position:absolute; left:50%; top:50%; transform:translate(-50%, -50%); border:2px solid #ffeb3b; box-shadow:0 0 0 1px rgba(0,0,0,.5); min-width:6px; min-height:6px; }
+.va-chip-b { position:relative; display:block; width:100%; padding:0; border:0; aspect-ratio:1; border-radius:8px; overflow:hidden; background:#dfe6ef; cursor:zoom-in; }
+.va-chip-b:hover, .va-chip-b:focus-visible { outline:3px solid var(--azul, #1f5fa8); outline-offset:1px; }
+.va-chip img, .va-lb-imgs img { width:100%; height:100%; object-fit:cover; image-rendering:pixelated; display:block; }
+.va-chip i, .va-lb-imgs i { position:absolute; left:50%; top:50%; transform:translate(-50%, -50%); border:2px solid #ffeb3b; box-shadow:0 0 0 1px rgba(0,0,0,.5); min-width:6px; min-height:6px; }
 .va-chip-sin::after { content:'Sin imagen despejada'; position:absolute; inset:0; display:grid; place-items:center; font-size:12px; color:#5b6675; }
 .va-chip-sin img { display:none; }
 .va-chip figcaption { text-align:center; font-weight:800; font-size:13px; color:var(--azul-tinta); margin-top:3px; }
 .va-series { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:8px; }
 .va-series > div { background:#fff; border:1px solid var(--line); border-radius:8px; padding:8px 10px; }
 .va-series b { display:block; font-size:12.5px; color:var(--azul-tinta); }
+.va-series small b { display:inline; font-size:inherit; color:inherit; }
 .va-series small { display:block; font-size:11px; color:#6b7686; line-height:1.35; margin-bottom:2px; }
 .va-sin-img { font-size:12.5px; color:#5d4a00; background:#fff8e1; border:1px solid #f3d36b; border-radius:8px; padding:8px 10px; }
-@media (max-width:900px) { .va-series { grid-template-columns:1fr; } }
+.va-img-bar { display:flex; flex-wrap:wrap; align-items:center; gap:8px; margin-bottom:6px; font-size:12px; color:#5b6675; }
+.va-img-bar > span { flex:1 1 220px; }
+.g-banda { font-size:9.5px; fill:#4d5868; }
+.va-lb { position:fixed; inset:0; z-index:4000; background:rgba(10,18,30,.82); display:grid; place-items:center; padding:2vh 2vw; }
+.va-lb-c { background:#fff; border-radius:12px; padding:12px 16px 10px; max-width:96vw; max-height:96vh; overflow:auto; }
+.va-lb-c header { display:flex; flex-wrap:wrap; align-items:center; gap:10px; margin-bottom:10px; }
+.va-lb-c header b { margin-right:auto; color:var(--azul-tinta); }
+.va-lb-x { border:0; background:none; font-size:26px; line-height:1; cursor:pointer; color:#3a4656; padding:0 4px; }
+.va-lb-imgs { display:grid; grid-template-columns:repeat(3, min(30vw, 78vh, 460px)); gap:10px; }
+.va-lb-imgs.una { grid-template-columns:min(80vw, 78vh, 720px); }
+.va-lb-imgs figure { margin:0; }
+.va-lb-imgs figure > div { position:relative; aspect-ratio:1; border-radius:8px; overflow:hidden; background:#dfe6ef; }
+.va-lb-imgs figcaption { text-align:center; font-weight:800; color:var(--azul-tinta); margin-top:4px; }
+@media (max-width:900px) { .va-series { grid-template-columns:1fr; } .va-lb-imgs { grid-template-columns:1fr; } .va-lb-imgs > figure { width:min(90vw, 60vh); } }
