@@ -18,6 +18,7 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import signal
 import sys
 import time
 import traceback
@@ -55,6 +56,26 @@ CLASES_JRC = ("tmf_estable", "tmf_degradacion", "tmf_deforestacion", "tmf_recupe
               "tmf_agua", "tmf_otra_cobertura")
 
 
+class TiempoAgotado(BaseException):
+    """Un territorio superó su tiempo máximo: se registra como error y se sigue con el siguiente.
+
+    Hereda de BaseException para que los ``except Exception`` de los cálculos complementarios
+    (ríos, sitios, franja riparia, ERI) no lo absorban."""
+
+
+def _limite_tiempo(segundos: int) -> None:
+    """Programa (o cancela con 0) una alarma que interrumpe el territorio en curso.
+
+    Evita que un solo territorio bloqueado consuma las 6 horas de GitHub Actions, como ocurrió
+    el 2026-11-23 (una subcuenca pequeña quedó 5 h sin avanzar)."""
+    if not hasattr(signal, "SIGALRM"):
+        return
+    def _alarma(_senal, _marco):
+        raise TiempoAgotado(f"más de {segundos // 60} min en este territorio")
+    signal.signal(signal.SIGALRM, _alarma)
+    signal.alarm(max(int(segundos), 0))
+
+
 def _territorios() -> list[dict]:
     lista = [{"id": "chcp", "nombre": "Cuenca Hidrográfica del Canal de Panamá", "grupo": "Cuenca",
               "area": {"mode": "basin"}}]
@@ -89,6 +110,26 @@ def _redondear(coordenadas, decimales: int = 5):
     return [_redondear(c, decimales) for c in coordenadas]
 
 
+def _geometria_redondeada(geometria: dict | None) -> dict | None:
+    """Redondea una geometría GeoJSON, incluidas las GeometryCollection que a veces devuelve
+    Earth Engine al recortar parches (no tienen ``coordinates`` sino ``geometries``)."""
+    if not geometria:
+        return None
+    if geometria.get("type") == "GeometryCollection":
+        partes = [g for g in (_geometria_redondeada(x) for x in geometria.get("geometries") or []) if g]
+        poligonos = [g for g in partes if g["type"] in ("Polygon", "MultiPolygon")]
+        if poligonos:
+            # Solo interesa la superficie: los puntos o líneas sueltos que deja el recorte no tienen área.
+            coords = []
+            for g in poligonos:
+                coords.extend([g["coordinates"]] if g["type"] == "Polygon" else g["coordinates"])
+            return {"type": "MultiPolygon", "coordinates": coords}
+        return {"type": "GeometryCollection", "geometries": partes} if partes else None
+    if "coordinates" not in geometria:
+        return None
+    return {"type": geometria["type"], "coordinates": _redondear(geometria["coordinates"])}
+
+
 def _guardar_geometrias(identificador: str, estructura: dict | None) -> None:
     """Parches, brechas y ruta al corredor de la subcuenca para los mapas de la ficha."""
     if not estructura:
@@ -99,9 +140,12 @@ def _guardar_geometrias(identificador: str, estructura: dict | None) -> None:
         salida = []
         for f in (coleccion or {}).get("features", []):
             props = f.get("properties") or {}
+            geometria = _geometria_redondeada(f.get("geometry"))
+            if geometria is None:
+                continue
             salida.append({"type": "Feature",
                            "properties": {k: props.get(k) for k in propiedades} if propiedades else props,
-                           "geometry": {"type": f["geometry"]["type"], "coordinates": _redondear(f["geometry"]["coordinates"])}})
+                           "geometry": geometria})
         return {"type": "FeatureCollection", "features": salida}
     DIR_GEOMETRIAS.mkdir(parents=True, exist_ok=True)
     datos = {
@@ -196,8 +240,8 @@ def _mapas_y_riparia(territorio: dict, registro: dict) -> None:
         rios, fuente = _rios_territorio(geometria)
         (destino / "rios.json").write_text(json.dumps(
             {"type": "FeatureCollection", "fuente": fuente, "features": [
-                {**f, "geometry": {"type": f["geometry"]["type"], "coordinates": _redondear(f["geometry"]["coordinates"])}}
-                for f in rios["features"]]}, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
+                {**f, "geometry": _geometria_redondeada(f.get("geometry"))}
+                for f in rios["features"] if _geometria_redondeada(f.get("geometry"))]}, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
         registro["mapas"]["rios"] = len(rios["features"])
         registro["mapas"]["rios_fuente"] = fuente
     except Exception as exc:
@@ -249,6 +293,8 @@ def main() -> int:
     parser.add_argument("--sin-estructura", action="store_true", help="Omitir fragmentación y conectividad 2021")
     parser.add_argument("--distancia", type=float, default=500, help="Umbral entre parches en metros")
     parser.add_argument("--sin-mapas", action="store_true", help="Omitir mapas temáticos y análisis ripario")
+    parser.add_argument("--max-minutos", type=int, default=45,
+                        help="Tiempo máximo por subcuenca (la cuenca completa tiene el doble); 0 = sin límite")
     parser.add_argument("--solo-mapas", action="store_true",
                         help="Solo (re)generar mapas y análisis ripario de los territorios ya calculados")
     args = parser.parse_args()
@@ -261,6 +307,11 @@ def main() -> int:
     if SALIDA.exists():
         previo = json.loads(SALIDA.read_text(encoding="utf-8"))
         datos["territorios"] = previo.get("territorios", {})
+        # Un territorio con error en la ejecución anterior (p. ej. al guardar geometrías o mapas)
+        # queda pendiente para reintentarlo, aunque sus indicadores ya estén guardados.
+        for ident in previo.get("errores") or {}:
+            if ident in datos["territorios"]:
+                datos["territorios"][ident]["version_datos"] = -1
         if previo.get("version_datos") != VERSION_DATOS:
             for t in datos["territorios"].values():
                 t.setdefault("version_datos", previo.get("version_datos") or 1)
@@ -291,11 +342,17 @@ def main() -> int:
     if args.limite:
         pendientes = pendientes[: args.limite]
     print(f"{len(datos['territorios'])} territorios ya calculados; {len(pendientes)} pendientes.")
+    if pendientes:
+        _initialize_ee()
+        ee.data.setDeadline(10 * 60 * 1000)  # ninguna consulta individual espera más de 10 min
 
     for numero, territorio in enumerate(pendientes, 1):
         inicio = time.time()
         etiqueta = f"[{numero}/{len(pendientes)}] {territorio['nombre']}"
+        print(f"{etiqueta}: calculando…")
         try:
+            if args.max_minutos:
+                _limite_tiempo(args.max_minutos * 60 * (2 if territorio["id"] == "chcp" else 1))
             area = AreaSelection(**territorio["area"])
             estructura = None
             if territorio["id"] == "chcp" or args.sin_estructura:
@@ -321,10 +378,14 @@ def main() -> int:
                 _mapas_y_riparia(territorio, datos["territorios"][territorio["id"]])
             datos["errores"].pop(territorio["id"], None)
             print(f"{etiqueta}: {evaluacion['score']} pts ({evaluacion['priority']}) · {time.time() - inicio:.0f} s")
-        except Exception as exc:  # se registra y se continúa con el siguiente territorio
+        except (Exception, TiempoAgotado) as exc:  # se registra y se continúa con el siguiente territorio
             datos["errores"][territorio["id"]] = f"{type(exc).__name__}: {exc}"
+            if territorio["id"] in datos["territorios"]:
+                datos["territorios"][territorio["id"]]["version_datos"] = -1  # visible, pero se reintenta
             print(f"{etiqueta}: ERROR {exc}")
             traceback.print_exc(limit=1)
+        finally:
+            _limite_tiempo(0)
         _guardar(datos)
 
     _registrar(datos, inicio_ejecucion, len(pendientes))

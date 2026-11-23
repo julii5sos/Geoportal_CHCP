@@ -15,6 +15,22 @@ class PrecalculoPanelTests(unittest.TestCase):
         self.assertEqual(territorios[0]["id"], "chcp")
         self.assertEqual(len({t["id"] for t in territorios}), 54)
 
+    def test_geometrycollection_de_earth_engine_no_rompe_el_guardado(self):
+        g = {"type": "GeometryCollection", "geometries": [
+            {"type": "Polygon", "coordinates": [[[0.123456789, 1], [1, 1], [1, 0], [0.123456789, 1]]]},
+            {"type": "LineString", "coordinates": [[0, 0], [1, 1]]},
+            {"type": "MultiPolygon", "coordinates": [[[[2, 2], [3, 2], [3, 3], [2, 2]]]]}]}
+        r = modulo._geometria_redondeada(g)
+        self.assertEqual(r["type"], "MultiPolygon")
+        self.assertEqual(len(r["coordinates"]), 2)
+        self.assertEqual(r["coordinates"][0][0][0][0], 0.12346)
+        self.assertIsNone(modulo._geometria_redondeada(None))
+        self.assertIsNone(modulo._geometria_redondeada({"type": "GeometryCollection", "geometries": []}))
+        self.assertEqual(modulo._geometria_redondeada({"type": "Point", "coordinates": [1.0000001, 2]})["coordinates"], [1.0, 2])
+
+    def test_tiempo_agotado_no_lo_absorben_los_except_exception(self):
+        self.assertFalse(issubclass(modulo.TiempoAgotado, Exception))
+
     def test_compactar_conserva_indicadores_sin_geometrias(self):
         evaluacion = {
             "score": 4.0, "maximum_score": 6.5, "priority": "Alta",
