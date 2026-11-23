@@ -29,6 +29,7 @@ ETIQUETA_ESTADO = {
     "documentada_catalogo_previo": "📘 Documentada", "grupo_documentado_catalogo_previo": "⚠️ Solo grupo",
     "leyenda_oficial_sin_correspondencia": "⚠️ Sin verificar", "no_identificado": "⛔ No identificado",
     "discrepante_con_servicio": "⛔ Discrepancia",
+    "documentada_informe_oficial": "📄 Informe oficial (sin verificar en la CHCP)",
 }
 
 

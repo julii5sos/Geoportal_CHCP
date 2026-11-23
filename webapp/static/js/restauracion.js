@@ -162,7 +162,7 @@
       <table class="fi-table rs-table"><thead><tr><th>Indicador</th><th>Actual</th><th${st.esc === 'A' ? ' class="on"' : ''}>Escenario A</th><th${st.esc === 'B' ? ' class="on"' : ''}>Escenario B</th></tr></thead><tbody>
       ${filas.map(([n, v, d, h]) => `<tr><td>${n}<small>${h}</small></td><td>${v(base)}</td><td>${v(A)} ${A.n ? d(A) : ''}</td><td>${v(B)} ${B.n ? d(B) : ''}</td></tr>`).join('')}
       </tbody></table>
-      ${umbralesDisponibles().length < UMBRALES.length ? '<p class="rs-note">La sensibilidad con umbral de 1 km y el margen exterior estarán disponibles tras la próxima actualización de datos con Earth Engine.</p>' : ''}
+      ${umbralesDisponibles().length < UMBRALES.length ? `<p class="rs-note">La sensibilidad con umbral de 1 km y el margen exterior estarán disponibles ${window.CHCP.pendiente('tras')}.</p>` : ''}
       <div class="rs-bars">${[['Actual', base, '#90a4ae'], ['A', A, '#43a047'], ['B', B, '#1e88e5']].map(([n, x, c]) => `<div><span>IIC ${n}</span><i><b style="width:${x.r.iic / max * 100}%;background:${c}"></b></i></div>`).join('')}</div>
       ${lectura('A', base, A)}${lectura('B', base, B)}
       <div class="rs-niveles"><b>Qué mide y qué no mide este simulador</b><ul>
@@ -189,10 +189,10 @@
     return partes.join(' y ');
   }
   function textoValidacion() {
-    const v = st.validacion;
-    if (!v) return 'Su exactitud no se ha evaluado todavía: la muestra de validación independiente está pendiente.';
-    if (v.estado === 'completa') return `Validación independiente completa (${v.interpretados} puntos).`;
-    return `Validación independiente ${v.estado === 'preliminar' ? 'preliminar' : 'sin interpretar'} (${v.interpretados} de ${v.total_puntos} puntos): su exactitud todavía no está evaluada.`;
+    const v = st.validacion, oficial = '';
+    if (!v) return `Su exactitud en la cuenca no se ha evaluado todavía: la muestra de validación independiente está pendiente.${oficial}`;
+    if (v.estado === 'completa') return `Validación independiente completa (${v.interpretados} puntos).${oficial}`;
+    return `Validación independiente ${v.estado === 'preliminar' ? 'preliminar' : 'sin interpretar'} (${v.interpretados} de ${v.total_puntos} puntos): su exactitud en la cuenca todavía no está evaluada.${oficial}`;
   }
   /** Evalúa cada candidato: ganancia exacta por umbral, efectividad, cruces y robustez. */
   function evaluar() {
@@ -317,7 +317,8 @@
   function etiquetaCodigo(cod) {
     const x = leyendaDetalle().get(Number(cod));
     if (!x) return null;
-    return x.verificada ? x.categoria : `Código ${x.codigo} (sin verificar)`;
+    // Verificadas: nombre oficial. El resto ya lleva en su etiqueta «Código N · …» y su estado.
+    return x.verificada ? x.categoria : x.categoria || `Código ${x.codigo} (sin verificar)`;
   }
   /** Texto con las principales coberturas de una composición { código o clase: metros|km }. */
   function textoComposicion(comp, total, unidad = '%', max = 3) {
@@ -497,7 +498,7 @@
           <li>Resistencias supuestas: ${b.ribera ? `bosque de ribera ${r.bosque_ribera}, ` : ''}bosque ${r.bosque}, bosque degradado ${r.bosque_degradado}${b.detalle ? `, plantación ${r.plantacion}` : ''}, regeneración o rastrojo ${r.regeneracion}${b.ribera ? `, ribera sin bosque ${r.ribera_sin_bosque}` : ''}, otras tierras ${r.otras_tierras}${b.construido ? `, construido ${r.construido}` : ''}, agua ${r.agua}.${b.ribera ? ' La ribera es la franja de 50 m a cada lado de los cauces del IGNTG: la ruta tiende a seguir los ríos con bosque y, donde falta, a restaurar la orilla (la Ley 1 de 1994, art. 23, protege al menos 10 m a cada lado).' : ''}</li>
           <li>Los valores de resistencia son un supuesto del modelo, no una medición ni un dato de una especie concreta. Cambiarlos puede cambiar la ruta.</li>
           <li>La <b>franja morada</b> reúne las celdas por las que pasan rutas casi tan buenas como la mejor. Donde es ancha hay varias opciones; donde se estrecha, el paso es obligado.</li>
-          <li>Solo se evalúa dentro de la cuenca. ${b.tramos.filter((t) => !t.n).map((t) => `El tramo ${esc(t.nombre)} queda fuera de ella.`).join(' ')}${b.construido ? '' : ' Las zonas urbanas todavía no se distinguen de otras tierras; se incorporarán en la próxima actualización de datos.'}</li>
+          <li>Solo se evalúa dentro de la cuenca. ${b.tramos.filter((t) => !t.n).map((t) => `El tramo ${esc(t.nombre)} queda fuera de ella.`).join(' ')}${b.construido ? '' : ` Las zonas urbanas todavía no se distinguen de otras tierras; se incorporarán ${window.CHCP.pendiente()}.`}</li>
           <li>Es una ruta hipotética: no es un corredor oficial ni garantiza que la fauna la use. Antes de restaurar hay que verificar en campo, la tenencia de la tierra y el uso actual.</li>
         </ul>
         <p class="rs-note">Tramos del corredor: capa del Almanaque Azul de Panamá.</p>
@@ -529,7 +530,7 @@
     caja.innerHTML = '<p class="rs-note">Cargando la cobertura de la cuenca…</p>';
     let c;
     try { c = await capasCuenca(); } catch (e) { caja.innerHTML = `<p class="rs-warn">${esc(e.message)}</p>`; return; }
-    if (!c.detalle) { caja.innerHTML = '<p class="rs-note">La cobertura y uso del suelo 2021 detallada se añadirá en la próxima actualización de datos con Earth Engine.</p>'; return; }
+    if (!c.detalle) { caja.innerHTML = `<p class="rs-note">La cobertura y uso del suelo 2021 detallada se añadirá ${window.CHCP.pendiente()}.</p>`; return; }
     const ley = leyendaDetalle(), colores = new Map([...ley].map(([k, x]) => [k, hexRgb(x.color)]));
     if (!contexto.cobertura) contexto.cobertura = overlayDesde(c.detalle, c.w, c.h, c.m.limites, (v) => (v === 255 ? null : colores.get(v) || [150, 150, 150]), 175);
     contexto.cobertura.addTo(st.map);
@@ -571,7 +572,7 @@
       $('#rs-unir').classList.remove('on'); $('#rs-unir').disabled = true; $('#rs-hint').textContent = '';
       st.rutas.activo = false; $('#rs-rutas-btn').classList.remove('on'); $('#rs-rutas-btn').disabled = true;
       const listas = disponibles().filter((x) => x.id !== id).slice(0, 8);
-      $('#rs-results').innerHTML = `<p class="rs-warn"><b>${esc(t?.nombre || id)}</b> todavía no tiene su red de parches calculada, por eso no aparecen parches para unir. Se generará en la actualización de datos con Earth Engine. Mientras tanto puede revisar su <a href="${window.CHCP_STATIC ? 'ficha.html' : '/ficha'}?id=${encodeURIComponent(id)}">ficha técnica</a>.</p>${listas.length ? `<p class="rs-note">Subcuencas con la red ya disponible: ${listas.map((x) => `<button type="button" class="rs-ir" data-id="${esc(x.id)}">${esc(x.nombre)}</button>`).join(' ')}</p>` : ''}`;
+      $('#rs-results').innerHTML = `<p class="rs-warn"><b>${esc(t?.nombre || id)}</b> todavía no tiene su red de parches calculada, por eso no aparecen parches para unir. Se generará ${window.CHCP.pendiente()}. Mientras tanto puede revisar su <a href="${window.CHCP_STATIC ? 'ficha.html' : '/ficha'}?id=${encodeURIComponent(id)}">ficha técnica</a>.</p>${listas.length ? `<p class="rs-note">Subcuencas con la red ya disponible: ${listas.map((x) => `<button type="button" class="rs-ir" data-id="${esc(x.id)}">${esc(x.nombre)}</button>`).join(' ')}</p>` : ''}`;
       $$('#rs-results .rs-ir').forEach((b) => b.addEventListener('click', () => elegir(b.dataset.id)));
       $('#rs-prior').innerHTML = ''; $('#rs-list').innerHTML = '';
       return;
@@ -639,7 +640,7 @@
 
   // ---------------------------------------------------------------- inicio
   try {
-    [st.data, st.territory] = await Promise.all([api('/api/v1/panel/statistics'), api('/api/v1/territory')]);
+    [st.data, st.territory] = await Promise.all([api('/api/v1/panel/statistics'), api('/api/v1/territory'), window.CHCP.consultarActualizacion()]);
   } catch (error) {
     $('#rs-results').innerHTML = `<p class="rs-warn">No se pudieron cargar los datos: ${esc(error.message)}</p>`;
     return;

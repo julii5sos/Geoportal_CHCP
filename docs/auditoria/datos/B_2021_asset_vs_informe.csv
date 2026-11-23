@@ -1,0 +1,21 @@
+codigo,categoria,asset_ha,informe_ha,diferencia_ha,diferencia_pct
+1,Bosque latifoliado mixto maduro,123494.3,128585.4,-5091.1,-4.0
+2,Bosque latifoliado mixto secundario,74473.9,63650.6,10823.3,17.0
+3,Bosque de mangle,3.3,0.0,3.3,
+7,Bosque plantado de coníferas,111.0,148.9,-37.9,-25.5
+8,Bosque plantado de latifoliadas,7734.2,6494.5,1239.8,19.1
+9,Rastrojo y vegetación arbustiva,2793.1,3367.4,-574.2,-17.1
+10,Vegetación herbácea,6666.2,6453.6,212.6,3.3
+11,Vegetación baja inundable,1490.3,667.3,823.0,123.3
+12,Afloramiento rocoso,496.7,774.0,-277.4,-35.8
+14,Café,1423.1,0.0,1423.1,
+22,Maíz,0.0,1.4,-1.4,-100.0
+23,Piña,1579.9,2626.8,-1046.9,-39.9
+24,Otro cultivo anual,10.5,0.0,10.5,
+25,Área heterogénea de producción agrícola,0.5,0.0,0.5,
+26,Pasto,66406.9,75206.8,-8799.9,-11.7
+27,Superficie de agua,43712.7,45383.6,-1670.8,-3.7
+28,Área poblada,8813.4,9680.6,-867.2,-9.0
+29,Infraestructura,1464.5,1162.8,301.7,25.9
+30,Explotación minera,370.2,21.6,348.6,1614.6
+,Total,341044.7,344225.19,-3180.5,-0.9

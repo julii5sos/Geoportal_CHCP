@@ -7,7 +7,8 @@
   "grupo_documentado_catalogo_previo": "Solo se conoce el grupo (p. ej., bosque natural), no la categoría individual.",
   "leyenda_oficial_sin_correspondencia": "Existe un nombre en la leyenda oficial, pero no se ha probado qué código de píxel le corresponde.",
   "no_identificado": "Código presente sin categoría documentada; no se asigna significado.",
-  "discrepante_con_servicio": "El servicio oficial asigna a este código otra categoría o valor de píxel; no se muestra ningún nombre como oficial hasta resolver la discrepancia."
+  "discrepante_con_servicio": "El servicio oficial asigna a este código otra categoría o valor de píxel; no se muestra ningún nombre como oficial hasta resolver la discrepancia.",
+  "documentada_informe_oficial": "Nombre y número tomados de la leyenda numerada del informe final oficial del mapa; el número coincide con el valor de píxel en los códigos verificados espacialmente, pero este código no se ha comprobado espacialmente (no aparece en la CHCP). No se presenta como oficial."
  },
  "fuentes_color": {
   "MiAMBIENTE": "Color leído de la simbología del servicio oficial.",
@@ -1133,7 +1134,7 @@
     "estado": "verificada_espacialmente",
     "fuente_correspondencia": "Muestreo espacial vs servicio REST MiAMBIENTE capa 1 · 100.0 % de 10 puntos (2026-11-21T18:40:08)",
     "grupo_derivado": "bosque_natural",
-    "descripcion": "",
+    "descripcion": "Bosque natural dominado por árboles adultos de copa grande y composición cercana a la original; cobertura mantenida al menos 40 años, aunque haya tenido tala selectiva. (Resumen del informe oficial, sección 7.3.)",
     "candidato_leyenda_oficial": "Bosque latifoliado mixto maduro",
     "evidencia": {
      "puntos": 10,
@@ -1144,7 +1145,10 @@
      "valor_pixel_servicio": {
       "1": 10
      }
-    }
+    },
+    "nombre_informe_oficial": "Bosque latifoliado mixto maduro",
+    "documento_oficial": "MiAMBIENTE, Dirección de Información Ambiental (2022). Informe Final del Mapa de Cobertura Boscosa y Uso de Suelo 2021, de Panamá. Abril de 2022. Cuadro N° 2, pp. 21–22.",
+    "area_chcp_informe_ha": 128585.38
    },
    {
     "codigo": 2,
@@ -1154,7 +1158,7 @@
     "estado": "verificada_espacialmente",
     "fuente_correspondencia": "Muestreo espacial vs servicio REST MiAMBIENTE capa 1 · 100.0 % de 10 puntos (2026-11-21T18:40:08)",
     "grupo_derivado": "bosque_secundario",
-    "descripcion": "",
+    "descripcion": "Bosque natural en recuperación: más especies pioneras, árboles de diámetros medios o bajos y más sotobosque; altura media > 5 m y dosel > 30 %. Incluye rastrojos menores de 5 m declarados con fines forestales. (Resumen del informe oficial, sección 7.3.)",
     "candidato_leyenda_oficial": "Bosque latifoliado mixto secundario",
     "evidencia": {
      "puntos": 10,
@@ -1165,7 +1169,10 @@
      "valor_pixel_servicio": {
       "2": 10
      }
-    }
+    },
+    "nombre_informe_oficial": "Bosque latifoliado mixto secundario",
+    "documento_oficial": "MiAMBIENTE, Dirección de Información Ambiental (2022). Informe Final del Mapa de Cobertura Boscosa y Uso de Suelo 2021, de Panamá. Abril de 2022. Cuadro N° 2, pp. 21–22.",
+    "area_chcp_informe_ha": 63650.55
    },
    {
     "codigo": 3,
@@ -1175,7 +1182,7 @@
     "estado": "verificada_espacialmente",
     "fuente_correspondencia": "Muestreo espacial vs servicio REST MiAMBIENTE capa 1 · 100.0 % de 10 puntos (2026-11-21T18:40:08)",
     "grupo_derivado": "bosque_natural",
-    "descripcion": "",
+    "descripcion": "Bosque natural en el que al menos el 60 % de los árboles dominantes son especies de mangle. (Resumen del informe oficial, sección 7.3.)",
     "candidato_leyenda_oficial": "Bosque de mangle",
     "evidencia": {
      "puntos": 10,
@@ -1186,40 +1193,48 @@
      "valor_pixel_servicio": {
       "3": 10
      }
-    }
+    },
+    "nombre_informe_oficial": "Bosque de mangle",
+    "documento_oficial": "MiAMBIENTE, Dirección de Información Ambiental (2022). Informe Final del Mapa de Cobertura Boscosa y Uso de Suelo 2021, de Panamá. Abril de 2022. Cuadro N° 2, pp. 21–22."
    },
    {
     "codigo": 4,
-    "categoria": "Código 4 · Bosque natural (grupo documentado)",
+    "categoria": "Código 4 · Bosque de orey (informe oficial; sin verificar en la cuenca)",
     "color": "#00897B",
     "fuente_color": "propuesta_geoportal",
-    "estado": "grupo_documentado_catalogo_previo",
-    "fuente_correspondencia": "catalogo_previo",
+    "estado": "documentada_informe_oficial",
+    "fuente_correspondencia": "MiAMBIENTE, Dirección de Información Ambiental (2022). Informe Final del Mapa de Cobertura Boscosa y Uso de Suelo 2021, de Panamá. Abril de 2022. Cuadro N° 2, pp. 21–22.",
     "grupo_derivado": "bosque_natural",
-    "descripcion": "",
-    "candidato_leyenda_oficial": "Bosque de orey"
+    "descripcion": "Bosque natural en el que al menos el 60 % de los árboles dominantes son orey (Campnosperma panamensis). (Resumen del informe oficial, sección 7.3.)",
+    "candidato_leyenda_oficial": "Bosque de orey",
+    "nombre_informe_oficial": "Bosque de orey",
+    "documento_oficial": "MiAMBIENTE, Dirección de Información Ambiental (2022). Informe Final del Mapa de Cobertura Boscosa y Uso de Suelo 2021, de Panamá. Abril de 2022. Cuadro N° 2, pp. 21–22."
    },
    {
     "codigo": 5,
-    "categoria": "Código 5 · Bosque natural (grupo documentado)",
+    "categoria": "Código 5 · Bosque de cativo (informe oficial; sin verificar en la cuenca)",
     "color": "#26A69A",
     "fuente_color": "propuesta_geoportal",
-    "estado": "grupo_documentado_catalogo_previo",
-    "fuente_correspondencia": "catalogo_previo",
+    "estado": "documentada_informe_oficial",
+    "fuente_correspondencia": "MiAMBIENTE, Dirección de Información Ambiental (2022). Informe Final del Mapa de Cobertura Boscosa y Uso de Suelo 2021, de Panamá. Abril de 2022. Cuadro N° 2, pp. 21–22.",
     "grupo_derivado": "bosque_natural",
-    "descripcion": "",
-    "candidato_leyenda_oficial": "Bosque de cativo"
+    "descripcion": "Bosque natural en el que al menos el 60 % de los árboles dominantes son cativo (Prioria copaifera). (Resumen del informe oficial, sección 7.3.)",
+    "candidato_leyenda_oficial": "Bosque de cativo",
+    "nombre_informe_oficial": "Bosque de cativo",
+    "documento_oficial": "MiAMBIENTE, Dirección de Información Ambiental (2022). Informe Final del Mapa de Cobertura Boscosa y Uso de Suelo 2021, de Panamá. Abril de 2022. Cuadro N° 2, pp. 21–22."
    },
    {
     "codigo": 6,
-    "categoria": "Código 6 · Bosque natural (grupo documentado)",
+    "categoria": "Código 6 · Bosque de rafia (informe oficial; sin verificar en la cuenca)",
     "color": "#80CBC4",
     "fuente_color": "propuesta_geoportal",
-    "estado": "grupo_documentado_catalogo_previo",
-    "fuente_correspondencia": "catalogo_previo",
+    "estado": "documentada_informe_oficial",
+    "fuente_correspondencia": "MiAMBIENTE, Dirección de Información Ambiental (2022). Informe Final del Mapa de Cobertura Boscosa y Uso de Suelo 2021, de Panamá. Abril de 2022. Cuadro N° 2, pp. 21–22.",
     "grupo_derivado": "bosque_natural",
-    "descripcion": "",
-    "candidato_leyenda_oficial": "Bosque de rafia"
+    "descripcion": "Bosque natural en el que al menos el 60 % de los individuos dominantes son rafia (Raphia taedigera). (Resumen del informe oficial, sección 7.3.)",
+    "candidato_leyenda_oficial": "Bosque de rafia",
+    "nombre_informe_oficial": "Bosque de rafia",
+    "documento_oficial": "MiAMBIENTE, Dirección de Información Ambiental (2022). Informe Final del Mapa de Cobertura Boscosa y Uso de Suelo 2021, de Panamá. Abril de 2022. Cuadro N° 2, pp. 21–22."
    },
    {
     "codigo": 7,
@@ -1229,7 +1244,7 @@
     "estado": "verificada_espacialmente",
     "fuente_correspondencia": "Muestreo espacial vs servicio REST MiAMBIENTE capa 1 · 100.0 % de 10 puntos (2026-11-21T18:40:08)",
     "grupo_derivado": "bosque_plantado",
-    "descripcion": "",
+    "descripcion": "Plantación forestal de coníferas (pinos, cipreses y otras). (Resumen del informe oficial, sección 7.3.)",
     "candidato_leyenda_oficial": "Bosque plantado de coníferas",
     "evidencia": {
      "puntos": 10,
@@ -1240,7 +1255,10 @@
      "valor_pixel_servicio": {
       "7": 10
      }
-    }
+    },
+    "nombre_informe_oficial": "Bosque plantado de coníferas",
+    "documento_oficial": "MiAMBIENTE, Dirección de Información Ambiental (2022). Informe Final del Mapa de Cobertura Boscosa y Uso de Suelo 2021, de Panamá. Abril de 2022. Cuadro N° 2, pp. 21–22.",
+    "area_chcp_informe_ha": 148.9
    },
    {
     "codigo": 8,
@@ -1250,7 +1268,7 @@
     "estado": "verificada_espacialmente",
     "fuente_correspondencia": "Muestreo espacial vs servicio REST MiAMBIENTE capa 1 · 100.0 % de 10 puntos (2026-11-21T18:40:08)",
     "grupo_derivado": "bosque_plantado",
-    "descripcion": "",
+    "descripcion": "Plantación forestal de especies latifoliadas. (Resumen del informe oficial, sección 7.3.)",
     "candidato_leyenda_oficial": "Bosque plantado de latifoliadas",
     "evidencia": {
      "puntos": 10,
@@ -1261,7 +1279,10 @@
      "valor_pixel_servicio": {
       "8": 10
      }
-    }
+    },
+    "nombre_informe_oficial": "Bosque plantado de latifoliadas",
+    "documento_oficial": "MiAMBIENTE, Dirección de Información Ambiental (2022). Informe Final del Mapa de Cobertura Boscosa y Uso de Suelo 2021, de Panamá. Abril de 2022. Cuadro N° 2, pp. 21–22.",
+    "area_chcp_informe_ha": 6494.46
    },
    {
     "codigo": 9,
@@ -1271,7 +1292,7 @@
     "estado": "verificada_espacialmente",
     "fuente_correspondencia": "Muestreo espacial vs servicio REST MiAMBIENTE capa 1 · 100.0 % de 10 puntos (2026-11-21T18:40:08)",
     "grupo_derivado": "rastrojo_arbustivo",
-    "descripcion": "",
+    "descripcion": "Vegetación secundaria que crece tras el uso agropecuario, de altura media menor de 5 m, o formación de arbustos con más del 30 % de cobertura. No se considera bosque hasta alcanzar 5 m de altura y 30 % de copa. (Resumen del informe oficial, sección 7.3.)",
     "candidato_leyenda_oficial": "Rastrojo y vegetación arbustiva",
     "evidencia": {
      "puntos": 10,
@@ -1282,7 +1303,10 @@
      "valor_pixel_servicio": {
       "9": 10
      }
-    }
+    },
+    "nombre_informe_oficial": "Rastrojo y vegetación arbustiva",
+    "documento_oficial": "MiAMBIENTE, Dirección de Información Ambiental (2022). Informe Final del Mapa de Cobertura Boscosa y Uso de Suelo 2021, de Panamá. Abril de 2022. Cuadro N° 2, pp. 21–22.",
+    "area_chcp_informe_ha": 3367.36
    },
    {
     "codigo": 10,
@@ -1292,7 +1316,7 @@
     "estado": "verificada_espacialmente",
     "fuente_correspondencia": "Muestreo espacial vs servicio REST MiAMBIENTE capa 1 · 100.0 % de 10 puntos (2026-11-21T18:40:08)",
     "grupo_derivado": "otra_vegetacion",
-    "descripcion": "",
+    "descripcion": "Vegetación herbácea natural no inundable con más del 70 % de cobertura y sin pastoreo (eso la distingue del pasto). (Resumen del informe oficial, sección 7.3.)",
     "candidato_leyenda_oficial": "Vegetación herbácea",
     "evidencia": {
      "puntos": 10,
@@ -1303,7 +1327,10 @@
      "valor_pixel_servicio": {
       "10": 10
      }
-    }
+    },
+    "nombre_informe_oficial": "Vegetación herbácea",
+    "documento_oficial": "MiAMBIENTE, Dirección de Información Ambiental (2022). Informe Final del Mapa de Cobertura Boscosa y Uso de Suelo 2021, de Panamá. Abril de 2022. Cuadro N° 2, pp. 21–22.",
+    "area_chcp_informe_ha": 6453.6
    },
    {
     "codigo": 11,
@@ -1313,7 +1340,7 @@
     "estado": "verificada_espacialmente",
     "fuente_correspondencia": "Muestreo espacial vs servicio REST MiAMBIENTE capa 1 · 100.0 % de 10 puntos (2026-11-21T18:40:08)",
     "grupo_derivado": "otra_vegetacion",
-    "descripcion": "",
+    "descripcion": "Vegetación baja en tierras inundadas la mayor parte del año: pantanos, ciénagas y llanuras de inundación. (Resumen del informe oficial, sección 7.3.)",
     "candidato_leyenda_oficial": "Vegetación baja inundable",
     "evidencia": {
      "puntos": 10,
@@ -1324,7 +1351,10 @@
      "valor_pixel_servicio": {
       "11": 10
      }
-    }
+    },
+    "nombre_informe_oficial": "Vegetación baja inundable",
+    "documento_oficial": "MiAMBIENTE, Dirección de Información Ambiental (2022). Informe Final del Mapa de Cobertura Boscosa y Uso de Suelo 2021, de Panamá. Abril de 2022. Cuadro N° 2, pp. 21–22.",
+    "area_chcp_informe_ha": 667.29
    },
    {
     "codigo": 12,
@@ -1334,7 +1364,7 @@
     "estado": "verificada_espacialmente",
     "fuente_correspondencia": "Muestreo espacial vs servicio REST MiAMBIENTE capa 1 · 100.0 % de 10 puntos (2026-11-21T18:40:08)",
     "grupo_derivado": "areas_abiertas_naturales",
-    "descripcion": "",
+    "descripcion": "Roca expuesta o suelo desnudo sin vegetación, sobre todo en laderas de fuerte pendiente. (Resumen del informe oficial, sección 7.3.)",
     "candidato_leyenda_oficial": "Afloramiento rocoso y tierra desnuda",
     "evidencia": {
      "puntos": 10,
@@ -1345,18 +1375,23 @@
      "valor_pixel_servicio": {
       "12": 10
      }
-    }
+    },
+    "nombre_informe_oficial": "Afloramiento rocoso",
+    "documento_oficial": "MiAMBIENTE, Dirección de Información Ambiental (2022). Informe Final del Mapa de Cobertura Boscosa y Uso de Suelo 2021, de Panamá. Abril de 2022. Cuadro N° 2, pp. 21–22.",
+    "area_chcp_informe_ha": 774.02
    },
    {
     "codigo": 13,
-    "categoria": "Código 13 · sin documentación verificada",
+    "categoria": "Código 13 · Playa y arena natural (informe oficial; sin verificar en la cuenca)",
     "color": "#FFF59D",
     "fuente_color": "propuesta_geoportal",
-    "estado": "leyenda_oficial_sin_correspondencia",
-    "fuente_correspondencia": "pendiente",
-    "grupo_derivado": "no_identificado",
-    "descripcion": "",
-    "candidato_leyenda_oficial": "Playa y arenal natural"
+    "estado": "documentada_informe_oficial",
+    "fuente_correspondencia": "MiAMBIENTE, Dirección de Información Ambiental (2022). Informe Final del Mapa de Cobertura Boscosa y Uso de Suelo 2021, de Panamá. Abril de 2022. Cuadro N° 2, pp. 21–22.",
+    "grupo_derivado": "areas_abiertas_naturales",
+    "descripcion": "Terrenos bajos arenosos o pedregosos con vegetación escasa (menos del 30 %): playas, bancos de arena y dunas. (Resumen del informe oficial, sección 7.3.)",
+    "candidato_leyenda_oficial": "Playa y arena natural",
+    "nombre_informe_oficial": "Playa y arena natural",
+    "documento_oficial": "MiAMBIENTE, Dirección de Información Ambiental (2022). Informe Final del Mapa de Cobertura Boscosa y Uso de Suelo 2021, de Panamá. Abril de 2022. Cuadro N° 2, pp. 21–22."
    },
    {
     "codigo": 14,
@@ -1366,7 +1401,7 @@
     "estado": "verificada_espacialmente",
     "fuente_correspondencia": "Muestreo espacial vs servicio REST MiAMBIENTE capa 1 · 100.0 % de 10 puntos (2026-11-21T18:40:08)",
     "grupo_derivado": "cultivos",
-    "descripcion": "",
+    "descripcion": "Cultivo permanente de café. (Resumen del informe oficial, sección 7.3.)",
     "candidato_leyenda_oficial": "Café",
     "evidencia": {
      "puntos": 10,
@@ -1377,95 +1412,114 @@
      "valor_pixel_servicio": {
       "14": 10
      }
-    }
+    },
+    "nombre_informe_oficial": "Café",
+    "documento_oficial": "MiAMBIENTE, Dirección de Información Ambiental (2022). Informe Final del Mapa de Cobertura Boscosa y Uso de Suelo 2021, de Panamá. Abril de 2022. Cuadro N° 2, pp. 21–22."
    },
    {
     "codigo": 15,
-    "categoria": "Código 15 · sin documentación verificada",
+    "categoria": "Código 15 · Cítrico (informe oficial; sin verificar en la cuenca)",
     "color": "#FFB74D",
     "fuente_color": "propuesta_geoportal",
-    "estado": "leyenda_oficial_sin_correspondencia",
-    "fuente_correspondencia": "pendiente",
-    "grupo_derivado": "no_identificado",
-    "descripcion": "",
-    "candidato_leyenda_oficial": "Cítrico"
+    "estado": "documentada_informe_oficial",
+    "fuente_correspondencia": "MiAMBIENTE, Dirección de Información Ambiental (2022). Informe Final del Mapa de Cobertura Boscosa y Uso de Suelo 2021, de Panamá. Abril de 2022. Cuadro N° 2, pp. 21–22.",
+    "grupo_derivado": "cultivos",
+    "descripcion": "Cultivo permanente de cítricos. (Resumen del informe oficial, sección 7.3.)",
+    "candidato_leyenda_oficial": "Cítrico",
+    "nombre_informe_oficial": "Cítrico",
+    "documento_oficial": "MiAMBIENTE, Dirección de Información Ambiental (2022). Informe Final del Mapa de Cobertura Boscosa y Uso de Suelo 2021, de Panamá. Abril de 2022. Cuadro N° 2, pp. 21–22."
    },
    {
     "codigo": 16,
-    "categoria": "Código 16 · sin documentación verificada",
+    "categoria": "Código 16 · Palma aceitera (informe oficial; sin verificar en la cuenca)",
     "color": "#F57F17",
     "fuente_color": "propuesta_geoportal",
-    "estado": "leyenda_oficial_sin_correspondencia",
-    "fuente_correspondencia": "pendiente",
-    "grupo_derivado": "no_identificado",
-    "descripcion": "",
-    "candidato_leyenda_oficial": "Palma aceitera"
+    "estado": "documentada_informe_oficial",
+    "fuente_correspondencia": "MiAMBIENTE, Dirección de Información Ambiental (2022). Informe Final del Mapa de Cobertura Boscosa y Uso de Suelo 2021, de Panamá. Abril de 2022. Cuadro N° 2, pp. 21–22.",
+    "grupo_derivado": "cultivos",
+    "descripcion": "Cultivo permanente de palma aceitera. (Resumen del informe oficial, sección 7.3.)",
+    "candidato_leyenda_oficial": "Palma aceitera",
+    "nombre_informe_oficial": "Palma aceitera",
+    "documento_oficial": "MiAMBIENTE, Dirección de Información Ambiental (2022). Informe Final del Mapa de Cobertura Boscosa y Uso de Suelo 2021, de Panamá. Abril de 2022. Cuadro N° 2, pp. 21–22."
    },
    {
     "codigo": 17,
-    "categoria": "Código 17 · sin documentación verificada",
+    "categoria": "Código 17 · Plátano/banano (informe oficial; sin verificar en la cuenca)",
     "color": "#FDD835",
     "fuente_color": "propuesta_geoportal",
-    "estado": "leyenda_oficial_sin_correspondencia",
-    "fuente_correspondencia": "pendiente",
-    "grupo_derivado": "no_identificado",
-    "descripcion": "",
-    "candidato_leyenda_oficial": "Plátano/banano"
+    "estado": "documentada_informe_oficial",
+    "fuente_correspondencia": "MiAMBIENTE, Dirección de Información Ambiental (2022). Informe Final del Mapa de Cobertura Boscosa y Uso de Suelo 2021, de Panamá. Abril de 2022. Cuadro N° 2, pp. 21–22.",
+    "grupo_derivado": "cultivos",
+    "descripcion": "Cultivo permanente de plátano o banano. (Resumen del informe oficial, sección 7.3.)",
+    "candidato_leyenda_oficial": "Plátano/banano",
+    "nombre_informe_oficial": "Plátano/banano",
+    "documento_oficial": "MiAMBIENTE, Dirección de Información Ambiental (2022). Informe Final del Mapa de Cobertura Boscosa y Uso de Suelo 2021, de Panamá. Abril de 2022. Cuadro N° 2, pp. 21–22."
    },
    {
     "codigo": 18,
-    "categoria": "Código 18 · sin documentación verificada",
+    "categoria": "Código 18 · Otro cultivo permanente (informe oficial; sin verificar en la cuenca)",
     "color": "#FFCC80",
     "fuente_color": "propuesta_geoportal",
-    "estado": "leyenda_oficial_sin_correspondencia",
-    "fuente_correspondencia": "pendiente",
-    "grupo_derivado": "no_identificado",
-    "descripcion": "",
-    "candidato_leyenda_oficial": "Otro cultivo permanente"
+    "estado": "documentada_informe_oficial",
+    "fuente_correspondencia": "MiAMBIENTE, Dirección de Información Ambiental (2022). Informe Final del Mapa de Cobertura Boscosa y Uso de Suelo 2021, de Panamá. Abril de 2022. Cuadro N° 2, pp. 21–22.",
+    "grupo_derivado": "cultivos",
+    "descripcion": "Otros cultivos permanentes de poca extensión (mango, marañón, aguacate y similares). (Resumen del informe oficial, sección 7.3.)",
+    "candidato_leyenda_oficial": "Otro cultivo permanente",
+    "nombre_informe_oficial": "Otro cultivo permanente",
+    "documento_oficial": "MiAMBIENTE, Dirección de Información Ambiental (2022). Informe Final del Mapa de Cobertura Boscosa y Uso de Suelo 2021, de Panamá. Abril de 2022. Cuadro N° 2, pp. 21–22."
    },
    {
     "codigo": 19,
-    "categoria": "Código 19 · sin documentación verificada",
+    "categoria": "Código 19 · Arroz (informe oficial; sin verificar en la cuenca)",
     "color": "#E6EE9C",
     "fuente_color": "propuesta_geoportal",
-    "estado": "leyenda_oficial_sin_correspondencia",
-    "fuente_correspondencia": "pendiente",
-    "grupo_derivado": "no_identificado",
-    "descripcion": "",
-    "candidato_leyenda_oficial": "Arroz"
+    "estado": "documentada_informe_oficial",
+    "fuente_correspondencia": "MiAMBIENTE, Dirección de Información Ambiental (2022). Informe Final del Mapa de Cobertura Boscosa y Uso de Suelo 2021, de Panamá. Abril de 2022. Cuadro N° 2, pp. 21–22.",
+    "grupo_derivado": "cultivos",
+    "descripcion": "Cultivo anual de arroz. (Resumen del informe oficial, sección 7.3.)",
+    "candidato_leyenda_oficial": "Arroz",
+    "nombre_informe_oficial": "Arroz",
+    "documento_oficial": "MiAMBIENTE, Dirección de Información Ambiental (2022). Informe Final del Mapa de Cobertura Boscosa y Uso de Suelo 2021, de Panamá. Abril de 2022. Cuadro N° 2, pp. 21–22."
    },
    {
     "codigo": 20,
-    "categoria": "Código 20 · sin documentación verificada",
+    "categoria": "Código 20 · Caña de azúcar (informe oficial; sin verificar en la cuenca)",
     "color": "#C0CA33",
     "fuente_color": "propuesta_geoportal",
-    "estado": "leyenda_oficial_sin_correspondencia",
-    "fuente_correspondencia": "pendiente",
-    "grupo_derivado": "no_identificado",
-    "descripcion": "",
-    "candidato_leyenda_oficial": "Caña de azúcar"
+    "estado": "documentada_informe_oficial",
+    "fuente_correspondencia": "MiAMBIENTE, Dirección de Información Ambiental (2022). Informe Final del Mapa de Cobertura Boscosa y Uso de Suelo 2021, de Panamá. Abril de 2022. Cuadro N° 2, pp. 21–22.",
+    "grupo_derivado": "cultivos",
+    "descripcion": "Cultivo de caña de azúcar. (Resumen del informe oficial, sección 7.3.)",
+    "candidato_leyenda_oficial": "Caña de azúcar",
+    "nombre_informe_oficial": "Caña de azúcar",
+    "documento_oficial": "MiAMBIENTE, Dirección de Información Ambiental (2022). Informe Final del Mapa de Cobertura Boscosa y Uso de Suelo 2021, de Panamá. Abril de 2022. Cuadro N° 2, pp. 21–22."
    },
    {
     "codigo": 21,
-    "categoria": "Código 21 · sin documentación verificada",
+    "categoria": "Código 21 · Horticultura mixta (informe oficial; sin verificar en la cuenca)",
     "color": "#FFAB91",
     "fuente_color": "propuesta_geoportal",
-    "estado": "leyenda_oficial_sin_correspondencia",
-    "fuente_correspondencia": "pendiente",
-    "grupo_derivado": "no_identificado",
-    "descripcion": "",
-    "candidato_leyenda_oficial": "Horticultura mixta"
+    "estado": "documentada_informe_oficial",
+    "fuente_correspondencia": "MiAMBIENTE, Dirección de Información Ambiental (2022). Informe Final del Mapa de Cobertura Boscosa y Uso de Suelo 2021, de Panamá. Abril de 2022. Cuadro N° 2, pp. 21–22.",
+    "grupo_derivado": "cultivos",
+    "descripcion": "Cultivo de hortalizas variadas. (Resumen del informe oficial, sección 7.3.)",
+    "candidato_leyenda_oficial": "Horticultura mixta",
+    "nombre_informe_oficial": "Horticultura mixta",
+    "documento_oficial": "MiAMBIENTE, Dirección de Información Ambiental (2022). Informe Final del Mapa de Cobertura Boscosa y Uso de Suelo 2021, de Panamá. Abril de 2022. Cuadro N° 2, pp. 21–22."
    },
    {
     "codigo": 22,
-    "categoria": "Código 22 · sin documentación verificada",
+    "categoria": "Código 22 · Maíz (informe oficial; sin verificar en la cuenca)",
     "color": "#FFE082",
     "fuente_color": "propuesta_geoportal",
-    "estado": "leyenda_oficial_sin_correspondencia",
-    "fuente_correspondencia": "pendiente",
-    "grupo_derivado": "no_identificado",
-    "descripcion": "",
-    "candidato_leyenda_oficial": "Maíz"
+    "estado": "documentada_informe_oficial",
+    "fuente_correspondencia": "MiAMBIENTE, Dirección de Información Ambiental (2022). Informe Final del Mapa de Cobertura Boscosa y Uso de Suelo 2021, de Panamá. Abril de 2022. Cuadro N° 2, pp. 21–22.",
+    "grupo_derivado": "cultivos",
+    "descripcion": "Cultivo anual de maíz. (Resumen del informe oficial, sección 7.3.)",
+    "candidato_leyenda_oficial": "Maíz",
+    "nombre_informe_oficial": "Maíz",
+    "documento_oficial": "MiAMBIENTE, Dirección de Información Ambiental (2022). Informe Final del Mapa de Cobertura Boscosa y Uso de Suelo 2021, de Panamá. Abril de 2022. Cuadro N° 2, pp. 21–22.",
+    "area_chcp_informe_ha": 1.43
    },
    {
     "codigo": 23,
@@ -1475,7 +1529,7 @@
     "estado": "verificada_espacialmente",
     "fuente_correspondencia": "Muestreo espacial vs servicio REST MiAMBIENTE capa 1 · 100.0 % de 10 puntos (2026-11-21T18:40:08)",
     "grupo_derivado": "cultivos",
-    "descripcion": "",
+    "descripcion": "Cultivo de piña. (Resumen del informe oficial, sección 7.3.)",
     "candidato_leyenda_oficial": "Piña",
     "evidencia": {
      "puntos": 10,
@@ -1486,7 +1540,10 @@
      "valor_pixel_servicio": {
       "23": 10
      }
-    }
+    },
+    "nombre_informe_oficial": "Piña",
+    "documento_oficial": "MiAMBIENTE, Dirección de Información Ambiental (2022). Informe Final del Mapa de Cobertura Boscosa y Uso de Suelo 2021, de Panamá. Abril de 2022. Cuadro N° 2, pp. 21–22.",
+    "area_chcp_informe_ha": 2626.8
    },
    {
     "codigo": 24,
@@ -1496,7 +1553,7 @@
     "estado": "verificada_espacialmente",
     "fuente_correspondencia": "Muestreo espacial vs servicio REST MiAMBIENTE capa 1 · 100.0 % de 10 puntos (2026-11-21T18:40:08)",
     "grupo_derivado": "cultivos",
-    "descripcion": "",
+    "descripcion": "Otros cultivos anuales. (Resumen del informe oficial, sección 7.3.)",
     "candidato_leyenda_oficial": "Otro cultivo anual",
     "evidencia": {
      "puntos": 10,
@@ -1507,7 +1564,9 @@
      "valor_pixel_servicio": {
       "24": 10
      }
-    }
+    },
+    "nombre_informe_oficial": "Otro cultivo anual",
+    "documento_oficial": "MiAMBIENTE, Dirección de Información Ambiental (2022). Informe Final del Mapa de Cobertura Boscosa y Uso de Suelo 2021, de Panamá. Abril de 2022. Cuadro N° 2, pp. 21–22."
    },
    {
     "codigo": 25,
@@ -1517,7 +1576,7 @@
     "estado": "verificada_espacialmente",
     "fuente_correspondencia": "Muestreo espacial vs servicio REST MiAMBIENTE capa 1 · 100.0 % de 10 puntos (2026-11-21T18:40:08)",
     "grupo_derivado": "agropecuario_mixto",
-    "descripcion": "",
+    "descripcion": "Mosaico de cultivos, pastos, rastrojos y sistemas agroforestales o silvopastoriles demasiado pequeños para separarlos. (Resumen del informe oficial, sección 7.3.)",
     "candidato_leyenda_oficial": "Área heterogénea de producción agropecuaria",
     "evidencia": {
      "puntos": 10,
@@ -1528,7 +1587,9 @@
      "valor_pixel_servicio": {
       "25": 10
      }
-    }
+    },
+    "nombre_informe_oficial": "Área heterogénea de producción agrícola",
+    "documento_oficial": "MiAMBIENTE, Dirección de Información Ambiental (2022). Informe Final del Mapa de Cobertura Boscosa y Uso de Suelo 2021, de Panamá. Abril de 2022. Cuadro N° 2, pp. 21–22."
    },
    {
     "codigo": 26,
@@ -1538,7 +1599,7 @@
     "estado": "verificada_espacialmente",
     "fuente_correspondencia": "Muestreo espacial vs servicio REST MiAMBIENTE capa 1 · 100.0 % de 10 puntos (2026-11-21T18:40:08)",
     "grupo_derivado": "pastos",
-    "descripcion": "",
+    "descripcion": "Tierra con forraje herbáceo para el ganado, natural o sembrado. (Resumen del informe oficial, sección 7.3.)",
     "candidato_leyenda_oficial": "Pasto",
     "evidencia": {
      "puntos": 10,
@@ -1549,7 +1610,10 @@
      "valor_pixel_servicio": {
       "26": 10
      }
-    }
+    },
+    "nombre_informe_oficial": "Pasto",
+    "documento_oficial": "MiAMBIENTE, Dirección de Información Ambiental (2022). Informe Final del Mapa de Cobertura Boscosa y Uso de Suelo 2021, de Panamá. Abril de 2022. Cuadro N° 2, pp. 21–22.",
+    "area_chcp_informe_ha": 75206.81
    },
    {
     "codigo": 27,
@@ -1559,7 +1623,7 @@
     "estado": "verificada_espacialmente",
     "fuente_correspondencia": "Muestreo espacial vs servicio REST MiAMBIENTE capa 1 · 100.0 % de 10 puntos (2026-11-21T18:40:08)",
     "grupo_derivado": "agua",
-    "descripcion": "",
+    "descripcion": "Cuerpos y cauces de agua permanentes o estacionales (al menos 4 meses al año con agua). (Resumen del informe oficial, sección 7.3.)",
     "candidato_leyenda_oficial": "Superficie de agua",
     "evidencia": {
      "puntos": 10,
@@ -1570,7 +1634,10 @@
      "valor_pixel_servicio": {
       "27": 10
      }
-    }
+    },
+    "nombre_informe_oficial": "Superficie de agua",
+    "documento_oficial": "MiAMBIENTE, Dirección de Información Ambiental (2022). Informe Final del Mapa de Cobertura Boscosa y Uso de Suelo 2021, de Panamá. Abril de 2022. Cuadro N° 2, pp. 21–22.",
+    "area_chcp_informe_ha": 45383.55
    },
    {
     "codigo": 28,
@@ -1580,7 +1647,7 @@
     "estado": "verificada_espacialmente",
     "fuente_correspondencia": "Muestreo espacial vs servicio REST MiAMBIENTE capa 1 · 100.0 % de 10 puntos (2026-11-21T18:40:08)",
     "grupo_derivado": "areas_intervenidas",
-    "descripcion": "",
+    "descripcion": "Lugares poblados urbanos (1 500 o más habitantes, con servicios y continuidad física) y rurales. (Resumen del informe oficial, sección 7.3.)",
     "candidato_leyenda_oficial": "Área poblada",
     "evidencia": {
      "puntos": 10,
@@ -1591,7 +1658,10 @@
      "valor_pixel_servicio": {
       "28": 10
      }
-    }
+    },
+    "nombre_informe_oficial": "Área poblada",
+    "documento_oficial": "MiAMBIENTE, Dirección de Información Ambiental (2022). Informe Final del Mapa de Cobertura Boscosa y Uso de Suelo 2021, de Panamá. Abril de 2022. Cuadro N° 2, pp. 21–22.",
+    "area_chcp_informe_ha": 9680.65
    },
    {
     "codigo": 29,
@@ -1601,7 +1671,7 @@
     "estado": "verificada_espacialmente",
     "fuente_correspondencia": "Muestreo espacial vs servicio REST MiAMBIENTE capa 1 · 100.0 % de 10 puntos (2026-11-21T18:40:08)",
     "grupo_derivado": "areas_intervenidas",
-    "descripcion": "",
+    "descripcion": "Instalaciones comerciales, industriales y de servicios, red vial y ferroviaria, puertos, aeropuertos, obras hidráulicas y redes eléctricas. (Resumen del informe oficial, sección 7.3.)",
     "candidato_leyenda_oficial": "Infraestructura",
     "evidencia": {
      "puntos": 10,
@@ -1612,7 +1682,10 @@
      "valor_pixel_servicio": {
       "29": 10
      }
-    }
+    },
+    "nombre_informe_oficial": "Infraestructura",
+    "documento_oficial": "MiAMBIENTE, Dirección de Información Ambiental (2022). Informe Final del Mapa de Cobertura Boscosa y Uso de Suelo 2021, de Panamá. Abril de 2022. Cuadro N° 2, pp. 21–22.",
+    "area_chcp_informe_ha": 1162.81
    },
    {
     "codigo": 30,
@@ -1622,7 +1695,7 @@
     "estado": "verificada_espacialmente",
     "fuente_correspondencia": "Muestreo espacial vs servicio REST MiAMBIENTE capa 1 · 100.0 % de 10 puntos (2026-11-21T18:40:08)",
     "grupo_derivado": "areas_intervenidas",
-    "descripcion": "",
+    "descripcion": "Explotación de minerales e hidrocarburos, incluidas las áreas abandonadas sin recuperación significativa. (Resumen del informe oficial, sección 7.3.)",
     "candidato_leyenda_oficial": "Explotación minera",
     "evidencia": {
      "puntos": 10,
@@ -1633,40 +1706,49 @@
      "valor_pixel_servicio": {
       "30": 10
      }
-    }
+    },
+    "nombre_informe_oficial": "Explotación minera",
+    "documento_oficial": "MiAMBIENTE, Dirección de Información Ambiental (2022). Informe Final del Mapa de Cobertura Boscosa y Uso de Suelo 2021, de Panamá. Abril de 2022. Cuadro N° 2, pp. 21–22.",
+    "area_chcp_informe_ha": 21.59
    },
    {
     "codigo": 31,
-    "categoria": "Código 31 · sin documentación verificada",
+    "categoria": "Código 31 · Estanque para acuicultura (informe oficial; sin verificar en la cuenca)",
     "color": "#4DD0E1",
     "fuente_color": "propuesta_geoportal",
-    "estado": "leyenda_oficial_sin_correspondencia",
-    "fuente_correspondencia": "pendiente",
-    "grupo_derivado": "no_identificado",
-    "descripcion": "",
-    "candidato_leyenda_oficial": "Estanque para acuicultura"
+    "estado": "documentada_informe_oficial",
+    "fuente_correspondencia": "MiAMBIENTE, Dirección de Información Ambiental (2022). Informe Final del Mapa de Cobertura Boscosa y Uso de Suelo 2021, de Panamá. Abril de 2022. Cuadro N° 2, pp. 21–22.",
+    "grupo_derivado": "areas_intervenidas",
+    "descripcion": "Cuerpos de agua artificiales para la cría de peces y crustáceos. (Resumen del informe oficial, sección 7.3.)",
+    "candidato_leyenda_oficial": "Estanque para acuicultura",
+    "nombre_informe_oficial": "Estanque para acuicultura",
+    "documento_oficial": "MiAMBIENTE, Dirección de Información Ambiental (2022). Informe Final del Mapa de Cobertura Boscosa y Uso de Suelo 2021, de Panamá. Abril de 2022. Cuadro N° 2, pp. 21–22."
    },
    {
     "codigo": 32,
-    "categoria": "Código 32 · sin documentación verificada",
+    "categoria": "Código 32 · Salinera (informe oficial; sin verificar en la cuenca)",
     "color": "#E0E0E0",
     "fuente_color": "propuesta_geoportal",
-    "estado": "leyenda_oficial_sin_correspondencia",
-    "fuente_correspondencia": "pendiente",
-    "grupo_derivado": "no_identificado",
-    "descripcion": "",
-    "candidato_leyenda_oficial": "Salinera"
+    "estado": "documentada_informe_oficial",
+    "fuente_correspondencia": "MiAMBIENTE, Dirección de Información Ambiental (2022). Informe Final del Mapa de Cobertura Boscosa y Uso de Suelo 2021, de Panamá. Abril de 2022. Cuadro N° 2, pp. 21–22.",
+    "grupo_derivado": "areas_intervenidas",
+    "descripcion": "Terreno costero con estructuras para producir sal. (Resumen del informe oficial, sección 7.3.)",
+    "candidato_leyenda_oficial": "Salinera",
+    "nombre_informe_oficial": "Salinera",
+    "documento_oficial": "MiAMBIENTE, Dirección de Información Ambiental (2022). Informe Final del Mapa de Cobertura Boscosa y Uso de Suelo 2021, de Panamá. Abril de 2022. Cuadro N° 2, pp. 21–22."
    },
    {
     "codigo": 33,
-    "categoria": "Código 33 · sin documentación verificada",
+    "categoria": "Código 33 · Albinas (informe oficial; sin verificar en la cuenca)",
     "color": "#EEEEEE",
     "fuente_color": "propuesta_geoportal",
-    "estado": "leyenda_oficial_sin_correspondencia",
-    "fuente_correspondencia": "pendiente",
-    "grupo_derivado": "no_identificado",
-    "descripcion": "",
-    "candidato_leyenda_oficial": "Albinas"
+    "estado": "documentada_informe_oficial",
+    "fuente_correspondencia": "MiAMBIENTE, Dirección de Información Ambiental (2022). Informe Final del Mapa de Cobertura Boscosa y Uso de Suelo 2021, de Panamá. Abril de 2022. Cuadro N° 2, pp. 21–22.",
+    "grupo_derivado": "areas_abiertas_naturales",
+    "descripcion": "Zonas costeras bajas, inundadas ocasionalmente por la marea, sin vegetación o con vegetación escasa adaptada a la sal. (Resumen del informe oficial, sección 7.3.)",
+    "candidato_leyenda_oficial": "Albinas",
+    "nombre_informe_oficial": "Albinas",
+    "documento_oficial": "MiAMBIENTE, Dirección de Información Ambiental (2022). Informe Final del Mapa de Cobertura Boscosa y Uso de Suelo 2021, de Panamá. Abril de 2022. Cuadro N° 2, pp. 21–22."
    }
   ],
   "2019_general": [

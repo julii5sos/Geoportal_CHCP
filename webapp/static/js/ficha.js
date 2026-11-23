@@ -129,7 +129,7 @@
   }
   function seccionGaleria(t) {
     const capas = (st.data.capas_mapa || []).filter((c) => t.mapas?.capas?.includes(c.clave));
-    if (!capas.length) return '<p class="fi-pending">Los mapas temáticos (SINIA 2021, JRC, Hansen, ESRI, NDVI, ERI, señales coincidentes y franjas riparias) se generan en la próxima actualización de datos con Earth Engine.</p>';
+    if (!capas.length) return `<p class="fi-pending">Los mapas temáticos (SINIA 2021, JRC, Hansen, ESRI, NDVI, ERI, señales coincidentes y franjas riparias) se generan ${window.CHCP.pendiente()}.</p>`;
     return `<div class="fi-gal">${capas.map((c) => `<figure class="fi-fig"><figcaption>${esc(c.titulo)}</figcaption><div class="fi-mini" data-capa="${c.clave}"></div>${leyendaCapa(c)}<p class="fi-note">${esc(c.lectura)}</p></figure>`).join('')}</div><p class="fi-note">Resolución de los mapas: ${number(t.mapas.tamano_pixel_m, 0)} m por píxel. Los cálculos de superficie usan la resolución nativa de cada fuente.</p>`;
   }
   function seccionNdvi(t) {
@@ -146,7 +146,7 @@
   function seccionEri(t) {
     const e = t.eri;
     const nombres = { integridad_estructural: 'Integridad estructural (35 %)', conectividad: 'Conectividad local (25 %)', estabilidad_topografica: 'Estabilidad del relieve (20 %)', proximidad_riparia: 'Cercanía a ríos (20 %)' };
-    if (!e?.componentes) return `<section class="fi-sec"><h2>${icon('shield', 22)} Resiliencia ecológica (ERI)</h2><p class="fi-pending">${e?.lectura && /No calculado/.test(e.lectura) ? esc(e.lectura) : 'El ERI por subcuenca se incorpora en la próxima actualización de datos con Earth Engine.'}</p></section>`;
+    if (!e?.componentes) return `<section class="fi-sec"><h2>${icon('shield', 22)} Resiliencia ecológica (ERI)</h2><p class="fi-pending">${e?.lectura && /No calculado/.test(e.lectura) ? esc(e.lectura) : `El ERI por subcuenca se incorpora ${window.CHCP.pendiente()}.`}</p></section>`;
     const dist = (e.distribucion_clases || []).filter((x) => x.area_ha > 0);
     return `<section class="fi-sec fi-two"><div><h2>${icon('shield', 22)} Resiliencia ecológica (ERI)</h2>
       <div class="fi-eri"><b style="background:${e.color || '#76b72a'}">${number(e.valor * 100, 0)}</b><div><strong>${esc(e.clase)}</strong><p>${esc(e.lectura || '')}</p></div></div>
@@ -156,7 +156,7 @@
   }
   function seccionRiparia(t) {
     const r = t.riparia;
-    if (!r || r.error || !r.franjas) return `<section class="fi-sec"><h2>${icon('sprout', 22)} Ríos y franjas riparias</h2><p class="fi-pending">${r?.error ? 'El análisis ripario no pudo calcularse en la última actualización.' : 'El análisis de bosque junto a los ríos se incorpora en la próxima actualización de datos con Earth Engine.'}</p></section>`;
+    if (!r || r.error || !r.franjas) return `<section class="fi-sec"><h2>${icon('sprout', 22)} Ríos y franjas riparias</h2><p class="fi-pending">${r?.error ? 'El análisis ripario no pudo calcularse en la última actualización.' : `El análisis de bosque junto a los ríos se incorpora ${window.CHCP.pendiente()}.`}</p></section>`;
     const f30 = rip30(t), f50 = rip50(t);
     const total = r.sin_bosque_por_pendiente.reduce((s, x) => s + x.area_ha, 0);
     return `<section class="fi-sec"><h2>${icon('sprout', 22)} Ríos y franjas riparias</h2>
@@ -192,9 +192,9 @@
   function render(t) {
     const p = t.preevaluacion, e = t.estructura_2021, mp = e?.metricas_paisaje, serie = t.serie_anual || [];
     const toneP = { Alta: 'bad', Media: 'mid', Preventiva: 'mid', Baja: 'good' }[p.prioridad] || 'na';
-    const indicadores = IND.map((ind) => { const v = ind.get(t), r = rank(ind, t); return `<div class="fi-ind" data-tone="${tone(r)}"><span>${esc(ind.label)}</span><b>${fmt(ind, v)}</b><small>${r ? `Más favorable que el ${number(r.good, 0)} % de las ${r.n} subcuencas` : 'Se calculará en la próxima actualización'}</small><p>${esc(ind.lee)}</p></div>`; }).join('');
+    const indicadores = IND.map((ind) => { const v = ind.get(t), r = rank(ind, t); return `<div class="fi-ind" data-tone="${tone(r)}"><span>${esc(ind.label)}</span><b>${fmt(ind, v)}</b><small>${r ? `Más favorable que el ${number(r.good, 0)} % de las ${r.n} subcuencas` : (window.CHCP.pendiente().includes('en curso') ? 'Se está calculando' : 'Se calculará en la próxima actualización')}</small><p>${esc(ind.lee)}</p></div>`; }).join('');
     const jrc = [{ l: 'Bosque estable', v: t.jrc_ha.tmf_estable, c: '#1d6b35' }, { l: 'Degradado', v: t.jrc_ha.tmf_degradacion, c: '#f28e2b' }, { l: 'Deforestado', v: t.jrc_ha.tmf_deforestacion, c: '#fabc20' }, { l: 'Regeneración', v: t.jrc_ha.tmf_recuperacion, c: '#a6d96a' }, { l: 'Agua', v: t.jrc_ha.tmf_agua, c: '#5aa9e6' }, { l: 'Otra cobertura', v: t.jrc_ha.tmf_otra_cobertura, c: '#d7c2a1' }];
-    const nucleoTabla = mp && !mp.error ? `<table class="fi-table"><thead><tr><th>Profundidad de borde</th><th>Bosque interior</th><th>% del bosque</th><th>Parches sin interior</th></tr></thead><tbody>${mp.area_nucleo.por_profundidad.map((x) => `<tr><td>${number(x.profundidad_m, 0)} m</td><td>${hectares(x.area_nucleo_ha)}</td><td>${pct(x.porcentaje_bosque_nucleo)}</td><td>${number(x.parches_sin_nucleo, 0)}</td></tr>`).join('')}</tbody></table><p class="fi-note">Sensibilidad: el bosque interior depende de la profundidad de borde elegida; 100 m es una referencia de análisis, no un valor comprobado para una especie.</p>` : '<p class="fi-note">Área núcleo, distancia entre parches, cohesión e IIC se incorporan en la próxima actualización de datos.</p>';
+    const nucleoTabla = mp && !mp.error ? `<table class="fi-table"><thead><tr><th>Profundidad de borde</th><th>Bosque interior</th><th>% del bosque</th><th>Parches sin interior</th></tr></thead><tbody>${mp.area_nucleo.por_profundidad.map((x) => `<tr><td>${number(x.profundidad_m, 0)} m</td><td>${hectares(x.area_nucleo_ha)}</td><td>${pct(x.porcentaje_bosque_nucleo)}</td><td>${number(x.parches_sin_nucleo, 0)}</td></tr>`).join('')}</tbody></table><p class="fi-note">Sensibilidad: el bosque interior depende de la profundidad de borde elegida; 100 m es una referencia de análisis, no un valor comprobado para una especie.</p>` : `<p class="fi-note">Área núcleo, distancia entre parches, cohesión e IIC se incorporan ${window.CHCP.pendiente()}.</p>`;
     const diic = (mp?.diic_principales || []).slice(0, 6);
     const acc = acciones(t);
     $('#fi-doc').innerHTML = `
@@ -205,8 +205,8 @@
         <div class="fi-score" data-tone="${toneP}"><span>Preevaluación</span><b>${number(p.puntaje, 1)}<small>/ ${number(p.puntaje_maximo, 1)}</small></b><em>${esc(p.prioridad)}</em><small>Visita: ${esc(p.prioridad_visita || '—')}</small></div>
       </header>
       <section class="fi-sec"><h2>${icon('info', 22)} En pocas palabras</h2>${diagnostico(t).map((f) => `<p>${f}</p>`).join('')}</section>
-      <section class="fi-sec fi-map-sec"><h2>${icon('map', 22)} Mapa de la subcuenca</h2><div id="fi-map"></div>
-        <div class="fi-legend"><span><i style="background:#1b5e20"></i>Parche clave (conectividad alta)</span><span><i style="background:#66bb6a"></i>Parche de importancia media</span><span><i style="background:#c5e1a5"></i>Parche de importancia baja</span><span><i class="dash"></i>Brecha candidata a reconexión</span><span><i style="background:#1f78b4;height:3px"></i>Ríos (${esc(t.mapas?.rios_fuente || 'HydroSHEDS')})</span><span><i style="background:#1b5e2033;border:1.5px solid #1b5e20"></i>Corredor Almanaque Azul · conectividad alta</span><span><i style="background:#9ccc6533;border:1.5px solid #9ccc65"></i>· mediana</span><span><i style="background:#ffb74d33;border:1.5px solid #ffb74d"></i>· media-baja</span><span><i class="pt"></i>Punto crítico (Almanaque Azul)</span></div></section>
+      <section class="fi-sec fi-map-sec"><h2>${icon('map', 22)} Mapa de la subcuenca</h2><div id="fi-map"></div><p class="fi-pending" id="fi-map-nota" hidden></p>
+        <div class="fi-legend"><span><i style="background:#1b5e20"></i>Parche clave (conectividad alta)</span><span><i style="background:#66bb6a"></i>Parche de importancia media</span><span><i style="background:#c5e1a5"></i>Parche de importancia baja</span><span><i class="dash"></i>Brecha candidata a reconexión</span><span><i style="background:#1f78b4;height:3px"></i>Ríos (${esc(t.mapas?.rios_fuente || 'IGNTG 2022 · hidrografía 1:25 000')})</span><span><i style="background:#1b5e2033;border:1.5px solid #1b5e20"></i>Corredor Almanaque Azul · conectividad alta</span><span><i style="background:#9ccc6533;border:1.5px solid #9ccc65"></i>· mediana</span><span><i style="background:#ffb74d33;border:1.5px solid #ffb74d"></i>· media-baja</span><span><i class="pt"></i>Punto crítico (Almanaque Azul)</span></div></section>
       <section class="fi-sec fi-gal-sec"><h2>${icon('layers', 22)} Mapas temáticos</h2><p class="fi-note">Cada mapa muestra una fuente distinta sobre el mismo territorio. Ríos y corredores del Almanaque Azul se superponen como referencia.</p>${seccionGaleria(t)}</section>
       <section class="fi-sec"><h2>${icon('chart', 22)} Indicadores y comparación con las demás subcuencas</h2><p class="fi-note">Verde: mejor que la mayoría de subcuencas; ámbar: intermedio; rojo: entre las más desfavorables. La comparación es relativa a la CHCP, no un umbral normativo.</p><div class="fi-inds">${indicadores}</div></section>
       ${seccionRelativa(t)}
@@ -261,9 +261,20 @@
       st.galeria.push(m);
     });
   }
+  // Red del IGNTG de toda la cuenca, filtrada por la extensión del territorio (para los que aún
+  // no tienen su propio rios.json).
+  let redIgntg = null;
+  async function riosDeLaCuenca(feature) {
+    try {
+      redIgntg = redIgntg || await (await fetch(window.CHCP.hidroFile('rios_igntg_chcp.geojson'))).json();
+      const b = L.geoJSON(feature).getBounds().pad(0.05);
+      return { type: 'FeatureCollection', features: redIgntg.features.filter((f) => b.intersects(L.geoJSON(f).getBounds())) };
+    } catch (_) { return null; }
+  }
   async function drawMap(t) {
     if (st.map) { st.map.remove(); st.map = null; }
     try { st.rios = t.mapas?.rios ? await (await fetch(mapFile(t.id, 'rios.json'))).json() : null; } catch (_) { st.rios = null; }
+    if (!st.rios) st.rios = await riosDeLaCuenca(featureDe(t));
     drawGallery(t);
     const map = L.map('fi-map', { zoomControl: true, preferCanvas: false });
     st.map = map;
@@ -278,7 +289,11 @@
       L.geoJSON(g.parches, { style: (f) => ({ color: '#0b3d17', weight: 0.6, fillColor: color[f.properties.prioridad_conectividad] || '#9ccc65', fillOpacity: 0.85 }), onEachFeature: (f, l) => l.bindTooltip(`Parche #${f.properties.patch_id} · ${hectares(f.properties.area_ha)} · importancia ${f.properties.prioridad_conectividad || '—'}`) }).addTo(map);
       L.geoJSON(g.brechas, { style: { color: '#ff5252', weight: 3, dashArray: '6 5' } }).addTo(map);
       L.geoJSON(g.ruta_corredor, { style: { color: '#ffd54f', weight: 2.5, dashArray: '2 4' } }).addTo(map);
-    } catch (_) { /* geometrías aún no calculadas: el mapa muestra límites y corredores */ }
+    } catch (_) {
+      // Geometrías aún no calculadas: el mapa muestra límites, ríos y corredores, y se avisa.
+      const nota = $('#fi-map-nota');
+      if (nota && t.id !== 'chcp') { nota.textContent = `Los parches de bosque y las brechas de ${t.nombre} todavía no están calculados: se generan ${window.CHCP.pendiente()}.`; nota.hidden = false; }
+    }
   }
   function select(id) {
     const t = st.data.territorios[id];
@@ -292,7 +307,7 @@
   }
 
   try {
-    [st.data, st.territory] = await Promise.all([api('/api/v1/panel/statistics'), api('/api/v1/territory')]);
+    [st.data, st.territory] = await Promise.all([api('/api/v1/panel/statistics'), api('/api/v1/territory'), window.CHCP.consultarActualizacion()]);
   } catch (error) {
     $('#fi-doc').innerHTML = `<p class="fi-loading">No se pudieron cargar los datos: ${esc(error.message)}</p>`;
     return;

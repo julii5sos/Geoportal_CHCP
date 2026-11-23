@@ -70,7 +70,10 @@ class CorrectiveApiTests(unittest.TestCase):
     def test_official_2021_detailed_catalog_keeps_all_documented_codes(self):
         legend = ASSETS_SINIA["2021_detallado"]["leyenda"]
         self.assertEqual(set(legend), set(range(1, 34)))
-        self.assertIn("sin documentación", legend[33])
+        # Desde el informe final oficial (abril 2022, Cuadro N° 2) el código 33 está documentado
+        # como «Albinas», pero sigue sin verificarse espacialmente y no se presenta como oficial.
+        self.assertIn("Albinas", legend[33])
+        self.assertIn("sin verificar", legend[33])
 
     @patch("webapp.main.run_structural_connectivity")
     def test_structural_asset_failure_returns_compact_public_message(self, operation):

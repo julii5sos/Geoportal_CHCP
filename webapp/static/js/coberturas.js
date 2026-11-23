@@ -13,6 +13,7 @@
     leyenda_oficial_sin_correspondencia: ['Sin verificar', 'warn'],
     no_identificado: ['No identificado', 'bad'],
     discrepante_con_servicio: ['Discrepancia', 'bad'],
+    documentada_informe_oficial: ['Documentada en el informe oficial (sin verificar en la cuenca)', 'doc'],
   };
   const st = { catalog: null, territory: null, a: '2021_general', b: '2019_general', compare: false, view: 'original', active: {}, stats: null, layers: {} };
 
@@ -45,7 +46,7 @@
       return `<li><label class="cob-cat"><input type="checkbox" data-code="${r.codigo}" ${st.active[key].has(r.codigo) ? 'checked' : ''}><i style="background:${color}"></i><span class="cob-code">${r.codigo}</span><span class="cob-name">${esc(r.categoria)}</span>${statusBadge(r)}</label>
         <details><summary>Detalle</summary><p>${esc(r.descripcion || 'Sin descripción documentada.')}</p><p><b>Grupo derivado:</b> ${esc(groups[r.grupo_derivado].nombre)}</p><p><b>Color:</b> ${esc(r.color)} · ${r.fuente_color === 'propuesta_geoportal' ? 'paleta propia del Geoportal (no oficial)' : esc(r.fuente_color)}</p><p><b>Correspondencia:</b> ${esc(r.fuente_correspondencia || '—')}</p>${r.candidato_leyenda_oficial && r.estado !== 'verificada_espacialmente' ? `<p><b>Candidato en la leyenda oficial (sin verificar):</b> ${esc(r.candidato_leyenda_oficial)}</p>` : ''}</details></li>`;
     }).join('');
-    const pending = rows.filter((r) => ['leyenda_oficial_sin_correspondencia', 'no_identificado', 'grupo_documentado_catalogo_previo', 'discrepante_con_servicio'].includes(r.estado)).length;
+    const pending = rows.filter((r) => ['leyenda_oficial_sin_correspondencia', 'no_identificado', 'grupo_documentado_catalogo_previo', 'discrepante_con_servicio', 'documentada_informe_oficial'].includes(r.estado)).length;
     const own = rows.some((r) => r.fuente_color === 'propuesta_geoportal');
     $('#cob-legend-note').innerHTML = `${pending ? `${pending} código(s) sin categoría individual verificada: se muestran como «Código N» y no se presentan como oficiales. ` : ''}${own ? 'Los colores marcados como propuesta son una paleta propia del Geoportal, no simbología de MiAMBIENTE.' : 'Colores de la simbología oficial de MiAMBIENTE.'}`;
     $$('#cob-legend input[data-code]').forEach((input) => input.addEventListener('change', () => {

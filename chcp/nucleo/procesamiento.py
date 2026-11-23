@@ -82,7 +82,8 @@ def leyenda_sinia_2021_detalle() -> list[dict[str, Any]]:
 
     return [
         {"codigo": int(f["codigo"]), "categoria": f["categoria"], "color": f.get("color"),
-         "grupo": f.get("grupo_derivado"), "verificada": f.get("estado") == "verificada_espacialmente"}
+         "grupo": f.get("grupo_derivado"), "verificada": f.get("estado") == "verificada_espacialmente",
+         "estado": f.get("estado"), "descripcion": f.get("descripcion") or ""}
         for f in leyenda("2021_detallado")
     ]
 

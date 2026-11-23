@@ -71,3 +71,54 @@ Regla de decisión:
 - Bosque 2021 = «Bosques y otras tierras boscosas».
 
 Su validez debe comprobarse con una muestra independiente de transiciones (C) antes de publicar pérdida o ganancia.
+
+## 7. Mapa 2021: leyenda oficial y diferencias del asset con el informe final
+
+**Fuente.** Informe Final del Mapa de Cobertura Boscosa y Uso de Suelo 2021, de Panamá (MiAMBIENTE, Dirección de Información Ambiental, abril de 2022). Lo aplica `scripts/aplicar_informe_mcbyus2021.py`.
+
+**Leyenda (Cuadro N° 2).** El informe publica las 33 categorías numeradas.
+- **Códigos presentes en la CHCP (18):** el número coincide con el valor de píxel ya verificado espacialmente contra el servicio REST.
+- **Códigos ausentes (15):** pasan del estado «sin documentación» o «solo grupo» a `documentada_informe_oficial`. Tienen nombre documentado, pero su valor de píxel no se ha comprobado y no se presentan como oficiales.
+
+  Son: 4 orey, 5 cativo, 6 rafia, 13 playa y arena natural, 15 cítrico, 16 palma aceitera, 17 plátano/banano, 18 otro cultivo permanente, 19 arroz, 20 caña de azúcar, 21 horticultura mixta, 22 maíz, 31 estanque para acuicultura, 32 salinera y 33 albinas.
+- **Definiciones (sección 7.3):** se resumen en `descripcion`.
+
+**Hallazgo B5: el asset no coincide con el Cuadro N° 26 del informe en la cuenca.** El total es casi igual (−0,9 %; la cuenca «endorreica» del informe mide 344 225 ha). Sin embargo, varias categorías difieren mucho más de lo que explica el límite (`datos/B_2021_asset_vs_informe.csv`):
+
+| Código | Categoría | Asset (ha) | Informe (ha) | Diferencia (ha) |
+|---|---|---:|---:|---:|
+| 1 | Bosque latifoliado mixto maduro | 123 494 | 128 585 | -5 091 |
+| 2 | Bosque latifoliado mixto secundario | 74 474 | 63 651 | +10 823 |
+| 3 | Bosque de mangle | 3 | 0 | +3 |
+| 7 | Bosque plantado de coníferas | 111 | 149 | -38 |
+| 8 | Bosque plantado de latifoliadas | 7 734 | 6 494 | +1 240 |
+| 9 | Rastrojo y vegetación arbustiva | 2 793 | 3 367 | -574 |
+| 10 | Vegetación herbácea | 6 666 | 6 454 | +213 |
+| 11 | Vegetación baja inundable | 1 490 | 667 | +823 |
+| 12 | Afloramiento rocoso | 497 | 774 | -277 |
+| 14 | Café | 1 423 | 0 | +1 423 |
+| 22 | Maíz | 0 | 1 | -1 |
+| 23 | Piña | 1 580 | 2 627 | -1 047 |
+| 24 | Otro cultivo anual | 10 | 0 | +10 |
+| 25 | Área heterogénea de producción agrícola | 0 | 0 | +0 |
+| 26 | Pasto | 66 407 | 75 207 | -8 800 |
+| 27 | Superficie de agua | 43 713 | 45 384 | -1 671 |
+| 28 | Área poblada | 8 813 | 9 681 | -867 |
+| 29 | Infraestructura | 1 464 | 1 163 | +302 |
+| 30 | Explotación minera | 370 | 22 | +349 |
+| — | Total | 341 045 | 344 225 | -3 180 |
+
+- **Bosque latifoliado secundario:** +10 823 ha en el asset.
+- **Pasto:** −8 800 ha.
+- **Café:** 1 423 ha en el asset y ausente en el informe.
+- **Explotación minera:** 370 ha frente a 22 ha.
+
+**Hipótesis.**
+- **Más probable: versión distinta del mapa.** El diccionario cita una lámina oficial fechada el 2024-10-29 (`Cobertura_Boscosa_Uso_Suelo_2021_17x22_20241029.pdf`), posterior al informe.
+- **Contribución menor: límite de la cuenca distinto** (unas 3 200 ha).
+
+**Consecuencias.**
+- Las cifras del geoportal no deben compararse directamente con las del informe de 2022.
+- La exactitud oficial (C.6) se refiere a la versión del informe.
+
+**Estado:** pendiente de confirmar con MiAMBIENTE qué versión es el asset. Los 18 códigos siguen verificados contra el servicio actual, que es la referencia para la leyenda.

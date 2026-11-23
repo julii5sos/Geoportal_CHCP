@@ -1,0 +1,349 @@
+{
+ "fuente": "MiAMBIENTE, Dirección de Información Ambiental (2022). Informe Final del Mapa de Cobertura Boscosa y Uso de Suelo 2021, de Panamá. Abril de 2022. Sección 10 y Cuadros N° 3–5, pp. 57–61.",
+ "referencia": "Mapatón 2020: datos de actividad del Inventario Nacional de Gases de Efecto Invernadero, interpretados sobre imágenes de alta resolución de 2020 (9 800 muestras de 25 puntos).",
+ "interpretes": "Tres especialistas que no participaron en la elaboración del mapa (informe, p. 19).",
+ "muestras": 9800,
+ "exactitud_global": 0.703,
+ "exactitud_global_informe": 0.703,
+ "kappa": 0.615,
+ "kappa_informe": 0.615,
+ "clases": [
+  {
+   "clase": "A",
+   "nombre": "Cultivos anuales",
+   "exactitud_usuario": 0.736,
+   "exactitud_productor": 0.377,
+   "muestras_mapa": 246,
+   "muestras_referencia": 480
+  },
+  {
+   "clase": "C",
+   "nombre": "Bosque plantado de coníferas",
+   "exactitud_usuario": 0.714,
+   "exactitud_productor": 0.909,
+   "muestras_mapa": 14,
+   "muestras_referencia": 11
+  },
+  {
+   "clase": "F",
+   "nombre": "Bosque maduro",
+   "exactitud_usuario": 0.884,
+   "exactitud_productor": 0.895,
+   "muestras_mapa": 3387,
+   "muestras_referencia": 3345
+  },
+  {
+   "clase": "G",
+   "nombre": "Pasto",
+   "exactitud_usuario": 0.716,
+   "exactitud_productor": 0.736,
+   "muestras_mapa": 2436,
+   "muestras_referencia": 2368
+  },
+  {
+   "clase": "I",
+   "nombre": "Asentamientos",
+   "exactitud_usuario": 0.63,
+   "exactitud_productor": 0.558,
+   "muestras_mapa": 230,
+   "muestras_referencia": 260
+  },
+  {
+   "clase": "L",
+   "nombre": "Bosque plantado de latifoliadas",
+   "exactitud_usuario": 0.716,
+   "exactitud_productor": 0.617,
+   "muestras_mapa": 81,
+   "muestras_referencia": 94
+  },
+  {
+   "clase": "M",
+   "nombre": "Bosque de mangle",
+   "exactitud_usuario": 0.809,
+   "exactitud_productor": 0.841,
+   "muestras_mapa": 241,
+   "muestras_referencia": 232
+  },
+  {
+   "clase": "O",
+   "nombre": "Otras tierras",
+   "exactitud_usuario": 0.381,
+   "exactitud_productor": 0.348,
+   "muestras_mapa": 21,
+   "muestras_referencia": 23
+  },
+  {
+   "clase": "P",
+   "nombre": "Cultivos permanentes",
+   "exactitud_usuario": 0.773,
+   "exactitud_productor": 0.586,
+   "muestras_mapa": 66,
+   "muestras_referencia": 87
+  },
+  {
+   "clase": "R",
+   "nombre": "Rastrojos",
+   "exactitud_usuario": 0.282,
+   "exactitud_productor": 0.252,
+   "muestras_mapa": 689,
+   "muestras_referencia": 769
+  },
+  {
+   "clase": "S",
+   "nombre": "Bosque secundario",
+   "exactitud_usuario": 0.524,
+   "exactitud_productor": 0.604,
+   "muestras_mapa": 2158,
+   "muestras_referencia": 1870
+  },
+  {
+   "clase": "W",
+   "nombre": "Humedales",
+   "exactitud_usuario": 0.771,
+   "exactitud_productor": 0.682,
+   "muestras_mapa": 231,
+   "muestras_referencia": 261
+  }
+ ],
+ "matriz": {
+  "filas_mapa_2021": [
+   "A",
+   "C",
+   "F",
+   "G",
+   "I",
+   "L",
+   "M",
+   "O",
+   "P",
+   "R",
+   "S",
+   "W"
+  ],
+  "columnas_mapaton": [
+   "A",
+   "C",
+   "F",
+   "G",
+   "I",
+   "L",
+   "M",
+   "O",
+   "P",
+   "R",
+   "S",
+   "W"
+  ],
+  "valores": [
+   [
+    181,
+    0,
+    2,
+    40,
+    0,
+    0,
+    0,
+    0,
+    13,
+    4,
+    5,
+    1
+   ],
+   [
+    0,
+    10,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    3,
+    1,
+    0
+   ],
+   [
+    3,
+    0,
+    2995,
+    32,
+    2,
+    1,
+    4,
+    3,
+    2,
+    38,
+    295,
+    12
+   ],
+   [
+    181,
+    0,
+    19,
+    1744,
+    73,
+    10,
+    3,
+    7,
+    7,
+    216,
+    169,
+    7
+   ],
+   [
+    8,
+    0,
+    4,
+    28,
+    145,
+    0,
+    0,
+    0,
+    1,
+    9,
+    15,
+    20
+   ],
+   [
+    2,
+    0,
+    0,
+    11,
+    0,
+    58,
+    0,
+    0,
+    1,
+    2,
+    6,
+    1
+   ],
+   [
+    0,
+    0,
+    8,
+    2,
+    0,
+    0,
+    195,
+    1,
+    0,
+    5,
+    20,
+    10
+   ],
+   [
+    0,
+    0,
+    2,
+    1,
+    1,
+    0,
+    1,
+    8,
+    0,
+    0,
+    1,
+    7
+   ],
+   [
+    4,
+    0,
+    0,
+    0,
+    2,
+    1,
+    0,
+    0,
+    51,
+    2,
+    5,
+    1
+   ],
+   [
+    30,
+    1,
+    18,
+    206,
+    14,
+    3,
+    1,
+    0,
+    4,
+    194,
+    215,
+    3
+   ],
+   [
+    67,
+    0,
+    284,
+    296,
+    22,
+    21,
+    14,
+    2,
+    8,
+    293,
+    1130,
+    21
+   ],
+   [
+    4,
+    0,
+    13,
+    8,
+    1,
+    0,
+    14,
+    2,
+    0,
+    3,
+    8,
+    178
+   ]
+  ]
+ },
+ "bosque_y_otras_tierras_boscosas": {
+  "definicion": "Clases C, F, L, M, R y S (bosques naturales y plantados y rastrojo), como en el mapa general.",
+  "matriz_2x2": {
+   "mapa_bosque_ref_bosque": 5815,
+   "mapa_bosque_ref_no_bosque": 755,
+   "mapa_no_bosque_ref_bosque": 506,
+   "mapa_no_bosque_ref_no_bosque": 2724
+  },
+  "exactitud_global": 0.871,
+  "exactitud_usuario_bosque": 0.885,
+  "exactitud_productor_bosque": 0.92,
+  "exactitud_usuario_no_bosque": 0.843,
+  "exactitud_productor_no_bosque": 0.783,
+  "nota": "Derivado por el geoportal agregando la matriz oficial. Son proporciones de muestras: no están ponderadas por el área de cada estrato ni tienen intervalos de confianza."
+ },
+ "limitaciones": [
+  "La referencia es de 2020 y el mapa de 2021: parte del desacuerdo puede ser cambio real.",
+  "El informe no describe un diseño probabilístico con probabilidades de inclusión; no se pueden estimar áreas corregidas por error ni intervalos de confianza (Olofsson et al. 2014).",
+  "Es una evaluación nacional; no hay cifras específicas para la Cuenca del Canal.",
+  "Las categorías se agrupan en 12 clases del Mapatón (p. ej., pasto con vegetación herbácea; área heterogénea con asentamientos)."
+ ],
+ "cuenca_canal_cuadro_26": {
+  "total_ha": 344225.19,
+  "por_codigo_ha": {
+   "1": 128585.38,
+   "2": 63650.55,
+   "7": 148.9,
+   "8": 6494.46,
+   "9": 3367.36,
+   "10": 6453.6,
+   "11": 667.29,
+   "12": 774.02,
+   "22": 1.43,
+   "23": 2626.8,
+   "26": 75206.81,
+   "27": 45383.55,
+   "28": 9680.65,
+   "29": 1162.81,
+   "30": 21.59
+  }
+ }
+}
