@@ -530,7 +530,19 @@
     caja.innerHTML = '<p class="rs-note">Cargando la cobertura de la cuenca…</p>';
     let c;
     try { c = await capasCuenca(); } catch (e) { caja.innerHTML = `<p class="rs-warn">${esc(e.message)}</p>`; return; }
-    if (!c.detalle) { caja.innerHTML = `<p class="rs-note">La cobertura y uso del suelo 2021 detallada se añadirá ${window.CHCP.pendiente()}.</p>`; return; }
+    if (!c.detalle) {
+      // Mientras llega el ráster detallado, se muestra la versión general de SINIA 2021 (3 clases).
+      const capa = (st.data.capas_mapa || []).find((x) => x.clave === 'sinia_2021');
+      const col = new Map((capa?.leyenda || []).map((x) => [x.valor, hexRgb(x.color)]));
+      if (!contexto.cobertura) contexto.cobertura = overlayDesde(c.sinia, c.w, c.h, c.m.limites, (v) => col.get(v) || null, 175);
+      contexto.cobertura.addTo(st.map);
+      st.capas.parches?.bringToFront?.();
+      const n = new Map(); for (let i = 0; i < c.sinia.length; i += 1) if (col.has(c.sinia[i])) n.set(c.sinia[i], (n.get(c.sinia[i]) || 0) + 1);
+      const pix2 = (c.m.tamano_pixel_m || 40) ** 2 / 10_000;
+      caja.innerHTML = `<ul class="rs-cob-l">${(capa?.leyenda || []).map((x) => `<li><i style="background:${esc(x.color)}"></i>${esc(x.etiqueta)}<small>${hectares((n.get(x.valor) || 0) * pix2, 0)}</small></li>`).join('')}</ul>
+        <p class="rs-note">Cobertura SINIA 2021 (MiAMBIENTE), versión general de 3 clases. El detalle de usos (pasto, cultivos, plantaciones, rastrojo, poblados…) se añadirá ${window.CHCP.pendiente()}.</p>`;
+      return;
+    }
     const ley = leyendaDetalle(), colores = new Map([...ley].map(([k, x]) => [k, hexRgb(x.color)]));
     if (!contexto.cobertura) contexto.cobertura = overlayDesde(c.detalle, c.w, c.h, c.m.limites, (v) => (v === 255 ? null : colores.get(v) || [150, 150, 150]), 175);
     contexto.cobertura.addTo(st.map);
@@ -728,13 +740,13 @@
   // ---------------------------------------------------------------- recorrido guiado
   const PASOS = [
     { titulo: 'Qué hace el simulador', texto: '<p>Permite probar <b>dónde restaurar bosque</b> para volver a conectar parches aislados, y medir cuánto mejoraría la conectividad.</p><p>Todo lo que propone es <b>hipotético</b>: sirve para comparar opciones antes de ir a campo.</p>' },
-    { sel: '#rs-paso1', titulo: '1. Elija la subcuenca', texto: 'Las subcuencas marcadas como «pendientes» aún no tienen su red de bosque calculada.' },
+    { sel: '#rs-paso1', titulo: '1. Elija la subcuenca', texto: 'Las subcuencas marcadas como «pendientes» aún no tienen su red de bosque calculada.', prueba: 'elija otra subcuenca en la lista; el recorrido sigue solo.', accion: { sel: '#rs-select', evento: 'change' } },
     { sel: '#rs-map', titulo: 'El mapa', texto: '<p>Cada color es una <b>red de bosque</b>: parches lo bastante cerca para considerarse conectados. Las <b>líneas rojas discontinuas</b> son brechas que convendría cerrar; las grises cruzan agua o zonas urbanas.</p><p>En azul, los ríos del IGNTG.</p>' },
-    { sel: '#rs-paso2', titulo: '2. Elija qué quiere hacer', texto: '<b>Restaurar brechas</b>: haga clic en una línea roja para añadir esa franja de restauración. <b>Rutas al corredor</b>: haga clic en un parche y verá por dónde conectaría con el Corredor Biológico Mesoamericano.' },
-    { sel: '#rs-paso3', titulo: '3. Arme dos escenarios', texto: 'Cada franja que añade va al escenario activo (A o B). Así puede comparar, por ejemplo, «pocas franjas anchas» contra «muchas angostas». El ancho cambia la superficie que habría que restaurar.' },
-    { sel: '#rs-paso4', titulo: 'Sugerencias', texto: 'Las brechas que más mejoran la red por hectárea. «Robusta» significa que sigue siendo buena con distintos supuestos. El <b>plan</b> elige varias seguidas teniendo en cuenta cómo se combinan.' },
+    { sel: '#rs-paso2', titulo: '2. Elija qué quiere hacer', texto: '<b>Restaurar brechas</b>: haga clic en una línea roja para añadir esa franja de restauración. <b>Rutas al corredor</b>: haga clic en un parche y verá por dónde conectaría con el Corredor Biológico Mesoamericano.', prueba: 'haga clic en una línea roja del mapa, o elija «Rutas al Corredor Mesoamericano» y pulse un parche.', accion: { sel: '#rs-map', evento: 'click' } },
+    { sel: '#rs-paso3', titulo: '3. Arme dos escenarios', texto: 'Cada franja que añade va al escenario activo (A o B). Así puede comparar, por ejemplo, «pocas franjas anchas» contra «muchas angostas». El ancho cambia la superficie que habría que restaurar.', prueba: 'cambie al escenario B o cambie el ancho de la franja.', accion: { sel: '#rs-paso3', evento: 'change' } },
+    { sel: '#rs-paso4', titulo: 'Sugerencias', texto: 'Las brechas que más mejoran la red por hectárea. «Robusta» significa que sigue siendo buena con distintos supuestos. El <b>plan</b> elige varias seguidas teniendo en cuenta cómo se combinan.', prueba: 'pulse «Proponer un plan de 8 enlaces».', accion: { sel: '#rs-plan-btn', evento: 'click' } },
     { sel: '#rs-results', titulo: 'Resultados', texto: 'Compara el estado actual con sus escenarios: cuántas redes quedan, cuánto bosque queda conectado y cuánto mejora la conectividad (IIC y conectividad equivalente).' },
-    { sel: '.rs-capas', titulo: 'Capas de contexto', texto: 'Active la <b>cobertura y uso del suelo 2021</b> para ver qué hay en las brechas (pasto, cultivos, poblados…) o los <b>ríos y su franja ribereña</b>.' },
+    { sel: '.rs-capas', titulo: 'Capas de contexto', texto: 'Active la <b>cobertura y uso del suelo 2021</b> para ver qué hay en las brechas (pasto, cultivos, poblados…) o los <b>ríos y su franja ribereña</b>.', prueba: 'marque una de las dos casillas.', accion: { sel: '.rs-capas', evento: 'change' } },
     { sel: '#rs-avanzado', titulo: 'Opciones avanzadas', texto: 'Para quien quiera cambiar los supuestos: distancia entre parches, ancho funcional de un corredor y exclusión de brechas sobre agua. Los valores por defecto son los del método original.' },
     { titulo: 'Recuerde', texto: '<p>El simulador mide <b>conectividad estructural</b> (la disposición del bosque), no comprueba que la fauna se desplace. Antes de restaurar hay que verificar en campo, la tenencia de la tierra y el uso actual.</p>' },
   ];

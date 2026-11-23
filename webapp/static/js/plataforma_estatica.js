@@ -14,7 +14,7 @@
     ['topo', 'Topográfico', 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}', '#d9e4c8'],
   ];
   const st = { data: null, territory: null, series: null, est: {}, id: 'chcp', map: null, base: null, activas: new Set(['cuenca']), opacidad: 0.85, capas: {}, geo: null, vistaPol: null,
-    tema: 'preev', modo: null, aux: new Set(), anio: {}, ocultas: {}, comparar: {}, rankClase: {}, analisis: [] };
+    tema: 'preev', modo: null, colorParches: 'importancia', aux: new Set(), anio: {}, ocultas: {}, comparar: {}, rankClase: {}, analisis: [] };
   const pct = (v, d = 0) => (v == null ? '—' : `${number(v, d)} %`);
   const t = () => st.data.territorios[st.id];
   const conMapas = () => (t()?.mapas?.capas?.length ? t() : st.data.territorios.chcp);
@@ -189,8 +189,9 @@
     }
     const geoP = geoParches();
     if (st.activas.has('parches') && geoP) {
-      const color = { Alta: '#1b5e20', Media: '#66bb6a', Baja: '#c5e1a5' };
-      st.capas.parches = L.geoJSON(geoP.parches, { pane: st.vistaPol ? 'rasters' : 'overlayPane', style: (f) => ({ color: '#0b3d17', weight: 0.6, fillColor: color[f.properties.prioridad_conectividad] || '#9ccc65', fillOpacity: 0.85 }), onEachFeature: (f, l) => l.bindTooltip(`Parche #${f.properties.patch_id} · ${hectares(f.properties.area_ha)} · importancia ${f.properties.prioridad_conectividad || '—'}`) }).addTo(map);
+      const porRed = st.colorParches === 'red', colorRed = coloresRed(geoP.parches);
+      const fill = (p) => (porRed ? colorRed.get(redDe(p)) : COLOR_IMPORTANCIA[p.prioridad_conectividad] || '#9ccc65');
+      st.capas.parches = L.geoJSON(geoP.parches, { pane: st.vistaPol ? 'rasters' : 'overlayPane', style: (f) => ({ color: '#0b3d17', weight: 0.6, fillColor: fill(f.properties), fillOpacity: 0.85 }), onEachFeature: (f, l) => l.bindTooltip(`Parche #${f.properties.patch_id} · ${hectares(f.properties.area_ha)} · importancia ${f.properties.prioridad_conectividad || '—'}${porRed ? ` · ${colorRed.get(redDe(f.properties)) === PALETA_RED[0] ? 'red principal' : 'otra red'}` : ''}`) }).addTo(map);
     }
     if (st.activas.has('brechas') && geoP) st.capas.brechas = L.geoJSON(geoP.brechas, { pane: st.vistaPol ? 'rasters' : 'overlayPane', style: { color: '#ff5252', weight: 3, dashArray: '6 5' } }).addTo(map);
     if (st.activas.has('puntos')) st.capas.puntos = L.geoJSON(st.territory.critical_points, { pointToLayer: (_, ll) => L.circleMarker(ll, { radius: 5, color: '#fff', weight: 1.5, fillColor: '#f04438', fillOpacity: 1 }), onEachFeature: (f, l) => l.bindTooltip(esc(f.properties.notas || 'Punto crítico'), { maxWidth: 280 }) }).addTo(map);
@@ -213,6 +214,16 @@
     if (reutiliza) aviso.innerHTML = `Los mapas detallados de ${esc(t().nombre)} aún no se han generado: se muestra el mapa de la cuenca completa (píxel de ${number(fuente.mapas.tamano_pixel_m, 0)} m) recortado a la subcuenca. Se reemplazará por la versión de 10–30 m ${window.CHCP.pendiente()}.`;
     leyenda(orden);
     barraAnios();
+  }
+  // Mismos colores que el simulador: la red con más bosque en verde y un color por cada otra red.
+  const COLOR_IMPORTANCIA = { Alta: '#1b5e20', Media: '#66bb6a', Baja: '#c5e1a5' };
+  const PALETA_RED = ['#1b7837', '#2166ac', '#b2182b', '#762a83', '#e08214', '#01665e', '#c51b7d', '#8c510a', '#4d9221', '#35978f', '#5e3c99', '#d6604d'];
+  const redDe = (p) => `${p.subcuenca || ''}:${p.componente}`;
+  function coloresRed(fc) {
+    const area = new Map();
+    fc.features.forEach((f) => { const k = redDe(f.properties); area.set(k, (area.get(k) || 0) + (f.properties.area_ha || 0)); });
+    const orden = [...area].sort((a, b) => b[1] - a[1]).map(([k]) => k);
+    return new Map(orden.map((k, i) => [k, i === 0 ? PALETA_RED[0] : PALETA_RED[1 + ((i - 1) % (PALETA_RED.length - 1))]]));
   }
   function clicSubcuenca(f, l) {
     const x = st.data.territorios[f.properties.id];
@@ -239,7 +250,13 @@
         return `<div class="pe-lg"><b>${esc(c.capa.titulo)}</b>${ley}</div>`;
       }
       if (c.k === 'corredores') return `<div class="pe-lg"><b>Corredores (Almanaque Azul)</b>${Object.entries(COLOR_CORREDOR).map(([k, v]) => `<div><i style="background:${v}"></i>${k}</div>`).join('')}</div>`;
-      if (c.k === 'parches') return '<div class="pe-lg"><b>Parches por importancia</b><div><i style="background:#1b5e20"></i>Alta</div><div><i style="background:#66bb6a"></i>Media</div><div><i style="background:#c5e1a5"></i>Baja</div></div>';
+      if (c.k === 'parches') {
+        const porRed = st.colorParches === 'red';
+        const nRedes = porRed ? new Set(geoParches().parches.features.map((f) => redDe(f.properties))).size : 0;
+        return `<div class="pe-lg"><b>Parches de bosque 2021</b><div class="pe-lg-modo" role="radiogroup" aria-label="Colorear los parches por"><button type="button" data-cp="importancia" aria-pressed="${!porRed}">Importancia</button><button type="button" data-cp="red" aria-pressed="${porRed}">Red</button></div>
+          ${porRed ? `<div><i style="background:${PALETA_RED[0]}"></i>Red principal (la de más bosque)</div>${nRedes > 1 ? `<div><i style="background:linear-gradient(90deg,${PALETA_RED.slice(1, 5).join(',')})"></i>Otras redes: un color por red (${nRedes - 1})</div>` : '<p class="pe-lg-nota">Todo el bosque forma una sola red.</p>'}<p class="pe-lg-nota">Como en el simulador: parches a menos de 500 m forman una red.</p>`
+          : `<div><i style="background:${COLOR_IMPORTANCIA.Alta}"></i>Alta</div><div><i style="background:${COLOR_IMPORTANCIA.Media}"></i>Media</div><div><i style="background:${COLOR_IMPORTANCIA.Baja}"></i>Baja</div><p class="pe-lg-nota">Importancia del parche para la conectividad (dIIC).</p>`}</div>`;
+      }
       return `<div class="pe-lg"><div><i style="background:${c.color}"></i>${esc(c.nombre)}</div></div>`;
     });
     const aux = catalogo().filter((c) => AUXILIARES.includes(c.k));
@@ -248,6 +265,7 @@
       <details class="pe-aux" ${st.aux.size ? 'open' : ''}><summary>Capas auxiliares${st.aux.size ? ` (${st.aux.size})` : ''}</summary>${aux.map((c) => `<label class="pe-lg-cl ${c.disponible ? '' : 'layer-disabled'}"><input type="checkbox" data-aux="${c.k}" ${st.aux.has(c.k) ? 'checked' : ''} ${c.disponible ? '' : 'disabled'}><i style="background:${c.color}"></i>${esc(c.nombre)}</label>`).join('')}</details></div>`;
     $('#pe-legend .legend-head').addEventListener('click', (e) => { const b = e.currentTarget; const o = b.getAttribute('aria-expanded') === 'true'; b.setAttribute('aria-expanded', String(!o)); b.nextElementSibling.hidden = o; });
     $$('#pe-legend [data-cl]').forEach((x) => x.addEventListener('change', () => { const s = (st.ocultas[prod] ||= new Set()); const v = Number(x.dataset.cl); x.checked ? s.delete(v) : s.add(v); dibujar(); }));
+    $$('#pe-legend [data-cp]').forEach((b) => b.addEventListener('click', () => { st.colorParches = b.dataset.cp; dibujar(); }));
     $$('#pe-legend [data-aux]').forEach((x) => x.addEventListener('change', () => { x.checked ? st.aux.add(x.dataset.aux) : st.aux.delete(x.dataset.aux); dibujar(); }));
     $('#pe-op')?.addEventListener('input', (e) => { st.opacidad = e.target.value / 100; e.target.previousElementSibling.textContent = `${e.target.value} %`; Object.entries(st.capas).forEach(([k, l]) => (k.startsWith('r:') || k.startsWith('s:') || k.startsWith('v:')) && l.eachLayer((x) => x.setOpacity?.(st.opacidad))); });
   }
@@ -840,7 +858,7 @@
       try {
         const g = await geometria(x.id);
         if (!g) throw new Error('sin red');
-        mapaP.parches.push(...g.parches.features); mapaP.brechas.push(...(g.brechas?.features || []));
+        mapaP.parches.push(...g.parches.features.map((ft) => ({ ...ft, properties: { ...ft.properties, subcuenca: x.id } }))); mapaP.brechas.push(...(g.brechas?.features || []));
         const tocados = new Set(g.parches.features.filter(tocaPoligono).map((p) => p.properties.patch_id));
         g.parches.features.filter((p) => tocados.has(p.properties.patch_id)).forEach((p) => red.areas.set(`${x.id}:${p.properties.patch_id}`, p.properties.area_ha));
         (g.red?.aristas || []).filter(([u, v]) => tocados.has(u) && tocados.has(v)).forEach(([u, v]) => red.aristas.push([`${x.id}:${u}`, `${x.id}:${v}`]));
@@ -919,13 +937,13 @@
   // Recorrido guiado de la plataforma, con la misma pestaña «¿Primera vez aquí?» del inicio.
   const PASOS_PE = [
     { titulo: 'La Plataforma SIG', texto: '<p>Aquí se responde, con mapas y gráficas, <b>qué le está pasando al bosque</b> de la cuenca, de una subcuenca o de su propia finca.</p><p>Todo sale de datos satelitales precalculados: es una evaluación preliminar.</p>' },
-    { sel: '#pe-terr', titulo: '1. ¿Dónde?', texto: 'Elija toda la cuenca o una subcuenca. También puede hacer clic en una subcuenca del mapa.' },
-    { sel: '#pe-temas', titulo: '2. ¿Qué quiere saber?', texto: 'Cada tema responde una pregunta: si ha perdido bosque, cómo cambió desde 1990, qué reemplazó a los árboles, si la vegetación pierde vigor, qué tan fragmentado está… La «i» explica la fuente.' },
-    { sel: '#pe-legend', titulo: '3. La leyenda', texto: 'Muestra los colores del tema. Desmarque una clase para ocultarla; en «Capas auxiliares» puede añadir ríos, corredores o límites.' },
-    { sel: '#pe-anios', titulo: '4. La barra de años', texto: 'Mueva la barra o pulse reproducir para ver el mapa año por año. Las gráficas marcan el año elegido.' },
+    { sel: '#pe-terr', titulo: '1. ¿Dónde?', texto: 'Elija toda la cuenca o una subcuenca. También puede hacer clic en una subcuenca del mapa.', prueba: 'elija una subcuenca en la lista; el recorrido sigue solo.', accion: { sel: '#pe-terr', evento: 'change' } },
+    { sel: '#pe-temas', titulo: '2. ¿Qué quiere saber?', texto: 'Cada tema responde una pregunta: si ha perdido bosque, cómo cambió desde 1990, qué reemplazó a los árboles, si la vegetación pierde vigor, qué tan fragmentado está… La «i» explica la fuente.', prueba: 'pulse «Cobertura y uso · ESRI» u otro tema.', accion: { sel: '#pe-temas', evento: 'click' } },
+    { sel: '#pe-legend', titulo: '3. La leyenda', texto: 'Muestra los colores del tema. Desmarque una clase para ocultarla; en «Capas auxiliares» puede añadir ríos, corredores o límites.', prueba: 'desmarque una clase y vea cómo desaparece del mapa.', accion: { sel: '#pe-legend', evento: 'change' } },
+    { sel: '#pe-anios', titulo: '4. La barra de años', texto: 'Mueva la barra o pulse reproducir para ver el mapa año por año. Las gráficas marcan el año elegido.', prueba: 'mueva la barra a otro año.', accion: { sel: '#pe-anios', evento: 'change' } },
     { sel: '#pe-res', titulo: '5. Las respuestas', texto: 'Arriba, la respuesta corta; debajo, las gráficas: superficie por clase, evolución, comparación de dos años y las subcuencas más afectadas. Cada gráfica tiene «Ver tabla».' },
-    { sel: '.side-tabs [data-s="poligono"]', titulo: '6. Su propia área', texto: 'En «Mi geometría» puede dibujar o subir el polígono de una finca y obtener las mismas gráficas dentro de él.' },
-    { sel: '#pe-run', titulo: '7. Realizar análisis', texto: 'Marque una o varias preguntas, elija el territorio y verá una pestaña de resultados por pregunta. Quedan guardadas en «Sus análisis».' },
+    { sel: '.side-tabs [data-s="poligono"]', titulo: '6. Su propia área', texto: 'En «Mi geometría» puede dibujar o subir el polígono de una finca y obtener las mismas gráficas dentro de él.', prueba: 'abra la pestaña «Mi geometría».', accion: { sel: '.side-tabs [data-s="poligono"]', evento: 'click' } },
+    { sel: '#pe-run', titulo: '7. Realizar análisis', texto: 'Marque una o varias preguntas, elija el territorio y verá una pestaña de resultados por pregunta. Quedan guardadas en «Sus análisis».', prueba: 'pulse «Realizar análisis» y siga los pasos.', accion: { sel: '#pe-run', evento: 'click' } },
   ];
   const recorridoPe = () => window.CHCP_TOUR?.iniciar(PASOS_PE, { clave: 'plataforma', textoFin: 'Entendido' });
   $('#pe-ayuda')?.addEventListener('click', recorridoPe);
