@@ -85,16 +85,25 @@
     mostrar(0);
   }
 
-  /** Invitación discreta en la primera visita (no inicia el recorrido sin permiso). */
+  /**
+   * Invitación en la esquina: la primera vez, la tarjeta «¿Primera vez aquí?»; después (o al
+   * pulsar «Ahora no»), una pestaña pequeña «Recorrido guiado» para volver a abrirlo cuando se quiera.
+   */
   function invitar(clave, texto, alAceptar) {
-    if (visto(clave) || document.querySelector('.tour-invitacion')) return;
+    document.querySelector('.tour-invitacion')?.remove();
     const inv = document.createElement('div');
+    document.body.appendChild(inv);
+    const pestana = () => {
+      inv.className = 'tour-invitacion tour-pestana';
+      inv.innerHTML = '<button type="button" class="tour-pestana-btn" aria-label="Abrir el recorrido guiado"><span aria-hidden="true">?</span>Recorrido guiado</button>';
+      inv.querySelector('button').addEventListener('click', alAceptar);
+    };
+    if (visto(clave)) { pestana(); return; }
     inv.className = 'tour-invitacion';
     inv.innerHTML = `<b>¿Primera vez aquí?</b><span>${texto}</span><div><button type="button" class="btn btn-p">Ver el recorrido</button><button type="button" class="btn btn-s">Ahora no</button></div>`;
-    document.body.appendChild(inv);
     const [si, no] = inv.querySelectorAll('button');
-    si.addEventListener('click', () => { inv.remove(); alAceptar(); });
-    no.addEventListener('click', () => { inv.remove(); guardar(clave); });
+    si.addEventListener('click', () => { guardar(clave); pestana(); alAceptar(); });
+    no.addEventListener('click', () => { guardar(clave); pestana(); });
   }
 
   window.CHCP_TOUR = { iniciar, cerrar, visto, marcar: guardar, invitar };
