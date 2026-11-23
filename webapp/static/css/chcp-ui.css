@@ -577,3 +577,25 @@ html.app #main-content:has(.pg) { overflow-y:auto; background:#f3f6fa; }
 .rs-ir { border:1px solid var(--line, #cfd8e3); background:#fff; color:#1d3f8f; border-radius:999px; padding:3px 10px; margin:3px 2px; font:inherit; font-size:12px; cursor:pointer; }
 .rs-ir:hover { background:#eef3fb; }
 #rs-unir:disabled { opacity:.45; cursor:not-allowed; }
+.rs-rutas { margin-bottom:14px; border-left:4px solid #7b1fa2; }
+.rs-rutas[hidden] { display:none; }
+.rs-rutas-btn { grid-column:1 / -1; }
+.rs-rutas-btn.on { background:#7b1fa2; color:#fff; border-color:#7b1fa2; }
+.rs-rutas-t td small, .rs-rutas-t th small { display:block; font-size:11px; color:var(--muted); font-weight:400; }
+.rs-rutas-t tr.on td { background:#f6effa; }
+.rs-tol { margin:10px 0 4px; max-width:420px; }
+.rs-supuestos { margin-top:10px; font-size:12.5px; line-height:1.5; }
+.rs-supuestos summary { cursor:pointer; font-weight:600; color:#4a148c; }
+.rs-supuestos ul { margin:6px 0; padding-left:18px; }
+.leaflet-image-layer.rs-franja { image-rendering:pixelated; }
+.rs-check { display:flex; gap:8px; align-items:center; font-size:12.5px; margin:0 0 6px; cursor:pointer; }
+.rs-rangos { display:flex; gap:8px; font-size:11px; color:var(--muted); margin-top:2px; }
+.rs-rob { font-style:normal; font-size:10.5px; padding:1px 7px; border-radius:999px; margin-left:4px; white-space:nowrap; }
+.rs-rob-ok { background:#e8f5e9; color:#1b5e20; }
+.rs-rob-mid { background:#fff8e1; color:#8d6e00; }
+.rs-rob-no { background:#eceff1; color:#546e7a; }
+.rs-plan-l { margin:8px 0; padding-left:20px; font-size:12.5px; }
+.rs-plan-l li { margin-bottom:5px; }
+.rs-plan-l small { display:block; color:var(--muted); }
+.rs-table td small { display:block; font-size:11px; color:var(--muted); }
+.rs-prior .rs-rangos span { color:var(--muted); font-weight:500; font-size:11px; }

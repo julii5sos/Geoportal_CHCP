@@ -92,3 +92,62 @@ decisión explícita del equipo.
   - El píxel es de 10 a 30 m según la subcuenca. En polígonos menores de ~20 píxeles las superficies son aproximadas.
   - Los resultados corresponden a la fecha del último precálculo.
   - La versión con Earth Engine sigue siendo la referencia para áreas fuera de la CHCP o para parámetros distintos.
+
+## Rutas de menor costo al Corredor Biológico Mesoamericano (2026-11-22)
+
+- **Objetivo:** desde un parche de bosque del simulador, mostrar por dónde conectaría con el Corredor Biológico Mesoamericano cruzando la menor cantidad posible de terreno hostil. Responde en parte a la limitación de distancia euclidiana del simulador (auditoría E.2, punto 3).
+- **Destinos:** los tramos mesoamericanos de la capa de corredores del Almanaque Azul (`es_mesoamericano`).
+  - **Tramo este:** unas 89 000 ha dentro de la cuenca.
+  - **Tramo San Lorenzo:** unas 777 ha dentro de la cuenca.
+  - **Tramo oeste:** a unos 16 km de la cuenca; no se evalúa.
+- **Superficie de resistencia:** mapas de valores precalculados de la cuenca completa (`data/mapas/chcp`), reducidos por moda a ≤ 1 000 celdas por lado. Valores relativos al bosque sin perturbación:
+
+  | Cobertura | Fuente | Resistencia |
+  |---|---|---|
+  | Bosque | SINIA 1 con JRC 1 | 1 |
+  | Bosque degradado | SINIA 1 con JRC 2 o 3 | 2 |
+  | Regeneración | SINIA 2 con JRC 4 | 5 |
+  | Otras tierras | SINIA 2 | 25 |
+  | Área construida | ESRI 2024, clase 7 | 100 |
+  | Agua | SINIA 3 o JRC 5 | 1 000 |
+  | Sin dato (fuera de la cuenca) | — | sin paso |
+
+  Son un **supuesto del modelo** (escala ordinal de opinión experta, práctica habitual según Zeller et al. 2012). No se calibraron con datos de movimiento de ninguna especie. La capa ESRI 2024 (`esri_2024`, solo valores) se genera a partir de la actualización de datos posterior a este cambio; mientras falte, el área construida cuenta como «otras tierras» y la interfaz lo indica.
+- **Algoritmo:**
+  - Costo acumulado (Dijkstra, 8 vecinos, costo de paso = media de las resistencias × longitud) desde cada tramo.
+  - La ruta parte de la celda del parche con menor costo y sigue las celdas previas.
+  - La **franja de alternativas** reúne las celdas donde costo(parche → celda) + costo(celda → tramo) ≤ (1 + t) × costo óptimo, con t = 5, 10 o 20 %. Es un corredor de menor costo al estilo de Linkage Mapper.
+- **Resultados por ruta:**
+  - longitud total;
+  - kilómetros por bosque;
+  - kilómetros fuera del bosque («a restaurar») y número de tramos continuos fuera del bosque;
+  - kilómetros sobre agua y sobre área construida.
+- **Pruebas:** `tests/test_rutas_corredor_js.py`.
+- **Limitaciones:**
+  - Celdas de unos 40 a 230 m según la versión de los datos.
+  - Solo dentro de la cuenca.
+  - No considera tenencia de la tierra, carreteras (salvo como área construida) ni pendiente.
+  - Una ruta hipotética no garantiza su uso por la fauna y requiere verificación en campo.
+
+## Correcciones del simulador de restauración tras la revisión científica (2026-11-22)
+
+Detalle y estado en `docs/auditoria/E_COHERENCIA_ECOLOGICA.md` (tabla de limitaciones) y en la matriz (E6–E11).
+
+- **Red ampliada (precálculo, `red_simulacion` versión 2):** se añade al resultado de `analizar_fragmentacion_geojson` sin cambiar las métricas oficiales ni MT-2026.7.
+  - **Nodos:** parches de la subcuenca con su superficie completa (sin cortar en la divisoria) y parches hasta `MARGEN_SIMULACION_M = 1000` m fuera. El margen no supera el contexto exterior leído del asset (5 km en el precálculo).
+  - **Aristas:** todas las de hasta `DISTANCIA_MAX_SIMULACION_M = 1000` m, con su distancia. El navegador las filtra por umbral (250, 500 y 1 000 m).
+  - **Área de paisaje:** subcuenca + margen. Se conserva la red anterior (aristas al umbral y superficies recortadas) por compatibilidad.
+- **Conectividad equivalente:** EC = √N, con N = Σᵢ Σⱼ aᵢ·aⱼ/(1 + nlᵢⱼ) (el numerador del IIC). No depende del área de paisaje y es comparable entre subcuencas. La ganancia relativa es la misma en IIC, N y EC².
+- **Ganancia exacta por enlace (`gananciaEnlace`):**
+  - *Entre redes distintas:* ΔN = 2 Σₖ Σₘ Sₐ(k)·S_b(m)/(2 + k + m), donde Sₐ(k) es la superficie a k saltos de a.
+  - *Dentro de la misma red:* se recalcula exactamente el acortamiento de caminos con la matriz de saltos de la componente (hasta 3 000 parches).
+  - Se verifica frente al recálculo completo en 300 grafos aleatorios.
+- **Efectividad según el ancho:** e(ancho) = min(1, ancho / ancho de referencia); referencia por defecto de 100 m. Supuesto explícito para no favorecer franjas angostas que serían casi todo borde; los efectos de borde en bosques tropicales penetran de decenas a cientos de metros (Laurance et al. 2002; Broadbent et al. 2008). No está calibrado con especies.
+- **Cruces de agua y zonas construidas:** cada brecha se muestrea cada ⅓ de píxel sobre la malla completa de la cuenca, con la misma clasificación que las rutas al corredor. Se marca cuando cruza al menos un píxel completo de agua o de zona construida (ESRI 2024, clase 7), para no marcar orillas.
+- **Robustez:** puesto de cada brecha con cada umbral. «Robusta» = entre las primeras (25 % de las candidatas, entre 3 y 10) con todos los umbrales; «depende del umbral» = solo con alguno.
+- **Candidatos:**
+  - brechas del motor;
+  - el enlace más corto entre cada par de redes;
+  - el enlace más corto entre las redes que se forman con 250 m, que con umbrales mayores acortan caminos.
+  - Al menos un extremo debe estar en la subcuenca.
+- **Plan voraz:** hasta 8 pasos; en cada uno se elige la mayor ganancia × efectividad / ha sobre la red ya modificada. No garantiza el óptimo combinatorio.

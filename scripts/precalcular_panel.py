@@ -50,7 +50,7 @@ SALIDA = RAIZ / "data" / "estadisticas_territoriales.json"
 DIR_GEOMETRIAS = RAIZ / "data" / "subcuencas"
 DIR_MAPAS = RAIZ / "data" / "mapas"
 # Versión del contenido del archivo: si cambia, se recalcula todo aunque no se use --rehacer.
-VERSION_DATOS = 3  # 3: distancias de conectividad en UTM 17N y métricas completas del índice
+VERSION_DATOS = 4  # 3: distancias en UTM 17N y métricas completas del índice; 4: red ampliada del simulador y capa esri_2024
 CLASES_JRC = ("tmf_estable", "tmf_degradacion", "tmf_deforestacion", "tmf_recuperacion",
               "tmf_agua", "tmf_otra_cobertura")
 
@@ -93,7 +93,8 @@ def _guardar_geometrias(identificador: str, estructura: dict | None) -> None:
     """Parches, brechas y ruta al corredor de la subcuenca para los mapas de la ficha."""
     if not estructura:
         return
-    campos = ("patch_id", "area_ha", "indice_conector", "prioridad_conectividad", "componente", "esta_aislado")
+    campos = ("patch_id", "area_ha", "area_contexto_ha", "indice_conector", "prioridad_conectividad", "componente",
+              "esta_aislado", "continua_fuera_area")
     def limpiar(coleccion, propiedades=None):
         salida = []
         for f in (coleccion or {}).get("features", []):
@@ -108,7 +109,8 @@ def _guardar_geometrias(identificador: str, estructura: dict | None) -> None:
         "conexiones": limpiar(estructura.get("conexiones_geojson")),
         "brechas": limpiar(estructura.get("conexiones_potenciales_geojson")),
         "ruta_corredor": limpiar(estructura.get("ruta_corredor_geojson")),
-        "red": estructura.get("red_simulacion"),
+        "red": {k: v for k, v in (estructura.get("red_simulacion") or {}).items() if k != "contexto_geojson"} or None,
+        "contexto": limpiar((estructura.get("red_simulacion") or {}).get("contexto_geojson")),
     }
     (DIR_GEOMETRIAS / f"{identificador}.json").write_text(json.dumps(datos, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
 
