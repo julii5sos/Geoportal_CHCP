@@ -128,3 +128,26 @@ decisión explícita del equipo.
   - Solo dentro de la cuenca.
   - No considera tenencia de la tierra, carreteras (salvo como área construida) ni pendiente.
   - Una ruta hipotética no garantiza su uso por la fauna y requiere verificación en campo.
+
+## Correcciones del simulador de restauración tras la revisión científica (2026-11-22)
+
+Detalle y estado en `docs/auditoria/E_COHERENCIA_ECOLOGICA.md` (tabla de limitaciones) y en la matriz (E6–E11).
+
+- **Red ampliada (precálculo, `red_simulacion` versión 2):** se añade al resultado de `analizar_fragmentacion_geojson` sin cambiar las métricas oficiales ni MT-2026.7.
+  - **Nodos:** parches de la subcuenca con su superficie completa (sin cortar en la divisoria) y parches hasta `MARGEN_SIMULACION_M = 1000` m fuera. El margen no supera el contexto exterior leído del asset (5 km en el precálculo).
+  - **Aristas:** todas las de hasta `DISTANCIA_MAX_SIMULACION_M = 1000` m, con su distancia. El navegador las filtra por umbral (250, 500 y 1 000 m).
+  - **Área de paisaje:** subcuenca + margen. Se conserva la red anterior (aristas al umbral y superficies recortadas) por compatibilidad.
+- **Conectividad equivalente:** EC = √N, con N = Σᵢ Σⱼ aᵢ·aⱼ/(1 + nlᵢⱼ) (el numerador del IIC). No depende del área de paisaje y es comparable entre subcuencas. La ganancia relativa es la misma en IIC, N y EC².
+- **Ganancia exacta por enlace (`gananciaEnlace`):**
+  - *Entre redes distintas:* ΔN = 2 Σₖ Σₘ Sₐ(k)·S_b(m)/(2 + k + m), donde Sₐ(k) es la superficie a k saltos de a.
+  - *Dentro de la misma red:* se recalcula exactamente el acortamiento de caminos con la matriz de saltos de la componente (hasta 3 000 parches).
+  - Se verifica frente al recálculo completo en 300 grafos aleatorios.
+- **Efectividad según el ancho:** e(ancho) = min(1, ancho / ancho de referencia); referencia por defecto de 100 m. Supuesto explícito para no favorecer franjas angostas que serían casi todo borde; los efectos de borde en bosques tropicales penetran de decenas a cientos de metros (Laurance et al. 2002; Broadbent et al. 2008). No está calibrado con especies.
+- **Cruces de agua y zonas construidas:** cada brecha se muestrea cada ⅓ de píxel sobre la malla completa de la cuenca, con la misma clasificación que las rutas al corredor. Se marca cuando cruza al menos un píxel completo de agua o de zona construida (ESRI 2024, clase 7), para no marcar orillas.
+- **Robustez:** puesto de cada brecha con cada umbral. «Robusta» = entre las primeras (25 % de las candidatas, entre 3 y 10) con todos los umbrales; «depende del umbral» = solo con alguno.
+- **Candidatos:**
+  - brechas del motor;
+  - el enlace más corto entre cada par de redes;
+  - el enlace más corto entre las redes que se forman con 250 m, que con umbrales mayores acortan caminos.
+  - Al menos un extremo debe estar en la subcuenca.
+- **Plan voraz:** hasta 8 pasos; en cada uno se elige la mayor ganancia × efectividad / ha sobre la red ya modificada. No garantiza el óptimo combinatorio.

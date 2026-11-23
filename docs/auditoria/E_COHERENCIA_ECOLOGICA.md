@@ -52,16 +52,18 @@ Las superficies eran correctas.
   - *No mide:* la conectividad ecológica potencial para especies, la conectividad funcional demostrada ni la restauración efectiva.
 - **Sin beneficios atribuidos:** no se atribuye ningún beneficio a especies.
 
-### Limitaciones del simulador identificadas en la revisión del 2026-11-22
+### Limitaciones del simulador identificadas en la revisión del 2026-11-22 y su tratamiento
 
-Siguen abiertas. Mientras lo estén, el simulador se presenta como **exploratorio**.
+| # | Limitación | Tratamiento | Estado (matriz) |
+|---|---|---|---|
+| 1 | El ancho de la franja solo cambiaba el costo, no el beneficio: el ranking por hectárea favorecía la franja más angosta. | Efectividad supuesta `min(1, ancho / ancho de referencia)`. La ganancia y la prioridad por hectárea se multiplican por ella, así que por debajo de la referencia estrechar la franja ya no mejora la prioridad. Anchos de 30 a 200 m; referencia de 60, 100 (por defecto) o 200 m. | E6 · mitigado |
+| 2 | Umbral único de 500 m sin sensibilidad. | La red guarda aristas hasta 1 km. Cada brecha se evalúa con 250, 500 y 1 000 m (ganancia exacta, puesto y etiqueta «robusta», «depende del umbral» o «baja»). Los escenarios muestran la ganancia con cada umbral. El umbral de análisis es elegible; 500 m sigue siendo el original. | E7 · corregido en código |
+| 3 | Distancia euclidiana: enlaces que cruzan agua o zonas urbanas. | Cada brecha se muestrea sobre la cobertura de la cuenca. Se marca y, por defecto, se excluye de las prioridades y del plan si cruza al menos un píxel de agua o de zona construida. Para conectar con el Corredor Mesoamericano hay rutas de menor costo (E.2.1). | E8 · corregido |
+| 4 | Subcuenca aislada: parches partidos en la divisoria, sin conexiones hacia fuera e IIC no comparable. | Red ampliada del simulador: cada parche con su superficie completa y el bosque hasta 1 km fuera de la subcuenca como contexto. El IIC se normaliza por subcuenca + margen y se añade la conectividad equivalente EC = √(Σ aᵢaⱼ/(1+nlᵢⱼ)) en hectáreas, comparable entre subcuencas (Saura et al. 2011). Las métricas oficiales de la ficha y MT-2026.7 no cambian. | E9 · corregido en código |
+| 5 | Selección heurística, una a una. | Ganancia exacta de cada enlace sin recalcular todo el grafo. Plan voraz: en cada paso se elige el mejor enlace dada la red ya modificada, con lo que se capturan refuerzos y redundancias. Se presenta como heurística, no como óptimo. | E10 · mitigado |
+| 6 | Base forestal sin validar. | El simulador declara la categoría usada («Bosques y Otras Tierras Boscosas», que no distingue tipos ni plantaciones) y el estado de la validación de SINIA 2021. La exactitud solo se resolverá con la interpretación de la muestra (C). | E11 · pendiente |
 
-1. **Beneficio independiente del ancho:** el ancho de la franja solo cambia la superficie, no la ganancia de IIC. Por eso la priorización «por hectárea» favorece siempre la franja más angosta, que es la de menor función ecológica por efecto de borde.
-2. **Umbral único de 500 m:** no está ligado a una especie o grupo funcional y no hay análisis de sensibilidad (por ejemplo con 250, 500 y 1 000 m).
-3. **Distancia euclidiana:** no considera la resistencia de la matriz, así que una brecha puede cruzar agua o zonas urbanas. Las rutas al Corredor Mesoamericano (E.2.1) introducen la resistencia, pero solo para esas rutas.
-4. **Efecto de borde del área de análisis:** los parches se recortan en el límite de la subcuenca, sin margen exterior. Además, el IIC se normaliza por el área de cada subcuenca y no es comparable entre subcuencas.
-5. **Selección de candidatas heurística:** hasta 80 brechas, evaluadas una a una. No es una optimización de combinaciones.
-6. **Base forestal sin validar:** la exactitud de SINIA 2021 depende de la validación pendiente (C).
+El simulador sigue presentándose como **exploratorio**: los supuestos 1 y 3 (efectividad por ancho y resistencias) no están calibrados con datos de especies, y la validación de la base (6) está pendiente.
 
 ### E.2.1 Rutas de menor costo al Corredor Biológico Mesoamericano
 

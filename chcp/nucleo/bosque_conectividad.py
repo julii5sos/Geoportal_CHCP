@@ -23,6 +23,13 @@ from chcp.nucleo.proyecciones import EPSG_METRICO
 
 MAX_NODOS_CENTRALIDAD_EXACTA = 250
 MUESTRA_NODOS_INTERMEDIACION = 64
+# Red ampliada para el simulador de restauración (no participa en MT-2026.7 ni en las
+# métricas oficiales): parches a menos de MARGEN_SIMULACION_M de la subcuenca, completos
+# (sin cortar en la divisoria), y aristas hasta DISTANCIA_MAX_SIMULACION_M para comparar
+# los umbrales de sensibilidad.
+MARGEN_SIMULACION_M = 1_000.0
+DISTANCIA_MAX_SIMULACION_M = 1_000.0
+UMBRALES_SENSIBILIDAD_M = (250.0, 500.0, 1_000.0)
 
 
 def _dependencias():
@@ -504,6 +511,74 @@ def _resultado_sin_parches(
     }
 
 
+
+def _red_simulacion(
+    *,
+    parches: list[Any],
+    arbol,
+    indices_objetivo: list[int],
+    aristas_umbral: list[list[float]],
+    area_objetivo_m,
+    area_paisaje_ha: float,
+    umbral_m: float,
+    deps: dict[str, Any],
+    area_a_wgs,
+    distancia_contexto_m: float,
+) -> dict[str, Any]:
+    """Red del simulador: subcuenca más un margen exterior y aristas hasta 1 km.
+
+    El margen no puede superar el contexto exterior leído del asset (``distancia_contexto_m``).
+    """
+
+    objetivo = set(indices_objetivo)
+    margen = min(MARGEN_SIMULACION_M, float(distancia_contexto_m or 0.0))
+    zona = area_objetivo_m.buffer(margen) if area_objetivo_m is not None and margen > 0 else None
+    if zona is not None:
+        nodos = [i for i, parche in enumerate(parches) if i in objetivo or parche.intersects(zona)]
+        area_margen_ha = zona.area / 10_000
+    else:
+        nodos = sorted(objetivo)
+        area_margen_ha = area_paisaje_ha
+    conjunto = set(nodos)
+    distancia_max = max(DISTANCIA_MAX_SIMULACION_M, float(umbral_m))
+    ampliadas = []
+    for i in nodos:
+        for candidato in arbol.query(parches[i].buffer(distancia_max), predicate="intersects"):
+            j = int(candidato)
+            if j <= i or j not in conjunto:
+                continue
+            distancia = parches[i].distance(parches[j])
+            if distancia <= distancia_max:
+                ampliadas.append([i + 1, j + 1, round(float(distancia), 1)])
+    contexto = []
+    for i in nodos:
+        if i in objetivo or zona is None:
+            continue
+        visible = deps["make_valid"](parches[i].intersection(zona)).simplify(10, preserve_topology=True)
+        if visible.is_empty:
+            continue
+        contexto.append({
+            "type": "Feature",
+            "properties": {"patch_id": i + 1, "area_ha": round(parches[i].area / 10_000, 4), "contexto": True},
+            "geometry": deps["mapping"](deps["transform"](area_a_wgs.transform, visible)),
+        })
+    return {
+        "version": 2,
+        "umbral_m": float(umbral_m),
+        # Compatibilidad: red de la subcuenca al umbral, con superficies recortadas.
+        "area_paisaje_ha": round(float(area_paisaje_ha), 4),
+        "aristas": aristas_umbral,
+        # Red ampliada: superficie completa de cada parche y parches del margen exterior.
+        "margen_m": margen if zona is not None else 0.0,
+        "area_paisaje_margen_ha": round(float(area_margen_ha), 4),
+        "distancia_max_m": distancia_max,
+        "umbrales_sensibilidad_m": list(UMBRALES_SENSIBILIDAD_M),
+        "nodos": [[i + 1, round(parches[i].area / 10_000, 4), 1 if i in objetivo else 0] for i in nodos],
+        "aristas_ampliadas": ampliadas,
+        "contexto_geojson": {"type": "FeatureCollection", "features": contexto},
+    }
+
+
 def _calcular_metricas_parches(
     *,
     parches: list[Any],
@@ -887,14 +962,21 @@ def _calcular_metricas_parches(
         "metricas_paisaje": metricas_paisaje,
         # Red completa del área (no solo el árbol visible): el simulador de
         # restauración recalcula componentes e IIC sobre estas aristas.
-        "red_simulacion": {
-            "umbral_m": float(umbral_m),
-            "area_paisaje_ha": round(float(area_paisaje_ha), 4),
-            "aristas": [
+        "red_simulacion": _red_simulacion(
+            parches=parches,
+            arbol=arbol,
+            indices_objetivo=indices_objetivo,
+            aristas_umbral=[
                 [int(o) + 1, int(d) + 1, round(float(a["distancia_m"]), 1)]
                 for o, d, a in subgrafo_objetivo.edges(data=True)
             ],
-        },
+            area_objetivo_m=area_objetivo_m,
+            area_paisaje_ha=area_paisaje_ha,
+            umbral_m=umbral_m,
+            deps=deps,
+            area_a_wgs=area_a_wgs,
+            distancia_contexto_m=distancia_contexto_m,
+        ),
         "top_conectores": nodos[:20],
         "parches_geojson": {"type": "FeatureCollection", "features": features},
         "conexiones_geojson": {

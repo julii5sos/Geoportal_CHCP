@@ -7,12 +7,14 @@
       <span class="rs-kicker">Planificar · conectividad</span>
       <h1>¿Dónde restaurar para reconectar el bosque?</h1>
       <label class="rs-field">Subcuenca<select id="rs-select"></select></label>
+      <label class="rs-field" title="Distancia máxima entre parches para considerarlos conectados. 500 m es el umbral del método original.">Umbral de análisis<select id="rs-umbral-sel"><option value="500">500 m (original)</option></select></label>
     </div>
     <details class="rs-help" open>
       <summary>Cómo funciona</summary>
       <ol>
         <li>El mapa muestra los parches de bosque oficial 2021. Cada color es una <b>red</b>: parches a menos de <b id="rs-umbral">500 m</b> entre sí.</li>
-        <li>Las líneas rojas discontinuas son <b>brechas candidatas</b>. Haga clic en una para restaurarla en el escenario activo.</li>
+        <li>Las líneas rojas discontinuas son <b>brechas candidatas</b>. Haga clic en una para restaurarla en el escenario activo. Las grises cruzan agua o zonas construidas.</li>
+        <li>El bosque con borde punteado está <b>fuera de la subcuenca</b> (hasta 1 km): se incluye para no partir la red en la divisoria.</li>
         <li>También puede <b>unir dos parches</b>: pulse el botón y luego haga clic en dos parches.</li>
         <li>El simulador recalcula la red y compara el escenario actual con sus propuestas.</li>
         <li>Con <b>Rutas al Corredor Mesoamericano</b>, haga clic en un parche para ver por dónde conectaría con el corredor cruzando la menor cantidad de terreno sin bosque.</li>
@@ -25,14 +27,19 @@
       </div>
       <div class="rs-tools">
         <button class="btn btn-s" id="rs-unir" type="button">Unir dos parches</button>
-        <label>Ancho de la franja<select id="rs-ancho"><option value="30">30 m</option><option value="60" selected>60 m</option><option value="100">100 m</option></select></label>
+        <label>Ancho de la franja<select id="rs-ancho"><option value="30">30 m</option><option value="60">60 m</option><option value="100" selected>100 m</option><option value="150">150 m</option><option value="200">200 m</option></select></label>
+        <label title="Ancho a partir del cual se supone que un enlace funciona plenamente; por debajo rinde en proporción a su ancho.">Ancho funcional de referencia<select id="rs-ref"><option value="60">60 m</option><option value="100" selected>100 m</option><option value="200">200 m</option></select></label>
         <button class="btn btn-s" id="rs-limpiar" type="button">Vaciar escenario</button>
         <button class="btn btn-s rs-rutas-btn" id="rs-rutas-btn" type="button">Rutas al Corredor Mesoamericano</button>
       </div>
       <p class="rs-hint" id="rs-hint"></p>
       <ul class="rs-list" id="rs-list"></ul>
     </div>
-    <div class="rs-block"><h2>Prioridades sugeridas</h2><p class="rs-note">Brechas ordenadas por cuánto mejoran la conectividad integral (IIC) por hectárea restaurada.</p><ol class="rs-prior" id="rs-prior"></ol></div>
+    <div class="rs-block"><h2>Prioridades sugeridas</h2>
+      <label class="rs-check"><input type="checkbox" id="rs-excluir" checked> Excluir brechas que cruzan agua o zonas construidas</label>
+      <p class="rs-note" id="rs-prior-nota"></p><ol class="rs-prior" id="rs-prior"></ol></div>
+    <div class="rs-block"><h2>Plan sugerido</h2><p class="rs-note">Elige enlaces uno a uno, cada vez el que más mejora la red ya modificada por los anteriores.</p>
+      <button class="btn btn-s" type="button" id="rs-plan-btn">Calcular plan de 8 enlaces</button><div id="rs-plan"></div></div>
   </aside>
   <section class="rs-main">
     <div id="rs-map"></div>
