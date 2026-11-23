@@ -29,6 +29,7 @@ jobs:
         env:
           GEE_SERVICE_ACCOUNT_JSON: ${{ secrets.GEE_SERVICE_ACCOUNT_JSON }}
           GEE_PROJECT_ID: geoportal-513817
+          PYTHONUNBUFFERED: "1"
         run: python scripts/auditoria/b_sinia_2012_controlado.py --puntos "${{ github.event.inputs.puntos }}"
       - name: Guardar el resultado
         run: |

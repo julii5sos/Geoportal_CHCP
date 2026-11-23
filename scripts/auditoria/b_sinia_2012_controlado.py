@@ -11,6 +11,9 @@ Diferencias con el muestreo original (10 puntos aleatorios por código):
 2. **Más puntos:** ``--puntos`` por código, con semilla fija.
 3. **Prueba de alineación:** cada punto se consulta también desplazado ±10 m en x e y.
 4. **Metadatos del servicio:** tamaño de píxel, referencia espacial y leyenda de la capa 2.
+5. **Por partes:** el muestreo se hace subcuenca por subcuenca (y en cuadrantes si una subcuenca
+   agota el tiempo de Earth Engine); luego se eligen ``--puntos`` por código con la misma semilla.
+   Pedirlo de una vez para toda la cuenca a 5 m provocaba «Computation timed out».
 
 Escribe ``docs/auditoria/datos/B_comparacion_controlada_2012.json``. No modifica leyendas ni assets:
 la decisión sobre cada código se documenta en ``docs/auditoria/B_SINIA_2012.md``.
@@ -42,13 +45,49 @@ def desplazar(lon, lat, dx, dy):
     return lon + dx / (111_320 * math.cos(math.radians(lat))), lat + dy / 110_540
 
 
+def elegir_por_codigo(candidatos: list[dict], puntos: int, semilla: int) -> list[dict]:
+    """Hasta ``puntos`` por código entre todos los candidatos, al azar con semilla fija y sin duplicados."""
+    import random
+
+    vistos, por_codigo = set(), {}
+    for f in candidatos:
+        lon, lat = (round(v, 7) for v in f["geometry"]["coordinates"])
+        if (lon, lat) in vistos:
+            continue
+        vistos.add((lon, lat))
+        por_codigo.setdefault(int(f["properties"]["codigo"]), []).append(f)
+    elegidos = []
+    for c in sorted(por_codigo):
+        lista = sorted(por_codigo[c], key=lambda f: tuple(f["geometry"]["coordinates"]))
+        random.Random(semilla + c).shuffle(lista)
+        elegidos.extend(lista[:puntos])
+    return elegidos
+
+
+def cuadrantes(geojson: dict) -> list[dict]:
+    """Divide la caja de una geometría en 4 rectángulos (para recortar con la geometría original)."""
+    xs, ys = [], []
+
+    def recorrer(c):
+        if isinstance(c[0], (int, float)):
+            xs.append(c[0]); ys.append(c[1])
+        else:
+            for x in c:
+                recorrer(x)
+    recorrer(geojson["coordinates"])
+    x0, x1, y0, y1 = min(xs), max(xs), min(ys), max(ys)
+    xm, ym = (x0 + x1) / 2, (y0 + y1) / 2
+    return [{"type": "Polygon", "coordinates": [[[a, b], [c, b], [c, d], [a, d], [a, b]]]}
+            for a, c in ((x0, xm), (xm, x1)) for b, d in ((y0, ym), (ym, y1))]
+
+
 def main() -> int:
     import ee
     import requests
 
     from auditar_assets_sinia import consultar_rest
     from chcp.gee.gee_config import desactivar_teselas, inicializar_earth_engine
-    from chcp.territorio.territorio_local import geometria_cuenca
+    from chcp.territorio.territorio_local import coleccion_subcuencas
 
     parser = argparse.ArgumentParser()
     parser.add_argument("--puntos", type=int, default=30)
@@ -64,13 +103,43 @@ def main() -> int:
     leyenda = sesion.get(f"{REST}/legend", params={"f": "json"}, timeout=60).json()
     leyenda_capa = next((l for l in leyenda.get("layers", []) if l.get("layerId") == CAPA), {})
 
-    chcp = ee.Geometry(geometria_cuenca())
     codigo = ee.Image(ASSET).select([0], ["codigo"]).toInt()
     ventana = codigo.reduceNeighborhood(ee.Reducer.minMax(), ee.Kernel.square(args.radio, "pixels"))
     interior = ventana.select("codigo_min").eq(ventana.select("codigo_max"))
-    muestras = (codigo.updateMask(interior)
-                .stratifiedSample(numPoints=args.puntos, classBand="codigo", region=chcp, scale=5, projection=codigo.projection(),
-                                  seed=args.semilla, geometries=True, tileScale=16).getInfo()["features"])
+    candidata = codigo.updateMask(interior)
+
+    def muestrear(region_geojson, etiqueta, nivel=0):
+        region = ee.Geometry(region_geojson)
+        for intento in range(2):
+            try:
+                return candidata.stratifiedSample(numPoints=args.puntos, classBand="codigo", region=region, scale=5,
+                                                  projection=codigo.projection(), seed=args.semilla, geometries=True,
+                                                  tileScale=16).getInfo()["features"]
+            except Exception as exc:  # noqa: BLE001
+                texto = str(exc).lower()
+                if "timed out" in texto or "memory" in texto or "too many" in texto:
+                    if nivel < 2:  # subcuenca → 4 cuadrantes → 16
+                        print(f"    {etiqueta}: {str(exc)[:60]} → por cuadrantes", flush=True)
+                        partes = []
+                        for k, q in enumerate(cuadrantes(region_geojson)):
+                            sub = ee.Geometry(q).intersection(region, ee.ErrorMargin(1)).getInfo()
+                            if sub and sub.get("coordinates"):
+                                partes.extend(muestrear(sub, f"{etiqueta}.{k + 1}", nivel + 1))
+                        return partes
+                if intento == 0:
+                    time.sleep(20)
+                    continue
+                raise
+        return []
+
+    subcuencas = coleccion_subcuencas()["features"]
+    candidatos = []
+    for i, f in enumerate(subcuencas, 1):
+        nuevos = muestrear(f["geometry"], f["properties"]["id"])
+        candidatos.extend(nuevos)
+        print(f"  [{i}/{len(subcuencas)}] {f['properties'].get('nombre', f['properties']['id'])}: {len(nuevos)} candidatos", flush=True)
+    muestras = elegir_por_codigo(candidatos, args.puntos, args.semilla)
+    print(f"{len(muestras)} puntos elegidos de {len(candidatos)} candidatos; consultando el servicio de MiAMBIENTE…", flush=True)
     capa = {"id": CAPA, "tipo": "raster"}
     puntos = []
     for f in muestras:
