@@ -698,3 +698,4 @@ html.app #main-content:has(.pg) { overflow-y:auto; background:#f3f6fa; }
 .in-q-dest:hover .in-ic { background:var(--verde-osc); color:#fff; }
 .in-tour-btn { display:inline-flex; align-items:center; gap:8px; }
 .in-tour-btn svg { fill:currentColor; }
+.va-proxima { max-width:1180px; margin:20px auto 0; }

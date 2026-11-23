@@ -190,7 +190,7 @@
   }
   function textoValidacion() {
     const v = st.validacion, oficial = '';
-    if (!v) return `Su exactitud en la cuenca no se ha evaluado todavía: la muestra de validación independiente está pendiente.${oficial}`;
+    if (!v) return `Su exactitud en la cuenca no se ha evaluado todavía: la evaluación de exactitud de los mapas está prevista para una próxima actualización.${oficial}`;
     if (v.estado === 'completa') return `Validación independiente completa (${v.interpretados} puntos).${oficial}`;
     return `Validación independiente ${v.estado === 'preliminar' ? 'preliminar' : 'sin interpretar'} (${v.interpretados} de ${v.total_puntos} puntos): su exactitud en la cuenca todavía no está evaluada.${oficial}`;
   }
