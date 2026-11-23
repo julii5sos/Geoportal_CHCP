@@ -82,3 +82,55 @@ class RutasCorredorJsTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+@unittest.skipUnless(NODE, "node no disponible")
+class RiberaYDetalleJsTests(unittest.TestCase):
+    ejecutar = RutasCorredorJsTests.ejecutar
+
+    def test_clasificacion_con_detalle_y_ribera(self):
+        # (sinia, jrc, esri, detalle, ribera)
+        casos = [
+            (1, 1, 255, 1, 4, "bosque_ribera"), (1, 1, 255, 1, 5, "bosque"), (1, 1, 255, 8, 1, "plantacion"),
+            (1, 1, 255, 9, 255, "regeneracion"), (2, 6, 255, 26, 3, "ribera_sin_bosque"),
+            (2, 6, 255, 26, 255, "otras_tierras"), (2, 6, 255, 28, 1, "construido"), (2, 6, 255, 27, 1, "agua"),
+            (1, 2, 255, 2, 1, "bosque_degradado"),
+        ]
+        codigo = ",".join(f"R.CLASES[R.clasificar({a},{b},{c},{d},{e})]" for a, b, c, d, e, _ in casos)
+        r = self.ejecutar(f"console.log(JSON.stringify([{codigo}]));")
+        self.assertEqual(r, [x[-1] for x in casos])
+
+    def test_la_ruta_prefiere_el_bosque_de_ribera(self):
+        # 3 filas de bosque; la fila inferior es ribera. Con la misma longitud, la ruta va por ella.
+        r = self.ejecutar(
+            "const w = 8, h = 3, n = w * h, sinia = new Uint8Array(n).fill(1), ribera = new Uint8Array(n).fill(255);"
+            "for (let x = 0; x < w; x++) ribera[2 * w + x] = 3;"
+            "const { clase, res } = R.superficie({ sinia, ribera }, n);"
+            "const f = new Uint8Array(n); f[1 * w + 7] = 1;"
+            "const { costo, previo } = R.costoAcumulado(res, w, h, f, 30);"
+            "const p = new Uint8Array(n); p[1 * w] = 1;"
+            "const ruta = R.trazar(previo, R.mejorCelda(costo, p));"
+            "console.log(JSON.stringify({ filas: ruta.map((i) => Math.floor(i / w)), km: R.resumir(ruta, clase, w, 30).km.bosque_ribera }));"
+        )
+        self.assertGreaterEqual(r["filas"].count(2), 4)
+        self.assertGreater(r["km"], 0)
+
+    def test_reducir_clases_conserva_riberas_y_composicion(self):
+        r = self.ejecutar(
+            # Bloque 4×4 de otras tierras con una franja de ribera sin bosque de 1 columna (25 %).
+            "const C = R.C, v = new Uint8Array(16).fill(C.otras_tierras); for (let y = 0; y < 4; y++) v[y * 4 + 1] = C.ribera_sin_bosque;"
+            "const red = R.reducirClases(v, 4, 4, 4);"
+            "const clase = Uint8Array.from([C.bosque, C.otras_tierras, C.otras_tierras, C.construido]), cod = Uint8Array.from([1, 26, 255, 28]);"
+            "const comp = R.composicion([0, 1, 2, 3], clase, cod, 4, 100);"
+            "console.log(JSON.stringify({ red: R.CLASES[red.v[0]], comp }));"
+        )
+        self.assertEqual(r["red"], "ribera_sin_bosque")
+        self.assertEqual(r["comp"], {"26": 0.1, "otras_tierras": 0.1, "28": 0.1})
+
+    def test_remuestrear_toma_el_minimo(self):
+        # Origen 4×4 con un cauce (1) en una sola celda; destino 2×2 sobre la misma extensión.
+        r = self.ejecutar(
+            "const lim = [[9, -80], [9.01, -79.99]], o = new Uint8Array(16).fill(255); o[1 * 4 + 1] = 1;"
+            "console.log(JSON.stringify(Array.from(R.remuestrear(o, lim, 4, 4, lim, 2, 2))));"
+        )
+        self.assertEqual(r, [1, 255, 255, 255])

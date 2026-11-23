@@ -102,9 +102,12 @@ CODIFICACION_VALORES: dict[str, dict[str, Any]] = {
     # bits: 1 línea base arbórea Hansen 2020 · 2 NDVI válido · 4 descenso fuerte de NDVI · 8 GEDI válido
     # Clase original de ESRI 10 m 2024 (7 = área construida); la usan las rutas al corredor.
     "esri_2024": {"tipo": "categorias"},
+    # Código original del raster SINIA 2021 detallado (cobertura y uso del suelo, 10 m). La
+    # correspondencia código → categoría se lee de data/leyendas_sinia.json (solo verificadas).
+    "sinia_2021_detalle": {"tipo": "categorias"},
     "aux": {"tipo": "bits", "bits": {"linea_base": 1, "ndvi_valido": 2, "ndvi_descenso": 4, "gedi_valido": 8}},
 }
-CAPAS_SOLO_VALOR = ("gedi", "aux", "esri_2024")
+CAPAS_SOLO_VALOR = ("gedi", "aux", "esri_2024", "sinia_2021_detalle")
 
 
 # ---------------------------------------------------------------------------
@@ -156,6 +159,12 @@ def _imagen_capa(clave: str, geometria, ee):
         fin, _ = _estado_y_mascara_valida_ee("esri_lulc", PERIODOS_ANALISIS["esri_final"], geometria, ee_module=ee)
         post, _, _ = _hansen(geometria, ee)
         return _coincidence(jrc, post, ini, fin, geometria, ee).selfMask()
+    if clave == "sinia_2021_detalle":
+        from chcp.catalogos.catalogo_assets_sinia import ASSETS_SINIA
+
+        ficha = ASSETS_SINIA["2021_detallado"]
+        codigo = ee.Image(ficha["asset_id"]).select([0])
+        return codigo.updateMask(codigo.neq(int(ficha.get("nodata") or 255)))
     if clave == "esri_2024":
         fin, valida = _estado_y_mascara_valida_ee("esri_lulc", PERIODOS_ANALISIS["esri_final"], geometria, ee_module=ee)
         return fin.updateMask(valida)

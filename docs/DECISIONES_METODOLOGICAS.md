@@ -151,3 +151,50 @@ Detalle y estado en `docs/auditoria/E_COHERENCIA_ECOLOGICA.md` (tabla de limitac
   - el enlace más corto entre las redes que se forman con 250 m, que con umbrales mayores acortan caminos.
   - Al menos un extremo debe estar en la subcuenca.
 - **Plan voraz:** hasta 8 pasos; en cada uno se elige la mayor ganancia × efectividad / ha sobre la red ya modificada. No garantiza el óptimo combinatorio.
+
+## Hidrografía oficial y cobertura detallada en las rutas al corredor (2026-11-23)
+
+### Red hidrográfica del IGNTG
+
+- **Fuente:** Instituto Geográfico Nacional Tommy Guardia, «Hidrografía y drenajes» 2022, de los mapas topográficos 1:25 000 (EPSG:32617). Se usaron dos capas:
+  - `Redhidrologica_2022`: 52 ríos principales en todo el país, 7 en la cuenca.
+  - `Redhidrologica2_2022`: 18 405 tramos de ríos y quebradas, 861 en la cuenca.
+
+  En total, unos 2 570 km de cauces dentro de la CHCP.
+- **Producto derivado:** `scripts/preparar_hidrografia_igntg.py` genera `data/hidrografia/riparia_igntg.v.png` y su `.json`. Es una malla EPSG:3857 de 20 m sobre la cuenca más 2 km, con la distancia al cauce por clases:
+  - 1 = cauce (≈ ±10 m);
+  - 3 = ≤ 30 m;
+  - 4 = ≤ 50 m;
+  - 5 = ≤ 100 m.
+
+  **No se publica el vector original.** Los derechos son del IGNTG; falta confirmar su licencia de redistribución.
+- **Uso:** la franja ribereña de las rutas es de **≤ 50 m** a cada lado del cauce. La Ley 1 de 1994 (Ley Forestal), art. 23, protege a cada lado de ríos y quebradas una franja igual o mayor al ancho del cauce y nunca menor de 10 m. La banda de 50 m es mayor que ese mínimo legal porque la malla de rutas tiene celdas de 40 a 80 m, y coincide con una de las bandas del análisis ripario del geoportal.
+- **Remuestreo:** a la malla de la cuenca se pasa con el mínimo de 2 × 2 submuestras, para no perder cauces estrechos. En la reducción de la malla de rutas, una celda es ribereña si al menos el 25 % de sus subceldas lo son.
+- **Pendiente:** el análisis ripario de la ficha (ERI) sigue con MERIT Hydro. Pasarlo al IGNTG exige subir la red como asset de Earth Engine.
+
+### Cobertura y uso del suelo 2021 detallada (SINIA–MiAMBIENTE)
+
+- **Nueva capa de valores** `sinia_2021_detalle` en los mapas precalculados, tomada del raster `SINIA_2021_USO_SUELO_RASTER10M`. La correspondencia código → categoría se lee de `data/leyendas_sinia.json`: los 18 códigos presentes en la CHCP están verificados espacialmente. Un código no verificado se muestra como «Código N (sin verificar)».
+- **Composición de lo que corta un corredor:**
+  - en cada brecha se muestrea la línea sobre la malla completa;
+  - en cada ruta se recorren sus celdas.
+
+  En ambos casos se suma la longitud **fuera del bosque** por código detallado («Corta: Pasto 70 % · Área poblada 20 %…»). Donde falta el código, se usa la clase del modelo.
+- **Base forestal:** la categoría general «Bosques y otras tierras boscosas» incluye en la cuenca unas 7 845 ha de plantaciones (códigos 7 y 8) y 2 793 ha de rastrojo (código 9), según el inventario de `docs/DICCIONARIO_CAPAS_SINIA.md`. Las métricas oficiales siguen usando la categoría general. Las rutas las distinguen cuando está la capa detallada.
+
+### Resistencias de las rutas (supuesto del modelo, sin calibrar con especies)
+
+| Clase | Regla | Resistencia |
+|---|---|---|
+| Bosque de ribera | Bosque natural o secundario a ≤ 50 m de un cauce del IGNTG | 0,5 |
+| Bosque | SINIA general 1, JRC sin perturbación | 1 |
+| Bosque degradado | SINIA general 1 con JRC 2 o 3 | 2 |
+| Plantación | Detallado 7 u 8 | 3 |
+| Regeneración o rastrojo | Detallado 9, o JRC 4 | 5 |
+| Ribera sin bosque | Otras tierras a ≤ 50 m de un cauce | 10 |
+| Otras tierras | Pasto, cultivos, vegetación herbácea, etc. | 25 |
+| Zona construida | Detallado 28 (poblada), 29 (infraestructura), 30 (minería), o ESRI 2024 clase 7 | 100 |
+| Agua | Detallado 27, SINIA general 3 o JRC 5 | 1 000 |
+
+- La ribera sin bosque tiene una resistencia menor que las otras tierras: así la ruta tiende a seguir los ríos donde habría que restaurar, que son franjas protegidas por ley.
+- Las rutas informan los km por ribera con bosque, los km de ribera sin bosque y los km por plantación.

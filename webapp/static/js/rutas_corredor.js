@@ -11,10 +11,21 @@
 (function (raiz) {
   // Resistencia relativa por tipo de cobertura (1 = bosque sin perturbación). Supuesto del
   // modelo, documentado en docs/DECISIONES_METODOLOGICAS.md; no proviene de una especie concreta.
-  const RESISTENCIA = { bosque: 1, bosque_degradado: 2, regeneracion: 5, otras_tierras: 25, construido: 100, agua: 1000 };
-  const CLASES = ['sin_dato', 'bosque', 'bosque_degradado', 'regeneracion', 'otras_tierras', 'construido', 'agua'];
+  const RESISTENCIA = {
+    bosque_ribera: 0.5, bosque: 1, bosque_degradado: 2, plantacion: 3, regeneracion: 5,
+    ribera_sin_bosque: 10, otras_tierras: 25, construido: 100, agua: 1000,
+  };
+  const CLASES = ['sin_dato', 'bosque', 'bosque_degradado', 'regeneracion', 'otras_tierras', 'construido', 'agua',
+    'bosque_ribera', 'ribera_sin_bosque', 'plantacion'];
+  const C = Object.fromEntries(CLASES.map((c, i) => [c, i]));
+  // Clases que una ruta cruzaría fuera del bosque (lo que habría que restaurar o atravesar).
+  const FUERA_BOSQUE = new Set([C.regeneracion, C.otras_tierras, C.construido, C.agua, C.ribera_sin_bosque]);
   const NO_DATO = 255;
   const ESRI_CONSTRUIDO = 7;
+  // Raster SINIA 2021 detallado (códigos verificados en la CHCP; ver data/leyendas_sinia.json).
+  const SINIA_AGUA = 27, SINIA_CONSTRUIDO = new Set([28, 29, 30]), SINIA_PLANTACION = new Set([7, 8]), SINIA_RASTROJO = 9;
+  // Banda ribereña del IGNTG: 1 cauce (≈ ±10 m), 3 ≤ 30 m, 4 ≤ 50 m, 5 ≤ 100 m. Se usa ≤ 50 m.
+  const BANDA_RIBERA = 4;
 
   /** Reduce un raster categórico por un factor entero tomando la moda de cada bloque (ignora 255). */
   function reducir(v, w, h, f) {
@@ -35,25 +46,101 @@
     return { v: out, w: W, h: H };
   }
 
-  /** Clase de cobertura (índice en CLASES) a partir de SINIA 2021, JRC 2025 y ESRI 2024 (opcional). */
-  function clasificar(s, j, e) {
-    if (s === 3 || (s === NO_DATO && j === 5)) return 6;
-    if (s === NO_DATO && j === NO_DATO) return 0;
-    if (e === ESRI_CONSTRUIDO) return 5;
-    if (s === 1) return j === 2 || j === 3 ? 2 : 1;
-    if (s === 2) return j === 4 ? 3 : 4;
-    // Sin SINIA: se usa JRC.
-    return { 1: 1, 2: 2, 4: 3, 5: 6 }[j] || 4;
+  /**
+   * Clase de cobertura (índice en CLASES).
+   * s: SINIA 2021 general (1 bosque, 2 otras tierras, 3 agua); j: JRC TMF 2025;
+   * e: ESRI 2024 (opcional); d: SINIA 2021 detallado (opcional); r: banda ribereña IGNTG (opcional).
+   */
+  function clasificar(s, j, e = NO_DATO, d = NO_DATO, r = NO_DATO) {
+    if (s === 3 || d === SINIA_AGUA || (s === NO_DATO && d === NO_DATO && j === 5)) return C.agua;
+    if (s === NO_DATO && j === NO_DATO && d === NO_DATO) return C.sin_dato;
+    if (SINIA_CONSTRUIDO.has(d) || e === ESRI_CONSTRUIDO) return C.construido;
+    const ribera = r <= BANDA_RIBERA;
+    if (s === 1) {
+      if (SINIA_PLANTACION.has(d)) return C.plantacion;
+      if (d === SINIA_RASTROJO) return C.regeneracion;
+      if (j === 2 || j === 3) return C.bosque_degradado;
+      return ribera ? C.bosque_ribera : C.bosque;
+    }
+    if (s === 2) {
+      if (d === SINIA_RASTROJO || j === 4) return C.regeneracion;
+      return ribera ? C.ribera_sin_bosque : C.otras_tierras;
+    }
+    // Sin SINIA general: se usa JRC.
+    const c = { 1: C.bosque, 2: C.bosque_degradado, 4: C.regeneracion, 5: C.agua }[j];
+    if (c === C.bosque && ribera) return C.bosque_ribera;
+    return c ?? (ribera ? C.ribera_sin_bosque : C.otras_tierras);
+  }
+
+  /** Reduce un raster de clases conservando las riberas (franjas estrechas que la moda borraría). */
+  function reducirClases(v, w, h, f) {
+    if (f <= 1) return { v, w, h };
+    const W = Math.ceil(w / f), H = Math.ceil(h / f), out = new Uint8Array(W * H);
+    const cuenta = new Uint16Array(CLASES.length);
+    for (let Y = 0; Y < H; Y += 1) for (let X = 0; X < W; X += 1) {
+      cuenta.fill(0);
+      let n = 0;
+      for (let y = Y * f; y < Math.min(h, Y * f + f); y += 1) for (let x = X * f; x < Math.min(w, X * f + f); x += 1) {
+        const c = v[y * w + x];
+        if (c !== C.sin_dato) { cuenta[c] += 1; n += 1; }
+      }
+      let mejor = C.sin_dato, max = 0;
+      for (let c = 1; c < CLASES.length; c += 1) if (cuenta[c] > max) { max = cuenta[c]; mejor = c; }
+      const rib = cuenta[C.bosque_ribera] + cuenta[C.ribera_sin_bosque];
+      if (n && rib * 4 >= n && mejor !== C.agua && mejor !== C.construido) {
+        mejor = cuenta[C.bosque_ribera] >= cuenta[C.ribera_sin_bosque] ? C.bosque_ribera : C.ribera_sin_bosque;
+      }
+      out[Y * W + X] = mejor;
+    }
+    return { v: out, w: W, h: H };
+  }
+
+  /** Resistencias a partir de un raster de clases. */
+  function resistencias(clase) {
+    const res = new Float32Array(clase.length);
+    for (let i = 0; i < clase.length; i += 1) res[i] = clase[i] === C.sin_dato ? Infinity : RESISTENCIA[CLASES[clase[i]]];
+    return res;
   }
 
   function superficie(capas, n) {
-    const clase = new Uint8Array(n), res = new Float32Array(n);
-    for (let i = 0; i < n; i += 1) {
-      const c = clasificar(capas.sinia ? capas.sinia[i] : NO_DATO, capas.jrc ? capas.jrc[i] : NO_DATO, capas.esri ? capas.esri[i] : NO_DATO);
-      clase[i] = c;
-      res[i] = c === 0 ? Infinity : RESISTENCIA[CLASES[c]];
+    const clase = new Uint8Array(n);
+    const v = (k, i) => (capas[k] ? capas[k][i] : NO_DATO);
+    for (let i = 0; i < n; i += 1) clase[i] = clasificar(v('sinia', i), v('jrc', i), v('esri', i), v('detalle', i), v('ribera', i));
+    return { clase, res: resistencias(clase) };
+  }
+
+  /**
+   * Remuestrea un raster en EPSG:3857 (p. ej., la banda ribereña) a otra malla EPSG:3857
+   * tomando el mínimo de 2 × 2 submuestras por celda (no se pierden cauces estrechos).
+   */
+  function remuestrear(origen, limO, wO, hO, limD, wD, hD) {
+    const Rm = 6378137, mx = (lon) => Rm * lon * Math.PI / 180, my = (lat) => Rm * Math.log(Math.tan(Math.PI / 4 + lat * Math.PI / 360));
+    const [[sO, oO], [nO, eO]] = limO, [[sD, oD], [nD, eD]] = limD;
+    const ax = (mx(eO) - mx(oO)) / wO, ay = (my(nO) - my(sO)) / hO, bx = (mx(eD) - mx(oD)) / wD, by = (my(nD) - my(sD)) / hD;
+    const col = (X, f) => Math.floor((mx(oD) + (X + f) * bx - mx(oO)) / ax), fila = (Y, f) => Math.floor((my(nO) - (my(nD) - (Y + f) * by)) / ay);
+    const cols = [0.25, 0.75].map((f) => Int32Array.from({ length: wD }, (_, X) => col(X, f)));
+    const filas = [0.25, 0.75].map((f) => Int32Array.from({ length: hD }, (_, Y) => fila(Y, f)));
+    const out = new Uint8Array(wD * hD).fill(NO_DATO);
+    for (let Y = 0; Y < hD; Y += 1) for (let X = 0; X < wD; X += 1) {
+      let m = NO_DATO;
+      for (const fy of filas) { const y = fy[Y]; if (y < 0 || y >= hO) continue; for (const cx of cols) { const x = cx[X]; if (x >= 0 && x < wO) m = Math.min(m, origen[y * wO + x]); } }
+      out[Y * wD + X] = m;
     }
-    return { clase, res };
+    return out;
+  }
+
+  /** Longitud (km) por código de una capa categórica a lo largo de una ruta, solo en celdas fuera del bosque. */
+  function composicion(ruta, clase, codigos, w, paso) {
+    const km = {};
+    for (let k = 1; k < ruta.length; k += 1) {
+      const b = ruta[k];
+      if (!FUERA_BOSQUE.has(clase[b])) continue;
+      const a = ruta[k - 1], diag = (a % w) !== (b % w) && Math.floor(a / w) !== Math.floor(b / w);
+      // Código detallado si existe; si no, la clase del modelo (p. ej., «otras_tierras»).
+      const cod = codigos && codigos[b] !== NO_DATO ? codigos[b] : CLASES[clase[b]];
+      km[cod] = (km[cod] || 0) + (diag ? paso * Math.SQRT2 : paso) / 1000;
+    }
+    return km;
   }
 
   // Montículo binario mínimo con borrado perezoso, sobre arreglos tipados que crecen.
@@ -140,7 +227,7 @@
       total += d;
       // Cada paso se reparte entre las dos celdas que une.
       km[CLASES[clase[a]]] += d / 2; km[CLASES[clase[b]]] += d / 2;
-      const fuera = clase[b] >= 3;
+      const fuera = FUERA_BOSQUE.has(clase[b]);
       if (fuera && !fueraPrev) tramosFuera += 1;
       fueraPrev = fuera;
     }
@@ -148,7 +235,8 @@
     return {
       longitud_km: r(total),
       km: Object.fromEntries(Object.entries(km).map(([c, v]) => [c, r(v)])),
-      fuera_bosque_km: r(km.regeneracion + km.otras_tierras + km.construido + km.agua),
+      fuera_bosque_km: r(km.regeneracion + km.otras_tierras + km.construido + km.agua + km.ribera_sin_bosque),
+      por_bosque_km: r(km.bosque + km.bosque_degradado + km.bosque_ribera),
       tramos_fuera_bosque: tramosFuera,
     };
   }
@@ -181,7 +269,7 @@
     return mascara;
   }
 
-  const api = { RESISTENCIA, CLASES, reducir, clasificar, superficie, costoAcumulado, trazar, mejorCelda, franja, resumir, rasterizar };
+  const api = { RESISTENCIA, CLASES, C, FUERA_BOSQUE, BANDA_RIBERA, reducir, reducirClases, clasificar, superficie, resistencias, remuestrear, composicion, costoAcumulado, trazar, mejorCelda, franja, resumir, rasterizar };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   else raiz.CHCP_RUTAS = api;
 })(typeof window !== 'undefined' ? window : globalThis);

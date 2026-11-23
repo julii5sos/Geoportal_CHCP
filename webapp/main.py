@@ -306,6 +306,16 @@ def create_app(*, testing: bool = False) -> Flask:
             return jsonify(error="Mapa no calculado para este territorio."), 404
         return send_file(path, mimetype="image/png" if archivo.endswith(".png") else "application/json", max_age=300)
 
+    @app.get("/api/v1/hidrografia/<archivo>")
+    def api_hidrografia(archivo: str):
+        # Solo el producto derivado (banda ribereña); el vector original del IGNTG no se sirve.
+        if archivo not in {"riparia_igntg.v.png", "riparia_igntg.json"}:
+            return jsonify(error="Solicitud no válida."), 400
+        path = PANEL_STATISTICS_PATH.parent / "hidrografia" / archivo
+        if not path.exists():
+            return jsonify(error="Capa hidrográfica no preparada."), 404
+        return send_file(path, mimetype="image/png" if archivo.endswith(".png") else "application/json", max_age=3600)
+
     @app.get("/api/v1/panel/statistics")
     def api_panel_statistics():
         path = PANEL_STATISTICS_PATH

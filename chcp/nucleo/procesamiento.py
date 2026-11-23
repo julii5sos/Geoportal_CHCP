@@ -76,6 +76,17 @@ def estado_actualizacion(datos: dict[str, Any]) -> dict[str, Any]:
     }
 
 
+def leyenda_sinia_2021_detalle() -> list[dict[str, Any]]:
+    """Códigos del raster SINIA 2021 detallado con su categoría, color, grupo y estado."""
+    from chcp.catalogos.leyendas_sinia import leyenda
+
+    return [
+        {"codigo": int(f["codigo"]), "categoria": f["categoria"], "color": f.get("color"),
+         "grupo": f.get("grupo_derivado"), "verificada": f.get("estado") == "verificada_espacialmente"}
+        for f in leyenda("2021_detallado")
+    ]
+
+
 def enriquecer_estadisticas(datos: dict[str, Any], dir_subcuencas: Any = None) -> dict[str, Any]:
     """Agrega trazabilidad e indicadores experimentales al servir el panel (sin tocar el archivo).
 
@@ -107,4 +118,5 @@ def enriquecer_estadisticas(datos: dict[str, Any], dir_subcuencas: Any = None) -
             t2["indicadores_relativos"] = None
         territorios[clave] = t2
     salida["territorios"] = territorios
+    salida.setdefault("leyendas_valores", {})["sinia_2021_detalle"] = leyenda_sinia_2021_detalle()
     return salida

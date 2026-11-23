@@ -1,0 +1,67 @@
+{
+ "fuente": "Instituto Geográfico Nacional Tommy Guardia (IGNTG) · Hidrografía y drenajes 2022, de los mapas topográficos 1:25 000",
+ "derechos": "Instituto Geográfico Nacional Tommy Guardia.",
+ "capas": [
+  {
+   "archivo": "Redhidrologica_2022.shp",
+   "tramos_en_zona": 9
+  },
+  {
+   "archivo": "Redhidrologica2_2022.shp",
+   "tramos_en_zona": 941
+  }
+ ],
+ "procesado": "2026-11-23",
+ "nota": "Producto derivado: distancia al cauce por clases. No se redistribuye el vector original.",
+ "referencia_legal": "Ley 1 de 1994 (Ley Forestal), art. 23: franja protectora a cada lado de ríos y quebradas igual o mayor al ancho del cauce y nunca menor de 10 m.",
+ "crs": "EPSG:3857",
+ "limites": [
+  [
+   8.635989,
+   -80.139624
+  ],
+  [
+   9.518126,
+   -79.225186
+  ]
+ ],
+ "dimensiones": [
+  5026,
+  4910
+ ],
+ "tamano_pixel_m": 20.0,
+ "margen_m": 2000.0,
+ "clases": [
+  {
+   "valor": 1,
+   "etiqueta": "Cauce y franja legal mínima (≈ 10 m)",
+   "hasta_m": 10
+  },
+  {
+   "valor": 3,
+   "etiqueta": "Franja de 30 m",
+   "hasta_m": 30
+  },
+  {
+   "valor": 4,
+   "etiqueta": "Franja de 50 m",
+   "hasta_m": 50
+  },
+  {
+   "valor": 5,
+   "etiqueta": "Franja de 100 m",
+   "hasta_m": 100
+  }
+ ],
+ "sin_dato": 255,
+ "km_en_cuenca_por_tipo": {
+  "Quebrada": 7.6,
+  "Río": 2566.3
+ },
+ "superficie_banda_acumulada_ha": {
+  "Cauce y franja legal mínima (≈ 10 m)": 6034.7,
+  "Franja de 30 m": 21653.9,
+  "Franja de 50 m": 32795.4,
+  "Franja de 100 m": 65318.1
+ }
+}
