@@ -37,21 +37,21 @@
   // años (si tiene serie anual) y sus gráficas en el panel de la derecha.
   const TEMAS = [
     { grupo: 'Cambio de cobertura', items: [
-      { k: 'preev', t: 'Preevaluación MT-2026.7', i: 'shield', capas: ['r:coincidencia'], d: 'Las cinco fuentes juntas: dónde coinciden las señales de pérdida de JRC, Hansen y ESRI, con NDVI y GEDI como apoyo. Puntaje 0–6,5.' },
-      { k: 'jrc', t: 'Bosque tropical · JRC TMF', i: 'forest', prod: 'jrc', capas: ['r:jrc_2025'], d: 'Estado del bosque húmedo cada año desde 1990: sin perturbación, degradado, deforestado o en regeneración (Landsat, 30 m).' },
-      { k: 'hansen', t: 'Pérdida arbórea · Hansen', i: 'loss', prod: 'hansen', capas: ['r:hansen'], d: 'Año en que se perdió la cobertura arbórea, 2001–2025 (Landsat, 30 m). El índice usa solo 2021–2025.' },
-      { k: 'esri', t: 'Cobertura y uso · ESRI', i: 'layers', prod: 'esri', capas: ['r:esri_cambio'], d: 'Clase de cobertura de cada año, 2017–2025 (Sentinel-2, 10 m): árboles, pastizal, cultivos, área construida, agua…' },
-      { k: 'ndvi', t: 'Vigor de la vegetación · NDVI', i: 'sprout', prod: 'ndvi', capas: ['r:ndvi_cambio'], d: 'Vigor de la vegetación de cada año, 2017–2025 (Sentinel-2): de sin vegetación activa a vegetación densa.' },
-      { k: 'gedi', t: 'Altura del dosel · GEDI', i: 'trend', capas: ['v:gedi'], d: 'Altura media del dosel (láser GEDI, 100 m). Referencia estructural fija, sin serie anual.' },
+      { k: 'preev', q: '¿Ha perdido bosque esta zona?', t: 'Preevaluación MT-2026.7', i: 'shield', capas: ['r:coincidencia'], d: 'Las cinco fuentes juntas: dónde coinciden las señales de pérdida de JRC, Hansen y ESRI, con NDVI y GEDI como apoyo. Puntaje 0–6,5.' },
+      { k: 'jrc', q: '¿Cómo ha cambiado el bosque desde 1990?', t: 'Bosque tropical · JRC TMF', i: 'forest', prod: 'jrc', capas: ['r:jrc_2025'], d: 'Estado del bosque húmedo cada año desde 1990: sin perturbación, degradado, deforestado o en regeneración (Landsat, 30 m).' },
+      { k: 'hansen', q: '¿Cuándo se perdió la cobertura arbórea?', t: 'Pérdida arbórea · Hansen', i: 'loss', prod: 'hansen', capas: ['r:hansen'], d: 'Año en que se perdió la cobertura arbórea, 2001–2025 (Landsat, 30 m). El índice usa solo 2021–2025.' },
+      { k: 'esri', q: '¿Qué reemplazó a los árboles?', t: 'Cobertura y uso · ESRI', i: 'layers', prod: 'esri', capas: ['r:esri_cambio'], d: 'Clase de cobertura de cada año, 2017–2025 (Sentinel-2, 10 m): árboles, pastizal, cultivos, área construida, agua…' },
+      { k: 'ndvi', q: '¿La vegetación está perdiendo vigor?', t: 'Vigor de la vegetación · NDVI', i: 'sprout', prod: 'ndvi', capas: ['r:ndvi_cambio'], d: 'Vigor de la vegetación de cada año, 2017–2025 (Sentinel-2): de sin vegetación activa a vegetación densa.' },
+      { k: 'gedi', q: '¿Qué tan alto es el bosque?', t: 'Altura del dosel · GEDI', i: 'trend', capas: ['v:gedi'], d: 'Altura media del dosel (láser GEDI, 100 m). Referencia estructural fija, sin serie anual.' },
     ] },
     { grupo: 'Cobertura oficial', items: [
-      { k: 'sinia', t: 'Cobertura oficial · SINIA', i: 'polygon', capas: ['r:sinia_2021'], d: 'Bosques y otras tierras boscosas de MiAMBIENTE (2021). Base de la fragmentación y la conectividad.' },
+      { k: 'sinia', q: '¿Qué dice la cartografía oficial?', t: 'Cobertura oficial · SINIA', i: 'polygon', capas: ['r:sinia_2021'], d: 'Bosques y otras tierras boscosas de MiAMBIENTE (2021). Base de la fragmentación y la conectividad.' },
     ] },
     { grupo: 'Paisaje y conectividad', items: [
-      { k: 'frag', t: 'Fragmentación y conectividad', i: 'network', capas: ['parches', 'brechas'], d: 'Parches del bosque oficial 2021, su importancia en la red y las brechas candidatas a reconexión.' },
-      { k: 'corr', t: 'Corredores biológicos', i: 'route', capas: ['corredores', 'puntos'], d: 'Corredores del Almanaque Azul, Corredor Biológico Mesoamericano y puntos críticos.' },
-      { k: 'rip', t: 'Ríos y franjas riparias', i: 'leaf', capas: ['rios', 'r:riparia'], d: 'Bosque en franjas de 30, 50 y 100 m junto a los cauces (hidrografía IGNTG).' },
-      { k: 'eri', t: 'Resiliencia ecológica (ERI)', i: 'sprout', capas: ['r:eri'], d: 'Índice indicativo 0–100 de integridad, conectividad local, relieve y cercanía a ríos.' },
+      { k: 'frag', q: '¿Qué tan fragmentado está el bosque?', t: 'Fragmentación y conectividad', i: 'network', capas: ['parches', 'brechas'], d: 'Parches del bosque oficial 2021, su importancia en la red y las brechas candidatas a reconexión.' },
+      { k: 'corr', q: '¿Se conecta con los corredores biológicos?', t: 'Corredores biológicos', i: 'route', capas: ['corredores', 'puntos'], d: 'Corredores del Almanaque Azul, Corredor Biológico Mesoamericano y puntos críticos.' },
+      { k: 'rip', q: '¿Hay bosque junto a los ríos?', t: 'Ríos y franjas riparias', i: 'leaf', capas: ['rios', 'r:riparia'], d: 'Bosque en franjas de 30, 50 y 100 m junto a los cauces (hidrografía IGNTG).' },
+      { k: 'eri', q: '¿Qué tan resiliente es el paisaje?', t: 'Resiliencia ecológica (ERI)', i: 'sprout', capas: ['r:eri'], d: 'Índice indicativo 0–100 de integridad, conectividad local, relieve y cercanía a ríos.' },
     ] },
   ];
   const TEMA = Object.fromEntries(TEMAS.flatMap((g) => g.items.map((x) => [x.k, x])));
@@ -291,14 +291,17 @@
     $('#pe-temas').innerHTML = TEMAS.map((g) => `<div class="tm-g"><h3>${esc(g.grupo)}</h3>${g.items.map((x) => {
       const serie = x.prod && st.series?.productos?.[x.prod];
       const periodo = serie ? `${serie.anios[0]}–${serie.anios[serie.anios.length - 1]}` : '';
-      return `<div class="tm ${x.k === st.tema ? 'on' : ''}"><button type="button" class="tm-b" data-tema="${x.k}" aria-pressed="${x.k === st.tema}">${icon(x.i, 18)}<span>${esc(x.t)}${periodo ? `<small>${periodo}</small>` : ''}</span></button><button type="button" class="tm-i" data-info="${x.k}" aria-label="Qué muestra ${esc(x.t)}" aria-expanded="false">i</button><p class="tm-d" hidden>${esc(x.d)}</p></div>`;
+      return `<div class="tm ${x.k === st.tema ? 'on' : ''}"><button type="button" class="tm-b" data-tema="${x.k}" aria-pressed="${x.k === st.tema}">${icon(x.i, 18)}<span>${esc(x.t)}<small class="tm-q">${esc(x.q)}</small>${periodo ? `<small>${periodo}</small>` : ''}</span></button><button type="button" class="tm-i" data-info="${x.k}" aria-label="Qué muestra ${esc(x.t)}" aria-expanded="false">i</button><p class="tm-d" hidden>${esc(x.d)}</p></div>`;
     }).join('')}</div>`).join('');
     $$('#pe-temas [data-tema]').forEach((b) => b.addEventListener('click', () => elegirTema(b.dataset.tema)));
     $$('#pe-temas [data-info]').forEach((b) => b.addEventListener('click', () => { const p = b.nextElementSibling; p.hidden = !p.hidden; b.setAttribute('aria-expanded', String(!p.hidden)); }));
   }
   async function elegirTema(k) {
     if (reproduciendo) { clearInterval(reproduciendo); reproduciendo = null; }
-    st.tema = k; st.modo = null;
+    st.tema = k;
+    // Dentro de un análisis de varias preguntas, elegir el tema de una de ellas cambia de pestaña.
+    const parte = st.modo?.tipos.find((tp) => temaDe(tp) === k);
+    st.modo = parte ? { ...st.modo, actual: parte } : null;
     renderTemas();
     await dibujar();
     renderPanel();
@@ -307,12 +310,15 @@
   // ------------------------------------------------------------ panel de la derecha
   const ttl = (n, sub = '') => `<div class="pc-h"><h3>${n}</h3>${sub ? `<p>${sub}</p>` : ''}</div>`;
   const card = (html, cls = '') => `<section class="pc ${cls}">${html}</section>`;
+  /** Respuesta directa a la pregunta del tema, antes de las gráficas. */
+  const respuesta = (texto) => card(`<span class="pc-resp-q">${esc(TEMA[st.tema].q)}</span><p>${texto}</p>`, 'pc-resp');
+  const listaY = (xs) => (xs.length > 1 ? `${xs.slice(0, -1).join(', ')} y ${xs[xs.length - 1]}` : xs.join(''));
   const nombreVista = () => (st.vistaPol ? `Polígono de ${hectares(pg.resultado?.area_dibujada_ha ?? P.areaHa(pg.geo), 1)}` : t().nombre);
   let turnoPanel = 0;
   async function renderPanel() {
     const turno = ++turnoPanel;
     const T = TEMA[st.tema], poli = !!st.vistaPol, x = t(), R0 = pg.resultado;
-    $('#pe-res-eyebrow').textContent = st.modo ? `Análisis · ${TIPOS[st.modo.tipo].t}` : poli ? 'Mi geometría · estimación local' : 'Explorar';
+    $('#pe-res-eyebrow').textContent = st.modo ? `Análisis · ${TIPOS[st.modo.actual].t}` : poli ? 'Mi geometría · estimación local' : 'Explorar';
     $('#pe-res-title').textContent = nombreVista();
     $('#pe-res-sub').textContent = poli ? `En ${R0?.subcuencas?.join(', ') || '—'}` : `${hectares(x.area_ha)} · ${x.grupo}`;
     $('#pe-res-b').innerHTML = '<p class="pc-cargando">Preparando las gráficas…</p>';
@@ -327,7 +333,8 @@
     const acciones = poli
       ? `<button class="btn btn-s" id="pg-json" type="button">${icon('download', 16)} Resultados (JSON)</button><button class="btn btn-s" id="pg-geo" type="button">${icon('map', 16)} Polígono (GeoJSON)</button>`
       : `<a class="btn btn-s" href="${enlace('ficha')}?id=${encodeURIComponent(x.id)}">${icon('doc', 16)} Ficha técnica</a>${x.id !== 'chcp' ? `<a class="btn btn-s" href="${enlace('restauracion')}?id=${encodeURIComponent(x.id)}">${icon('route', 16)} Simular restauración</a>` : ''}`;
-    $('#pe-res-b').innerHTML = `${proc}${html}<div class="pe-acc pe-acc-fila">${acciones}</div><p class="hint-p small">Evaluación preliminar con datos satelitales: orienta una revisión y no sustituye la verificación de campo.</p>`;
+    const partes = st.modo?.tipos?.length > 1 ? `<nav class="pe-nav pe-partes" aria-label="Preguntas de este análisis">${st.modo.tipos.map((tp) => `<button type="button" data-parte="${tp}" aria-current="${tp === st.modo.actual}">${esc(tp === 'comparar' ? `Comparar ${prodInfo(st.modo.prod)?.corto || ''}` : TIPOS[tp].t)}</button>`).join('')}</nav>` : '';
+    $('#pe-res-b').innerHTML = `${partes}${proc}${html}<div class="pe-acc pe-acc-fila">${acciones}</div><p class="hint-p small">Evaluación preliminar con datos satelitales: orienta una revisión y no sustituye la verificación de campo.</p>`;
     G.activarTooltips($('#pe-res-b'));
     enlazarPanel();
     $('#pe-res').classList.remove('closed'); $('#pe-reopen').hidden = true;
@@ -337,6 +344,7 @@
     $$('#pe-res-b [data-cmp]').forEach((s) => s.addEventListener('change', () => { const prod = TEMA[st.tema].prod; const c = (st.comparar[prod] ||= {}); c[s.dataset.cmp] = Number(s.value); renderPanel(); }));
     $('#pe-rank-cl')?.addEventListener('change', (e) => { st.rankClase[TEMA[st.tema].prod] = Number(e.target.value); renderPanel(); });
     $$('#pe-res-b [data-ir-tema]').forEach((b) => b.addEventListener('click', () => elegirTema(b.dataset.irTema)));
+    $$('#pe-res-b [data-parte]').forEach((b) => b.addEventListener('click', () => elegirTema(temaDe(b.dataset.parte))));
     if (st.vistaPol && pg.resultado) {
       const bajar = (nombre, texto, tipo) => { const el = document.createElement('a'); el.href = URL.createObjectURL(new Blob([texto], { type: tipo })); el.download = nombre; el.click(); URL.revokeObjectURL(el.href); };
       $('#pg-json')?.addEventListener('click', () => { const { acc, ...resto } = pg.resultado; bajar('analisis_poligono.json', JSON.stringify({ procesamiento: { tipo: 'C', descripcion: 'Estimación local derivada de resultados precalculados (tipo B)', base: st.data.procesamiento, error_borde_estimado: pg.resultado.error_borde, pixel_m: pg.resultado.pixel_m }, metodologia: st.data.metodologia, datos: st.data.generado, poligono: pg.geo, ...resto, series_anuales: pg.series, superficies_ha: { jrc: acc.jrc, hansen_por_anio: acc.hansen, esri: acc.esri, sinia_2021: acc.sinia, coincidencia: acc.coincidencia, riparia: acc.riparia } }, null, 1), 'application/json'); });
@@ -352,7 +360,12 @@
     if (!datos) return panelSinSerie(T);
     const info = prodInfo(prod), anios = info.anios, anio = anioActual(prod);
     const cabecera = card(`<p class="pc-lectura">${esc(info.lectura)}</p><p class="pc-fuente">${esc(info.fuente)} · ${info.resolucion_m} m. En el índice MT-2026.7: ${esc(info.periodo_indice)}.</p>`, 'pc-intro');
-    if (prod === 'hansen') return cabecera + panelHansen(info, datos);
+    if (prod === 'hansen') {
+      const por = datos.perdida_por_anio || {};
+      const reciente = info.anios.filter((a) => a >= 2021).reduce((s2, a) => s2 + (por[a] || 0), 0);
+      const maxA = info.anios.reduce((m, a) => ((por[a] || 0) > (por[m] || 0) ? a : m), info.anios[0]);
+      return respuesta(`Entre 2021 y 2025 se perdieron <b>${G.ha(reciente)}</b> de cobertura arbórea. Desde 2001, el año con más pérdida fue <b>${maxA}</b> (${G.ha(por[maxA] || 0)}). Hansen no distingue tala de cosecha de plantaciones.`) + cabecera + panelHansen(info, datos);
+    }
     const por = datos.por_anio || {};
     const clases = info.clases.filter((c) => anios.some((a) => (por[a]?.[c.valor] || 0) > 0));
     const filasAnio = clases.map((c) => ({ etiqueta: c.etiqueta, color: c.color, valor: por[anio]?.[c.valor] || 0 }));
@@ -365,8 +378,16 @@
       <div class="pc-sel"><label>Desde<select data-cmp="a">${opciones(cmp.a)}</select></label><label>Hasta<select data-cmp="b">${opciones(cmp.b)}</select></label></div>
       ${G.mancuernas({ filas: filasCmp, anioA: cmp.a, anioB: cmp.b })}
       ${G.tablaDatos(['Clase', String(cmp.a), String(cmp.b), 'Cambio'], filasCmp.map((f) => [esc(f.etiqueta), G.ha(f.a), G.ha(f.b), `${f.b - f.a >= 0 ? '+' : '−'}${G.ha(Math.abs(f.b - f.a))}`]))}`);
-    let html = cabecera;
-    const primero = st.modo?.tipo === 'comparar';
+    const clave = info.clases.find((c) => c.valor === CLASE_RANKING[prod]);
+    const fa = filasCmp.find((f) => f.etiqueta === clave?.etiqueta);
+    const crece = [...filasCmp].filter((f) => f !== fa).sort((p1, p2) => (p2.b - p2.a) - (p1.b - p1.a))[0];
+    let html = '';
+    if (fa) {
+      const d = fa.b - fa.a, rel = fa.a ? d / fa.a * 100 : null;
+      html += respuesta(`Entre ${cmp.a} y ${cmp.b}, <b>${esc(fa.etiqueta.toLowerCase())}</b> pasó de ${G.ha(fa.a)} a ${G.ha(fa.b)} (<b>${d >= 0 ? '+' : '−'}${G.ha(Math.abs(d))}</b>${rel == null ? '' : `, ${d >= 0 ? '+' : '−'}${number(Math.abs(rel), 1)} %`}).${crece && crece.b - crece.a > 0 ? ` La clase que más creció fue <b>${esc(crece.etiqueta.toLowerCase())}</b> (+${G.ha(crece.b - crece.a)}).` : ''}`);
+    }
+    html += cabecera;
+    const primero = st.modo?.actual === 'comparar';
     if (primero) html += comparar;
     html += card(`${ttl(`Superficie por clase · ${anio}`, `${G.ha(totalAnio)} con dato. Cambie el año con la barra del mapa o pulsando una columna.`)}${G.barrasClases(filasAnio)}`);
     html += card(`${ttl(`Evolución ${anios[0]}–${anios[anios.length - 1]}`, 'Superficie de cada clase por año.')}
@@ -446,11 +467,15 @@
         esri: { salida: x.esri?.esri_salida || 0, ganancia: x.esri?.esri_ganancia || 0, estable: x.esri?.esri_estable || 0 },
         ndvi: { ini: x.ndvi?.ndvi_inicial_medio, fin: x.ndvi?.ndvi_final_medio, delta: x.ndvi?.ndvi_delta_medio, descenso: x.ndvi?.ndvi_disminucion || 0 }, gedi: { altura: x.gedi_altura_m } };
     }
+    const activas = ['tmf', 'hansen', 'esri', 'ndvi', 'gedi'].filter((k) => p.senales[k]).map((k) => ({ tmf: 'JRC', hansen: 'Hansen', esri: 'ESRI', ndvi: 'NDVI', gedi: 'GEDI' }[k]));
+    const resp = respuesta(activas.length
+      ? `<b>Hay señales: ${activas.length} de 5 fuentes</b> superan su umbral de pérdida o deterioro (${listaY(activas)}). Prioridad <b>${esc(String(p.prioridad).toLowerCase())}</b> para verificar en campo.`
+      : '<b>Sin señales:</b> ninguna de las cinco fuentes supera su umbral de pérdida o deterioro en este período.');
     const JRC_C = [['Sin perturbación', '#1d6b35'], ['Degradado', '#f28e2b'], ['Deforestado', '#fabc20'], ['Regeneración', '#a6d96a'], ['Agua', '#5aa9e6'], ['Otra cobertura', '#d7c2a1']];
     const estado = (k) => (p.senales[k] ? `<span class="pc-estado on"><i class="pc-dot"></i>Señal activa · +${number(p.aportes?.[k] ?? 0, 1)}</span>` : '<span class="pc-estado">Sin señal · +0</span>');
     const fuente = (k, nombre, periodo, umbral, cuerpo, tema) => `<article class="pc-fuente-c ${p.senales[k] ? 'on' : ''}"><header><b>${nombre}</b><small>${periodo}</small>${estado(k)}</header>${cuerpo}<p class="pc-umbral">Se activa con: ${umbral}</p>${tema ? `<button type="button" class="rs-link" data-ir-tema="${tema}">Ver la serie en el mapa</button>` : ''}</article>`;
     const jrcFilas = JRC_C.map(([n, c], i) => ({ etiqueta: n, color: c, valor: d.jrc[i] }));
-    const html = `
+    const html = `${resp}
       ${card(`<div class="pc-hero"><div><span>Puntaje MT-2026.7</span><b>${number(p.puntaje, 1)}<small> / ${number(p.max, 1)}</small></b></div><em class="pc-prio" style="--c:${PRIO[p.prioridad] || '#90a4ae'}">${esc(p.prioridad)}</em></div>
         <div class="pc-puntos">${Object.entries({ tmf: 'JRC', hansen: 'Hansen', esri: 'ESRI', gedi: 'GEDI', ndvi: 'NDVI' }).map(([k, n]) => `<span class="${p.senales[k] ? 'on' : ''}" title="${n}: ${p.senales[k] ? 'señal activa' : 'sin señal'}"><i style="flex-grow:${{ tmf: 2, hansen: 2, esri: 1.5, gedi: 0.5, ndvi: 0.5 }[k]}"></i>${n}</span>`).join('')}</div>
         <p class="pc-lectura">Prioridad de visita: <b>${esc(p.visita)}</b> · ${esc(p.consistencia)}. Cada fuente suma una sola vez; el mapa muestra dónde coinciden JRC, Hansen y ESRI.</p>`, 'pc-score')}
@@ -490,14 +515,17 @@
   }
 
   // ------------------------------------------------------------ «Realizar análisis»
+  // Cada tipo responde una pregunta. Se pueden elegir varios a la vez: el panel muestra una
+  // pestaña por cada uno y el mapa cambia con la pestaña.
   const TIPOS = {
-    preev: { t: 'Preevaluación del cambio', i: 'shield', d: 'Las cinco fuentes (JRC, Hansen, ESRI, NDVI y GEDI), su puntaje MT-2026.7 y la prioridad de visita.' },
-    comparar: { t: 'Comparar dos años', i: 'trend', d: 'Elija una fuente y dos años: cuánto cambió cada clase, con su serie completa.' },
-    frag: { t: 'Fragmentación y conectividad', i: 'network', d: 'Parches del bosque oficial, borde, bosque interior y red de conectividad.' },
-    corr: { t: 'Corredores y ríos', i: 'route', d: 'Corredores biológicos, Corredor Mesoamericano, puntos críticos y franjas riparias.' },
+    preev: { q: '¿Ha perdido bosque esta zona?', t: 'Preevaluación del cambio', i: 'shield', d: 'Las cinco fuentes (JRC, Hansen, ESRI, NDVI y GEDI), su puntaje MT-2026.7 y la prioridad de visita.' },
+    comparar: { q: '¿Cómo cambió entre dos años?', t: 'Comparar dos años', i: 'trend', d: 'Elija una fuente y dos años: cuánto cambió cada clase, con su serie completa.' },
+    frag: { q: '¿Qué tan fragmentado y conectado está el bosque?', t: 'Fragmentación y conectividad', i: 'network', d: 'Parches del bosque oficial, borde, bosque interior y red de conectividad.' },
+    corr: { q: '¿Se conecta con los corredores y los ríos?', t: 'Corredores y ríos', i: 'route', d: 'Corredores biológicos, Corredor Mesoamericano, puntos críticos y franjas riparias.' },
   };
-  const wiz = { paso: 0, tipo: 'preev', prod: 'jrc', a: 2020, b: 2025, area: 'territorio' };
-  const pasosWiz = () => (wiz.tipo === 'comparar' ? ['Tipo de análisis', 'Fuente y años', 'Territorio', 'Revisión'] : ['Tipo de análisis', 'Territorio', 'Revisión']);
+  const temaDe = (tipo, prod = st.modo?.prod) => (tipo === 'comparar' ? prod : tipo);
+  const wiz = { paso: 0, tipos: new Set(['preev']), prod: 'jrc', a: 2020, b: 2025, area: 'territorio' };
+  const pasosWiz = () => (wiz.tipos.has('comparar') ? ['Preguntas', 'Fuente y años', 'Territorio', 'Revisión'] : ['Preguntas', 'Territorio', 'Revisión']);
   function abrirAsistente(area) {
     wiz.paso = 0;
     wiz.area = area || (st.vistaPol && pg.geo ? 'poligono' : 'territorio');
@@ -508,17 +536,17 @@
     const pasos = pasosWiz(), paso = pasos[wiz.paso];
     $('#pe-stp').innerHTML = pasos.map((n, k) => `<li class="${k === wiz.paso ? 'cur' : k < wiz.paso ? 'ok' : ''}"><i>${k < wiz.paso ? '✓' : k + 1}</i>${n}</li>`).join('');
     let html = '';
-    if (paso === 'Tipo de análisis') {
-      html = `<h3>¿Qué quiere analizar?</h3><div class="wz-tipos">${Object.entries(TIPOS).map(([k, x]) => `<label class="opt wz-t"><input type="radio" name="wz-tipo" value="${k}" ${wiz.tipo === k ? 'checked' : ''}>${icon(x.i, 22)}<div><b>${x.t}</b><span>${x.d}</span></div></label>`).join('')}</div>`;
+    if (paso === 'Preguntas') {
+      html = `<h3>¿Qué quiere saber?</h3><p class="wz-ayuda">Puede marcar varias preguntas: verá una pestaña de resultados por cada una.</p><div class="wz-tipos">${Object.entries(TIPOS).map(([k, x]) => `<label class="opt wz-t"><input type="checkbox" name="wz-tipo" value="${k}" ${wiz.tipos.has(k) ? 'checked' : ''}>${icon(x.i, 22)}<div><b>${x.q}</b><span><em>${x.t}.</em> ${x.d}</span></div></label>`).join('')}</div>`;
     } else if (paso === 'Fuente y años') {
       const disp = ['jrc', 'esri', 'ndvi'].filter((k) => st.series?.productos?.[k]);
       if (!disp.includes(wiz.prod)) wiz.prod = disp[0] || 'jrc';
       const anios = prodInfo(wiz.prod)?.anios || [];
       if (!anios.includes(wiz.a)) wiz.a = PERIODO_COMPARAR[wiz.prod]?.[0] ?? anios[0];
       if (!anios.includes(wiz.b)) wiz.b = PERIODO_COMPARAR[wiz.prod]?.[1] ?? anios[anios.length - 1];
-      html = disp.length ? `<h3>Fuente y años</h3><div class="wz-tipos">${disp.map((k) => `<label class="opt"><input type="radio" name="wz-prod" value="${k}" ${wiz.prod === k ? 'checked' : ''}>${icon(TEMA[k].i, 20)}<div><b>${esc(prodInfo(k).nombre)}</b><span>${prodInfo(k).anios[0]}–${prodInfo(k).anios.slice(-1)[0]} · ${prodInfo(k).resolucion_m} m</span></div></label>`).join('')}</div>
+      html = disp.length ? `<h3>¿Qué fuente y qué años compara?</h3><div class="wz-tipos">${disp.map((k) => `<label class="opt"><input type="radio" name="wz-prod" value="${k}" ${wiz.prod === k ? 'checked' : ''}>${icon(TEMA[k].i, 20)}<div><b>${esc(prodInfo(k).nombre)}</b><span>${prodInfo(k).anios[0]}–${prodInfo(k).anios.slice(-1)[0]} · ${prodInfo(k).resolucion_m} m</span></div></label>`).join('')}</div>
         <div class="pc-sel wz-anios"><label>Desde<select id="wz-a">${anios.map((a) => `<option ${a === wiz.a ? 'selected' : ''}>${a}</option>`).join('')}</select></label><label>Hasta<select id="wz-b">${anios.map((a) => `<option ${a === wiz.b ? 'selected' : ''}>${a}</option>`).join('')}</select></label></div>`
-        : `<p class="pc-aviso">Las series por año aún no se han generado (flujo «Series anuales» de GitHub Actions). Elija otro tipo de análisis por ahora.</p>`;
+        : '<p class="pc-aviso">Las series por año aún no se han generado (flujo «Series anuales» de GitHub Actions). Vuelva atrás y desmarque «¿Cómo cambió entre dos años?» por ahora.</p>';
     } else if (paso === 'Territorio') {
       const poli = wiz.area === 'poligono';
       html = `<h3>¿Dónde?</h3>
@@ -526,13 +554,13 @@
         <label class="opt ${pg.geo ? '' : 'layer-disabled'}"><input type="radio" name="pe-area" value="poligono" ${poli ? 'checked' : ''} ${pg.geo ? '' : 'disabled'}>${icon('target', 20)}<div><b>Mi geometría</b><span>${pg.geo ? `Polígono de ${hectares(P.areaHa(pg.geo), 1)}. Estimación local en su navegador.` : 'Dibuje o suba un polígono en la pestaña «Mi geometría».'}</span></div></label>`;
     } else {
       const poli = wiz.area === 'poligono';
-      html = `<h3>Revisión</h3><dl class="rev"><dt>Análisis</dt><dd>${TIPOS[wiz.tipo].t}</dd>${wiz.tipo === 'comparar' ? `<dt>Fuente</dt><dd>${esc(prodInfo(wiz.prod)?.nombre || '')}</dd><dt>Años</dt><dd>${wiz.a} y ${wiz.b}</dd>` : ''}<dt>Territorio</dt><dd>${poli ? `Mi geometría (${hectares(P.areaHa(pg.geo), 1)})` : esc(t().nombre)}</dd><dt>Procesamiento</dt><dd>${poli ? 'Estimación local sobre los mapas precalculados' : `Precalculado con Earth Engine (${esc(String(st.data.generado || '').slice(0, 10))})`}</dd></dl>`;
+      html = `<h3>Revisión</h3><dl class="rev"><dt>Preguntas</dt><dd>${[...wiz.tipos].map((k) => TIPOS[k].q).join('<br>')}</dd>${wiz.tipos.has('comparar') ? `<dt>Comparación</dt><dd>${esc(prodInfo(wiz.prod)?.nombre || '')}, ${Math.min(wiz.a, wiz.b)} y ${Math.max(wiz.a, wiz.b)}</dd>` : ''}<dt>Territorio</dt><dd>${poli ? `Mi geometría (${hectares(P.areaHa(pg.geo), 1)})` : esc(t().nombre)}</dd><dt>Procesamiento</dt><dd>${poli ? 'Estimación local sobre los mapas precalculados' : `Precalculado con Earth Engine (${esc(String(st.data.generado || '').slice(0, 10))})`}</dd></dl>`;
     }
     $('#pe-wiz').innerHTML = html;
     $('#pe-back').hidden = wiz.paso === 0;
     $('#pe-next').textContent = wiz.paso === pasos.length - 1 ? 'Ver resultados' : 'Siguiente';
-    $('#pe-next').disabled = paso === 'Fuente y años' && !st.series?.productos;
-    $$('#pe-wiz [name=wz-tipo]').forEach((r) => r.addEventListener('change', () => { wiz.tipo = r.value; pintarAsistente(); }));
+    $('#pe-next').disabled = (paso === 'Preguntas' && !wiz.tipos.size) || (paso === 'Fuente y años' && !st.series?.productos);
+    $$('#pe-wiz [name=wz-tipo]').forEach((r) => r.addEventListener('change', () => { r.checked ? wiz.tipos.add(r.value) : wiz.tipos.delete(r.value); pintarAsistente(); }));
     $$('#pe-wiz [name=wz-prod]').forEach((r) => r.addEventListener('change', () => { wiz.prod = r.value; wiz.a = null; wiz.b = null; pintarAsistente(); }));
     $('#wz-a')?.addEventListener('change', (e) => { wiz.a = Number(e.target.value); });
     $('#wz-b')?.addEventListener('change', (e) => { wiz.b = Number(e.target.value); });
@@ -542,8 +570,8 @@
   async function ejecutarAsistente() {
     $('#pe-modal').hidden = true;
     const poli = wiz.area === 'poligono';
-    const tema = { preev: 'preev', frag: 'frag', corr: 'corr', comparar: wiz.prod }[wiz.tipo];
-    if (wiz.tipo === 'comparar') st.comparar[wiz.prod] = { a: Math.min(wiz.a, wiz.b), b: Math.max(wiz.a, wiz.b) };
+    const tipos = Object.keys(TIPOS).filter((k) => wiz.tipos.has(k));
+    if (wiz.tipos.has('comparar')) st.comparar[wiz.prod] = { a: Math.min(wiz.a, wiz.b), b: Math.max(wiz.a, wiz.b) };
     if (poli) {
       if (!pg.resultado) {
         try { await analizarPoligono(); } catch (err) { $('#pg-busy').hidden = true; mostrarError(`Error al analizar: ${err.message}`); return; }
@@ -554,24 +582,28 @@
       st.vistaPol = null;
       await seleccionar(st.id, false);
     }
-    st.tema = tema; st.modo = { tipo: wiz.tipo };
+    st.modo = { tipos, actual: tipos[0], prod: wiz.prod, cmp: st.comparar[wiz.prod] };
+    st.tema = temaDe(tipos[0]);
     renderTemas();
     await dibujar();
     await renderPanel();
     const nombre = poli ? `Mi geometría (${hectares(P.areaHa(pg.geo), 1)})` : t().nombre;
-    const entrada = { tipo: wiz.tipo, tema, poli, id: st.id, nombre, extra: wiz.tipo === 'comparar' ? `${prodInfo(wiz.prod)?.corto} ${st.comparar[wiz.prod].a}–${st.comparar[wiz.prod].b}` : '' };
-    st.analisis = [entrada, ...st.analisis.filter((e) => !(e.tipo === entrada.tipo && e.tema === entrada.tema && e.poli === entrada.poli && e.id === entrada.id))].slice(0, 8);
+    const entrada = { modo: { ...st.modo }, poli, id: st.id, nombre };
+    const clave = (e) => `${e.poli}|${e.id}|${e.modo.tipos.join()}|${e.modo.prod}`;
+    st.analisis = [entrada, ...st.analisis.filter((e) => clave(e) !== clave(entrada))].slice(0, 8);
     renderMisAnalisis();
   }
   function renderMisAnalisis() {
     const caja = $('#pe-mis');
     caja.hidden = !st.analisis.length;
-    caja.innerHTML = `<h3>Sus análisis</h3>${st.analisis.map((e, i) => `<div class="mis"><button type="button" data-mis="${i}"><b>${TIPOS[e.tipo].t}</b><span>${esc(e.nombre)}${e.extra ? ` · ${esc(e.extra)}` : ''}</span></button><button type="button" class="mis-x" data-mis-x="${i}" aria-label="Quitar">×</button></div>`).join('')}`;
+    caja.innerHTML = `<h3>Sus análisis</h3>${st.analisis.map((e, i) => `<div class="mis"><button type="button" data-mis="${i}"><b>${esc(e.nombre)}</b><span>${e.modo.tipos.map((k) => (k === 'comparar' ? `Comparar ${prodInfo(e.modo.prod)?.corto || ''} ${e.modo.cmp?.a}–${e.modo.cmp?.b}` : TIPOS[k].t)).join(' · ')}</span></button><button type="button" class="mis-x" data-mis-x="${i}" aria-label="Quitar">×</button></div>`).join('')}`;
     $$('#pe-mis [data-mis]').forEach((b) => b.addEventListener('click', async () => {
       const e = st.analisis[Number(b.dataset.mis)];
       if (e.poli && !pg.resultado) return;
       if (e.poli) st.vistaPol = pg.vista; else { st.vistaPol = null; await seleccionar(e.id, false); }
-      st.tema = e.tema; st.modo = { tipo: e.tipo };
+      st.modo = { ...e.modo, actual: e.modo.tipos[0] };
+      if (e.modo.cmp) st.comparar[e.modo.prod] = { ...e.modo.cmp };
+      st.tema = temaDe(st.modo.actual);
       renderTemas(); await dibujar(); renderPanel();
     }));
     $$('#pe-mis [data-mis-x]').forEach((b) => b.addEventListener('click', () => { st.analisis.splice(Number(b.dataset.misX), 1); renderMisAnalisis(); }));
@@ -884,7 +916,22 @@
   iniciarPoligono();
   // El panel de resultados se abre y se cierra con una transición: el mapa se reajusta solo.
   if (typeof ResizeObserver !== 'undefined') new ResizeObserver(() => st.map.invalidateSize()).observe($('#smap'));
+  // Recorrido guiado de la plataforma, con la misma pestaña «¿Primera vez aquí?» del inicio.
+  const PASOS_PE = [
+    { titulo: 'La Plataforma SIG', texto: '<p>Aquí se responde, con mapas y gráficas, <b>qué le está pasando al bosque</b> de la cuenca, de una subcuenca o de su propia finca.</p><p>Todo sale de datos satelitales precalculados: es una evaluación preliminar.</p>' },
+    { sel: '#pe-terr', titulo: '1. ¿Dónde?', texto: 'Elija toda la cuenca o una subcuenca. También puede hacer clic en una subcuenca del mapa.' },
+    { sel: '#pe-temas', titulo: '2. ¿Qué quiere saber?', texto: 'Cada tema responde una pregunta: si ha perdido bosque, cómo cambió desde 1990, qué reemplazó a los árboles, si la vegetación pierde vigor, qué tan fragmentado está… La «i» explica la fuente.' },
+    { sel: '#pe-legend', titulo: '3. La leyenda', texto: 'Muestra los colores del tema. Desmarque una clase para ocultarla; en «Capas auxiliares» puede añadir ríos, corredores o límites.' },
+    { sel: '#pe-anios', titulo: '4. La barra de años', texto: 'Mueva la barra o pulse reproducir para ver el mapa año por año. Las gráficas marcan el año elegido.' },
+    { sel: '#pe-res', titulo: '5. Las respuestas', texto: 'Arriba, la respuesta corta; debajo, las gráficas: superficie por clase, evolución, comparación de dos años y las subcuencas más afectadas. Cada gráfica tiene «Ver tabla».' },
+    { sel: '.side-tabs [data-s="poligono"]', titulo: '6. Su propia área', texto: 'En «Mi geometría» puede dibujar o subir el polígono de una finca y obtener las mismas gráficas dentro de él.' },
+    { sel: '#pe-run', titulo: '7. Realizar análisis', texto: 'Marque una o varias preguntas, elija el territorio y verá una pestaña de resultados por pregunta. Quedan guardadas en «Sus análisis».' },
+  ];
+  const recorridoPe = () => window.CHCP_TOUR?.iniciar(PASOS_PE, { clave: 'plataforma', textoFin: 'Entendido' });
+  $('#pe-ayuda')?.addEventListener('click', recorridoPe);
+  setTimeout(() => window.CHCP_TOUR?.invitar('plataforma', 'Le mostramos cómo usar la plataforma en 1 minuto.', recorridoPe), 1500);
   const params = new URLSearchParams(location.search);
+  if (params.has('geometria')) $('.side-tabs [data-s="poligono"]').click();
   if (params.get('tema') && TEMA[params.get('tema')]) st.tema = params.get('tema');
   renderTemas();
   await seleccionar(params.get('id') || location.hash.slice(1) || 'chcp');

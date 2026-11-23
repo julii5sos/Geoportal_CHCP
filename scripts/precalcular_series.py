@@ -38,7 +38,8 @@ from chcp.nucleo.series_anuales import (  # noqa: E402
 DESTINO = RAIZ / "data" / "series"
 MAX_PIXELES_CUENCA = 1400     # ~75 m en la cuenca completa
 MAX_PIXELES_SUBCUENCA = 700   # 10–30 m según el tamaño de la subcuenca
-MAX_BYTES_SOLICITUD = 30_000_000  # computePixels admite ~48 MB por respuesta
+MAX_BYTES_SOLICITUD = 16_000_000  # computePixels admite 48 MB por solicitud (cuenta más que los bytes útiles)
+AÑOS_POR_CONSULTA = 6  # superficies: pocas agregaciones simultáneas por consulta
 HILOS = 6
 BLOQUEO = threading.Lock()
 
@@ -112,9 +113,13 @@ def calcular_superficies(t: dict, producto: str, ee) -> dict:
             reducer=ee.Reducer.sum(), **opciones).get("area").getInfo()
         return {"perdida_por_anio": por_anio, "cobertura_arborea_2000_ha": round(float(base or 0), 4)}
     bandas = [nombre_banda(producto, a) for a in PRODUCTOS[producto]["anios"]]
-    resultado = ee.Dictionary.fromLists(bandas, ee.List(bandas).map(
-        lambda b: area.addBands(img.select([b])).reduceRegion(reducer=reductor, **opciones).get("groups")
-    )).getInfo()
+    resultado = {}
+    # Por tandas: 36 agregaciones a la vez (JRC) provocan «Too many concurrent aggregations».
+    for i in range(0, len(bandas), AÑOS_POR_CONSULTA):
+        tanda = bandas[i:i + AÑOS_POR_CONSULTA]
+        resultado.update(_con_reintentos(lambda t=tanda: ee.Dictionary.fromLists(t, ee.List(t).map(
+            lambda b: area.addBands(img.select([b])).reduceRegion(reducer=reductor, **opciones).get("groups")
+        )).getInfo()))
     salida = {"por_anio": {b.rsplit("_", 1)[1]: grupos_a_hectareas(resultado.get(b)) for b in bandas}}
     if producto == "ndvi":  # NDVI medio por año, como referencia continua
         from chcp.gee.analisis_complementario import _ndvi
@@ -144,7 +149,7 @@ def _descargar_bandas(img, bandas: list[str], geometria, grid: dict, ee):
             for b in grupo:
                 salida[b] = np.asarray(datos[b], dtype="uint8")
         except Exception as exc:  # noqa: BLE001
-            if not _reintentable(exc):
+            if not (_reintentable(exc) or "request size" in str(exc).lower()):
                 raise
             if len(grupo) > 1:
                 mitad = len(grupo) // 2
@@ -182,15 +187,17 @@ def calcular_mapas(t: dict, producto: str, ee) -> dict:
 
 
 # --------------------------------------------------------------------------- ejecución
-def _con_reintentos(funcion, *args, intentos: int = 3):
+def _con_reintentos(funcion, *args, intentos: int = 4):
     for i in range(intentos):
         try:
             return funcion(*args)
         except Exception as exc:  # noqa: BLE001
             if i == intentos - 1:
                 raise
-            print(f"    reintento {i + 1} tras error: {str(exc)[:160]}", flush=True)
-            time.sleep(10 * (i + 1))
+            # «Too many concurrent aggregations»: otros hilos ocupan la cuota; esperar más.
+            espera = (30 if "concurrent" in str(exc).lower() else 10) * (i + 1)
+            print(f"    reintento {i + 1} en {espera} s tras error: {str(exc)[:160]}", flush=True)
+            time.sleep(espera)
 
 
 def _mapas_completos(tid: str, producto: str) -> bool:
