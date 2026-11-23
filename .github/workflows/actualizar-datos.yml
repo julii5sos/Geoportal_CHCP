@@ -9,7 +9,8 @@ name: Actualizar datos con Earth Engine
 
 on:
   schedule:
-    - cron: "17 6 1 * *"   # día 1 de cada mes, 01:17 en Panamá
+    - cron: "17 6 1 * *"   # día 1 de cada mes, 01:17 en Panamá: recalcula todo con datos nuevos
+    - cron: "17 6 2 * *"   # día 2: continúa con lo que no alcanzó el límite de 6 h de GitHub
   workflow_dispatch:
     inputs:
       limite:
@@ -19,7 +20,9 @@ on:
       modo:
         description: "Qué recalcular"
         type: choice
-        options: [completo, solo-mapas, sin-mapas]
+        # completo: continúa donde quedó la ejecución anterior (los territorios de una versión de
+        # datos anterior se recalculan solos). rehacer-todo: empieza de cero los 54 territorios.
+        options: [completo, rehacer-todo, solo-mapas, sin-mapas]
         default: completo
 
 permissions:
@@ -60,16 +63,19 @@ jobs:
         env:
           GEE_SERVICE_ACCOUNT_JSON: ${{ secrets.GEE_SERVICE_ACCOUNT_JSON }}
           GEE_PROJECT_ID: geoportal-513817
+          PYTHONUNBUFFERED: "1"   # muestra el avance territorio por territorio mientras corre
         run: |
           OPCIONES=""
           if [ "${{ github.event.inputs.modo }}" = "solo-mapas" ]; then OPCIONES="--solo-mapas"; fi
           if [ "${{ github.event.inputs.modo }}" = "sin-mapas" ]; then OPCIONES="--sin-mapas"; fi
+          if [ "${{ github.event.inputs.modo }}" = "rehacer-todo" ]; then OPCIONES="--rehacer"; fi
+          if [ "${{ github.event_name }}" = "schedule" ] && [ "$(date -u +%d)" = "01" ]; then OPCIONES="--rehacer"; fi
+          # Sin --rehacer el cálculo es reanudable: si se agota el tiempo de GitHub (6 h), se guarda
+          # lo avanzado y la siguiente ejecución sigue con los territorios pendientes.
           if [ -n "${{ github.event.inputs.limite }}" ]; then
             python scripts/precalcular_panel.py $OPCIONES --limite "${{ github.event.inputs.limite }}"
-          elif [ "${{ github.event.inputs.modo }}" = "solo-mapas" ]; then
-            python scripts/precalcular_panel.py --solo-mapas
           else
-            python scripts/precalcular_panel.py --rehacer $OPCIONES
+            python scripts/precalcular_panel.py $OPCIONES
           fi
       - name: Guardar resultados en el repositorio
         if: always()   # el cálculo es reanudable: se guarda lo avanzado aunque falle o se agote el tiempo
