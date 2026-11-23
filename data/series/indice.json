@@ -1,0 +1,4583 @@
+{
+ "territorios": {
+  "chcp": {
+   "nombre": "Cuenca Hidrográfica del Canal de Panamá",
+   "mapas": {
+    "hansen": {
+     "limites": [
+      [
+       8.628069,
+       -80.147786
+      ],
+      [
+       9.526037,
+       -79.217149
+      ]
+     ],
+     "dimensiones": [
+      1400,
+      1368
+     ],
+     "tamano_pixel_m": 73.1
+    },
+    "esri": {
+     "limites": [
+      [
+       8.628069,
+       -80.147786
+      ],
+      [
+       9.526037,
+       -79.217149
+      ]
+     ],
+     "dimensiones": [
+      1400,
+      1368
+     ],
+     "tamano_pixel_m": 73.1
+    },
+    "ndvi": {
+     "limites": [
+      [
+       8.628069,
+       -80.147786
+      ],
+      [
+       9.526037,
+       -79.217149
+      ]
+     ],
+     "dimensiones": [
+      1400,
+      1368
+     ],
+     "tamano_pixel_m": 73.1
+    }
+   },
+   "superficies": [
+    "esri",
+    "hansen",
+    "ndvi"
+   ]
+  },
+  "s0": {
+   "nombre": "Lago Alajuela",
+   "mapas": {
+    "jrc": {
+     "limites": [
+      [
+       9.176549,
+       -79.628432
+      ],
+      [
+       9.395598,
+       -79.493355
+      ]
+     ],
+     "dimensiones": [
+      426,
+      700
+     ],
+     "tamano_pixel_m": 34.8
+    },
+    "hansen": {
+     "limites": [
+      [
+       9.176549,
+       -79.628432
+      ],
+      [
+       9.395598,
+       -79.493355
+      ]
+     ],
+     "dimensiones": [
+      426,
+      700
+     ],
+     "tamano_pixel_m": 34.8
+    },
+    "esri": {
+     "limites": [
+      [
+       9.176549,
+       -79.628432
+      ],
+      [
+       9.395598,
+       -79.493355
+      ]
+     ],
+     "dimensiones": [
+      426,
+      700
+     ],
+     "tamano_pixel_m": 34.8
+    },
+    "ndvi": {
+     "limites": [
+      [
+       9.176549,
+       -79.628432
+      ],
+      [
+       9.395598,
+       -79.493355
+      ]
+     ],
+     "dimensiones": [
+      426,
+      700
+     ],
+     "tamano_pixel_m": 34.8
+    }
+   },
+   "superficies": [
+    "esri",
+    "hansen",
+    "ndvi"
+   ]
+  },
+  "s1": {
+   "nombre": "Lago Gatún",
+   "mapas": {
+    "hansen": {
+     "limites": [
+      [
+       8.958479,
+       -80.106827
+      ],
+      [
+       9.360195,
+       -79.596373
+      ]
+     ],
+     "dimensiones": [
+      700,
+      558
+     ],
+     "tamano_pixel_m": 80.1
+    },
+    "jrc": {
+     "limites": [
+      [
+       8.958479,
+       -80.106827
+      ],
+      [
+       9.360195,
+       -79.596373
+      ]
+     ],
+     "dimensiones": [
+      700,
+      558
+     ],
+     "tamano_pixel_m": 80.1
+    },
+    "esri": {
+     "limites": [
+      [
+       8.958479,
+       -80.106827
+      ],
+      [
+       9.360195,
+       -79.596373
+      ]
+     ],
+     "dimensiones": [
+      700,
+      558
+     ],
+     "tamano_pixel_m": 80.1
+    },
+    "ndvi": {
+     "limites": [
+      [
+       8.958479,
+       -80.106827
+      ],
+      [
+       9.360195,
+       -79.596373
+      ]
+     ],
+     "dimensiones": [
+      700,
+      558
+     ],
+     "tamano_pixel_m": 80.1
+    }
+   },
+   "superficies": [
+    "esri",
+    "hansen",
+    "ndvi"
+   ]
+  },
+  "s2": {
+   "nombre": "Lago Miraflores",
+   "mapas": {
+    "jrc": {
+     "limites": [
+      [
+       8.938581,
+       -79.669581
+      ],
+      [
+       9.117636,
+       -79.55821
+      ]
+     ],
+     "dimensiones": [
+      430,
+      700
+     ],
+     "tamano_pixel_m": 28.5
+    },
+    "hansen": {
+     "limites": [
+      [
+       8.938581,
+       -79.669581
+      ],
+      [
+       9.117636,
+       -79.55821
+      ]
+     ],
+     "dimensiones": [
+      430,
+      700
+     ],
+     "tamano_pixel_m": 28.5
+    },
+    "esri": {
+     "limites": [
+      [
+       8.938581,
+       -79.669581
+      ],
+      [
+       9.117636,
+       -79.55821
+      ]
+     ],
+     "dimensiones": [
+      430,
+      700
+     ],
+     "tamano_pixel_m": 28.5
+    },
+    "ndvi": {
+     "limites": [
+      [
+       8.938581,
+       -79.669581
+      ],
+      [
+       9.117636,
+       -79.55821
+      ]
+     ],
+     "dimensiones": [
+      430,
+      700
+     ],
+     "tamano_pixel_m": 28.5
+    }
+   },
+   "superficies": [
+    "esri",
+    "hansen",
+    "ndvi"
+   ]
+  },
+  "s3": {
+   "nombre": "Qda. Ancha",
+   "mapas": {
+    "jrc": {
+     "limites": [
+      [
+       9.2935,
+       -79.57138
+      ],
+      [
+       9.331768,
+       -79.512301
+      ]
+     ],
+     "dimensiones": [
+      649,
+      426
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "hansen": {
+     "limites": [
+      [
+       9.2935,
+       -79.57138
+      ],
+      [
+       9.331768,
+       -79.512301
+      ]
+     ],
+     "dimensiones": [
+      649,
+      426
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "esri": {
+     "limites": [
+      [
+       9.2935,
+       -79.57138
+      ],
+      [
+       9.331768,
+       -79.512301
+      ]
+     ],
+     "dimensiones": [
+      649,
+      426
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "ndvi": {
+     "limites": [
+      [
+       9.2935,
+       -79.57138
+      ],
+      [
+       9.331768,
+       -79.512301
+      ]
+     ],
+     "dimensiones": [
+      649,
+      426
+     ],
+     "tamano_pixel_m": 10.0
+    }
+   },
+   "superficies": [
+    "esri",
+    "hansen",
+    "jrc",
+    "ndvi"
+   ]
+  },
+  "s4": {
+   "nombre": "Qda. Bonita",
+   "mapas": {
+    "jrc": {
+     "limites": [
+      [
+       9.328736,
+       -79.616071
+      ],
+      [
+       9.372394,
+       -79.591763
+      ]
+     ],
+     "dimensiones": [
+      267,
+      486
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "hansen": {
+     "limites": [
+      [
+       9.328736,
+       -79.616071
+      ],
+      [
+       9.372394,
+       -79.591763
+      ]
+     ],
+     "dimensiones": [
+      267,
+      486
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "esri": {
+     "limites": [
+      [
+       9.328736,
+       -79.616071
+      ],
+      [
+       9.372394,
+       -79.591763
+      ]
+     ],
+     "dimensiones": [
+      267,
+      486
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "ndvi": {
+     "limites": [
+      [
+       9.328736,
+       -79.616071
+      ],
+      [
+       9.372394,
+       -79.591763
+      ]
+     ],
+     "dimensiones": [
+      267,
+      486
+     ],
+     "tamano_pixel_m": 10.0
+    }
+   },
+   "superficies": [
+    "esri",
+    "hansen",
+    "jrc",
+    "ndvi"
+   ]
+  },
+  "s5": {
+   "nombre": "Qda. Honda",
+   "mapas": {
+    "jrc": {
+     "limites": [
+      [
+       9.149252,
+       -79.678053
+      ],
+      [
+       9.218767,
+       -79.64727
+      ]
+     ],
+     "dimensiones": [
+      306,
+      700
+     ],
+     "tamano_pixel_m": 11.1
+    },
+    "hansen": {
+     "limites": [
+      [
+       9.149252,
+       -79.678053
+      ],
+      [
+       9.218767,
+       -79.64727
+      ]
+     ],
+     "dimensiones": [
+      306,
+      700
+     ],
+     "tamano_pixel_m": 11.1
+    },
+    "esri": {
+     "limites": [
+      [
+       9.149252,
+       -79.678053
+      ],
+      [
+       9.218767,
+       -79.64727
+      ]
+     ],
+     "dimensiones": [
+      306,
+      700
+     ],
+     "tamano_pixel_m": 11.1
+    },
+    "ndvi": {
+     "limites": [
+      [
+       9.149252,
+       -79.678053
+      ],
+      [
+       9.218767,
+       -79.64727
+      ]
+     ],
+     "dimensiones": [
+      306,
+      700
+     ],
+     "tamano_pixel_m": 11.1
+    }
+   },
+   "superficies": [
+    "esri",
+    "hansen",
+    "jrc",
+    "ndvi"
+   ]
+  },
+  "s6": {
+   "nombre": "Qda. La Leona",
+   "mapas": {
+    "jrc": {
+     "limites": [
+      [
+       8.960068,
+       -79.954197
+      ],
+      [
+       9.030452,
+       -79.927423
+      ]
+     ],
+     "dimensiones": [
+      263,
+      700
+     ],
+     "tamano_pixel_m": 11.2
+    },
+    "hansen": {
+     "limites": [
+      [
+       8.960068,
+       -79.954197
+      ],
+      [
+       9.030452,
+       -79.927423
+      ]
+     ],
+     "dimensiones": [
+      263,
+      700
+     ],
+     "tamano_pixel_m": 11.2
+    },
+    "esri": {
+     "limites": [
+      [
+       8.960068,
+       -79.954197
+      ],
+      [
+       9.030452,
+       -79.927423
+      ]
+     ],
+     "dimensiones": [
+      263,
+      700
+     ],
+     "tamano_pixel_m": 11.2
+    },
+    "ndvi": {
+     "limites": [
+      [
+       8.960068,
+       -79.954197
+      ],
+      [
+       9.030452,
+       -79.927423
+      ]
+     ],
+     "dimensiones": [
+      263,
+      700
+     ],
+     "tamano_pixel_m": 11.2
+    }
+   },
+   "superficies": [
+    "esri",
+    "hansen",
+    "jrc",
+    "ndvi"
+   ]
+  },
+  "s7": {
+   "nombre": "Qda. La Tranquilla",
+   "mapas": {
+    "hansen": {
+     "limites": [
+      [
+       9.245122,
+       -79.557424
+      ],
+      [
+       9.28366,
+       -79.527479
+      ]
+     ],
+     "dimensiones": [
+      329,
+      429
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "jrc": {
+     "limites": [
+      [
+       9.245122,
+       -79.557424
+      ],
+      [
+       9.28366,
+       -79.527479
+      ]
+     ],
+     "dimensiones": [
+      329,
+      429
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "esri": {
+     "limites": [
+      [
+       9.245122,
+       -79.557424
+      ],
+      [
+       9.28366,
+       -79.527479
+      ]
+     ],
+     "dimensiones": [
+      329,
+      429
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "ndvi": {
+     "limites": [
+      [
+       9.245122,
+       -79.557424
+      ],
+      [
+       9.28366,
+       -79.527479
+      ]
+     ],
+     "dimensiones": [
+      329,
+      429
+     ],
+     "tamano_pixel_m": 10.0
+    }
+   },
+   "superficies": [
+    "esri",
+    "hansen",
+    "jrc",
+    "ndvi"
+   ]
+  },
+  "s8": {
+   "nombre": "Quebrada Aguas Claras",
+   "mapas": {
+    "hansen": {
+     "limites": [
+      [
+       9.146981,
+       -79.713655
+      ],
+      [
+       9.217259,
+       -79.670025
+      ]
+     ],
+     "dimensiones": [
+      429,
+      700
+     ],
+     "tamano_pixel_m": 11.2
+    },
+    "esri": {
+     "limites": [
+      [
+       9.146981,
+       -79.713655
+      ],
+      [
+       9.217259,
+       -79.670025
+      ]
+     ],
+     "dimensiones": [
+      429,
+      700
+     ],
+     "tamano_pixel_m": 11.2
+    },
+    "jrc": {
+     "limites": [
+      [
+       9.146981,
+       -79.713655
+      ],
+      [
+       9.217259,
+       -79.670025
+      ]
+     ],
+     "dimensiones": [
+      429,
+      700
+     ],
+     "tamano_pixel_m": 11.2
+    },
+    "ndvi": {
+     "limites": [
+      [
+       9.146981,
+       -79.713655
+      ],
+      [
+       9.217259,
+       -79.670025
+      ]
+     ],
+     "dimensiones": [
+      429,
+      700
+     ],
+     "tamano_pixel_m": 11.2
+    }
+   },
+   "superficies": [
+    "esri",
+    "hansen",
+    "jrc",
+    "ndvi"
+   ]
+  },
+  "s9": {
+   "nombre": "Quebrada Grande",
+   "mapas": {
+    "jrc": {
+     "limites": [
+      [
+       8.903511,
+       -79.992882
+      ],
+      [
+       8.996759,
+       -79.942716
+      ]
+     ],
+     "dimensiones": [
+      372,
+      700
+     ],
+     "tamano_pixel_m": 14.8
+    },
+    "hansen": {
+     "limites": [
+      [
+       8.903511,
+       -79.992882
+      ],
+      [
+       8.996759,
+       -79.942716
+      ]
+     ],
+     "dimensiones": [
+      372,
+      700
+     ],
+     "tamano_pixel_m": 14.8
+    },
+    "esri": {
+     "limites": [
+      [
+       8.903511,
+       -79.992882
+      ],
+      [
+       8.996759,
+       -79.942716
+      ]
+     ],
+     "dimensiones": [
+      372,
+      700
+     ],
+     "tamano_pixel_m": 14.8
+    },
+    "ndvi": {
+     "limites": [
+      [
+       8.903511,
+       -79.992882
+      ],
+      [
+       8.996759,
+       -79.942716
+      ]
+     ],
+     "dimensiones": [
+      372,
+      700
+     ],
+     "tamano_pixel_m": 14.8
+    }
+   },
+   "superficies": [
+    "esri",
+    "hansen",
+    "ndvi"
+   ]
+  },
+  "s10": {
+   "nombre": "Quebrada del Medio",
+   "mapas": {
+    "jrc": {
+     "limites": [
+      [
+       9.210514,
+       -79.788418
+      ],
+      [
+       9.278428,
+       -79.705802
+      ]
+     ],
+     "dimensiones": [
+      700,
+      583
+     ],
+     "tamano_pixel_m": 13.0
+    },
+    "hansen": {
+     "limites": [
+      [
+       9.210514,
+       -79.788418
+      ],
+      [
+       9.278428,
+       -79.705802
+      ]
+     ],
+     "dimensiones": [
+      700,
+      583
+     ],
+     "tamano_pixel_m": 13.0
+    },
+    "esri": {
+     "limites": [
+      [
+       9.210514,
+       -79.788418
+      ],
+      [
+       9.278428,
+       -79.705802
+      ]
+     ],
+     "dimensiones": [
+      700,
+      583
+     ],
+     "tamano_pixel_m": 13.0
+    },
+    "ndvi": {
+     "limites": [
+      [
+       9.210514,
+       -79.788418
+      ],
+      [
+       9.278428,
+       -79.705802
+      ]
+     ],
+     "dimensiones": [
+      700,
+      583
+     ],
+     "tamano_pixel_m": 13.0
+    }
+   },
+   "superficies": [
+    "esri",
+    "hansen",
+    "ndvi"
+   ]
+  },
+  "s11": {
+   "nombre": "Río Agua Salud",
+   "mapas": {
+    "jrc": {
+     "limites": [
+      [
+       9.181577,
+       -79.805208
+      ],
+      [
+       9.233842,
+       -79.734612
+      ]
+     ],
+     "dimensiones": [
+      700,
+      525
+     ],
+     "tamano_pixel_m": 11.1
+    },
+    "hansen": {
+     "limites": [
+      [
+       9.181577,
+       -79.805208
+      ],
+      [
+       9.233842,
+       -79.734612
+      ]
+     ],
+     "dimensiones": [
+      700,
+      525
+     ],
+     "tamano_pixel_m": 11.1
+    },
+    "esri": {
+     "limites": [
+      [
+       9.181577,
+       -79.805208
+      ],
+      [
+       9.233842,
+       -79.734612
+      ]
+     ],
+     "dimensiones": [
+      700,
+      525
+     ],
+     "tamano_pixel_m": 11.1
+    },
+    "ndvi": {
+     "limites": [
+      [
+       9.181577,
+       -79.805208
+      ],
+      [
+       9.233842,
+       -79.734612
+      ]
+     ],
+     "dimensiones": [
+      700,
+      525
+     ],
+     "tamano_pixel_m": 11.1
+    }
+   },
+   "superficies": [
+    "esri",
+    "hansen",
+    "jrc",
+    "ndvi"
+   ]
+  },
+  "s12": {
+   "nombre": "Río Aguas Claras",
+   "mapas": {
+    "jrc": {
+     "limites": [
+      [
+       9.287492,
+       -79.794649
+      ],
+      [
+       9.368342,
+       -79.69644
+      ]
+     ],
+     "dimensiones": [
+      700,
+      584
+     ],
+     "tamano_pixel_m": 15.4
+    },
+    "hansen": {
+     "limites": [
+      [
+       9.287492,
+       -79.794649
+      ],
+      [
+       9.368342,
+       -79.69644
+      ]
+     ],
+     "dimensiones": [
+      700,
+      584
+     ],
+     "tamano_pixel_m": 15.4
+    },
+    "esri": {
+     "limites": [
+      [
+       9.287492,
+       -79.794649
+      ],
+      [
+       9.368342,
+       -79.69644
+      ]
+     ],
+     "dimensiones": [
+      700,
+      584
+     ],
+     "tamano_pixel_m": 15.4
+    },
+    "ndvi": {
+     "limites": [
+      [
+       9.287492,
+       -79.794649
+      ],
+      [
+       9.368342,
+       -79.69644
+      ]
+     ],
+     "dimensiones": [
+      700,
+      584
+     ],
+     "tamano_pixel_m": 15.4
+    }
+   },
+   "superficies": [
+    "esri",
+    "hansen",
+    "ndvi"
+   ]
+  },
+  "s13": {
+   "nombre": "Río Aguas Sucias",
+   "mapas": {
+    "jrc": {
+     "limites": [
+      [
+       9.211283,
+       -79.767298
+      ],
+      [
+       9.316207,
+       -79.656062
+      ]
+     ],
+     "dimensiones": [
+      700,
+      669
+     ],
+     "tamano_pixel_m": 17.5
+    },
+    "hansen": {
+     "limites": [
+      [
+       9.211283,
+       -79.767298
+      ],
+      [
+       9.316207,
+       -79.656062
+      ]
+     ],
+     "dimensiones": [
+      700,
+      669
+     ],
+     "tamano_pixel_m": 17.5
+    },
+    "esri": {
+     "limites": [
+      [
+       9.211283,
+       -79.767298
+      ],
+      [
+       9.316207,
+       -79.656062
+      ]
+     ],
+     "dimensiones": [
+      700,
+      669
+     ],
+     "tamano_pixel_m": 17.5
+    },
+    "ndvi": {
+     "limites": [
+      [
+       9.211283,
+       -79.767298
+      ],
+      [
+       9.316207,
+       -79.656062
+      ]
+     ],
+     "dimensiones": [
+      700,
+      669
+     ],
+     "tamano_pixel_m": 17.5
+    }
+   },
+   "superficies": [
+    "esri",
+    "hansen",
+    "ndvi"
+   ]
+  },
+  "s14": {
+   "nombre": "Río Baila Monos",
+   "mapas": {
+    "jrc": {
+     "limites": [
+      [
+       9.018363,
+       -79.766947
+      ],
+      [
+       9.103757,
+       -79.708022
+      ]
+     ],
+     "dimensiones": [
+      477,
+      700
+     ],
+     "tamano_pixel_m": 13.6
+    },
+    "hansen": {
+     "limites": [
+      [
+       9.018363,
+       -79.766947
+      ],
+      [
+       9.103757,
+       -79.708022
+      ]
+     ],
+     "dimensiones": [
+      477,
+      700
+     ],
+     "tamano_pixel_m": 13.6
+    },
+    "esri": {
+     "limites": [
+      [
+       9.018363,
+       -79.766947
+      ],
+      [
+       9.103757,
+       -79.708022
+      ]
+     ],
+     "dimensiones": [
+      477,
+      700
+     ],
+     "tamano_pixel_m": 13.6
+    },
+    "ndvi": {
+     "limites": [
+      [
+       9.018363,
+       -79.766947
+      ],
+      [
+       9.103757,
+       -79.708022
+      ]
+     ],
+     "dimensiones": [
+      477,
+      700
+     ],
+     "tamano_pixel_m": 13.6
+    }
+   },
+   "superficies": [
+    "esri",
+    "hansen",
+    "ndvi"
+   ]
+  },
+  "s15": {
+   "nombre": "Río Benitez",
+   "mapas": {
+    "jrc": {
+     "limites": [
+      [
+       9.257,
+       -79.57091
+      ],
+      [
+       9.296795,
+       -79.53532
+      ]
+     ],
+     "dimensiones": [
+      391,
+      443
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "hansen": {
+     "limites": [
+      [
+       9.257,
+       -79.57091
+      ],
+      [
+       9.296795,
+       -79.53532
+      ]
+     ],
+     "dimensiones": [
+      391,
+      443
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "esri": {
+     "limites": [
+      [
+       9.257,
+       -79.57091
+      ],
+      [
+       9.296795,
+       -79.53532
+      ]
+     ],
+     "dimensiones": [
+      391,
+      443
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "ndvi": {
+     "limites": [
+      [
+       9.257,
+       -79.57091
+      ],
+      [
+       9.296795,
+       -79.53532
+      ]
+     ],
+     "dimensiones": [
+      391,
+      443
+     ],
+     "tamano_pixel_m": 10.0
+    }
+   },
+   "superficies": [
+    "esri",
+    "hansen",
+    "jrc",
+    "ndvi"
+   ]
+  },
+  "s16": {
+   "nombre": "Río Boquerón",
+   "mapas": {
+    "jrc": {
+     "limites": [
+      [
+       9.34229,
+       -79.592082
+      ],
+      [
+       9.504778,
+       -79.467372
+      ]
+     ],
+     "dimensiones": [
+      530,
+      700
+     ],
+     "tamano_pixel_m": 25.8
+    },
+    "hansen": {
+     "limites": [
+      [
+       9.34229,
+       -79.592082
+      ],
+      [
+       9.504778,
+       -79.467372
+      ]
+     ],
+     "dimensiones": [
+      530,
+      700
+     ],
+     "tamano_pixel_m": 25.8
+    },
+    "esri": {
+     "limites": [
+      [
+       9.34229,
+       -79.592082
+      ],
+      [
+       9.504778,
+       -79.467372
+      ]
+     ],
+     "dimensiones": [
+      530,
+      700
+     ],
+     "tamano_pixel_m": 25.8
+    },
+    "ndvi": {
+     "limites": [
+      [
+       9.34229,
+       -79.592082
+      ],
+      [
+       9.504778,
+       -79.467372
+      ]
+     ],
+     "dimensiones": [
+      530,
+      700
+     ],
+     "tamano_pixel_m": 25.8
+    }
+   },
+   "superficies": [
+    "esri",
+    "hansen",
+    "ndvi"
+   ]
+  },
+  "s17": {
+   "nombre": "Río Caraña",
+   "mapas": {
+    "jrc": {
+     "limites": [
+      [
+       9.068996,
+       -79.746698
+      ],
+      [
+       9.121188,
+       -79.690203
+      ]
+     ],
+     "dimensiones": [
+      621,
+      581
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "hansen": {
+     "limites": [
+      [
+       9.068996,
+       -79.746698
+      ],
+      [
+       9.121188,
+       -79.690203
+      ]
+     ],
+     "dimensiones": [
+      621,
+      581
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "esri": {
+     "limites": [
+      [
+       9.068996,
+       -79.746698
+      ],
+      [
+       9.121188,
+       -79.690203
+      ]
+     ],
+     "dimensiones": [
+      621,
+      581
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "ndvi": {
+     "limites": [
+      [
+       9.068996,
+       -79.746698
+      ],
+      [
+       9.121188,
+       -79.690203
+      ]
+     ],
+     "dimensiones": [
+      621,
+      581
+     ],
+     "tamano_pixel_m": 10.0
+    }
+   },
+   "superficies": [
+    "esri",
+    "hansen",
+    "jrc",
+    "ndvi"
+   ]
+  },
+  "s18": {
+   "nombre": "Río Casaya",
+   "mapas": {
+    "jrc": {
+     "limites": [
+      [
+       9.091892,
+       -79.686802
+      ],
+      [
+       9.132945,
+       -79.639675
+      ]
+     ],
+     "dimensiones": [
+      518,
+      457
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "hansen": {
+     "limites": [
+      [
+       9.091892,
+       -79.686802
+      ],
+      [
+       9.132945,
+       -79.639675
+      ]
+     ],
+     "dimensiones": [
+      518,
+      457
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "esri": {
+     "limites": [
+      [
+       9.091892,
+       -79.686802
+      ],
+      [
+       9.132945,
+       -79.639675
+      ]
+     ],
+     "dimensiones": [
+      518,
+      457
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "ndvi": {
+     "limites": [
+      [
+       9.091892,
+       -79.686802
+      ],
+      [
+       9.132945,
+       -79.639675
+      ]
+     ],
+     "dimensiones": [
+      518,
+      457
+     ],
+     "tamano_pixel_m": 10.0
+    }
+   },
+   "superficies": [
+    "esri",
+    "hansen",
+    "jrc",
+    "ndvi"
+   ]
+  },
+  "s19": {
+   "nombre": "Río Cañito",
+   "mapas": {
+    "jrc": {
+     "limites": [
+      [
+       9.020429,
+       -79.82263
+      ],
+      [
+       9.065524,
+       -79.779514
+      ]
+     ],
+     "dimensiones": [
+      474,
+      502
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "hansen": {
+     "limites": [
+      [
+       9.020429,
+       -79.82263
+      ],
+      [
+       9.065524,
+       -79.779514
+      ]
+     ],
+     "dimensiones": [
+      474,
+      502
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "esri": {
+     "limites": [
+      [
+       9.020429,
+       -79.82263
+      ],
+      [
+       9.065524,
+       -79.779514
+      ]
+     ],
+     "dimensiones": [
+      474,
+      502
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "ndvi": {
+     "limites": [
+      [
+       9.020429,
+       -79.82263
+      ],
+      [
+       9.065524,
+       -79.779514
+      ]
+     ],
+     "dimensiones": [
+      474,
+      502
+     ],
+     "tamano_pixel_m": 10.0
+    }
+   },
+   "superficies": [
+    "esri",
+    "hansen",
+    "jrc",
+    "ndvi"
+   ]
+  },
+  "s20": {
+   "nombre": "Río Caño Quebrado",
+   "mapas": {
+    "jrc": {
+     "limites": [
+      [
+       8.925864,
+       -79.926255
+      ],
+      [
+       9.0403,
+       -79.797115
+      ]
+     ],
+     "dimensiones": [
+      700,
+      628
+     ],
+     "tamano_pixel_m": 20.3
+    },
+    "hansen": {
+     "limites": [
+      [
+       8.925864,
+       -79.926255
+      ],
+      [
+       9.0403,
+       -79.797115
+      ]
+     ],
+     "dimensiones": [
+      700,
+      628
+     ],
+     "tamano_pixel_m": 20.3
+    },
+    "esri": {
+     "limites": [
+      [
+       8.925864,
+       -79.926255
+      ],
+      [
+       9.0403,
+       -79.797115
+      ]
+     ],
+     "dimensiones": [
+      700,
+      628
+     ],
+     "tamano_pixel_m": 20.3
+    },
+    "ndvi": {
+     "limites": [
+      [
+       8.925864,
+       -79.926255
+      ],
+      [
+       9.0403,
+       -79.797115
+      ]
+     ],
+     "dimensiones": [
+      700,
+      628
+     ],
+     "tamano_pixel_m": 20.3
+    }
+   },
+   "superficies": [
+    "esri",
+    "hansen",
+    "ndvi"
+   ]
+  },
+  "s21": {
+   "nombre": "Río Chagres",
+   "mapas": {
+    "jrc": {
+     "limites": [
+      [
+       9.213676,
+       -79.556332
+      ],
+      [
+       9.456028,
+       -79.234378
+      ]
+     ],
+     "dimensiones": [
+      700,
+      534
+     ],
+     "tamano_pixel_m": 50.5
+    },
+    "hansen": {
+     "limites": [
+      [
+       9.213676,
+       -79.556332
+      ],
+      [
+       9.456028,
+       -79.234378
+      ]
+     ],
+     "dimensiones": [
+      700,
+      534
+     ],
+     "tamano_pixel_m": 50.5
+    },
+    "esri": {
+     "limites": [
+      [
+       9.213676,
+       -79.556332
+      ],
+      [
+       9.456028,
+       -79.234378
+      ]
+     ],
+     "dimensiones": [
+      700,
+      534
+     ],
+     "tamano_pixel_m": 50.5
+    },
+    "ndvi": {
+     "limites": [
+      [
+       9.213676,
+       -79.556332
+      ],
+      [
+       9.456028,
+       -79.234378
+      ]
+     ],
+     "dimensiones": [
+      700,
+      534
+     ],
+     "tamano_pixel_m": 50.5
+    }
+   },
+   "superficies": [
+    "esri",
+    "hansen",
+    "ndvi"
+   ]
+  },
+  "s22": {
+   "nombre": "Río Chico",
+   "mapas": {
+    "jrc": {
+     "limites": [
+      [
+       9.26452,
+       -79.521191
+      ],
+      [
+       9.400529,
+       -79.424314
+      ]
+     ],
+     "dimensiones": [
+      492,
+      700
+     ],
+     "tamano_pixel_m": 21.6
+    },
+    "hansen": {
+     "limites": [
+      [
+       9.26452,
+       -79.521191
+      ],
+      [
+       9.400529,
+       -79.424314
+      ]
+     ],
+     "dimensiones": [
+      492,
+      700
+     ],
+     "tamano_pixel_m": 21.6
+    },
+    "esri": {
+     "limites": [
+      [
+       9.26452,
+       -79.521191
+      ],
+      [
+       9.400529,
+       -79.424314
+      ]
+     ],
+     "dimensiones": [
+      492,
+      700
+     ],
+     "tamano_pixel_m": 21.6
+    },
+    "ndvi": {
+     "limites": [
+      [
+       9.26452,
+       -79.521191
+      ],
+      [
+       9.400529,
+       -79.424314
+      ]
+     ],
+     "dimensiones": [
+      492,
+      700
+     ],
+     "tamano_pixel_m": 21.6
+    }
+   },
+   "superficies": [
+    "esri",
+    "hansen",
+    "ndvi"
+   ]
+  },
+  "s23": {
+   "nombre": "Río Chilibre",
+   "mapas": {
+    "jrc": {
+     "limites": [
+      [
+       9.074037,
+       -79.659232
+      ],
+      [
+       9.184362,
+       -79.547652
+      ]
+     ],
+     "dimensiones": [
+      699,
+      700
+     ],
+     "tamano_pixel_m": 17.5
+    },
+    "hansen": {
+     "limites": [
+      [
+       9.074037,
+       -79.659232
+      ],
+      [
+       9.184362,
+       -79.547652
+      ]
+     ],
+     "dimensiones": [
+      699,
+      700
+     ],
+     "tamano_pixel_m": 17.5
+    },
+    "esri": {
+     "limites": [
+      [
+       9.074037,
+       -79.659232
+      ],
+      [
+       9.184362,
+       -79.547652
+      ]
+     ],
+     "dimensiones": [
+      699,
+      700
+     ],
+     "tamano_pixel_m": 17.5
+    },
+    "ndvi": {
+     "limites": [
+      [
+       9.074037,
+       -79.659232
+      ],
+      [
+       9.184362,
+       -79.547652
+      ]
+     ],
+     "dimensiones": [
+      699,
+      700
+     ],
+     "tamano_pixel_m": 17.5
+    }
+   },
+   "superficies": [
+    "esri",
+    "hansen",
+    "ndvi"
+   ]
+  },
+  "s24": {
+   "nombre": "Río Chilibrillo",
+   "mapas": {
+    "jrc": {
+     "limites": [
+      [
+       9.100102,
+       -79.636631
+      ],
+      [
+       9.20984,
+       -79.496689
+      ]
+     ],
+     "dimensiones": [
+      700,
+      556
+     ],
+     "tamano_pixel_m": 22.0
+    },
+    "hansen": {
+     "limites": [
+      [
+       9.100102,
+       -79.636631
+      ],
+      [
+       9.20984,
+       -79.496689
+      ]
+     ],
+     "dimensiones": [
+      700,
+      556
+     ],
+     "tamano_pixel_m": 22.0
+    },
+    "esri": {
+     "limites": [
+      [
+       9.100102,
+       -79.636631
+      ],
+      [
+       9.20984,
+       -79.496689
+      ]
+     ],
+     "dimensiones": [
+      700,
+      556
+     ],
+     "tamano_pixel_m": 22.0
+    },
+    "ndvi": {
+     "limites": [
+      [
+       9.100102,
+       -79.636631
+      ],
+      [
+       9.20984,
+       -79.496689
+      ]
+     ],
+     "dimensiones": [
+      700,
+      556
+     ],
+     "tamano_pixel_m": 22.0
+    }
+   },
+   "superficies": [
+    "esri",
+    "hansen",
+    "ndvi"
+   ]
+  },
+  "s25": {
+   "nombre": "Río Ciricito",
+   "mapas": {
+    "jrc": {
+     "limites": [
+      [
+       8.917464,
+       -80.124572
+      ],
+      [
+       9.022235,
+       -80.054264
+      ]
+     ],
+     "dimensiones": [
+      464,
+      700
+     ],
+     "tamano_pixel_m": 16.7
+    },
+    "hansen": {
+     "limites": [
+      [
+       8.917464,
+       -80.124572
+      ],
+      [
+       9.022235,
+       -80.054264
+      ]
+     ],
+     "dimensiones": [
+      464,
+      700
+     ],
+     "tamano_pixel_m": 16.7
+    },
+    "esri": {
+     "limites": [
+      [
+       8.917464,
+       -80.124572
+      ],
+      [
+       9.022235,
+       -80.054264
+      ]
+     ],
+     "dimensiones": [
+      464,
+      700
+     ],
+     "tamano_pixel_m": 16.7
+    },
+    "ndvi": {
+     "limites": [
+      [
+       8.917464,
+       -80.124572
+      ],
+      [
+       9.022235,
+       -80.054264
+      ]
+     ],
+     "dimensiones": [
+      464,
+      700
+     ],
+     "tamano_pixel_m": 16.7
+    }
+   },
+   "superficies": [
+    "esri",
+    "hansen",
+    "ndvi"
+   ]
+  },
+  "s26": {
+   "nombre": "Río Cirí Grande",
+   "mapas": {
+    "jrc": {
+     "limites": [
+      [
+       8.644042,
+       -80.120585
+      ],
+      [
+       9.002449,
+       -80.000376
+      ]
+     ],
+     "dimensiones": [
+      232,
+      700
+     ],
+     "tamano_pixel_m": 57.0
+    },
+    "hansen": {
+     "limites": [
+      [
+       8.644042,
+       -80.120585
+      ],
+      [
+       9.002449,
+       -80.000376
+      ]
+     ],
+     "dimensiones": [
+      232,
+      700
+     ],
+     "tamano_pixel_m": 57.0
+    },
+    "esri": {
+     "limites": [
+      [
+       8.644042,
+       -80.120585
+      ],
+      [
+       9.002449,
+       -80.000376
+      ]
+     ],
+     "dimensiones": [
+      232,
+      700
+     ],
+     "tamano_pixel_m": 57.0
+    },
+    "ndvi": {
+     "limites": [
+      [
+       8.644042,
+       -80.120585
+      ],
+      [
+       9.002449,
+       -80.000376
+      ]
+     ],
+     "dimensiones": [
+      232,
+      700
+     ],
+     "tamano_pixel_m": 57.0
+    }
+   },
+   "superficies": [
+    "esri",
+    "hansen",
+    "ndvi"
+   ]
+  },
+  "s27": {
+   "nombre": "Río Culo Seco",
+   "mapas": {
+    "jrc": {
+     "limites": [
+      [
+       9.082092,
+       -79.749384
+      ],
+      [
+       9.114342,
+       -79.724001
+      ]
+     ],
+     "dimensiones": [
+      279,
+      359
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "hansen": {
+     "limites": [
+      [
+       9.082092,
+       -79.749384
+      ],
+      [
+       9.114342,
+       -79.724001
+      ]
+     ],
+     "dimensiones": [
+      279,
+      359
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "esri": {
+     "limites": [
+      [
+       9.082092,
+       -79.749384
+      ],
+      [
+       9.114342,
+       -79.724001
+      ]
+     ],
+     "dimensiones": [
+      279,
+      359
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "ndvi": {
+     "limites": [
+      [
+       9.082092,
+       -79.749384
+      ],
+      [
+       9.114342,
+       -79.724001
+      ]
+     ],
+     "dimensiones": [
+      279,
+      359
+     ],
+     "tamano_pixel_m": 10.0
+    }
+   },
+   "superficies": [
+    "esri",
+    "hansen",
+    "jrc",
+    "ndvi"
+   ]
+  },
+  "s28": {
+   "nombre": "Río Frijoles",
+   "mapas": {
+    "jrc": {
+     "limites": [
+      [
+       9.131289,
+       -79.782383
+      ],
+      [
+       9.22,
+       -79.700609
+      ]
+     ],
+     "dimensiones": [
+      637,
+      700
+     ],
+     "tamano_pixel_m": 14.1
+    },
+    "hansen": {
+     "limites": [
+      [
+       9.131289,
+       -79.782383
+      ],
+      [
+       9.22,
+       -79.700609
+      ]
+     ],
+     "dimensiones": [
+      637,
+      700
+     ],
+     "tamano_pixel_m": 14.1
+    },
+    "esri": {
+     "limites": [
+      [
+       9.131289,
+       -79.782383
+      ],
+      [
+       9.22,
+       -79.700609
+      ]
+     ],
+     "dimensiones": [
+      637,
+      700
+     ],
+     "tamano_pixel_m": 14.1
+    },
+    "ndvi": {
+     "limites": [
+      [
+       9.131289,
+       -79.782383
+      ],
+      [
+       9.22,
+       -79.700609
+      ]
+     ],
+     "dimensiones": [
+      637,
+      700
+     ],
+     "tamano_pixel_m": 14.1
+    }
+   },
+   "superficies": [
+    "esri",
+    "hansen",
+    "ndvi"
+   ]
+  },
+  "s29": {
+   "nombre": "Río Frijolita",
+   "mapas": {
+    "jrc": {
+     "limites": [
+      [
+       9.133599,
+       -79.809342
+      ],
+      [
+       9.22003,
+       -79.721288
+      ]
+     ],
+     "dimensiones": [
+      700,
+      696
+     ],
+     "tamano_pixel_m": 13.8
+    },
+    "hansen": {
+     "limites": [
+      [
+       9.133599,
+       -79.809342
+      ],
+      [
+       9.22003,
+       -79.721288
+      ]
+     ],
+     "dimensiones": [
+      700,
+      696
+     ],
+     "tamano_pixel_m": 13.8
+    },
+    "esri": {
+     "limites": [
+      [
+       9.133599,
+       -79.809342
+      ],
+      [
+       9.22003,
+       -79.721288
+      ]
+     ],
+     "dimensiones": [
+      700,
+      696
+     ],
+     "tamano_pixel_m": 13.8
+    },
+    "ndvi": {
+     "limites": [
+      [
+       9.133599,
+       -79.809342
+      ],
+      [
+       9.22003,
+       -79.721288
+      ]
+     ],
+     "dimensiones": [
+      700,
+      696
+     ],
+     "tamano_pixel_m": 13.8
+    }
+   },
+   "superficies": [
+    "esri",
+    "hansen",
+    "ndvi"
+   ]
+  },
+  "s30": {
+   "nombre": "Río Gatuncillo",
+   "mapas": {
+    "jrc": {
+     "limites": [
+      [
+       9.19586,
+       -79.699068
+      ],
+      [
+       9.379558,
+       -79.592437
+      ]
+     ],
+     "dimensiones": [
+      401,
+      700
+     ],
+     "tamano_pixel_m": 29.2
+    },
+    "hansen": {
+     "limites": [
+      [
+       9.19586,
+       -79.699068
+      ],
+      [
+       9.379558,
+       -79.592437
+      ]
+     ],
+     "dimensiones": [
+      401,
+      700
+     ],
+     "tamano_pixel_m": 29.2
+    },
+    "esri": {
+     "limites": [
+      [
+       9.19586,
+       -79.699068
+      ],
+      [
+       9.379558,
+       -79.592437
+      ]
+     ],
+     "dimensiones": [
+      401,
+      700
+     ],
+     "tamano_pixel_m": 29.2
+    },
+    "ndvi": {
+     "limites": [
+      [
+       9.19586,
+       -79.699068
+      ],
+      [
+       9.379558,
+       -79.592437
+      ]
+     ],
+     "dimensiones": [
+      401,
+      700
+     ],
+     "tamano_pixel_m": 29.2
+    }
+   },
+   "superficies": [
+    "esri",
+    "hansen",
+    "ndvi"
+   ]
+  },
+  "s31": {
+   "nombre": "Río Gatún",
+   "mapas": {
+    "jrc": {
+     "limites": [
+      [
+       9.271642,
+       -79.778275
+      ],
+      [
+       9.466614,
+       -79.566445
+      ]
+     ],
+     "dimensiones": [
+      700,
+      653
+     ],
+     "tamano_pixel_m": 33.2
+    },
+    "hansen": {
+     "limites": [
+      [
+       9.271642,
+       -79.778275
+      ],
+      [
+       9.466614,
+       -79.566445
+      ]
+     ],
+     "dimensiones": [
+      700,
+      653
+     ],
+     "tamano_pixel_m": 33.2
+    },
+    "esri": {
+     "limites": [
+      [
+       9.271642,
+       -79.778275
+      ],
+      [
+       9.466614,
+       -79.566445
+      ]
+     ],
+     "dimensiones": [
+      700,
+      653
+     ],
+     "tamano_pixel_m": 33.2
+    },
+    "ndvi": {
+     "limites": [
+      [
+       9.271642,
+       -79.778275
+      ],
+      [
+       9.466614,
+       -79.566445
+      ]
+     ],
+     "dimensiones": [
+      700,
+      653
+     ],
+     "tamano_pixel_m": 33.2
+    }
+   },
+   "superficies": [
+    "esri",
+    "hansen",
+    "ndvi"
+   ]
+  },
+  "s32": {
+   "nombre": "Río Gigantito",
+   "mapas": {
+    "jrc": {
+     "limites": [
+      [
+       9.074041,
+       -79.897776
+      ],
+      [
+       9.116638,
+       -79.820544
+      ]
+     ],
+     "dimensiones": [
+      700,
+      391
+     ],
+     "tamano_pixel_m": 12.1
+    },
+    "hansen": {
+     "limites": [
+      [
+       9.074041,
+       -79.897776
+      ],
+      [
+       9.116638,
+       -79.820544
+      ]
+     ],
+     "dimensiones": [
+      700,
+      391
+     ],
+     "tamano_pixel_m": 12.1
+    },
+    "esri": {
+     "limites": [
+      [
+       9.074041,
+       -79.897776
+      ],
+      [
+       9.116638,
+       -79.820544
+      ]
+     ],
+     "dimensiones": [
+      700,
+      391
+     ],
+     "tamano_pixel_m": 12.1
+    },
+    "ndvi": {
+     "limites": [
+      [
+       9.074041,
+       -79.897776
+      ],
+      [
+       9.116638,
+       -79.820544
+      ]
+     ],
+     "dimensiones": [
+      700,
+      391
+     ],
+     "tamano_pixel_m": 12.1
+    }
+   },
+   "superficies": [
+    "esri",
+    "hansen",
+    "ndvi"
+   ]
+  },
+  "s33": {
+   "nombre": "Río La Puente",
+   "mapas": {
+    "jrc": {
+     "limites": [
+      [
+       9.152732,
+       -79.55873
+      ],
+      [
+       9.205402,
+       -79.45556
+      ]
+     ],
+     "dimensiones": [
+      700,
+      362
+     ],
+     "tamano_pixel_m": 16.2
+    },
+    "hansen": {
+     "limites": [
+      [
+       9.152732,
+       -79.55873
+      ],
+      [
+       9.205402,
+       -79.45556
+      ]
+     ],
+     "dimensiones": [
+      700,
+      362
+     ],
+     "tamano_pixel_m": 16.2
+    },
+    "esri": {
+     "limites": [
+      [
+       9.152732,
+       -79.55873
+      ],
+      [
+       9.205402,
+       -79.45556
+      ]
+     ],
+     "dimensiones": [
+      700,
+      362
+     ],
+     "tamano_pixel_m": 16.2
+    },
+    "ndvi": {
+     "limites": [
+      [
+       9.152732,
+       -79.55873
+      ],
+      [
+       9.205402,
+       -79.45556
+      ]
+     ],
+     "dimensiones": [
+      700,
+      362
+     ],
+     "tamano_pixel_m": 16.2
+    }
+   },
+   "superficies": [
+    "esri",
+    "hansen",
+    "ndvi"
+   ]
+  },
+  "s34": {
+   "nombre": "Río Las Cascadas",
+   "mapas": {
+    "jrc": {
+     "limites": [
+      [
+       9.168085,
+       -79.541634
+      ],
+      [
+       9.259326,
+       -79.384966
+      ]
+     ],
+     "dimensiones": [
+      700,
+      413
+     ],
+     "tamano_pixel_m": 24.6
+    },
+    "hansen": {
+     "limites": [
+      [
+       9.168085,
+       -79.541634
+      ],
+      [
+       9.259326,
+       -79.384966
+      ]
+     ],
+     "dimensiones": [
+      700,
+      413
+     ],
+     "tamano_pixel_m": 24.6
+    },
+    "esri": {
+     "limites": [
+      [
+       9.168085,
+       -79.541634
+      ],
+      [
+       9.259326,
+       -79.384966
+      ]
+     ],
+     "dimensiones": [
+      700,
+      413
+     ],
+     "tamano_pixel_m": 24.6
+    },
+    "ndvi": {
+     "limites": [
+      [
+       9.168085,
+       -79.541634
+      ],
+      [
+       9.259326,
+       -79.384966
+      ]
+     ],
+     "dimensiones": [
+      700,
+      413
+     ],
+     "tamano_pixel_m": 24.6
+    }
+   },
+   "superficies": [
+    "esri",
+    "hansen",
+    "ndvi"
+   ]
+  },
+  "s35": {
+   "nombre": "Río Limón",
+   "mapas": {
+    "jrc": {
+     "limites": [
+      [
+       9.205588,
+       -79.652484
+      ],
+      [
+       9.254636,
+       -79.61699
+      ]
+     ],
+     "dimensiones": [
+      390,
+      546
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "hansen": {
+     "limites": [
+      [
+       9.205588,
+       -79.652484
+      ],
+      [
+       9.254636,
+       -79.61699
+      ]
+     ],
+     "dimensiones": [
+      390,
+      546
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "esri": {
+     "limites": [
+      [
+       9.205588,
+       -79.652484
+      ],
+      [
+       9.254636,
+       -79.61699
+      ]
+     ],
+     "dimensiones": [
+      390,
+      546
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "ndvi": {
+     "limites": [
+      [
+       9.205588,
+       -79.652484
+      ],
+      [
+       9.254636,
+       -79.61699
+      ]
+     ],
+     "dimensiones": [
+      390,
+      546
+     ],
+     "tamano_pixel_m": 10.0
+    }
+   },
+   "superficies": [
+    "esri",
+    "hansen",
+    "jrc",
+    "ndvi"
+   ]
+  },
+  "s36": {
+   "nombre": "Río Los Hules",
+   "mapas": {
+    "jrc": {
+     "limites": [
+      [
+       8.927256,
+       -79.958388
+      ],
+      [
+       9.082842,
+       -79.874673
+      ]
+     ],
+     "dimensiones": [
+      372,
+      700
+     ],
+     "tamano_pixel_m": 24.7
+    },
+    "hansen": {
+     "limites": [
+      [
+       8.927256,
+       -79.958388
+      ],
+      [
+       9.082842,
+       -79.874673
+      ]
+     ],
+     "dimensiones": [
+      372,
+      700
+     ],
+     "tamano_pixel_m": 24.7
+    },
+    "esri": {
+     "limites": [
+      [
+       8.927256,
+       -79.958388
+      ],
+      [
+       9.082842,
+       -79.874673
+      ]
+     ],
+     "dimensiones": [
+      372,
+      700
+     ],
+     "tamano_pixel_m": 24.7
+    },
+    "ndvi": {
+     "limites": [
+      [
+       8.927256,
+       -79.958388
+      ],
+      [
+       9.082842,
+       -79.874673
+      ]
+     ],
+     "dimensiones": [
+      372,
+      700
+     ],
+     "tamano_pixel_m": 24.7
+    }
+   },
+   "superficies": [
+    "esri",
+    "hansen",
+    "ndvi"
+   ]
+  },
+  "s37": {
+   "nombre": "Río Mandinga",
+   "mapas": {
+    "jrc": {
+     "limites": [
+      [
+       8.998372,
+       -79.730664
+      ],
+      [
+       9.101807,
+       -79.672759
+      ]
+     ],
+     "dimensiones": [
+      387,
+      700
+     ],
+     "tamano_pixel_m": 16.4
+    },
+    "hansen": {
+     "limites": [
+      [
+       8.998372,
+       -79.730664
+      ],
+      [
+       9.101807,
+       -79.672759
+      ]
+     ],
+     "dimensiones": [
+      387,
+      700
+     ],
+     "tamano_pixel_m": 16.4
+    },
+    "esri": {
+     "limites": [
+      [
+       8.998372,
+       -79.730664
+      ],
+      [
+       9.101807,
+       -79.672759
+      ]
+     ],
+     "dimensiones": [
+      387,
+      700
+     ],
+     "tamano_pixel_m": 16.4
+    },
+    "ndvi": {
+     "limites": [
+      [
+       8.998372,
+       -79.730664
+      ],
+      [
+       9.101807,
+       -79.672759
+      ]
+     ],
+     "dimensiones": [
+      387,
+      700
+     ],
+     "tamano_pixel_m": 16.4
+    }
+   },
+   "superficies": [
+    "esri",
+    "hansen",
+    "ndvi"
+   ]
+  },
+  "s38": {
+   "nombre": "Río Moja Pollo",
+   "mapas": {
+    "jrc": {
+     "limites": [
+      [
+       9.176439,
+       -79.655974
+      ],
+      [
+       9.203119,
+       -79.613023
+      ]
+     ],
+     "dimensiones": [
+      472,
+      297
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "hansen": {
+     "limites": [
+      [
+       9.176439,
+       -79.655974
+      ],
+      [
+       9.203119,
+       -79.613023
+      ]
+     ],
+     "dimensiones": [
+      472,
+      297
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "esri": {
+     "limites": [
+      [
+       9.176439,
+       -79.655974
+      ],
+      [
+       9.203119,
+       -79.613023
+      ]
+     ],
+     "dimensiones": [
+      472,
+      297
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "ndvi": {
+     "limites": [
+      [
+       9.176439,
+       -79.655974
+      ],
+      [
+       9.203119,
+       -79.613023
+      ]
+     ],
+     "dimensiones": [
+      472,
+      297
+     ],
+     "tamano_pixel_m": 10.0
+    }
+   },
+   "superficies": [
+    "esri",
+    "hansen",
+    "jrc",
+    "ndvi"
+   ]
+  },
+  "s39": {
+   "nombre": "Río Obispo",
+   "mapas": {
+    "jrc": {
+     "limites": [
+      [
+       9.013557,
+       -79.664061
+      ],
+      [
+       9.093502,
+       -79.60774
+      ]
+     ],
+     "dimensiones": [
+      487,
+      700
+     ],
+     "tamano_pixel_m": 12.7
+    },
+    "hansen": {
+     "limites": [
+      [
+       9.013557,
+       -79.664061
+      ],
+      [
+       9.093502,
+       -79.60774
+      ]
+     ],
+     "dimensiones": [
+      487,
+      700
+     ],
+     "tamano_pixel_m": 12.7
+    },
+    "esri": {
+     "limites": [
+      [
+       9.013557,
+       -79.664061
+      ],
+      [
+       9.093502,
+       -79.60774
+      ]
+     ],
+     "dimensiones": [
+      487,
+      700
+     ],
+     "tamano_pixel_m": 12.7
+    },
+    "ndvi": {
+     "limites": [
+      [
+       9.013557,
+       -79.664061
+      ],
+      [
+       9.093502,
+       -79.60774
+      ]
+     ],
+     "dimensiones": [
+      487,
+      700
+     ],
+     "tamano_pixel_m": 12.7
+    }
+   },
+   "superficies": [
+    "esri",
+    "hansen",
+    "ndvi"
+   ]
+  },
+  "s40": {
+   "nombre": "Río Paja",
+   "mapas": {
+    "jrc": {
+     "limites": [
+      [
+       8.985069,
+       -79.799526
+      ],
+      [
+       9.082271,
+       -79.709258
+      ]
+     ],
+     "dimensiones": [
+      642,
+      700
+     ],
+     "tamano_pixel_m": 15.5
+    },
+    "hansen": {
+     "limites": [
+      [
+       8.985069,
+       -79.799526
+      ],
+      [
+       9.082271,
+       -79.709258
+      ]
+     ],
+     "dimensiones": [
+      642,
+      700
+     ],
+     "tamano_pixel_m": 15.5
+    },
+    "esri": {
+     "limites": [
+      [
+       8.985069,
+       -79.799526
+      ],
+      [
+       9.082271,
+       -79.709258
+      ]
+     ],
+     "dimensiones": [
+      642,
+      700
+     ],
+     "tamano_pixel_m": 15.5
+    },
+    "ndvi": {
+     "limites": [
+      [
+       8.985069,
+       -79.799526
+      ],
+      [
+       9.082271,
+       -79.709258
+      ]
+     ],
+     "dimensiones": [
+      642,
+      700
+     ],
+     "tamano_pixel_m": 15.5
+    }
+   },
+   "superficies": [
+    "esri",
+    "hansen",
+    "ndvi"
+   ]
+  },
+  "s41": {
+   "nombre": "Río Palenque I",
+   "mapas": {
+    "jrc": {
+     "limites": [
+      [
+       9.257675,
+       -79.824097
+      ],
+      [
+       9.309957,
+       -79.780678
+      ]
+     ],
+     "dimensiones": [
+      477,
+      582
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "hansen": {
+     "limites": [
+      [
+       9.257675,
+       -79.824097
+      ],
+      [
+       9.309957,
+       -79.780678
+      ]
+     ],
+     "dimensiones": [
+      477,
+      582
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "esri": {
+     "limites": [
+      [
+       9.257675,
+       -79.824097
+      ],
+      [
+       9.309957,
+       -79.780678
+      ]
+     ],
+     "dimensiones": [
+      477,
+      582
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "ndvi": {
+     "limites": [
+      [
+       9.257675,
+       -79.824097
+      ],
+      [
+       9.309957,
+       -79.780678
+      ]
+     ],
+     "dimensiones": [
+      477,
+      582
+     ],
+     "tamano_pixel_m": 10.0
+    }
+   },
+   "superficies": [
+    "esri",
+    "hansen",
+    "jrc",
+    "ndvi"
+   ]
+  },
+  "s42": {
+   "nombre": "Río Palenque II",
+   "mapas": {
+    "jrc": {
+     "limites": [
+      [
+       9.161611,
+       -79.708287
+      ],
+      [
+       9.237528,
+       -79.660165
+      ]
+     ],
+     "dimensiones": [
+      438,
+      700
+     ],
+     "tamano_pixel_m": 12.1
+    },
+    "hansen": {
+     "limites": [
+      [
+       9.161611,
+       -79.708287
+      ],
+      [
+       9.237528,
+       -79.660165
+      ]
+     ],
+     "dimensiones": [
+      438,
+      700
+     ],
+     "tamano_pixel_m": 12.1
+    },
+    "esri": {
+     "limites": [
+      [
+       9.161611,
+       -79.708287
+      ],
+      [
+       9.237528,
+       -79.660165
+      ]
+     ],
+     "dimensiones": [
+      438,
+      700
+     ],
+     "tamano_pixel_m": 12.1
+    },
+    "ndvi": {
+     "limites": [
+      [
+       9.161611,
+       -79.708287
+      ],
+      [
+       9.237528,
+       -79.660165
+      ]
+     ],
+     "dimensiones": [
+      438,
+      700
+     ],
+     "tamano_pixel_m": 12.1
+    }
+   },
+   "superficies": [
+    "esri",
+    "hansen",
+    "ndvi"
+   ]
+  },
+  "s43": {
+   "nombre": "Río Pelón",
+   "mapas": {
+    "jrc": {
+     "limites": [
+      [
+       9.174059,
+       -79.788927
+      ],
+      [
+       9.204422,
+       -79.749069
+      ]
+     ],
+     "dimensiones": [
+      438,
+      338
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "hansen": {
+     "limites": [
+      [
+       9.174059,
+       -79.788927
+      ],
+      [
+       9.204422,
+       -79.749069
+      ]
+     ],
+     "dimensiones": [
+      438,
+      338
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "esri": {
+     "limites": [
+      [
+       9.174059,
+       -79.788927
+      ],
+      [
+       9.204422,
+       -79.749069
+      ]
+     ],
+     "dimensiones": [
+      438,
+      338
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "ndvi": {
+     "limites": [
+      [
+       9.174059,
+       -79.788927
+      ],
+      [
+       9.204422,
+       -79.749069
+      ]
+     ],
+     "dimensiones": [
+      438,
+      338
+     ],
+     "tamano_pixel_m": 10.0
+    }
+   },
+   "superficies": [
+    "esri",
+    "hansen",
+    "jrc",
+    "ndvi"
+   ]
+  },
+  "s44": {
+   "nombre": "Río Pequení",
+   "mapas": {
+    "jrc": {
+     "limites": [
+      [
+       9.323032,
+       -79.556916
+      ],
+      [
+       9.502405,
+       -79.392497
+      ]
+     ],
+     "dimensiones": [
+      633,
+      700
+     ],
+     "tamano_pixel_m": 28.5
+    },
+    "hansen": {
+     "limites": [
+      [
+       9.323032,
+       -79.556916
+      ],
+      [
+       9.502405,
+       -79.392497
+      ]
+     ],
+     "dimensiones": [
+      633,
+      700
+     ],
+     "tamano_pixel_m": 28.5
+    },
+    "esri": {
+     "limites": [
+      [
+       9.323032,
+       -79.556916
+      ],
+      [
+       9.502405,
+       -79.392497
+      ]
+     ],
+     "dimensiones": [
+      633,
+      700
+     ],
+     "tamano_pixel_m": 28.5
+    },
+    "ndvi": {
+     "limites": [
+      [
+       9.323032,
+       -79.556916
+      ],
+      [
+       9.502405,
+       -79.392497
+      ]
+     ],
+     "dimensiones": [
+      633,
+      700
+     ],
+     "tamano_pixel_m": 28.5
+    }
+   },
+   "superficies": [
+    "esri",
+    "hansen",
+    "ndvi"
+   ]
+  },
+  "s45": {
+   "nombre": "Río Pescado",
+   "mapas": {
+    "jrc": {
+     "limites": [
+      [
+       8.958524,
+       -79.827845
+      ],
+      [
+       9.041395,
+       -79.761561
+      ]
+     ],
+     "dimensiones": [
+      553,
+      700
+     ],
+     "tamano_pixel_m": 13.2
+    },
+    "hansen": {
+     "limites": [
+      [
+       8.958524,
+       -79.827845
+      ],
+      [
+       9.041395,
+       -79.761561
+      ]
+     ],
+     "dimensiones": [
+      553,
+      700
+     ],
+     "tamano_pixel_m": 13.2
+    },
+    "esri": {
+     "limites": [
+      [
+       8.958524,
+       -79.827845
+      ],
+      [
+       9.041395,
+       -79.761561
+      ]
+     ],
+     "dimensiones": [
+      553,
+      700
+     ],
+     "tamano_pixel_m": 13.2
+    },
+    "ndvi": {
+     "limites": [
+      [
+       8.958524,
+       -79.827845
+      ],
+      [
+       9.041395,
+       -79.761561
+      ]
+     ],
+     "dimensiones": [
+      553,
+      700
+     ],
+     "tamano_pixel_m": 13.2
+    }
+   },
+   "superficies": [
+    "esri",
+    "hansen",
+    "ndvi"
+   ]
+  },
+  "s46": {
+   "nombre": "Río Piedras",
+   "mapas": {
+    "jrc": {
+     "limites": [
+      [
+       9.238492,
+       -79.403889
+      ],
+      [
+       9.370859,
+       -79.246351
+      ]
+     ],
+     "dimensiones": [
+      700,
+      596
+     ],
+     "tamano_pixel_m": 24.7
+    },
+    "hansen": {
+     "limites": [
+      [
+       9.238492,
+       -79.403889
+      ],
+      [
+       9.370859,
+       -79.246351
+      ]
+     ],
+     "dimensiones": [
+      700,
+      596
+     ],
+     "tamano_pixel_m": 24.7
+    },
+    "esri": {
+     "limites": [
+      [
+       9.238492,
+       -79.403889
+      ],
+      [
+       9.370859,
+       -79.246351
+      ]
+     ],
+     "dimensiones": [
+      700,
+      596
+     ],
+     "tamano_pixel_m": 24.7
+    },
+    "ndvi": {
+     "limites": [
+      [
+       9.238492,
+       -79.403889
+      ],
+      [
+       9.370859,
+       -79.246351
+      ]
+     ],
+     "dimensiones": [
+      700,
+      596
+     ],
+     "tamano_pixel_m": 24.7
+    }
+   },
+   "superficies": [
+    "esri",
+    "hansen",
+    "ndvi"
+   ]
+  },
+  "s47": {
+   "nombre": "Río Salamanca",
+   "mapas": {
+    "jrc": {
+     "limites": [
+      [
+       9.329151,
+       -79.603185
+      ],
+      [
+       9.396609,
+       -79.564117
+      ]
+     ],
+     "dimensiones": [
+      400,
+      700
+     ],
+     "tamano_pixel_m": 10.7
+    },
+    "hansen": {
+     "limites": [
+      [
+       9.329151,
+       -79.603185
+      ],
+      [
+       9.396609,
+       -79.564117
+      ]
+     ],
+     "dimensiones": [
+      400,
+      700
+     ],
+     "tamano_pixel_m": 10.7
+    },
+    "esri": {
+     "limites": [
+      [
+       9.329151,
+       -79.603185
+      ],
+      [
+       9.396609,
+       -79.564117
+      ]
+     ],
+     "dimensiones": [
+      400,
+      700
+     ],
+     "tamano_pixel_m": 10.7
+    },
+    "ndvi": {
+     "limites": [
+      [
+       9.329151,
+       -79.603185
+      ],
+      [
+       9.396609,
+       -79.564117
+      ]
+     ],
+     "dimensiones": [
+      400,
+      700
+     ],
+     "tamano_pixel_m": 10.7
+    }
+   },
+   "superficies": [
+    "esri",
+    "hansen",
+    "jrc",
+    "ndvi"
+   ]
+  },
+  "s48": {
+   "nombre": "Río Tinajones",
+   "mapas": {
+    "jrc": {
+     "limites": [
+      [
+       8.915044,
+       -79.952927
+      ],
+      [
+       9.061864,
+       -79.871596
+      ]
+     ],
+     "dimensiones": [
+      383,
+      700
+     ],
+     "tamano_pixel_m": 23.3
+    },
+    "hansen": {
+     "limites": [
+      [
+       8.915044,
+       -79.952927
+      ],
+      [
+       9.061864,
+       -79.871596
+      ]
+     ],
+     "dimensiones": [
+      383,
+      700
+     ],
+     "tamano_pixel_m": 23.3
+    },
+    "esri": {
+     "limites": [
+      [
+       8.915044,
+       -79.952927
+      ],
+      [
+       9.061864,
+       -79.871596
+      ]
+     ],
+     "dimensiones": [
+      383,
+      700
+     ],
+     "tamano_pixel_m": 23.3
+    },
+    "ndvi": {
+     "limites": [
+      [
+       8.915044,
+       -79.952927
+      ],
+      [
+       9.061864,
+       -79.871596
+      ]
+     ],
+     "dimensiones": [
+      383,
+      700
+     ],
+     "tamano_pixel_m": 23.3
+    }
+   },
+   "superficies": [
+    "esri",
+    "hansen",
+    "ndvi"
+   ]
+  },
+  "s49": {
+   "nombre": "Río Trinidad",
+   "mapas": {
+    "jrc": {
+     "limites": [
+      [
+       8.682449,
+       -80.057188
+      ],
+      [
+       9.008483,
+       -79.935575
+      ]
+     ],
+     "dimensiones": [
+      258,
+      700
+     ],
+     "tamano_pixel_m": 51.8
+    },
+    "hansen": {
+     "limites": [
+      [
+       8.682449,
+       -80.057188
+      ],
+      [
+       9.008483,
+       -79.935575
+      ]
+     ],
+     "dimensiones": [
+      258,
+      700
+     ],
+     "tamano_pixel_m": 51.8
+    },
+    "esri": {
+     "limites": [
+      [
+       8.682449,
+       -80.057188
+      ],
+      [
+       9.008483,
+       -79.935575
+      ]
+     ],
+     "dimensiones": [
+      258,
+      700
+     ],
+     "tamano_pixel_m": 51.8
+    },
+    "ndvi": {
+     "limites": [
+      [
+       8.682449,
+       -80.057188
+      ],
+      [
+       9.008483,
+       -79.935575
+      ]
+     ],
+     "dimensiones": [
+      258,
+      700
+     ],
+     "tamano_pixel_m": 51.8
+    }
+   },
+   "superficies": [
+    "esri",
+    "hansen",
+    "ndvi"
+   ]
+  },
+  "s50": {
+   "nombre": "Subcuenca L. Alajuela",
+   "mapas": {
+    "jrc": {
+     "limites": [
+      [
+       9.167725,
+       -79.630979
+      ],
+      [
+       9.395381,
+       -79.495868
+      ]
+     ],
+     "dimensiones": [
+      410,
+      700
+     ],
+     "tamano_pixel_m": 36.2
+    },
+    "hansen": {
+     "limites": [
+      [
+       9.167725,
+       -79.630979
+      ],
+      [
+       9.395381,
+       -79.495868
+      ]
+     ],
+     "dimensiones": [
+      410,
+      700
+     ],
+     "tamano_pixel_m": 36.2
+    },
+    "esri": {
+     "limites": [
+      [
+       9.167725,
+       -79.630979
+      ],
+      [
+       9.395381,
+       -79.495868
+      ]
+     ],
+     "dimensiones": [
+      410,
+      700
+     ],
+     "tamano_pixel_m": 36.2
+    },
+    "ndvi": {
+     "limites": [
+      [
+       9.167725,
+       -79.630979
+      ],
+      [
+       9.395381,
+       -79.495868
+      ]
+     ],
+     "dimensiones": [
+      410,
+      700
+     ],
+     "tamano_pixel_m": 36.2
+    }
+   },
+   "superficies": [
+    "esri",
+    "hansen",
+    "ndvi"
+   ]
+  },
+  "s51": {
+   "nombre": "Subcuenca L. Gatún",
+   "mapas": {
+    "jrc": {
+     "limites": [
+      [
+       8.957516,
+       -80.121585
+      ],
+      [
+       9.367047,
+       -79.594585
+      ]
+     ],
+     "dimensiones": [
+      700,
+      551
+     ],
+     "tamano_pixel_m": 82.7
+    },
+    "hansen": {
+     "limites": [
+      [
+       8.957516,
+       -80.121585
+      ],
+      [
+       9.367047,
+       -79.594585
+      ]
+     ],
+     "dimensiones": [
+      700,
+      551
+     ],
+     "tamano_pixel_m": 82.7
+    },
+    "esri": {
+     "limites": [
+      [
+       8.957516,
+       -80.121585
+      ],
+      [
+       9.367047,
+       -79.594585
+      ]
+     ],
+     "dimensiones": [
+      700,
+      551
+     ],
+     "tamano_pixel_m": 82.7
+    },
+    "ndvi": {
+     "limites": [
+      [
+       8.957516,
+       -80.121585
+      ],
+      [
+       9.367047,
+       -79.594585
+      ]
+     ],
+     "dimensiones": [
+      700,
+      551
+     ],
+     "tamano_pixel_m": 82.7
+    }
+   },
+   "superficies": [
+    "esri",
+    "hansen",
+    "ndvi"
+   ]
+  },
+  "s52": {
+   "nombre": "Subcuenca L. Miraflores",
+   "mapas": {
+    "jrc": {
+     "limites": [
+      [
+       8.994169,
+       -79.59682
+      ],
+      [
+       9.001086,
+       -79.586906
+      ]
+     ],
+     "dimensiones": [
+      109,
+      77
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "hansen": {
+     "limites": [
+      [
+       8.994169,
+       -79.59682
+      ],
+      [
+       9.001086,
+       -79.586906
+      ]
+     ],
+     "dimensiones": [
+      109,
+      77
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "esri": {
+     "limites": [
+      [
+       8.994169,
+       -79.59682
+      ],
+      [
+       9.001086,
+       -79.586906
+      ]
+     ],
+     "dimensiones": [
+      109,
+      77
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "ndvi": {
+     "limites": [
+      [
+       8.994169,
+       -79.59682
+      ],
+      [
+       9.001086,
+       -79.586906
+      ]
+     ],
+     "dimensiones": [
+      109,
+      77
+     ],
+     "tamano_pixel_m": 10.0
+    }
+   },
+   "superficies": [
+    "esri",
+    "hansen",
+    "jrc",
+    "ndvi"
+   ]
+  }
+ },
+ "productos": {
+  "jrc": {
+   "nombre": "Bosque tropical húmedo · JRC TMF",
+   "corto": "JRC TMF",
+   "anios": [
+    1990,
+    1991,
+    1992,
+    1993,
+    1994,
+    1995,
+    1996,
+    1997,
+    1998,
+    1999,
+    2000,
+    2001,
+    2002,
+    2003,
+    2004,
+    2005,
+    2006,
+    2007,
+    2008,
+    2009,
+    2010,
+    2011,
+    2012,
+    2013,
+    2014,
+    2015,
+    2016,
+    2017,
+    2018,
+    2019,
+    2020,
+    2021,
+    2022,
+    2023,
+    2024,
+    2025
+   ],
+   "resolucion_m": 30,
+   "fuente": "JRC Tropical Moist Forest v1_2025 (Landsat)",
+   "tipo": "categorias",
+   "clases": [
+    {
+     "valor": 1,
+     "etiqueta": "Bosque sin perturbación",
+     "color": "#1d6b35"
+    },
+    {
+     "valor": 2,
+     "etiqueta": "Bosque degradado",
+     "color": "#f28e2b"
+    },
+    {
+     "valor": 3,
+     "etiqueta": "Deforestado",
+     "color": "#fabc20"
+    },
+    {
+     "valor": 4,
+     "etiqueta": "Regeneración",
+     "color": "#a6d96a"
+    },
+    {
+     "valor": 5,
+     "etiqueta": "Agua",
+     "color": "#5aa9e6"
+    },
+    {
+     "valor": 6,
+     "etiqueta": "Otra cobertura",
+     "color": "#d7c2a1"
+    }
+   ],
+   "lectura": "Estado de cada año (banda de diciembre). «Degradado» y «deforestado» acumulan las perturbaciones desde 1990.",
+   "periodo_indice": "Estado 2025"
+  },
+  "hansen": {
+   "nombre": "Pérdida de cobertura arbórea · Hansen GFC",
+   "corto": "Hansen",
+   "anios": [
+    2001,
+    2002,
+    2003,
+    2004,
+    2005,
+    2006,
+    2007,
+    2008,
+    2009,
+    2010,
+    2011,
+    2012,
+    2013,
+    2014,
+    2015,
+    2016,
+    2017,
+    2018,
+    2019,
+    2020,
+    2021,
+    2022,
+    2023,
+    2024,
+    2025
+   ],
+   "resolucion_m": 30,
+   "fuente": "Hansen/UMD/Google/USGS/NASA Global Forest Change 2025",
+   "tipo": "anual",
+   "clases": [
+    {
+     "valor": 1,
+     "etiqueta": "2001",
+     "color": "#ffffcc"
+    },
+    {
+     "valor": 2,
+     "etiqueta": "2002",
+     "color": "#fff6b5"
+    },
+    {
+     "valor": 3,
+     "etiqueta": "2003",
+     "color": "#ffed9f"
+    },
+    {
+     "valor": 4,
+     "etiqueta": "2004",
+     "color": "#ffe48a"
+    },
+    {
+     "valor": 5,
+     "etiqueta": "2005",
+     "color": "#fed976"
+    },
+    {
+     "valor": 6,
+     "etiqueta": "2006",
+     "color": "#fecc68"
+    },
+    {
+     "valor": 7,
+     "etiqueta": "2007",
+     "color": "#febf5a"
+    },
+    {
+     "valor": 8,
+     "etiqueta": "2008",
+     "color": "#feb24c"
+    },
+    {
+     "valor": 9,
+     "etiqueta": "2009",
+     "color": "#fea446"
+    },
+    {
+     "valor": 10,
+     "etiqueta": "2010",
+     "color": "#fd9640"
+    },
+    {
+     "valor": 11,
+     "etiqueta": "2011",
+     "color": "#fd8a3b"
+    },
+    {
+     "valor": 12,
+     "etiqueta": "2012",
+     "color": "#fd7d36"
+    },
+    {
+     "valor": 13,
+     "etiqueta": "2013",
+     "color": "#fc6d33"
+    },
+    {
+     "valor": 14,
+     "etiqueta": "2014",
+     "color": "#f95e2f"
+    },
+    {
+     "valor": 15,
+     "etiqueta": "2015",
+     "color": "#f34e2c"
+    },
+    {
+     "valor": 16,
+     "etiqueta": "2016",
+     "color": "#ec3e28"
+    },
+    {
+     "valor": 17,
+     "etiqueta": "2017",
+     "color": "#e31a1c"
+    },
+    {
+     "valor": 18,
+     "etiqueta": "2018",
+     "color": "#d7141f"
+    },
+    {
+     "valor": 19,
+     "etiqueta": "2019",
+     "color": "#ca0e22"
+    },
+    {
+     "valor": 20,
+     "etiqueta": "2020",
+     "color": "#bd0026"
+    },
+    {
+     "valor": 21,
+     "etiqueta": "2021",
+     "color": "#a60026"
+    },
+    {
+     "valor": 22,
+     "etiqueta": "2022",
+     "color": "#940026"
+    },
+    {
+     "valor": 23,
+     "etiqueta": "2023",
+     "color": "#800026"
+    },
+    {
+     "valor": 24,
+     "etiqueta": "2024",
+     "color": "#6b0024"
+    },
+    {
+     "valor": 25,
+     "etiqueta": "2025",
+     "color": "#55001e"
+    }
+   ],
+   "lectura": "Año en que se perdió la cobertura arbórea (≥ 30 % en 2000). Incluye cosecha de plantaciones; no indica la causa.",
+   "periodo_indice": "Pérdida 2021–2025 (posterior al 31/12/2020)"
+  },
+  "esri": {
+   "nombre": "Cobertura y uso del suelo · ESRI LULC",
+   "corto": "ESRI",
+   "anios": [
+    2017,
+    2018,
+    2019,
+    2020,
+    2021,
+    2022,
+    2023,
+    2024,
+    2025
+   ],
+   "resolucion_m": 10,
+   "fuente": "ESRI / Impact Observatory Annual Land Cover 10 m (Sentinel-2)",
+   "tipo": "categorias",
+   "clases": [
+    {
+     "valor": 2,
+     "etiqueta": "Árboles",
+     "color": "#397d49"
+    },
+    {
+     "valor": 11,
+     "etiqueta": "Pastizal y matorral",
+     "color": "#e3e2c3"
+    },
+    {
+     "valor": 5,
+     "etiqueta": "Cultivos",
+     "color": "#e49635"
+    },
+    {
+     "valor": 4,
+     "etiqueta": "Vegetación inundada",
+     "color": "#7a87c6"
+    },
+    {
+     "valor": 7,
+     "etiqueta": "Área construida",
+     "color": "#c4281b"
+    },
+    {
+     "valor": 8,
+     "etiqueta": "Suelo desnudo",
+     "color": "#a59b8f"
+    },
+    {
+     "valor": 1,
+     "etiqueta": "Agua",
+     "color": "#419bdf"
+    },
+    {
+     "valor": 9,
+     "etiqueta": "Nieve o hielo",
+     "color": "#a8ebff"
+    }
+   ],
+   "lectura": "Clasificación automática anual de Sentinel-2. La clase «Árboles» no es la definición de bosque de JRC ni de SINIA.",
+   "periodo_indice": "Árboles 2017 → otra clase 2024"
+  },
+  "ndvi": {
+   "nombre": "Vigor de la vegetación · NDVI Sentinel-2",
+   "corto": "NDVI",
+   "anios": [
+    2017,
+    2018,
+    2019,
+    2020,
+    2021,
+    2022,
+    2023,
+    2024,
+    2025
+   ],
+   "resolucion_m": 20,
+   "fuente": "Copernicus Sentinel-2 SR Harmonized, mediana anual con máscara de nubes (SCL)",
+   "tipo": "categorias",
+   "clases": [
+    {
+     "valor": 1,
+     "etiqueta": "Sin vegetación activa (< 0)",
+     "color": "#8c510a"
+    },
+    {
+     "valor": 2,
+     "etiqueta": "Suelo o cobertura muy escasa (0–0,2)",
+     "color": "#d8b365"
+    },
+    {
+     "valor": 3,
+     "etiqueta": "Vegetación escasa (0,2–0,4)",
+     "color": "#f6e8c3"
+    },
+    {
+     "valor": 4,
+     "etiqueta": "Vegetación moderada (0,4–0,6)",
+     "color": "#80cdc1"
+    },
+    {
+     "valor": 5,
+     "etiqueta": "Vegetación densa (≥ 0,6)",
+     "color": "#01665e"
+    }
+   ],
+   "lectura": "Vigor espectral, no tipo de cobertura. Un descenso puede deberse a cosecha, sequía o nubes residuales.",
+   "periodo_indice": "2020 → 2025"
+  }
+ },
+ "periodos_indice": {
+  "referencia": 2025,
+  "jrc_diagnostico": 2025,
+  "hansen_diagnostico": 2025,
+  "esri_inicial": 2017,
+  "esri_final": 2024,
+  "esri_final_visual": 2025,
+  "ndvi_inicial": 2020,
+  "ndvi_final": 2025,
+  "ndvi_final_visual": 2025
+ },
+ "generado": "2026-11-23T18:51:32+00:00",
+ "proyecto": "geoportal-513817"
+}
