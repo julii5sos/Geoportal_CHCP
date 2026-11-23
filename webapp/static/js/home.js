@@ -115,6 +115,13 @@
       else if (d === 'restauracion') href += `?${id === 'chcp' ? '' : `id=${encodeURIComponent(id)}`}${a.dataset.modo ? `${id === 'chcp' ? '' : '&'}modo=${a.dataset.modo}` : ''}`;
       else if (d === 'panel') href += `#${encodeURIComponent(id === 'chcp' ? 'chcp' : nombre)}`;
       else if (d === 'coberturas' && nombre) href += `#${encodeURIComponent(nombre)}`;
+      else if (d === 'platform') {
+        const q = new URLSearchParams();
+        if (id !== 'chcp') q.set('id', id);
+        if (a.dataset.tema) q.set('tema', a.dataset.tema);
+        if (a.dataset.geometria) q.set('geometria', '1');
+        if ([...q].length) href += `?${q}`;
+      }
       a.setAttribute('href', href);
     });
     // El simulador trabaja por subcuenca: con toda la cuenca elegida, abre una de ejemplo.
