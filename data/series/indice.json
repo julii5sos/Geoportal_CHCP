@@ -53,11 +53,29 @@
       1368
      ],
      "tamano_pixel_m": 73.1
+    },
+    "jrc": {
+     "limites": [
+      [
+       8.628069,
+       -80.147786
+      ],
+      [
+       9.526037,
+       -79.217149
+      ]
+     ],
+     "dimensiones": [
+      1400,
+      1368
+     ],
+     "tamano_pixel_m": 73.1
     }
    },
    "superficies": [
     "esri",
     "hansen",
+    "jrc",
     "ndvi"
    ]
   },
@@ -136,6 +154,7 @@
    "superficies": [
     "esri",
     "hansen",
+    "jrc",
     "ndvi"
    ]
   },
@@ -214,6 +233,7 @@
    "superficies": [
     "esri",
     "hansen",
+    "jrc",
     "ndvi"
    ]
   },
@@ -292,6 +312,7 @@
    "superficies": [
     "esri",
     "hansen",
+    "jrc",
     "ndvi"
    ]
   },
@@ -844,6 +865,7 @@
    "superficies": [
     "esri",
     "hansen",
+    "jrc",
     "ndvi"
    ]
   },
@@ -922,6 +944,7 @@
    "superficies": [
     "esri",
     "hansen",
+    "jrc",
     "ndvi"
    ]
   },
@@ -1079,6 +1102,7 @@
    "superficies": [
     "esri",
     "hansen",
+    "jrc",
     "ndvi"
    ]
   },
@@ -1157,6 +1181,7 @@
    "superficies": [
     "esri",
     "hansen",
+    "jrc",
     "ndvi"
    ]
   },
@@ -1235,6 +1260,7 @@
    "superficies": [
     "esri",
     "hansen",
+    "jrc",
     "ndvi"
    ]
   },
@@ -1392,6 +1418,7 @@
    "superficies": [
     "esri",
     "hansen",
+    "jrc",
     "ndvi"
    ]
   },
@@ -1707,6 +1734,7 @@
    "superficies": [
     "esri",
     "hansen",
+    "jrc",
     "ndvi"
    ]
   },
@@ -1785,6 +1813,7 @@
    "superficies": [
     "esri",
     "hansen",
+    "jrc",
     "ndvi"
    ]
   },
@@ -1863,6 +1892,7 @@
    "superficies": [
     "esri",
     "hansen",
+    "jrc",
     "ndvi"
    ]
   },
@@ -1941,6 +1971,7 @@
    "superficies": [
     "esri",
     "hansen",
+    "jrc",
     "ndvi"
    ]
   },
@@ -2019,6 +2050,7 @@
    "superficies": [
     "esri",
     "hansen",
+    "jrc",
     "ndvi"
    ]
   },
@@ -2097,6 +2129,7 @@
    "superficies": [
     "esri",
     "hansen",
+    "jrc",
     "ndvi"
    ]
   },
@@ -2175,6 +2208,7 @@
    "superficies": [
     "esri",
     "hansen",
+    "jrc",
     "ndvi"
    ]
   },
@@ -2332,6 +2366,7 @@
    "superficies": [
     "esri",
     "hansen",
+    "jrc",
     "ndvi"
    ]
   },
@@ -2410,6 +2445,7 @@
    "superficies": [
     "esri",
     "hansen",
+    "jrc",
     "ndvi"
    ]
   },
@@ -2488,6 +2524,7 @@
    "superficies": [
     "esri",
     "hansen",
+    "jrc",
     "ndvi"
    ]
   },
@@ -2566,6 +2603,7 @@
    "superficies": [
     "esri",
     "hansen",
+    "jrc",
     "ndvi"
    ]
   },
@@ -2644,6 +2682,7 @@
    "superficies": [
     "esri",
     "hansen",
+    "jrc",
     "ndvi"
    ]
   },
@@ -2722,6 +2761,7 @@
    "superficies": [
     "esri",
     "hansen",
+    "jrc",
     "ndvi"
    ]
   },
@@ -2800,6 +2840,7 @@
    "superficies": [
     "esri",
     "hansen",
+    "jrc",
     "ndvi"
    ]
   },
@@ -2957,6 +2998,7 @@
    "superficies": [
     "esri",
     "hansen",
+    "jrc",
     "ndvi"
    ]
   },
@@ -3035,6 +3077,7 @@
    "superficies": [
     "esri",
     "hansen",
+    "jrc",
     "ndvi"
    ]
   },
@@ -3192,6 +3235,7 @@
    "superficies": [
     "esri",
     "hansen",
+    "jrc",
     "ndvi"
    ]
   },
@@ -3270,6 +3314,7 @@
    "superficies": [
     "esri",
     "hansen",
+    "jrc",
     "ndvi"
    ]
   },
@@ -3427,6 +3472,7 @@
    "superficies": [
     "esri",
     "hansen",
+    "jrc",
     "ndvi"
    ]
   },
@@ -3584,6 +3630,7 @@
    "superficies": [
     "esri",
     "hansen",
+    "jrc",
     "ndvi"
    ]
   },
@@ -3662,6 +3709,7 @@
    "superficies": [
     "esri",
     "hansen",
+    "jrc",
     "ndvi"
    ]
   },
@@ -3740,6 +3788,7 @@
    "superficies": [
     "esri",
     "hansen",
+    "jrc",
     "ndvi"
    ]
   },
@@ -3897,6 +3946,7 @@
    "superficies": [
     "esri",
     "hansen",
+    "jrc",
     "ndvi"
    ]
   },
@@ -3975,6 +4025,7 @@
    "superficies": [
     "esri",
     "hansen",
+    "jrc",
     "ndvi"
    ]
   },
@@ -4053,6 +4104,7 @@
    "superficies": [
     "esri",
     "hansen",
+    "jrc",
     "ndvi"
    ]
   },
@@ -4131,6 +4183,7 @@
    "superficies": [
     "esri",
     "hansen",
+    "jrc",
     "ndvi"
    ]
   },
@@ -4578,6 +4631,6 @@
   "ndvi_final": 2025,
   "ndvi_final_visual": 2025
  },
- "generado": "2026-11-23T18:51:32+00:00",
+ "generado": "2026-11-23T21:01:00+00:00",
  "proyecto": "geoportal-513817"
 }
