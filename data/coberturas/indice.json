@@ -1,0 +1,8171 @@
+{
+ "territorios": {
+  "chcp": {
+   "nombre": "Cuenca Hidrográfica del Canal de Panamá",
+   "mapas": {
+    "2012_binario": {
+     "limites": [
+      [
+       8.627894,
+       -80.147786
+      ],
+      [
+       9.526037,
+       -79.216839
+      ]
+     ],
+     "dimensiones": [
+      3001,
+      2932
+     ],
+     "tamano_pixel_m": 34.1
+    },
+    "2000_historico": {
+     "limites": [
+      [
+       8.627894,
+       -80.147786
+      ],
+      [
+       9.526037,
+       -79.216839
+      ]
+     ],
+     "dimensiones": [
+      3001,
+      2932
+     ],
+     "tamano_pixel_m": 34.1
+    },
+    "1992_historico": {
+     "limites": [
+      [
+       8.627894,
+       -80.147786
+      ],
+      [
+       9.526037,
+       -79.216839
+      ]
+     ],
+     "dimensiones": [
+      3001,
+      2932
+     ],
+     "tamano_pixel_m": 34.1
+    },
+    "2019_general": {
+     "limites": [
+      [
+       8.627894,
+       -80.147786
+      ],
+      [
+       9.526037,
+       -79.216839
+      ]
+     ],
+     "dimensiones": [
+      3001,
+      2932
+     ],
+     "tamano_pixel_m": 34.1
+    },
+    "2012_detallado": {
+     "limites": [
+      [
+       8.627894,
+       -80.147786
+      ],
+      [
+       9.526037,
+       -79.216839
+      ]
+     ],
+     "dimensiones": [
+      3001,
+      2932
+     ],
+     "tamano_pixel_m": 34.1
+    },
+    "2021_detallado": {
+     "limites": [
+      [
+       8.627894,
+       -80.147786
+      ],
+      [
+       9.526037,
+       -79.216839
+      ]
+     ],
+     "dimensiones": [
+      3001,
+      2932
+     ],
+     "tamano_pixel_m": 34.1
+    },
+    "2023_general": {
+     "limites": [
+      [
+       8.627894,
+       -80.147786
+      ],
+      [
+       9.526037,
+       -79.216839
+      ]
+     ],
+     "dimensiones": [
+      3001,
+      2932
+     ],
+     "tamano_pixel_m": 34.1
+    },
+    "2021_general": {
+     "limites": [
+      [
+       8.627894,
+       -80.147786
+      ],
+      [
+       9.526037,
+       -79.216839
+      ]
+     ],
+     "dimensiones": [
+      3001,
+      2932
+     ],
+     "tamano_pixel_m": 34.1
+    }
+   },
+   "superficies": [
+    "1992_historico",
+    "2000_historico",
+    "2012_binario",
+    "2012_detallado",
+    "2019_general",
+    "2021_detallado",
+    "2021_general",
+    "2023_general"
+   ]
+  },
+  "s0": {
+   "nombre": "Lago Alajuela",
+   "mapas": {
+    "1992_historico": {
+     "limites": [
+      [
+       9.176549,
+       -79.628432
+      ],
+      [
+       9.395598,
+       -79.493284
+      ]
+     ],
+     "dimensiones": [
+      548,
+      900
+     ],
+     "tamano_pixel_m": 27.1
+    },
+    "2000_historico": {
+     "limites": [
+      [
+       9.176549,
+       -79.628432
+      ],
+      [
+       9.395598,
+       -79.493284
+      ]
+     ],
+     "dimensiones": [
+      548,
+      900
+     ],
+     "tamano_pixel_m": 27.1
+    },
+    "2012_binario": {
+     "limites": [
+      [
+       9.176549,
+       -79.628432
+      ],
+      [
+       9.395598,
+       -79.493284
+      ]
+     ],
+     "dimensiones": [
+      548,
+      900
+     ],
+     "tamano_pixel_m": 27.1
+    },
+    "2012_detallado": {
+     "limites": [
+      [
+       9.176549,
+       -79.628432
+      ],
+      [
+       9.395598,
+       -79.493284
+      ]
+     ],
+     "dimensiones": [
+      548,
+      900
+     ],
+     "tamano_pixel_m": 27.1
+    },
+    "2019_general": {
+     "limites": [
+      [
+       9.176549,
+       -79.628432
+      ],
+      [
+       9.395598,
+       -79.493284
+      ]
+     ],
+     "dimensiones": [
+      548,
+      900
+     ],
+     "tamano_pixel_m": 27.1
+    },
+    "2021_detallado": {
+     "limites": [
+      [
+       9.176549,
+       -79.628432
+      ],
+      [
+       9.395598,
+       -79.493284
+      ]
+     ],
+     "dimensiones": [
+      548,
+      900
+     ],
+     "tamano_pixel_m": 27.1
+    },
+    "2021_general": {
+     "limites": [
+      [
+       9.176549,
+       -79.628432
+      ],
+      [
+       9.395598,
+       -79.493284
+      ]
+     ],
+     "dimensiones": [
+      548,
+      900
+     ],
+     "tamano_pixel_m": 27.1
+    },
+    "2023_general": {
+     "limites": [
+      [
+       9.176549,
+       -79.628432
+      ],
+      [
+       9.395598,
+       -79.493284
+      ]
+     ],
+     "dimensiones": [
+      548,
+      900
+     ],
+     "tamano_pixel_m": 27.1
+    }
+   },
+   "superficies": [
+    "1992_historico",
+    "2000_historico",
+    "2012_binario",
+    "2012_detallado",
+    "2019_general",
+    "2021_detallado",
+    "2021_general",
+    "2023_general"
+   ]
+  },
+  "s1": {
+   "nombre": "Lago Gatún",
+   "mapas": {
+    "2000_historico": {
+     "limites": [
+      [
+       8.95872,
+       -80.106827
+      ],
+      [
+       9.360195,
+       -79.596373
+      ]
+     ],
+     "dimensiones": [
+      900,
+      717
+     ],
+     "tamano_pixel_m": 62.3
+    },
+    "1992_historico": {
+     "limites": [
+      [
+       8.95872,
+       -80.106827
+      ],
+      [
+       9.360195,
+       -79.596373
+      ]
+     ],
+     "dimensiones": [
+      900,
+      717
+     ],
+     "tamano_pixel_m": 62.3
+    },
+    "2012_binario": {
+     "limites": [
+      [
+       8.95872,
+       -80.106827
+      ],
+      [
+       9.360195,
+       -79.596373
+      ]
+     ],
+     "dimensiones": [
+      900,
+      717
+     ],
+     "tamano_pixel_m": 62.3
+    },
+    "2012_detallado": {
+     "limites": [
+      [
+       8.95872,
+       -80.106827
+      ],
+      [
+       9.360195,
+       -79.596373
+      ]
+     ],
+     "dimensiones": [
+      900,
+      717
+     ],
+     "tamano_pixel_m": 62.3
+    },
+    "2019_general": {
+     "limites": [
+      [
+       8.95872,
+       -80.106827
+      ],
+      [
+       9.360195,
+       -79.596373
+      ]
+     ],
+     "dimensiones": [
+      900,
+      717
+     ],
+     "tamano_pixel_m": 62.3
+    },
+    "2021_detallado": {
+     "limites": [
+      [
+       8.95872,
+       -80.106827
+      ],
+      [
+       9.360195,
+       -79.596373
+      ]
+     ],
+     "dimensiones": [
+      900,
+      717
+     ],
+     "tamano_pixel_m": 62.3
+    },
+    "2021_general": {
+     "limites": [
+      [
+       8.95872,
+       -80.106827
+      ],
+      [
+       9.360195,
+       -79.596373
+      ]
+     ],
+     "dimensiones": [
+      900,
+      717
+     ],
+     "tamano_pixel_m": 62.3
+    },
+    "2023_general": {
+     "limites": [
+      [
+       8.95872,
+       -80.106827
+      ],
+      [
+       9.360195,
+       -79.596373
+      ]
+     ],
+     "dimensiones": [
+      900,
+      717
+     ],
+     "tamano_pixel_m": 62.3
+    }
+   },
+   "superficies": [
+    "1992_historico",
+    "2000_historico",
+    "2012_binario",
+    "2012_detallado",
+    "2019_general",
+    "2021_detallado",
+    "2021_general",
+    "2023_general"
+   ]
+  },
+  "s2": {
+   "nombre": "Lago Miraflores",
+   "mapas": {
+    "1992_historico": {
+     "limites": [
+      [
+       8.938581,
+       -79.669581
+      ],
+      [
+       9.117636,
+       -79.558383
+      ]
+     ],
+     "dimensiones": [
+      552,
+      900
+     ],
+     "tamano_pixel_m": 22.1
+    },
+    "2000_historico": {
+     "limites": [
+      [
+       8.938581,
+       -79.669581
+      ],
+      [
+       9.117636,
+       -79.558383
+      ]
+     ],
+     "dimensiones": [
+      552,
+      900
+     ],
+     "tamano_pixel_m": 22.1
+    },
+    "2012_binario": {
+     "limites": [
+      [
+       8.938581,
+       -79.669581
+      ],
+      [
+       9.117636,
+       -79.558383
+      ]
+     ],
+     "dimensiones": [
+      552,
+      900
+     ],
+     "tamano_pixel_m": 22.1
+    },
+    "2012_detallado": {
+     "limites": [
+      [
+       8.938581,
+       -79.669581
+      ],
+      [
+       9.117636,
+       -79.558383
+      ]
+     ],
+     "dimensiones": [
+      552,
+      900
+     ],
+     "tamano_pixel_m": 22.1
+    },
+    "2019_general": {
+     "limites": [
+      [
+       8.938581,
+       -79.669581
+      ],
+      [
+       9.117636,
+       -79.558383
+      ]
+     ],
+     "dimensiones": [
+      552,
+      900
+     ],
+     "tamano_pixel_m": 22.1
+    },
+    "2021_general": {
+     "limites": [
+      [
+       8.938581,
+       -79.669581
+      ],
+      [
+       9.117636,
+       -79.558383
+      ]
+     ],
+     "dimensiones": [
+      552,
+      900
+     ],
+     "tamano_pixel_m": 22.1
+    },
+    "2021_detallado": {
+     "limites": [
+      [
+       8.938581,
+       -79.669581
+      ],
+      [
+       9.117636,
+       -79.558383
+      ]
+     ],
+     "dimensiones": [
+      552,
+      900
+     ],
+     "tamano_pixel_m": 22.1
+    },
+    "2023_general": {
+     "limites": [
+      [
+       8.938581,
+       -79.669581
+      ],
+      [
+       9.117636,
+       -79.558383
+      ]
+     ],
+     "dimensiones": [
+      552,
+      900
+     ],
+     "tamano_pixel_m": 22.1
+    }
+   },
+   "superficies": [
+    "1992_historico",
+    "2000_historico",
+    "2012_binario",
+    "2012_detallado",
+    "2019_general",
+    "2021_detallado",
+    "2021_general",
+    "2023_general"
+   ]
+  },
+  "s3": {
+   "nombre": "Qda. Ancha",
+   "mapas": {
+    "1992_historico": {
+     "limites": [
+      [
+       9.2935,
+       -79.57138
+      ],
+      [
+       9.331768,
+       -79.512301
+      ]
+     ],
+     "dimensiones": [
+      649,
+      426
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "2000_historico": {
+     "limites": [
+      [
+       9.2935,
+       -79.57138
+      ],
+      [
+       9.331768,
+       -79.512301
+      ]
+     ],
+     "dimensiones": [
+      649,
+      426
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "2012_binario": {
+     "limites": [
+      [
+       9.2935,
+       -79.57138
+      ],
+      [
+       9.331768,
+       -79.512301
+      ]
+     ],
+     "dimensiones": [
+      649,
+      426
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "2012_detallado": {
+     "limites": [
+      [
+       9.2935,
+       -79.57138
+      ],
+      [
+       9.331768,
+       -79.512301
+      ]
+     ],
+     "dimensiones": [
+      649,
+      426
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "2019_general": {
+     "limites": [
+      [
+       9.2935,
+       -79.57138
+      ],
+      [
+       9.331768,
+       -79.512301
+      ]
+     ],
+     "dimensiones": [
+      649,
+      426
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "2021_general": {
+     "limites": [
+      [
+       9.2935,
+       -79.57138
+      ],
+      [
+       9.331768,
+       -79.512301
+      ]
+     ],
+     "dimensiones": [
+      649,
+      426
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "2021_detallado": {
+     "limites": [
+      [
+       9.2935,
+       -79.57138
+      ],
+      [
+       9.331768,
+       -79.512301
+      ]
+     ],
+     "dimensiones": [
+      649,
+      426
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "2023_general": {
+     "limites": [
+      [
+       9.2935,
+       -79.57138
+      ],
+      [
+       9.331768,
+       -79.512301
+      ]
+     ],
+     "dimensiones": [
+      649,
+      426
+     ],
+     "tamano_pixel_m": 10.0
+    }
+   },
+   "superficies": [
+    "1992_historico",
+    "2000_historico",
+    "2012_binario",
+    "2012_detallado",
+    "2019_general",
+    "2021_detallado",
+    "2021_general",
+    "2023_general"
+   ]
+  },
+  "s4": {
+   "nombre": "Qda. Bonita",
+   "mapas": {
+    "1992_historico": {
+     "limites": [
+      [
+       9.328736,
+       -79.616071
+      ],
+      [
+       9.372394,
+       -79.591763
+      ]
+     ],
+     "dimensiones": [
+      267,
+      486
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "2000_historico": {
+     "limites": [
+      [
+       9.328736,
+       -79.616071
+      ],
+      [
+       9.372394,
+       -79.591763
+      ]
+     ],
+     "dimensiones": [
+      267,
+      486
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "2012_binario": {
+     "limites": [
+      [
+       9.328736,
+       -79.616071
+      ],
+      [
+       9.372394,
+       -79.591763
+      ]
+     ],
+     "dimensiones": [
+      267,
+      486
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "2012_detallado": {
+     "limites": [
+      [
+       9.328736,
+       -79.616071
+      ],
+      [
+       9.372394,
+       -79.591763
+      ]
+     ],
+     "dimensiones": [
+      267,
+      486
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "2019_general": {
+     "limites": [
+      [
+       9.328736,
+       -79.616071
+      ],
+      [
+       9.372394,
+       -79.591763
+      ]
+     ],
+     "dimensiones": [
+      267,
+      486
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "2021_general": {
+     "limites": [
+      [
+       9.328736,
+       -79.616071
+      ],
+      [
+       9.372394,
+       -79.591763
+      ]
+     ],
+     "dimensiones": [
+      267,
+      486
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "2021_detallado": {
+     "limites": [
+      [
+       9.328736,
+       -79.616071
+      ],
+      [
+       9.372394,
+       -79.591763
+      ]
+     ],
+     "dimensiones": [
+      267,
+      486
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "2023_general": {
+     "limites": [
+      [
+       9.328736,
+       -79.616071
+      ],
+      [
+       9.372394,
+       -79.591763
+      ]
+     ],
+     "dimensiones": [
+      267,
+      486
+     ],
+     "tamano_pixel_m": 10.0
+    }
+   },
+   "superficies": [
+    "1992_historico",
+    "2000_historico",
+    "2012_binario",
+    "2012_detallado",
+    "2019_general",
+    "2021_detallado",
+    "2021_general",
+    "2023_general"
+   ]
+  },
+  "s5": {
+   "nombre": "Qda. Honda",
+   "mapas": {
+    "1992_historico": {
+     "limites": [
+      [
+       9.149238,
+       -79.678053
+      ],
+      [
+       9.218767,
+       -79.647296
+      ]
+     ],
+     "dimensiones": [
+      338,
+      774
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "2000_historico": {
+     "limites": [
+      [
+       9.149238,
+       -79.678053
+      ],
+      [
+       9.218767,
+       -79.647296
+      ]
+     ],
+     "dimensiones": [
+      338,
+      774
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "2012_binario": {
+     "limites": [
+      [
+       9.149238,
+       -79.678053
+      ],
+      [
+       9.218767,
+       -79.647296
+      ]
+     ],
+     "dimensiones": [
+      338,
+      774
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "2012_detallado": {
+     "limites": [
+      [
+       9.149238,
+       -79.678053
+      ],
+      [
+       9.218767,
+       -79.647296
+      ]
+     ],
+     "dimensiones": [
+      338,
+      774
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "2019_general": {
+     "limites": [
+      [
+       9.149238,
+       -79.678053
+      ],
+      [
+       9.218767,
+       -79.647296
+      ]
+     ],
+     "dimensiones": [
+      338,
+      774
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "2021_general": {
+     "limites": [
+      [
+       9.149238,
+       -79.678053
+      ],
+      [
+       9.218767,
+       -79.647296
+      ]
+     ],
+     "dimensiones": [
+      338,
+      774
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "2021_detallado": {
+     "limites": [
+      [
+       9.149238,
+       -79.678053
+      ],
+      [
+       9.218767,
+       -79.647296
+      ]
+     ],
+     "dimensiones": [
+      338,
+      774
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "2023_general": {
+     "limites": [
+      [
+       9.149238,
+       -79.678053
+      ],
+      [
+       9.218767,
+       -79.647296
+      ]
+     ],
+     "dimensiones": [
+      338,
+      774
+     ],
+     "tamano_pixel_m": 10.0
+    }
+   },
+   "superficies": [
+    "1992_historico",
+    "2000_historico",
+    "2012_binario",
+    "2012_detallado",
+    "2019_general",
+    "2021_detallado",
+    "2021_general",
+    "2023_general"
+   ]
+  },
+  "s6": {
+   "nombre": "Qda. La Leona",
+   "mapas": {
+    "1992_historico": {
+     "limites": [
+      [
+       8.960024,
+       -79.954197
+      ],
+      [
+       9.030452,
+       -79.927457
+      ]
+     ],
+     "dimensiones": [
+      294,
+      784
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "2000_historico": {
+     "limites": [
+      [
+       8.960024,
+       -79.954197
+      ],
+      [
+       9.030452,
+       -79.927457
+      ]
+     ],
+     "dimensiones": [
+      294,
+      784
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "2012_binario": {
+     "limites": [
+      [
+       8.960024,
+       -79.954197
+      ],
+      [
+       9.030452,
+       -79.927457
+      ]
+     ],
+     "dimensiones": [
+      294,
+      784
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "2012_detallado": {
+     "limites": [
+      [
+       8.960024,
+       -79.954197
+      ],
+      [
+       9.030452,
+       -79.927457
+      ]
+     ],
+     "dimensiones": [
+      294,
+      784
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "2019_general": {
+     "limites": [
+      [
+       8.960024,
+       -79.954197
+      ],
+      [
+       9.030452,
+       -79.927457
+      ]
+     ],
+     "dimensiones": [
+      294,
+      784
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "2021_general": {
+     "limites": [
+      [
+       8.960024,
+       -79.954197
+      ],
+      [
+       9.030452,
+       -79.927457
+      ]
+     ],
+     "dimensiones": [
+      294,
+      784
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "2021_detallado": {
+     "limites": [
+      [
+       8.960024,
+       -79.954197
+      ],
+      [
+       9.030452,
+       -79.927457
+      ]
+     ],
+     "dimensiones": [
+      294,
+      784
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "2023_general": {
+     "limites": [
+      [
+       8.960024,
+       -79.954197
+      ],
+      [
+       9.030452,
+       -79.927457
+      ]
+     ],
+     "dimensiones": [
+      294,
+      784
+     ],
+     "tamano_pixel_m": 10.0
+    }
+   },
+   "superficies": [
+    "1992_historico",
+    "2000_historico",
+    "2012_binario",
+    "2012_detallado",
+    "2019_general",
+    "2021_detallado",
+    "2021_general",
+    "2023_general"
+   ]
+  },
+  "s7": {
+   "nombre": "Qda. La Tranquilla",
+   "mapas": {
+    "1992_historico": {
+     "limites": [
+      [
+       9.245122,
+       -79.557424
+      ],
+      [
+       9.28366,
+       -79.527479
+      ]
+     ],
+     "dimensiones": [
+      329,
+      429
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "2000_historico": {
+     "limites": [
+      [
+       9.245122,
+       -79.557424
+      ],
+      [
+       9.28366,
+       -79.527479
+      ]
+     ],
+     "dimensiones": [
+      329,
+      429
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "2012_binario": {
+     "limites": [
+      [
+       9.245122,
+       -79.557424
+      ],
+      [
+       9.28366,
+       -79.527479
+      ]
+     ],
+     "dimensiones": [
+      329,
+      429
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "2012_detallado": {
+     "limites": [
+      [
+       9.245122,
+       -79.557424
+      ],
+      [
+       9.28366,
+       -79.527479
+      ]
+     ],
+     "dimensiones": [
+      329,
+      429
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "2019_general": {
+     "limites": [
+      [
+       9.245122,
+       -79.557424
+      ],
+      [
+       9.28366,
+       -79.527479
+      ]
+     ],
+     "dimensiones": [
+      329,
+      429
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "2021_general": {
+     "limites": [
+      [
+       9.245122,
+       -79.557424
+      ],
+      [
+       9.28366,
+       -79.527479
+      ]
+     ],
+     "dimensiones": [
+      329,
+      429
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "2021_detallado": {
+     "limites": [
+      [
+       9.245122,
+       -79.557424
+      ],
+      [
+       9.28366,
+       -79.527479
+      ]
+     ],
+     "dimensiones": [
+      329,
+      429
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "2023_general": {
+     "limites": [
+      [
+       9.245122,
+       -79.557424
+      ],
+      [
+       9.28366,
+       -79.527479
+      ]
+     ],
+     "dimensiones": [
+      329,
+      429
+     ],
+     "tamano_pixel_m": 10.0
+    }
+   },
+   "superficies": [
+    "1992_historico",
+    "2000_historico",
+    "2012_binario",
+    "2012_detallado",
+    "2019_general",
+    "2021_detallado",
+    "2021_general",
+    "2023_general"
+   ]
+  },
+  "s8": {
+   "nombre": "Quebrada Aguas Claras",
+   "mapas": {
+    "1992_historico": {
+     "limites": [
+      [
+       9.146921,
+       -79.713655
+      ],
+      [
+       9.217259,
+       -79.669976
+      ]
+     ],
+     "dimensiones": [
+      480,
+      783
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "2000_historico": {
+     "limites": [
+      [
+       9.146921,
+       -79.713655
+      ],
+      [
+       9.217259,
+       -79.669976
+      ]
+     ],
+     "dimensiones": [
+      480,
+      783
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "2012_binario": {
+     "limites": [
+      [
+       9.146921,
+       -79.713655
+      ],
+      [
+       9.217259,
+       -79.669976
+      ]
+     ],
+     "dimensiones": [
+      480,
+      783
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "2012_detallado": {
+     "limites": [
+      [
+       9.146921,
+       -79.713655
+      ],
+      [
+       9.217259,
+       -79.669976
+      ]
+     ],
+     "dimensiones": [
+      480,
+      783
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "2019_general": {
+     "limites": [
+      [
+       9.146921,
+       -79.713655
+      ],
+      [
+       9.217259,
+       -79.669976
+      ]
+     ],
+     "dimensiones": [
+      480,
+      783
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "2021_general": {
+     "limites": [
+      [
+       9.146921,
+       -79.713655
+      ],
+      [
+       9.217259,
+       -79.669976
+      ]
+     ],
+     "dimensiones": [
+      480,
+      783
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "2021_detallado": {
+     "limites": [
+      [
+       9.146921,
+       -79.713655
+      ],
+      [
+       9.217259,
+       -79.669976
+      ]
+     ],
+     "dimensiones": [
+      480,
+      783
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "2023_general": {
+     "limites": [
+      [
+       9.146921,
+       -79.713655
+      ],
+      [
+       9.217259,
+       -79.669976
+      ]
+     ],
+     "dimensiones": [
+      480,
+      783
+     ],
+     "tamano_pixel_m": 10.0
+    }
+   },
+   "superficies": [
+    "1992_historico",
+    "2000_historico",
+    "2012_binario",
+    "2012_detallado",
+    "2019_general",
+    "2021_detallado",
+    "2021_general",
+    "2023_general"
+   ]
+  },
+  "s9": {
+   "nombre": "Quebrada Grande",
+   "mapas": {
+    "2000_historico": {
+     "limites": [
+      [
+       8.903511,
+       -79.992882
+      ],
+      [
+       8.996759,
+       -79.942746
+      ]
+     ],
+     "dimensiones": [
+      478,
+      900
+     ],
+     "tamano_pixel_m": 11.5
+    },
+    "1992_historico": {
+     "limites": [
+      [
+       8.903511,
+       -79.992882
+      ],
+      [
+       8.996759,
+       -79.942746
+      ]
+     ],
+     "dimensiones": [
+      478,
+      900
+     ],
+     "tamano_pixel_m": 11.5
+    },
+    "2012_binario": {
+     "limites": [
+      [
+       8.903511,
+       -79.992882
+      ],
+      [
+       8.996759,
+       -79.942746
+      ]
+     ],
+     "dimensiones": [
+      478,
+      900
+     ],
+     "tamano_pixel_m": 11.5
+    },
+    "2012_detallado": {
+     "limites": [
+      [
+       8.903511,
+       -79.992882
+      ],
+      [
+       8.996759,
+       -79.942746
+      ]
+     ],
+     "dimensiones": [
+      478,
+      900
+     ],
+     "tamano_pixel_m": 11.5
+    },
+    "2019_general": {
+     "limites": [
+      [
+       8.903511,
+       -79.992882
+      ],
+      [
+       8.996759,
+       -79.942746
+      ]
+     ],
+     "dimensiones": [
+      478,
+      900
+     ],
+     "tamano_pixel_m": 11.5
+    },
+    "2021_detallado": {
+     "limites": [
+      [
+       8.903511,
+       -79.992882
+      ],
+      [
+       8.996759,
+       -79.942746
+      ]
+     ],
+     "dimensiones": [
+      478,
+      900
+     ],
+     "tamano_pixel_m": 11.5
+    },
+    "2021_general": {
+     "limites": [
+      [
+       8.903511,
+       -79.992882
+      ],
+      [
+       8.996759,
+       -79.942746
+      ]
+     ],
+     "dimensiones": [
+      478,
+      900
+     ],
+     "tamano_pixel_m": 11.5
+    },
+    "2023_general": {
+     "limites": [
+      [
+       8.903511,
+       -79.992882
+      ],
+      [
+       8.996759,
+       -79.942746
+      ]
+     ],
+     "dimensiones": [
+      478,
+      900
+     ],
+     "tamano_pixel_m": 11.5
+    }
+   },
+   "superficies": [
+    "1992_historico",
+    "2000_historico",
+    "2012_binario",
+    "2012_detallado",
+    "2019_general",
+    "2021_detallado",
+    "2021_general",
+    "2023_general"
+   ]
+  },
+  "s10": {
+   "nombre": "Quebrada del Medio",
+   "mapas": {
+    "1992_historico": {
+     "limites": [
+      [
+       9.210565,
+       -79.788418
+      ],
+      [
+       9.278428,
+       -79.705802
+      ]
+     ],
+     "dimensiones": [
+      900,
+      749
+     ],
+     "tamano_pixel_m": 10.1
+    },
+    "2000_historico": {
+     "limites": [
+      [
+       9.210565,
+       -79.788418
+      ],
+      [
+       9.278428,
+       -79.705802
+      ]
+     ],
+     "dimensiones": [
+      900,
+      749
+     ],
+     "tamano_pixel_m": 10.1
+    },
+    "2012_binario": {
+     "limites": [
+      [
+       9.210565,
+       -79.788418
+      ],
+      [
+       9.278428,
+       -79.705802
+      ]
+     ],
+     "dimensiones": [
+      900,
+      749
+     ],
+     "tamano_pixel_m": 10.1
+    },
+    "2012_detallado": {
+     "limites": [
+      [
+       9.210565,
+       -79.788418
+      ],
+      [
+       9.278428,
+       -79.705802
+      ]
+     ],
+     "dimensiones": [
+      900,
+      749
+     ],
+     "tamano_pixel_m": 10.1
+    },
+    "2019_general": {
+     "limites": [
+      [
+       9.210565,
+       -79.788418
+      ],
+      [
+       9.278428,
+       -79.705802
+      ]
+     ],
+     "dimensiones": [
+      900,
+      749
+     ],
+     "tamano_pixel_m": 10.1
+    },
+    "2021_general": {
+     "limites": [
+      [
+       9.210565,
+       -79.788418
+      ],
+      [
+       9.278428,
+       -79.705802
+      ]
+     ],
+     "dimensiones": [
+      900,
+      749
+     ],
+     "tamano_pixel_m": 10.1
+    },
+    "2021_detallado": {
+     "limites": [
+      [
+       9.210565,
+       -79.788418
+      ],
+      [
+       9.278428,
+       -79.705802
+      ]
+     ],
+     "dimensiones": [
+      900,
+      749
+     ],
+     "tamano_pixel_m": 10.1
+    },
+    "2023_general": {
+     "limites": [
+      [
+       9.210565,
+       -79.788418
+      ],
+      [
+       9.278428,
+       -79.705802
+      ]
+     ],
+     "dimensiones": [
+      900,
+      749
+     ],
+     "tamano_pixel_m": 10.1
+    }
+   },
+   "superficies": [
+    "1992_historico",
+    "2000_historico",
+    "2012_binario",
+    "2012_detallado",
+    "2019_general",
+    "2021_detallado",
+    "2021_general",
+    "2023_general"
+   ]
+  },
+  "s11": {
+   "nombre": "Río Agua Salud",
+   "mapas": {
+    "1992_historico": {
+     "limites": [
+      [
+       9.18156,
+       -79.805208
+      ],
+      [
+       9.233842,
+       -79.734589
+      ]
+     ],
+     "dimensiones": [
+      776,
+      582
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "2000_historico": {
+     "limites": [
+      [
+       9.18156,
+       -79.805208
+      ],
+      [
+       9.233842,
+       -79.734589
+      ]
+     ],
+     "dimensiones": [
+      776,
+      582
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "2012_binario": {
+     "limites": [
+      [
+       9.18156,
+       -79.805208
+      ],
+      [
+       9.233842,
+       -79.734589
+      ]
+     ],
+     "dimensiones": [
+      776,
+      582
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "2012_detallado": {
+     "limites": [
+      [
+       9.18156,
+       -79.805208
+      ],
+      [
+       9.233842,
+       -79.734589
+      ]
+     ],
+     "dimensiones": [
+      776,
+      582
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "2019_general": {
+     "limites": [
+      [
+       9.18156,
+       -79.805208
+      ],
+      [
+       9.233842,
+       -79.734589
+      ]
+     ],
+     "dimensiones": [
+      776,
+      582
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "2021_detallado": {
+     "limites": [
+      [
+       9.18156,
+       -79.805208
+      ],
+      [
+       9.233842,
+       -79.734589
+      ]
+     ],
+     "dimensiones": [
+      776,
+      582
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "2021_general": {
+     "limites": [
+      [
+       9.18156,
+       -79.805208
+      ],
+      [
+       9.233842,
+       -79.734589
+      ]
+     ],
+     "dimensiones": [
+      776,
+      582
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "2023_general": {
+     "limites": [
+      [
+       9.18156,
+       -79.805208
+      ],
+      [
+       9.233842,
+       -79.734589
+      ]
+     ],
+     "dimensiones": [
+      776,
+      582
+     ],
+     "tamano_pixel_m": 10.0
+    }
+   },
+   "superficies": [
+    "1992_historico",
+    "2000_historico",
+    "2012_binario",
+    "2012_detallado",
+    "2019_general",
+    "2021_detallado",
+    "2021_general",
+    "2023_general"
+   ]
+  },
+  "s12": {
+   "nombre": "Río Aguas Claras",
+   "mapas": {
+    "1992_historico": {
+     "limites": [
+      [
+       9.287476,
+       -79.794649
+      ],
+      [
+       9.368342,
+       -79.69644
+      ]
+     ],
+     "dimensiones": [
+      900,
+      751
+     ],
+     "tamano_pixel_m": 12.0
+    },
+    "2000_historico": {
+     "limites": [
+      [
+       9.287476,
+       -79.794649
+      ],
+      [
+       9.368342,
+       -79.69644
+      ]
+     ],
+     "dimensiones": [
+      900,
+      751
+     ],
+     "tamano_pixel_m": 12.0
+    },
+    "2012_binario": {
+     "limites": [
+      [
+       9.287476,
+       -79.794649
+      ],
+      [
+       9.368342,
+       -79.69644
+      ]
+     ],
+     "dimensiones": [
+      900,
+      751
+     ],
+     "tamano_pixel_m": 12.0
+    },
+    "2012_detallado": {
+     "limites": [
+      [
+       9.287476,
+       -79.794649
+      ],
+      [
+       9.368342,
+       -79.69644
+      ]
+     ],
+     "dimensiones": [
+      900,
+      751
+     ],
+     "tamano_pixel_m": 12.0
+    },
+    "2019_general": {
+     "limites": [
+      [
+       9.287476,
+       -79.794649
+      ],
+      [
+       9.368342,
+       -79.69644
+      ]
+     ],
+     "dimensiones": [
+      900,
+      751
+     ],
+     "tamano_pixel_m": 12.0
+    },
+    "2021_detallado": {
+     "limites": [
+      [
+       9.287476,
+       -79.794649
+      ],
+      [
+       9.368342,
+       -79.69644
+      ]
+     ],
+     "dimensiones": [
+      900,
+      751
+     ],
+     "tamano_pixel_m": 12.0
+    },
+    "2021_general": {
+     "limites": [
+      [
+       9.287476,
+       -79.794649
+      ],
+      [
+       9.368342,
+       -79.69644
+      ]
+     ],
+     "dimensiones": [
+      900,
+      751
+     ],
+     "tamano_pixel_m": 12.0
+    },
+    "2023_general": {
+     "limites": [
+      [
+       9.287476,
+       -79.794649
+      ],
+      [
+       9.368342,
+       -79.69644
+      ]
+     ],
+     "dimensiones": [
+      900,
+      751
+     ],
+     "tamano_pixel_m": 12.0
+    }
+   },
+   "superficies": [
+    "1992_historico",
+    "2000_historico",
+    "2012_binario",
+    "2012_detallado",
+    "2019_general",
+    "2021_detallado",
+    "2021_general",
+    "2023_general"
+   ]
+  },
+  "s13": {
+   "nombre": "Río Aguas Sucias",
+   "mapas": {
+    "1992_historico": {
+     "limites": [
+      [
+       9.211178,
+       -79.767298
+      ],
+      [
+       9.316207,
+       -79.656062
+      ]
+     ],
+     "dimensiones": [
+      900,
+      861
+     ],
+     "tamano_pixel_m": 13.6
+    },
+    "2000_historico": {
+     "limites": [
+      [
+       9.211178,
+       -79.767298
+      ],
+      [
+       9.316207,
+       -79.656062
+      ]
+     ],
+     "dimensiones": [
+      900,
+      861
+     ],
+     "tamano_pixel_m": 13.6
+    },
+    "2012_binario": {
+     "limites": [
+      [
+       9.211178,
+       -79.767298
+      ],
+      [
+       9.316207,
+       -79.656062
+      ]
+     ],
+     "dimensiones": [
+      900,
+      861
+     ],
+     "tamano_pixel_m": 13.6
+    },
+    "2012_detallado": {
+     "limites": [
+      [
+       9.211178,
+       -79.767298
+      ],
+      [
+       9.316207,
+       -79.656062
+      ]
+     ],
+     "dimensiones": [
+      900,
+      861
+     ],
+     "tamano_pixel_m": 13.6
+    },
+    "2019_general": {
+     "limites": [
+      [
+       9.211178,
+       -79.767298
+      ],
+      [
+       9.316207,
+       -79.656062
+      ]
+     ],
+     "dimensiones": [
+      900,
+      861
+     ],
+     "tamano_pixel_m": 13.6
+    },
+    "2021_detallado": {
+     "limites": [
+      [
+       9.211178,
+       -79.767298
+      ],
+      [
+       9.316207,
+       -79.656062
+      ]
+     ],
+     "dimensiones": [
+      900,
+      861
+     ],
+     "tamano_pixel_m": 13.6
+    },
+    "2023_general": {
+     "limites": [
+      [
+       9.211178,
+       -79.767298
+      ],
+      [
+       9.316207,
+       -79.656062
+      ]
+     ],
+     "dimensiones": [
+      900,
+      861
+     ],
+     "tamano_pixel_m": 13.6
+    },
+    "2021_general": {
+     "limites": [
+      [
+       9.211178,
+       -79.767298
+      ],
+      [
+       9.316207,
+       -79.656062
+      ]
+     ],
+     "dimensiones": [
+      900,
+      861
+     ],
+     "tamano_pixel_m": 13.6
+    }
+   },
+   "superficies": [
+    "1992_historico",
+    "2000_historico",
+    "2012_binario",
+    "2012_detallado",
+    "2019_general",
+    "2021_detallado",
+    "2021_general",
+    "2023_general"
+   ]
+  },
+  "s14": {
+   "nombre": "Río Baila Monos",
+   "mapas": {
+    "1992_historico": {
+     "limites": [
+      [
+       9.018268,
+       -79.766947
+      ],
+      [
+       9.103757,
+       -79.70805
+      ]
+     ],
+     "dimensiones": [
+      613,
+      901
+     ],
+     "tamano_pixel_m": 10.6
+    },
+    "2000_historico": {
+     "limites": [
+      [
+       9.018268,
+       -79.766947
+      ],
+      [
+       9.103757,
+       -79.70805
+      ]
+     ],
+     "dimensiones": [
+      613,
+      901
+     ],
+     "tamano_pixel_m": 10.6
+    },
+    "2012_detallado": {
+     "limites": [
+      [
+       9.018268,
+       -79.766947
+      ],
+      [
+       9.103757,
+       -79.70805
+      ]
+     ],
+     "dimensiones": [
+      613,
+      901
+     ],
+     "tamano_pixel_m": 10.6
+    },
+    "2019_general": {
+     "limites": [
+      [
+       9.018268,
+       -79.766947
+      ],
+      [
+       9.103757,
+       -79.70805
+      ]
+     ],
+     "dimensiones": [
+      613,
+      901
+     ],
+     "tamano_pixel_m": 10.6
+    },
+    "2012_binario": {
+     "limites": [
+      [
+       9.018268,
+       -79.766947
+      ],
+      [
+       9.103757,
+       -79.70805
+      ]
+     ],
+     "dimensiones": [
+      613,
+      901
+     ],
+     "tamano_pixel_m": 10.6
+    },
+    "2021_detallado": {
+     "limites": [
+      [
+       9.018268,
+       -79.766947
+      ],
+      [
+       9.103757,
+       -79.70805
+      ]
+     ],
+     "dimensiones": [
+      613,
+      901
+     ],
+     "tamano_pixel_m": 10.6
+    },
+    "2021_general": {
+     "limites": [
+      [
+       9.018268,
+       -79.766947
+      ],
+      [
+       9.103757,
+       -79.70805
+      ]
+     ],
+     "dimensiones": [
+      613,
+      901
+     ],
+     "tamano_pixel_m": 10.6
+    },
+    "2023_general": {
+     "limites": [
+      [
+       9.018268,
+       -79.766947
+      ],
+      [
+       9.103757,
+       -79.70805
+      ]
+     ],
+     "dimensiones": [
+      613,
+      901
+     ],
+     "tamano_pixel_m": 10.6
+    }
+   },
+   "superficies": [
+    "1992_historico",
+    "2000_historico",
+    "2012_binario",
+    "2012_detallado",
+    "2019_general",
+    "2021_detallado",
+    "2021_general",
+    "2023_general"
+   ]
+  },
+  "s15": {
+   "nombre": "Río Benitez",
+   "mapas": {
+    "1992_historico": {
+     "limites": [
+      [
+       9.257,
+       -79.57091
+      ],
+      [
+       9.296795,
+       -79.53532
+      ]
+     ],
+     "dimensiones": [
+      391,
+      443
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "2000_historico": {
+     "limites": [
+      [
+       9.257,
+       -79.57091
+      ],
+      [
+       9.296795,
+       -79.53532
+      ]
+     ],
+     "dimensiones": [
+      391,
+      443
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "2012_binario": {
+     "limites": [
+      [
+       9.257,
+       -79.57091
+      ],
+      [
+       9.296795,
+       -79.53532
+      ]
+     ],
+     "dimensiones": [
+      391,
+      443
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "2012_detallado": {
+     "limites": [
+      [
+       9.257,
+       -79.57091
+      ],
+      [
+       9.296795,
+       -79.53532
+      ]
+     ],
+     "dimensiones": [
+      391,
+      443
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "2019_general": {
+     "limites": [
+      [
+       9.257,
+       -79.57091
+      ],
+      [
+       9.296795,
+       -79.53532
+      ]
+     ],
+     "dimensiones": [
+      391,
+      443
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "2021_detallado": {
+     "limites": [
+      [
+       9.257,
+       -79.57091
+      ],
+      [
+       9.296795,
+       -79.53532
+      ]
+     ],
+     "dimensiones": [
+      391,
+      443
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "2023_general": {
+     "limites": [
+      [
+       9.257,
+       -79.57091
+      ],
+      [
+       9.296795,
+       -79.53532
+      ]
+     ],
+     "dimensiones": [
+      391,
+      443
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "2021_general": {
+     "limites": [
+      [
+       9.257,
+       -79.57091
+      ],
+      [
+       9.296795,
+       -79.53532
+      ]
+     ],
+     "dimensiones": [
+      391,
+      443
+     ],
+     "tamano_pixel_m": 10.0
+    }
+   },
+   "superficies": [
+    "1992_historico",
+    "2000_historico",
+    "2012_binario",
+    "2012_detallado",
+    "2019_general",
+    "2021_detallado",
+    "2021_general",
+    "2023_general"
+   ]
+  },
+  "s16": {
+   "nombre": "Río Boquerón",
+   "mapas": {
+    "1992_historico": {
+     "limites": [
+      [
+       9.34229,
+       -79.592082
+      ],
+      [
+       9.504778,
+       -79.467451
+      ]
+     ],
+     "dimensiones": [
+      681,
+      900
+     ],
+     "tamano_pixel_m": 20.1
+    },
+    "2000_historico": {
+     "limites": [
+      [
+       9.34229,
+       -79.592082
+      ],
+      [
+       9.504778,
+       -79.467451
+      ]
+     ],
+     "dimensiones": [
+      681,
+      900
+     ],
+     "tamano_pixel_m": 20.1
+    },
+    "2012_binario": {
+     "limites": [
+      [
+       9.34229,
+       -79.592082
+      ],
+      [
+       9.504778,
+       -79.467451
+      ]
+     ],
+     "dimensiones": [
+      681,
+      900
+     ],
+     "tamano_pixel_m": 20.1
+    },
+    "2012_detallado": {
+     "limites": [
+      [
+       9.34229,
+       -79.592082
+      ],
+      [
+       9.504778,
+       -79.467451
+      ]
+     ],
+     "dimensiones": [
+      681,
+      900
+     ],
+     "tamano_pixel_m": 20.1
+    },
+    "2019_general": {
+     "limites": [
+      [
+       9.34229,
+       -79.592082
+      ],
+      [
+       9.504778,
+       -79.467451
+      ]
+     ],
+     "dimensiones": [
+      681,
+      900
+     ],
+     "tamano_pixel_m": 20.1
+    },
+    "2021_general": {
+     "limites": [
+      [
+       9.34229,
+       -79.592082
+      ],
+      [
+       9.504778,
+       -79.467451
+      ]
+     ],
+     "dimensiones": [
+      681,
+      900
+     ],
+     "tamano_pixel_m": 20.1
+    },
+    "2021_detallado": {
+     "limites": [
+      [
+       9.34229,
+       -79.592082
+      ],
+      [
+       9.504778,
+       -79.467451
+      ]
+     ],
+     "dimensiones": [
+      681,
+      900
+     ],
+     "tamano_pixel_m": 20.1
+    },
+    "2023_general": {
+     "limites": [
+      [
+       9.34229,
+       -79.592082
+      ],
+      [
+       9.504778,
+       -79.467451
+      ]
+     ],
+     "dimensiones": [
+      681,
+      900
+     ],
+     "tamano_pixel_m": 20.1
+    }
+   },
+   "superficies": [
+    "1992_historico",
+    "2000_historico",
+    "2012_binario",
+    "2012_detallado",
+    "2019_general",
+    "2021_detallado",
+    "2021_general",
+    "2023_general"
+   ]
+  },
+  "s17": {
+   "nombre": "Río Caraña",
+   "mapas": {
+    "1992_historico": {
+     "limites": [
+      [
+       9.068996,
+       -79.746698
+      ],
+      [
+       9.121188,
+       -79.690203
+      ]
+     ],
+     "dimensiones": [
+      621,
+      581
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "2012_binario": {
+     "limites": [
+      [
+       9.068996,
+       -79.746698
+      ],
+      [
+       9.121188,
+       -79.690203
+      ]
+     ],
+     "dimensiones": [
+      621,
+      581
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "2000_historico": {
+     "limites": [
+      [
+       9.068996,
+       -79.746698
+      ],
+      [
+       9.121188,
+       -79.690203
+      ]
+     ],
+     "dimensiones": [
+      621,
+      581
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "2012_detallado": {
+     "limites": [
+      [
+       9.068996,
+       -79.746698
+      ],
+      [
+       9.121188,
+       -79.690203
+      ]
+     ],
+     "dimensiones": [
+      621,
+      581
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "2019_general": {
+     "limites": [
+      [
+       9.068996,
+       -79.746698
+      ],
+      [
+       9.121188,
+       -79.690203
+      ]
+     ],
+     "dimensiones": [
+      621,
+      581
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "2021_detallado": {
+     "limites": [
+      [
+       9.068996,
+       -79.746698
+      ],
+      [
+       9.121188,
+       -79.690203
+      ]
+     ],
+     "dimensiones": [
+      621,
+      581
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "2021_general": {
+     "limites": [
+      [
+       9.068996,
+       -79.746698
+      ],
+      [
+       9.121188,
+       -79.690203
+      ]
+     ],
+     "dimensiones": [
+      621,
+      581
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "2023_general": {
+     "limites": [
+      [
+       9.068996,
+       -79.746698
+      ],
+      [
+       9.121188,
+       -79.690203
+      ]
+     ],
+     "dimensiones": [
+      621,
+      581
+     ],
+     "tamano_pixel_m": 10.0
+    }
+   },
+   "superficies": [
+    "1992_historico",
+    "2000_historico",
+    "2012_binario",
+    "2012_detallado",
+    "2019_general",
+    "2021_detallado",
+    "2021_general",
+    "2023_general"
+   ]
+  },
+  "s18": {
+   "nombre": "Río Casaya",
+   "mapas": {
+    "1992_historico": {
+     "limites": [
+      [
+       9.091892,
+       -79.686802
+      ],
+      [
+       9.132945,
+       -79.639675
+      ]
+     ],
+     "dimensiones": [
+      518,
+      457
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "2012_binario": {
+     "limites": [
+      [
+       9.091892,
+       -79.686802
+      ],
+      [
+       9.132945,
+       -79.639675
+      ]
+     ],
+     "dimensiones": [
+      518,
+      457
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "2000_historico": {
+     "limites": [
+      [
+       9.091892,
+       -79.686802
+      ],
+      [
+       9.132945,
+       -79.639675
+      ]
+     ],
+     "dimensiones": [
+      518,
+      457
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "2012_detallado": {
+     "limites": [
+      [
+       9.091892,
+       -79.686802
+      ],
+      [
+       9.132945,
+       -79.639675
+      ]
+     ],
+     "dimensiones": [
+      518,
+      457
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "2019_general": {
+     "limites": [
+      [
+       9.091892,
+       -79.686802
+      ],
+      [
+       9.132945,
+       -79.639675
+      ]
+     ],
+     "dimensiones": [
+      518,
+      457
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "2021_general": {
+     "limites": [
+      [
+       9.091892,
+       -79.686802
+      ],
+      [
+       9.132945,
+       -79.639675
+      ]
+     ],
+     "dimensiones": [
+      518,
+      457
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "2021_detallado": {
+     "limites": [
+      [
+       9.091892,
+       -79.686802
+      ],
+      [
+       9.132945,
+       -79.639675
+      ]
+     ],
+     "dimensiones": [
+      518,
+      457
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "2023_general": {
+     "limites": [
+      [
+       9.091892,
+       -79.686802
+      ],
+      [
+       9.132945,
+       -79.639675
+      ]
+     ],
+     "dimensiones": [
+      518,
+      457
+     ],
+     "tamano_pixel_m": 10.0
+    }
+   },
+   "superficies": [
+    "1992_historico",
+    "2000_historico",
+    "2012_binario",
+    "2012_detallado",
+    "2019_general",
+    "2021_detallado",
+    "2021_general",
+    "2023_general"
+   ]
+  },
+  "s19": {
+   "nombre": "Río Cañito",
+   "mapas": {
+    "1992_historico": {
+     "limites": [
+      [
+       9.020429,
+       -79.82263
+      ],
+      [
+       9.065524,
+       -79.779514
+      ]
+     ],
+     "dimensiones": [
+      474,
+      502
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "2000_historico": {
+     "limites": [
+      [
+       9.020429,
+       -79.82263
+      ],
+      [
+       9.065524,
+       -79.779514
+      ]
+     ],
+     "dimensiones": [
+      474,
+      502
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "2012_binario": {
+     "limites": [
+      [
+       9.020429,
+       -79.82263
+      ],
+      [
+       9.065524,
+       -79.779514
+      ]
+     ],
+     "dimensiones": [
+      474,
+      502
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "2012_detallado": {
+     "limites": [
+      [
+       9.020429,
+       -79.82263
+      ],
+      [
+       9.065524,
+       -79.779514
+      ]
+     ],
+     "dimensiones": [
+      474,
+      502
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "2019_general": {
+     "limites": [
+      [
+       9.020429,
+       -79.82263
+      ],
+      [
+       9.065524,
+       -79.779514
+      ]
+     ],
+     "dimensiones": [
+      474,
+      502
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "2021_detallado": {
+     "limites": [
+      [
+       9.020429,
+       -79.82263
+      ],
+      [
+       9.065524,
+       -79.779514
+      ]
+     ],
+     "dimensiones": [
+      474,
+      502
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "2021_general": {
+     "limites": [
+      [
+       9.020429,
+       -79.82263
+      ],
+      [
+       9.065524,
+       -79.779514
+      ]
+     ],
+     "dimensiones": [
+      474,
+      502
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "2023_general": {
+     "limites": [
+      [
+       9.020429,
+       -79.82263
+      ],
+      [
+       9.065524,
+       -79.779514
+      ]
+     ],
+     "dimensiones": [
+      474,
+      502
+     ],
+     "tamano_pixel_m": 10.0
+    }
+   },
+   "superficies": [
+    "1992_historico",
+    "2000_historico",
+    "2012_binario",
+    "2012_detallado",
+    "2019_general",
+    "2021_detallado",
+    "2021_general",
+    "2023_general"
+   ]
+  },
+  "s20": {
+   "nombre": "Río Caño Quebrado",
+   "mapas": {
+    "1992_historico": {
+     "limites": [
+      [
+       8.925783,
+       -79.926255
+      ],
+      [
+       9.0403,
+       -79.797115
+      ]
+     ],
+     "dimensiones": [
+      900,
+      808
+     ],
+     "tamano_pixel_m": 15.8
+    },
+    "2000_historico": {
+     "limites": [
+      [
+       8.925783,
+       -79.926255
+      ],
+      [
+       9.0403,
+       -79.797115
+      ]
+     ],
+     "dimensiones": [
+      900,
+      808
+     ],
+     "tamano_pixel_m": 15.8
+    },
+    "2012_binario": {
+     "limites": [
+      [
+       8.925783,
+       -79.926255
+      ],
+      [
+       9.0403,
+       -79.797115
+      ]
+     ],
+     "dimensiones": [
+      900,
+      808
+     ],
+     "tamano_pixel_m": 15.8
+    },
+    "2012_detallado": {
+     "limites": [
+      [
+       8.925783,
+       -79.926255
+      ],
+      [
+       9.0403,
+       -79.797115
+      ]
+     ],
+     "dimensiones": [
+      900,
+      808
+     ],
+     "tamano_pixel_m": 15.8
+    },
+    "2019_general": {
+     "limites": [
+      [
+       8.925783,
+       -79.926255
+      ],
+      [
+       9.0403,
+       -79.797115
+      ]
+     ],
+     "dimensiones": [
+      900,
+      808
+     ],
+     "tamano_pixel_m": 15.8
+    },
+    "2021_detallado": {
+     "limites": [
+      [
+       8.925783,
+       -79.926255
+      ],
+      [
+       9.0403,
+       -79.797115
+      ]
+     ],
+     "dimensiones": [
+      900,
+      808
+     ],
+     "tamano_pixel_m": 15.8
+    },
+    "2023_general": {
+     "limites": [
+      [
+       8.925783,
+       -79.926255
+      ],
+      [
+       9.0403,
+       -79.797115
+      ]
+     ],
+     "dimensiones": [
+      900,
+      808
+     ],
+     "tamano_pixel_m": 15.8
+    },
+    "2021_general": {
+     "limites": [
+      [
+       8.925783,
+       -79.926255
+      ],
+      [
+       9.0403,
+       -79.797115
+      ]
+     ],
+     "dimensiones": [
+      900,
+      808
+     ],
+     "tamano_pixel_m": 15.8
+    }
+   },
+   "superficies": [
+    "1992_historico",
+    "2000_historico",
+    "2012_binario",
+    "2012_detallado",
+    "2019_general",
+    "2021_detallado",
+    "2021_general",
+    "2023_general"
+   ]
+  },
+  "s21": {
+   "nombre": "Río Chagres",
+   "mapas": {
+    "1992_historico": {
+     "limites": [
+      [
+       9.213525,
+       -79.556332
+      ],
+      [
+       9.456028,
+       -79.234378
+      ]
+     ],
+     "dimensiones": [
+      900,
+      687
+     ],
+     "tamano_pixel_m": 39.3
+    },
+    "2000_historico": {
+     "limites": [
+      [
+       9.213525,
+       -79.556332
+      ],
+      [
+       9.456028,
+       -79.234378
+      ]
+     ],
+     "dimensiones": [
+      900,
+      687
+     ],
+     "tamano_pixel_m": 39.3
+    },
+    "2012_detallado": {
+     "limites": [
+      [
+       9.213525,
+       -79.556332
+      ],
+      [
+       9.456028,
+       -79.234378
+      ]
+     ],
+     "dimensiones": [
+      900,
+      687
+     ],
+     "tamano_pixel_m": 39.3
+    },
+    "2012_binario": {
+     "limites": [
+      [
+       9.213525,
+       -79.556332
+      ],
+      [
+       9.456028,
+       -79.234378
+      ]
+     ],
+     "dimensiones": [
+      900,
+      687
+     ],
+     "tamano_pixel_m": 39.3
+    },
+    "2019_general": {
+     "limites": [
+      [
+       9.213525,
+       -79.556332
+      ],
+      [
+       9.456028,
+       -79.234378
+      ]
+     ],
+     "dimensiones": [
+      900,
+      687
+     ],
+     "tamano_pixel_m": 39.3
+    },
+    "2021_detallado": {
+     "limites": [
+      [
+       9.213525,
+       -79.556332
+      ],
+      [
+       9.456028,
+       -79.234378
+      ]
+     ],
+     "dimensiones": [
+      900,
+      687
+     ],
+     "tamano_pixel_m": 39.3
+    },
+    "2023_general": {
+     "limites": [
+      [
+       9.213525,
+       -79.556332
+      ],
+      [
+       9.456028,
+       -79.234378
+      ]
+     ],
+     "dimensiones": [
+      900,
+      687
+     ],
+     "tamano_pixel_m": 39.3
+    },
+    "2021_general": {
+     "limites": [
+      [
+       9.213525,
+       -79.556332
+      ],
+      [
+       9.456028,
+       -79.234378
+      ]
+     ],
+     "dimensiones": [
+      900,
+      687
+     ],
+     "tamano_pixel_m": 39.3
+    }
+   },
+   "superficies": [
+    "1992_historico",
+    "2000_historico",
+    "2012_binario",
+    "2012_detallado",
+    "2019_general",
+    "2021_detallado",
+    "2021_general",
+    "2023_general"
+   ]
+  },
+  "s22": {
+   "nombre": "Río Chico",
+   "mapas": {
+    "1992_historico": {
+     "limites": [
+      [
+       9.264369,
+       -79.521191
+      ],
+      [
+       9.400529,
+       -79.424248
+      ]
+     ],
+     "dimensiones": [
+      633,
+      901
+     ],
+     "tamano_pixel_m": 16.8
+    },
+    "2000_historico": {
+     "limites": [
+      [
+       9.264369,
+       -79.521191
+      ],
+      [
+       9.400529,
+       -79.424248
+      ]
+     ],
+     "dimensiones": [
+      633,
+      901
+     ],
+     "tamano_pixel_m": 16.8
+    },
+    "2012_binario": {
+     "limites": [
+      [
+       9.264369,
+       -79.521191
+      ],
+      [
+       9.400529,
+       -79.424248
+      ]
+     ],
+     "dimensiones": [
+      633,
+      901
+     ],
+     "tamano_pixel_m": 16.8
+    },
+    "2012_detallado": {
+     "limites": [
+      [
+       9.264369,
+       -79.521191
+      ],
+      [
+       9.400529,
+       -79.424248
+      ]
+     ],
+     "dimensiones": [
+      633,
+      901
+     ],
+     "tamano_pixel_m": 16.8
+    },
+    "2019_general": {
+     "limites": [
+      [
+       9.264369,
+       -79.521191
+      ],
+      [
+       9.400529,
+       -79.424248
+      ]
+     ],
+     "dimensiones": [
+      633,
+      901
+     ],
+     "tamano_pixel_m": 16.8
+    },
+    "2021_general": {
+     "limites": [
+      [
+       9.264369,
+       -79.521191
+      ],
+      [
+       9.400529,
+       -79.424248
+      ]
+     ],
+     "dimensiones": [
+      633,
+      901
+     ],
+     "tamano_pixel_m": 16.8
+    },
+    "2021_detallado": {
+     "limites": [
+      [
+       9.264369,
+       -79.521191
+      ],
+      [
+       9.400529,
+       -79.424248
+      ]
+     ],
+     "dimensiones": [
+      633,
+      901
+     ],
+     "tamano_pixel_m": 16.8
+    },
+    "2023_general": {
+     "limites": [
+      [
+       9.264369,
+       -79.521191
+      ],
+      [
+       9.400529,
+       -79.424248
+      ]
+     ],
+     "dimensiones": [
+      633,
+      901
+     ],
+     "tamano_pixel_m": 16.8
+    }
+   },
+   "superficies": [
+    "1992_historico",
+    "2000_historico",
+    "2012_binario",
+    "2012_detallado",
+    "2019_general",
+    "2021_detallado",
+    "2021_general",
+    "2023_general"
+   ]
+  },
+  "s23": {
+   "nombre": "Río Chilibre",
+   "mapas": {
+    "1992_historico": {
+     "limites": [
+      [
+       9.074037,
+       -79.659232
+      ],
+      [
+       9.184362,
+       -79.547616
+      ]
+     ],
+     "dimensiones": [
+      899,
+      900
+     ],
+     "tamano_pixel_m": 13.6
+    },
+    "2000_historico": {
+     "limites": [
+      [
+       9.074037,
+       -79.659232
+      ],
+      [
+       9.184362,
+       -79.547616
+      ]
+     ],
+     "dimensiones": [
+      899,
+      900
+     ],
+     "tamano_pixel_m": 13.6
+    },
+    "2012_binario": {
+     "limites": [
+      [
+       9.074037,
+       -79.659232
+      ],
+      [
+       9.184362,
+       -79.547616
+      ]
+     ],
+     "dimensiones": [
+      899,
+      900
+     ],
+     "tamano_pixel_m": 13.6
+    },
+    "2012_detallado": {
+     "limites": [
+      [
+       9.074037,
+       -79.659232
+      ],
+      [
+       9.184362,
+       -79.547616
+      ]
+     ],
+     "dimensiones": [
+      899,
+      900
+     ],
+     "tamano_pixel_m": 13.6
+    },
+    "2019_general": {
+     "limites": [
+      [
+       9.074037,
+       -79.659232
+      ],
+      [
+       9.184362,
+       -79.547616
+      ]
+     ],
+     "dimensiones": [
+      899,
+      900
+     ],
+     "tamano_pixel_m": 13.6
+    },
+    "2021_general": {
+     "limites": [
+      [
+       9.074037,
+       -79.659232
+      ],
+      [
+       9.184362,
+       -79.547616
+      ]
+     ],
+     "dimensiones": [
+      899,
+      900
+     ],
+     "tamano_pixel_m": 13.6
+    },
+    "2021_detallado": {
+     "limites": [
+      [
+       9.074037,
+       -79.659232
+      ],
+      [
+       9.184362,
+       -79.547616
+      ]
+     ],
+     "dimensiones": [
+      899,
+      900
+     ],
+     "tamano_pixel_m": 13.6
+    },
+    "2023_general": {
+     "limites": [
+      [
+       9.074037,
+       -79.659232
+      ],
+      [
+       9.184362,
+       -79.547616
+      ]
+     ],
+     "dimensiones": [
+      899,
+      900
+     ],
+     "tamano_pixel_m": 13.6
+    }
+   },
+   "superficies": [
+    "1992_historico",
+    "2000_historico",
+    "2012_binario",
+    "2012_detallado",
+    "2019_general",
+    "2021_detallado",
+    "2021_general",
+    "2023_general"
+   ]
+  },
+  "s24": {
+   "nombre": "Río Chilibrillo",
+   "mapas": {
+    "1992_historico": {
+     "limites": [
+      [
+       9.100234,
+       -79.636631
+      ],
+      [
+       9.20984,
+       -79.496689
+      ]
+     ],
+     "dimensiones": [
+      900,
+      714
+     ],
+     "tamano_pixel_m": 17.1
+    },
+    "2000_historico": {
+     "limites": [
+      [
+       9.100234,
+       -79.636631
+      ],
+      [
+       9.20984,
+       -79.496689
+      ]
+     ],
+     "dimensiones": [
+      900,
+      714
+     ],
+     "tamano_pixel_m": 17.1
+    },
+    "2012_detallado": {
+     "limites": [
+      [
+       9.100234,
+       -79.636631
+      ],
+      [
+       9.20984,
+       -79.496689
+      ]
+     ],
+     "dimensiones": [
+      900,
+      714
+     ],
+     "tamano_pixel_m": 17.1
+    },
+    "2012_binario": {
+     "limites": [
+      [
+       9.100234,
+       -79.636631
+      ],
+      [
+       9.20984,
+       -79.496689
+      ]
+     ],
+     "dimensiones": [
+      900,
+      714
+     ],
+     "tamano_pixel_m": 17.1
+    },
+    "2019_general": {
+     "limites": [
+      [
+       9.100234,
+       -79.636631
+      ],
+      [
+       9.20984,
+       -79.496689
+      ]
+     ],
+     "dimensiones": [
+      900,
+      714
+     ],
+     "tamano_pixel_m": 17.1
+    },
+    "2021_detallado": {
+     "limites": [
+      [
+       9.100234,
+       -79.636631
+      ],
+      [
+       9.20984,
+       -79.496689
+      ]
+     ],
+     "dimensiones": [
+      900,
+      714
+     ],
+     "tamano_pixel_m": 17.1
+    },
+    "2021_general": {
+     "limites": [
+      [
+       9.100234,
+       -79.636631
+      ],
+      [
+       9.20984,
+       -79.496689
+      ]
+     ],
+     "dimensiones": [
+      900,
+      714
+     ],
+     "tamano_pixel_m": 17.1
+    },
+    "2023_general": {
+     "limites": [
+      [
+       9.100234,
+       -79.636631
+      ],
+      [
+       9.20984,
+       -79.496689
+      ]
+     ],
+     "dimensiones": [
+      900,
+      714
+     ],
+     "tamano_pixel_m": 17.1
+    }
+   },
+   "superficies": [
+    "1992_historico",
+    "2000_historico",
+    "2012_binario",
+    "2012_detallado",
+    "2019_general",
+    "2021_detallado",
+    "2021_general",
+    "2023_general"
+   ]
+  },
+  "s25": {
+   "nombre": "Río Ciricito",
+   "mapas": {
+    "1992_historico": {
+     "limites": [
+      [
+       8.917464,
+       -80.124572
+      ],
+      [
+       9.022235,
+       -80.054214
+      ]
+     ],
+     "dimensiones": [
+      597,
+      900
+     ],
+     "tamano_pixel_m": 13.0
+    },
+    "2000_historico": {
+     "limites": [
+      [
+       8.917464,
+       -80.124572
+      ],
+      [
+       9.022235,
+       -80.054214
+      ]
+     ],
+     "dimensiones": [
+      597,
+      900
+     ],
+     "tamano_pixel_m": 13.0
+    },
+    "2012_binario": {
+     "limites": [
+      [
+       8.917464,
+       -80.124572
+      ],
+      [
+       9.022235,
+       -80.054214
+      ]
+     ],
+     "dimensiones": [
+      597,
+      900
+     ],
+     "tamano_pixel_m": 13.0
+    },
+    "2012_detallado": {
+     "limites": [
+      [
+       8.917464,
+       -80.124572
+      ],
+      [
+       9.022235,
+       -80.054214
+      ]
+     ],
+     "dimensiones": [
+      597,
+      900
+     ],
+     "tamano_pixel_m": 13.0
+    },
+    "2019_general": {
+     "limites": [
+      [
+       8.917464,
+       -80.124572
+      ],
+      [
+       9.022235,
+       -80.054214
+      ]
+     ],
+     "dimensiones": [
+      597,
+      900
+     ],
+     "tamano_pixel_m": 13.0
+    },
+    "2021_detallado": {
+     "limites": [
+      [
+       8.917464,
+       -80.124572
+      ],
+      [
+       9.022235,
+       -80.054214
+      ]
+     ],
+     "dimensiones": [
+      597,
+      900
+     ],
+     "tamano_pixel_m": 13.0
+    },
+    "2023_general": {
+     "limites": [
+      [
+       8.917464,
+       -80.124572
+      ],
+      [
+       9.022235,
+       -80.054214
+      ]
+     ],
+     "dimensiones": [
+      597,
+      900
+     ],
+     "tamano_pixel_m": 13.0
+    },
+    "2021_general": {
+     "limites": [
+      [
+       8.917464,
+       -80.124572
+      ],
+      [
+       9.022235,
+       -80.054214
+      ]
+     ],
+     "dimensiones": [
+      597,
+      900
+     ],
+     "tamano_pixel_m": 13.0
+    }
+   },
+   "superficies": [
+    "1992_historico",
+    "2000_historico",
+    "2012_binario",
+    "2012_detallado",
+    "2019_general",
+    "2021_detallado",
+    "2021_general",
+    "2023_general"
+   ]
+  },
+  "s26": {
+   "nombre": "Río Cirí Grande",
+   "mapas": {
+    "1992_historico": {
+     "limites": [
+      [
+       8.644042,
+       -80.120585
+      ],
+      [
+       9.002449,
+       -80.000088
+      ]
+     ],
+     "dimensiones": [
+      299,
+      900
+     ],
+     "tamano_pixel_m": 44.3
+    },
+    "2000_historico": {
+     "limites": [
+      [
+       8.644042,
+       -80.120585
+      ],
+      [
+       9.002449,
+       -80.000088
+      ]
+     ],
+     "dimensiones": [
+      299,
+      900
+     ],
+     "tamano_pixel_m": 44.3
+    },
+    "2012_binario": {
+     "limites": [
+      [
+       8.644042,
+       -80.120585
+      ],
+      [
+       9.002449,
+       -80.000088
+      ]
+     ],
+     "dimensiones": [
+      299,
+      900
+     ],
+     "tamano_pixel_m": 44.3
+    },
+    "2012_detallado": {
+     "limites": [
+      [
+       8.644042,
+       -80.120585
+      ],
+      [
+       9.002449,
+       -80.000088
+      ]
+     ],
+     "dimensiones": [
+      299,
+      900
+     ],
+     "tamano_pixel_m": 44.3
+    },
+    "2019_general": {
+     "limites": [
+      [
+       8.644042,
+       -80.120585
+      ],
+      [
+       9.002449,
+       -80.000088
+      ]
+     ],
+     "dimensiones": [
+      299,
+      900
+     ],
+     "tamano_pixel_m": 44.3
+    },
+    "2021_detallado": {
+     "limites": [
+      [
+       8.644042,
+       -80.120585
+      ],
+      [
+       9.002449,
+       -80.000088
+      ]
+     ],
+     "dimensiones": [
+      299,
+      900
+     ],
+     "tamano_pixel_m": 44.3
+    },
+    "2023_general": {
+     "limites": [
+      [
+       8.644042,
+       -80.120585
+      ],
+      [
+       9.002449,
+       -80.000088
+      ]
+     ],
+     "dimensiones": [
+      299,
+      900
+     ],
+     "tamano_pixel_m": 44.3
+    },
+    "2021_general": {
+     "limites": [
+      [
+       8.644042,
+       -80.120585
+      ],
+      [
+       9.002449,
+       -80.000088
+      ]
+     ],
+     "dimensiones": [
+      299,
+      900
+     ],
+     "tamano_pixel_m": 44.3
+    }
+   },
+   "superficies": [
+    "1992_historico",
+    "2000_historico",
+    "2012_binario",
+    "2012_detallado",
+    "2019_general",
+    "2021_detallado",
+    "2021_general",
+    "2023_general"
+   ]
+  },
+  "s27": {
+   "nombre": "Río Culo Seco",
+   "mapas": {
+    "1992_historico": {
+     "limites": [
+      [
+       9.082092,
+       -79.749384
+      ],
+      [
+       9.114342,
+       -79.724001
+      ]
+     ],
+     "dimensiones": [
+      279,
+      359
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "2000_historico": {
+     "limites": [
+      [
+       9.082092,
+       -79.749384
+      ],
+      [
+       9.114342,
+       -79.724001
+      ]
+     ],
+     "dimensiones": [
+      279,
+      359
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "2012_binario": {
+     "limites": [
+      [
+       9.082092,
+       -79.749384
+      ],
+      [
+       9.114342,
+       -79.724001
+      ]
+     ],
+     "dimensiones": [
+      279,
+      359
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "2012_detallado": {
+     "limites": [
+      [
+       9.082092,
+       -79.749384
+      ],
+      [
+       9.114342,
+       -79.724001
+      ]
+     ],
+     "dimensiones": [
+      279,
+      359
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "2019_general": {
+     "limites": [
+      [
+       9.082092,
+       -79.749384
+      ],
+      [
+       9.114342,
+       -79.724001
+      ]
+     ],
+     "dimensiones": [
+      279,
+      359
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "2021_general": {
+     "limites": [
+      [
+       9.082092,
+       -79.749384
+      ],
+      [
+       9.114342,
+       -79.724001
+      ]
+     ],
+     "dimensiones": [
+      279,
+      359
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "2021_detallado": {
+     "limites": [
+      [
+       9.082092,
+       -79.749384
+      ],
+      [
+       9.114342,
+       -79.724001
+      ]
+     ],
+     "dimensiones": [
+      279,
+      359
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "2023_general": {
+     "limites": [
+      [
+       9.082092,
+       -79.749384
+      ],
+      [
+       9.114342,
+       -79.724001
+      ]
+     ],
+     "dimensiones": [
+      279,
+      359
+     ],
+     "tamano_pixel_m": 10.0
+    }
+   },
+   "superficies": [
+    "1992_historico",
+    "2000_historico",
+    "2012_binario",
+    "2012_detallado",
+    "2019_general",
+    "2021_detallado",
+    "2021_general",
+    "2023_general"
+   ]
+  },
+  "s28": {
+   "nombre": "Río Frijoles",
+   "mapas": {
+    "1992_historico": {
+     "limites": [
+      [
+       9.131289,
+       -79.782383
+      ],
+      [
+       9.22,
+       -79.700609
+      ]
+     ],
+     "dimensiones": [
+      819,
+      900
+     ],
+     "tamano_pixel_m": 11.0
+    },
+    "2000_historico": {
+     "limites": [
+      [
+       9.131289,
+       -79.782383
+      ],
+      [
+       9.22,
+       -79.700609
+      ]
+     ],
+     "dimensiones": [
+      819,
+      900
+     ],
+     "tamano_pixel_m": 11.0
+    },
+    "2012_binario": {
+     "limites": [
+      [
+       9.131289,
+       -79.782383
+      ],
+      [
+       9.22,
+       -79.700609
+      ]
+     ],
+     "dimensiones": [
+      819,
+      900
+     ],
+     "tamano_pixel_m": 11.0
+    },
+    "2012_detallado": {
+     "limites": [
+      [
+       9.131289,
+       -79.782383
+      ],
+      [
+       9.22,
+       -79.700609
+      ]
+     ],
+     "dimensiones": [
+      819,
+      900
+     ],
+     "tamano_pixel_m": 11.0
+    },
+    "2019_general": {
+     "limites": [
+      [
+       9.131289,
+       -79.782383
+      ],
+      [
+       9.22,
+       -79.700609
+      ]
+     ],
+     "dimensiones": [
+      819,
+      900
+     ],
+     "tamano_pixel_m": 11.0
+    },
+    "2021_detallado": {
+     "limites": [
+      [
+       9.131289,
+       -79.782383
+      ],
+      [
+       9.22,
+       -79.700609
+      ]
+     ],
+     "dimensiones": [
+      819,
+      900
+     ],
+     "tamano_pixel_m": 11.0
+    },
+    "2023_general": {
+     "limites": [
+      [
+       9.131289,
+       -79.782383
+      ],
+      [
+       9.22,
+       -79.700609
+      ]
+     ],
+     "dimensiones": [
+      819,
+      900
+     ],
+     "tamano_pixel_m": 11.0
+    },
+    "2021_general": {
+     "limites": [
+      [
+       9.131289,
+       -79.782383
+      ],
+      [
+       9.22,
+       -79.700609
+      ]
+     ],
+     "dimensiones": [
+      819,
+      900
+     ],
+     "tamano_pixel_m": 11.0
+    }
+   },
+   "superficies": [
+    "1992_historico",
+    "2000_historico",
+    "2012_binario",
+    "2012_detallado",
+    "2019_general",
+    "2021_detallado",
+    "2021_general",
+    "2023_general"
+   ]
+  },
+  "s29": {
+   "nombre": "Río Frijolita",
+   "mapas": {
+    "2000_historico": {
+     "limites": [
+      [
+       9.133586,
+       -79.809342
+      ],
+      [
+       9.22003,
+       -79.72119
+      ]
+     ],
+     "dimensiones": [
+      901,
+      895
+     ],
+     "tamano_pixel_m": 10.8
+    },
+    "1992_historico": {
+     "limites": [
+      [
+       9.133586,
+       -79.809342
+      ],
+      [
+       9.22003,
+       -79.72119
+      ]
+     ],
+     "dimensiones": [
+      901,
+      895
+     ],
+     "tamano_pixel_m": 10.8
+    },
+    "2012_detallado": {
+     "limites": [
+      [
+       9.133586,
+       -79.809342
+      ],
+      [
+       9.22003,
+       -79.72119
+      ]
+     ],
+     "dimensiones": [
+      901,
+      895
+     ],
+     "tamano_pixel_m": 10.8
+    },
+    "2012_binario": {
+     "limites": [
+      [
+       9.133586,
+       -79.809342
+      ],
+      [
+       9.22003,
+       -79.72119
+      ]
+     ],
+     "dimensiones": [
+      901,
+      895
+     ],
+     "tamano_pixel_m": 10.8
+    },
+    "2019_general": {
+     "limites": [
+      [
+       9.133586,
+       -79.809342
+      ],
+      [
+       9.22003,
+       -79.72119
+      ]
+     ],
+     "dimensiones": [
+      901,
+      895
+     ],
+     "tamano_pixel_m": 10.8
+    },
+    "2021_detallado": {
+     "limites": [
+      [
+       9.133586,
+       -79.809342
+      ],
+      [
+       9.22003,
+       -79.72119
+      ]
+     ],
+     "dimensiones": [
+      901,
+      895
+     ],
+     "tamano_pixel_m": 10.8
+    },
+    "2021_general": {
+     "limites": [
+      [
+       9.133586,
+       -79.809342
+      ],
+      [
+       9.22003,
+       -79.72119
+      ]
+     ],
+     "dimensiones": [
+      901,
+      895
+     ],
+     "tamano_pixel_m": 10.8
+    },
+    "2023_general": {
+     "limites": [
+      [
+       9.133586,
+       -79.809342
+      ],
+      [
+       9.22003,
+       -79.72119
+      ]
+     ],
+     "dimensiones": [
+      901,
+      895
+     ],
+     "tamano_pixel_m": 10.8
+    }
+   },
+   "superficies": [
+    "1992_historico",
+    "2000_historico",
+    "2012_binario",
+    "2012_detallado",
+    "2019_general",
+    "2021_detallado",
+    "2021_general",
+    "2023_general"
+   ]
+  },
+  "s30": {
+   "nombre": "Río Gatuncillo",
+   "mapas": {
+    "1992_historico": {
+     "limites": [
+      [
+       9.19586,
+       -79.699068
+      ],
+      [
+       9.379558,
+       -79.592349
+      ]
+     ],
+     "dimensiones": [
+      516,
+      900
+     ],
+     "tamano_pixel_m": 22.7
+    },
+    "2000_historico": {
+     "limites": [
+      [
+       9.19586,
+       -79.699068
+      ],
+      [
+       9.379558,
+       -79.592349
+      ]
+     ],
+     "dimensiones": [
+      516,
+      900
+     ],
+     "tamano_pixel_m": 22.7
+    },
+    "2012_binario": {
+     "limites": [
+      [
+       9.19586,
+       -79.699068
+      ],
+      [
+       9.379558,
+       -79.592349
+      ]
+     ],
+     "dimensiones": [
+      516,
+      900
+     ],
+     "tamano_pixel_m": 22.7
+    },
+    "2012_detallado": {
+     "limites": [
+      [
+       9.19586,
+       -79.699068
+      ],
+      [
+       9.379558,
+       -79.592349
+      ]
+     ],
+     "dimensiones": [
+      516,
+      900
+     ],
+     "tamano_pixel_m": 22.7
+    },
+    "2019_general": {
+     "limites": [
+      [
+       9.19586,
+       -79.699068
+      ],
+      [
+       9.379558,
+       -79.592349
+      ]
+     ],
+     "dimensiones": [
+      516,
+      900
+     ],
+     "tamano_pixel_m": 22.7
+    },
+    "2021_detallado": {
+     "limites": [
+      [
+       9.19586,
+       -79.699068
+      ],
+      [
+       9.379558,
+       -79.592349
+      ]
+     ],
+     "dimensiones": [
+      516,
+      900
+     ],
+     "tamano_pixel_m": 22.7
+    },
+    "2023_general": {
+     "limites": [
+      [
+       9.19586,
+       -79.699068
+      ],
+      [
+       9.379558,
+       -79.592349
+      ]
+     ],
+     "dimensiones": [
+      516,
+      900
+     ],
+     "tamano_pixel_m": 22.7
+    },
+    "2021_general": {
+     "limites": [
+      [
+       9.19586,
+       -79.699068
+      ],
+      [
+       9.379558,
+       -79.592349
+      ]
+     ],
+     "dimensiones": [
+      516,
+      900
+     ],
+     "tamano_pixel_m": 22.7
+    }
+   },
+   "superficies": [
+    "1992_historico",
+    "2000_historico",
+    "2012_binario",
+    "2012_detallado",
+    "2019_general",
+    "2021_detallado",
+    "2021_general",
+    "2023_general"
+   ]
+  },
+  "s31": {
+   "nombre": "Río Gatún",
+   "mapas": {
+    "1992_historico": {
+     "limites": [
+      [
+       9.271543,
+       -79.778275
+      ],
+      [
+       9.466614,
+       -79.566445
+      ]
+     ],
+     "dimensiones": [
+      900,
+      840
+     ],
+     "tamano_pixel_m": 25.9
+    },
+    "2000_historico": {
+     "limites": [
+      [
+       9.271543,
+       -79.778275
+      ],
+      [
+       9.466614,
+       -79.566445
+      ]
+     ],
+     "dimensiones": [
+      900,
+      840
+     ],
+     "tamano_pixel_m": 25.9
+    },
+    "2012_binario": {
+     "limites": [
+      [
+       9.271543,
+       -79.778275
+      ],
+      [
+       9.466614,
+       -79.566445
+      ]
+     ],
+     "dimensiones": [
+      900,
+      840
+     ],
+     "tamano_pixel_m": 25.9
+    },
+    "2012_detallado": {
+     "limites": [
+      [
+       9.271543,
+       -79.778275
+      ],
+      [
+       9.466614,
+       -79.566445
+      ]
+     ],
+     "dimensiones": [
+      900,
+      840
+     ],
+     "tamano_pixel_m": 25.9
+    },
+    "2019_general": {
+     "limites": [
+      [
+       9.271543,
+       -79.778275
+      ],
+      [
+       9.466614,
+       -79.566445
+      ]
+     ],
+     "dimensiones": [
+      900,
+      840
+     ],
+     "tamano_pixel_m": 25.9
+    },
+    "2021_detallado": {
+     "limites": [
+      [
+       9.271543,
+       -79.778275
+      ],
+      [
+       9.466614,
+       -79.566445
+      ]
+     ],
+     "dimensiones": [
+      900,
+      840
+     ],
+     "tamano_pixel_m": 25.9
+    },
+    "2023_general": {
+     "limites": [
+      [
+       9.271543,
+       -79.778275
+      ],
+      [
+       9.466614,
+       -79.566445
+      ]
+     ],
+     "dimensiones": [
+      900,
+      840
+     ],
+     "tamano_pixel_m": 25.9
+    },
+    "2021_general": {
+     "limites": [
+      [
+       9.271543,
+       -79.778275
+      ],
+      [
+       9.466614,
+       -79.566445
+      ]
+     ],
+     "dimensiones": [
+      900,
+      840
+     ],
+     "tamano_pixel_m": 25.9
+    }
+   },
+   "superficies": [
+    "1992_historico",
+    "2000_historico",
+    "2012_binario",
+    "2012_detallado",
+    "2019_general",
+    "2021_detallado",
+    "2021_general",
+    "2023_general"
+   ]
+  },
+  "s32": {
+   "nombre": "Río Gigantito",
+   "mapas": {
+    "1992_historico": {
+     "limites": [
+      [
+       9.074058,
+       -79.897776
+      ],
+      [
+       9.116638,
+       -79.820538
+      ]
+     ],
+     "dimensiones": [
+      849,
+      474
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "2000_historico": {
+     "limites": [
+      [
+       9.074058,
+       -79.897776
+      ],
+      [
+       9.116638,
+       -79.820538
+      ]
+     ],
+     "dimensiones": [
+      849,
+      474
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "2012_binario": {
+     "limites": [
+      [
+       9.074058,
+       -79.897776
+      ],
+      [
+       9.116638,
+       -79.820538
+      ]
+     ],
+     "dimensiones": [
+      849,
+      474
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "2012_detallado": {
+     "limites": [
+      [
+       9.074058,
+       -79.897776
+      ],
+      [
+       9.116638,
+       -79.820538
+      ]
+     ],
+     "dimensiones": [
+      849,
+      474
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "2019_general": {
+     "limites": [
+      [
+       9.074058,
+       -79.897776
+      ],
+      [
+       9.116638,
+       -79.820538
+      ]
+     ],
+     "dimensiones": [
+      849,
+      474
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "2021_detallado": {
+     "limites": [
+      [
+       9.074058,
+       -79.897776
+      ],
+      [
+       9.116638,
+       -79.820538
+      ]
+     ],
+     "dimensiones": [
+      849,
+      474
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "2021_general": {
+     "limites": [
+      [
+       9.074058,
+       -79.897776
+      ],
+      [
+       9.116638,
+       -79.820538
+      ]
+     ],
+     "dimensiones": [
+      849,
+      474
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "2023_general": {
+     "limites": [
+      [
+       9.074058,
+       -79.897776
+      ],
+      [
+       9.116638,
+       -79.820538
+      ]
+     ],
+     "dimensiones": [
+      849,
+      474
+     ],
+     "tamano_pixel_m": 10.0
+    }
+   },
+   "superficies": [
+    "1992_historico",
+    "2000_historico",
+    "2012_binario",
+    "2012_detallado",
+    "2019_general",
+    "2021_detallado",
+    "2021_general",
+    "2023_general"
+   ]
+  },
+  "s33": {
+   "nombre": "Río La Puente",
+   "mapas": {
+    "1992_historico": {
+     "limites": [
+      [
+       9.15278,
+       -79.55873
+      ],
+      [
+       9.205402,
+       -79.455445
+      ]
+     ],
+     "dimensiones": [
+      901,
+      465
+     ],
+     "tamano_pixel_m": 12.6
+    },
+    "2000_historico": {
+     "limites": [
+      [
+       9.15278,
+       -79.55873
+      ],
+      [
+       9.205402,
+       -79.455445
+      ]
+     ],
+     "dimensiones": [
+      901,
+      465
+     ],
+     "tamano_pixel_m": 12.6
+    },
+    "2012_binario": {
+     "limites": [
+      [
+       9.15278,
+       -79.55873
+      ],
+      [
+       9.205402,
+       -79.455445
+      ]
+     ],
+     "dimensiones": [
+      901,
+      465
+     ],
+     "tamano_pixel_m": 12.6
+    },
+    "2019_general": {
+     "limites": [
+      [
+       9.15278,
+       -79.55873
+      ],
+      [
+       9.205402,
+       -79.455445
+      ]
+     ],
+     "dimensiones": [
+      901,
+      465
+     ],
+     "tamano_pixel_m": 12.6
+    },
+    "2012_detallado": {
+     "limites": [
+      [
+       9.15278,
+       -79.55873
+      ],
+      [
+       9.205402,
+       -79.455445
+      ]
+     ],
+     "dimensiones": [
+      901,
+      465
+     ],
+     "tamano_pixel_m": 12.6
+    },
+    "2021_general": {
+     "limites": [
+      [
+       9.15278,
+       -79.55873
+      ],
+      [
+       9.205402,
+       -79.455445
+      ]
+     ],
+     "dimensiones": [
+      901,
+      465
+     ],
+     "tamano_pixel_m": 12.6
+    },
+    "2021_detallado": {
+     "limites": [
+      [
+       9.15278,
+       -79.55873
+      ],
+      [
+       9.205402,
+       -79.455445
+      ]
+     ],
+     "dimensiones": [
+      901,
+      465
+     ],
+     "tamano_pixel_m": 12.6
+    },
+    "2023_general": {
+     "limites": [
+      [
+       9.15278,
+       -79.55873
+      ],
+      [
+       9.205402,
+       -79.455445
+      ]
+     ],
+     "dimensiones": [
+      901,
+      465
+     ],
+     "tamano_pixel_m": 12.6
+    }
+   },
+   "superficies": [
+    "1992_historico",
+    "2000_historico",
+    "2012_binario",
+    "2012_detallado",
+    "2019_general",
+    "2021_detallado",
+    "2021_general",
+    "2023_general"
+   ]
+  },
+  "s34": {
+   "nombre": "Río Las Cascadas",
+   "mapas": {
+    "1992_historico": {
+     "limites": [
+      [
+       9.168085,
+       -79.541634
+      ],
+      [
+       9.259326,
+       -79.384966
+      ]
+     ],
+     "dimensiones": [
+      900,
+      531
+     ],
+     "tamano_pixel_m": 19.1
+    },
+    "2000_historico": {
+     "limites": [
+      [
+       9.168085,
+       -79.541634
+      ],
+      [
+       9.259326,
+       -79.384966
+      ]
+     ],
+     "dimensiones": [
+      900,
+      531
+     ],
+     "tamano_pixel_m": 19.1
+    },
+    "2012_binario": {
+     "limites": [
+      [
+       9.168085,
+       -79.541634
+      ],
+      [
+       9.259326,
+       -79.384966
+      ]
+     ],
+     "dimensiones": [
+      900,
+      531
+     ],
+     "tamano_pixel_m": 19.1
+    },
+    "2012_detallado": {
+     "limites": [
+      [
+       9.168085,
+       -79.541634
+      ],
+      [
+       9.259326,
+       -79.384966
+      ]
+     ],
+     "dimensiones": [
+      900,
+      531
+     ],
+     "tamano_pixel_m": 19.1
+    },
+    "2019_general": {
+     "limites": [
+      [
+       9.168085,
+       -79.541634
+      ],
+      [
+       9.259326,
+       -79.384966
+      ]
+     ],
+     "dimensiones": [
+      900,
+      531
+     ],
+     "tamano_pixel_m": 19.1
+    },
+    "2021_detallado": {
+     "limites": [
+      [
+       9.168085,
+       -79.541634
+      ],
+      [
+       9.259326,
+       -79.384966
+      ]
+     ],
+     "dimensiones": [
+      900,
+      531
+     ],
+     "tamano_pixel_m": 19.1
+    },
+    "2021_general": {
+     "limites": [
+      [
+       9.168085,
+       -79.541634
+      ],
+      [
+       9.259326,
+       -79.384966
+      ]
+     ],
+     "dimensiones": [
+      900,
+      531
+     ],
+     "tamano_pixel_m": 19.1
+    },
+    "2023_general": {
+     "limites": [
+      [
+       9.168085,
+       -79.541634
+      ],
+      [
+       9.259326,
+       -79.384966
+      ]
+     ],
+     "dimensiones": [
+      900,
+      531
+     ],
+     "tamano_pixel_m": 19.1
+    }
+   },
+   "superficies": [
+    "1992_historico",
+    "2000_historico",
+    "2012_binario",
+    "2012_detallado",
+    "2019_general",
+    "2021_detallado",
+    "2021_general",
+    "2023_general"
+   ]
+  },
+  "s35": {
+   "nombre": "Río Limón",
+   "mapas": {
+    "2000_historico": {
+     "limites": [
+      [
+       9.205588,
+       -79.652484
+      ],
+      [
+       9.254636,
+       -79.61699
+      ]
+     ],
+     "dimensiones": [
+      390,
+      546
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "1992_historico": {
+     "limites": [
+      [
+       9.205588,
+       -79.652484
+      ],
+      [
+       9.254636,
+       -79.61699
+      ]
+     ],
+     "dimensiones": [
+      390,
+      546
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "2012_binario": {
+     "limites": [
+      [
+       9.205588,
+       -79.652484
+      ],
+      [
+       9.254636,
+       -79.61699
+      ]
+     ],
+     "dimensiones": [
+      390,
+      546
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "2019_general": {
+     "limites": [
+      [
+       9.205588,
+       -79.652484
+      ],
+      [
+       9.254636,
+       -79.61699
+      ]
+     ],
+     "dimensiones": [
+      390,
+      546
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "2012_detallado": {
+     "limites": [
+      [
+       9.205588,
+       -79.652484
+      ],
+      [
+       9.254636,
+       -79.61699
+      ]
+     ],
+     "dimensiones": [
+      390,
+      546
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "2021_detallado": {
+     "limites": [
+      [
+       9.205588,
+       -79.652484
+      ],
+      [
+       9.254636,
+       -79.61699
+      ]
+     ],
+     "dimensiones": [
+      390,
+      546
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "2023_general": {
+     "limites": [
+      [
+       9.205588,
+       -79.652484
+      ],
+      [
+       9.254636,
+       -79.61699
+      ]
+     ],
+     "dimensiones": [
+      390,
+      546
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "2021_general": {
+     "limites": [
+      [
+       9.205588,
+       -79.652484
+      ],
+      [
+       9.254636,
+       -79.61699
+      ]
+     ],
+     "dimensiones": [
+      390,
+      546
+     ],
+     "tamano_pixel_m": 10.0
+    }
+   },
+   "superficies": [
+    "1992_historico",
+    "2000_historico",
+    "2012_binario",
+    "2012_detallado",
+    "2019_general",
+    "2021_detallado",
+    "2021_general",
+    "2023_general"
+   ]
+  },
+  "s36": {
+   "nombre": "Río Los Hules",
+   "mapas": {
+    "1992_historico": {
+     "limites": [
+      [
+       8.927256,
+       -79.958388
+      ],
+      [
+       9.082842,
+       -79.874723
+      ]
+     ],
+     "dimensiones": [
+      478,
+      900
+     ],
+     "tamano_pixel_m": 19.2
+    },
+    "2012_binario": {
+     "limites": [
+      [
+       8.927256,
+       -79.958388
+      ],
+      [
+       9.082842,
+       -79.874723
+      ]
+     ],
+     "dimensiones": [
+      478,
+      900
+     ],
+     "tamano_pixel_m": 19.2
+    },
+    "2000_historico": {
+     "limites": [
+      [
+       8.927256,
+       -79.958388
+      ],
+      [
+       9.082842,
+       -79.874723
+      ]
+     ],
+     "dimensiones": [
+      478,
+      900
+     ],
+     "tamano_pixel_m": 19.2
+    },
+    "2012_detallado": {
+     "limites": [
+      [
+       8.927256,
+       -79.958388
+      ],
+      [
+       9.082842,
+       -79.874723
+      ]
+     ],
+     "dimensiones": [
+      478,
+      900
+     ],
+     "tamano_pixel_m": 19.2
+    },
+    "2019_general": {
+     "limites": [
+      [
+       8.927256,
+       -79.958388
+      ],
+      [
+       9.082842,
+       -79.874723
+      ]
+     ],
+     "dimensiones": [
+      478,
+      900
+     ],
+     "tamano_pixel_m": 19.2
+    },
+    "2021_detallado": {
+     "limites": [
+      [
+       8.927256,
+       -79.958388
+      ],
+      [
+       9.082842,
+       -79.874723
+      ]
+     ],
+     "dimensiones": [
+      478,
+      900
+     ],
+     "tamano_pixel_m": 19.2
+    },
+    "2023_general": {
+     "limites": [
+      [
+       8.927256,
+       -79.958388
+      ],
+      [
+       9.082842,
+       -79.874723
+      ]
+     ],
+     "dimensiones": [
+      478,
+      900
+     ],
+     "tamano_pixel_m": 19.2
+    },
+    "2021_general": {
+     "limites": [
+      [
+       8.927256,
+       -79.958388
+      ],
+      [
+       9.082842,
+       -79.874723
+      ]
+     ],
+     "dimensiones": [
+      478,
+      900
+     ],
+     "tamano_pixel_m": 19.2
+    }
+   },
+   "superficies": [
+    "1992_historico",
+    "2000_historico",
+    "2012_binario",
+    "2012_detallado",
+    "2019_general",
+    "2021_detallado",
+    "2021_general",
+    "2023_general"
+   ]
+  },
+  "s37": {
+   "nombre": "Río Mandinga",
+   "mapas": {
+    "1992_historico": {
+     "limites": [
+      [
+       8.998372,
+       -79.730664
+      ],
+      [
+       9.101807,
+       -79.672825
+      ]
+     ],
+     "dimensiones": [
+      497,
+      900
+     ],
+     "tamano_pixel_m": 12.8
+    },
+    "2012_binario": {
+     "limites": [
+      [
+       8.998372,
+       -79.730664
+      ],
+      [
+       9.101807,
+       -79.672825
+      ]
+     ],
+     "dimensiones": [
+      497,
+      900
+     ],
+     "tamano_pixel_m": 12.8
+    },
+    "2000_historico": {
+     "limites": [
+      [
+       8.998372,
+       -79.730664
+      ],
+      [
+       9.101807,
+       -79.672825
+      ]
+     ],
+     "dimensiones": [
+      497,
+      900
+     ],
+     "tamano_pixel_m": 12.8
+    },
+    "2012_detallado": {
+     "limites": [
+      [
+       8.998372,
+       -79.730664
+      ],
+      [
+       9.101807,
+       -79.672825
+      ]
+     ],
+     "dimensiones": [
+      497,
+      900
+     ],
+     "tamano_pixel_m": 12.8
+    },
+    "2019_general": {
+     "limites": [
+      [
+       8.998372,
+       -79.730664
+      ],
+      [
+       9.101807,
+       -79.672825
+      ]
+     ],
+     "dimensiones": [
+      497,
+      900
+     ],
+     "tamano_pixel_m": 12.8
+    },
+    "2021_detallado": {
+     "limites": [
+      [
+       8.998372,
+       -79.730664
+      ],
+      [
+       9.101807,
+       -79.672825
+      ]
+     ],
+     "dimensiones": [
+      497,
+      900
+     ],
+     "tamano_pixel_m": 12.8
+    },
+    "2021_general": {
+     "limites": [
+      [
+       8.998372,
+       -79.730664
+      ],
+      [
+       9.101807,
+       -79.672825
+      ]
+     ],
+     "dimensiones": [
+      497,
+      900
+     ],
+     "tamano_pixel_m": 12.8
+    },
+    "2023_general": {
+     "limites": [
+      [
+       8.998372,
+       -79.730664
+      ],
+      [
+       9.101807,
+       -79.672825
+      ]
+     ],
+     "dimensiones": [
+      497,
+      900
+     ],
+     "tamano_pixel_m": 12.8
+    }
+   },
+   "superficies": [
+    "1992_historico",
+    "2000_historico",
+    "2012_binario",
+    "2012_detallado",
+    "2019_general",
+    "2021_detallado",
+    "2021_general",
+    "2023_general"
+   ]
+  },
+  "s38": {
+   "nombre": "Río Moja Pollo",
+   "mapas": {
+    "1992_historico": {
+     "limites": [
+      [
+       9.176439,
+       -79.655974
+      ],
+      [
+       9.203119,
+       -79.613023
+      ]
+     ],
+     "dimensiones": [
+      472,
+      297
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "2000_historico": {
+     "limites": [
+      [
+       9.176439,
+       -79.655974
+      ],
+      [
+       9.203119,
+       -79.613023
+      ]
+     ],
+     "dimensiones": [
+      472,
+      297
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "2012_binario": {
+     "limites": [
+      [
+       9.176439,
+       -79.655974
+      ],
+      [
+       9.203119,
+       -79.613023
+      ]
+     ],
+     "dimensiones": [
+      472,
+      297
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "2012_detallado": {
+     "limites": [
+      [
+       9.176439,
+       -79.655974
+      ],
+      [
+       9.203119,
+       -79.613023
+      ]
+     ],
+     "dimensiones": [
+      472,
+      297
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "2019_general": {
+     "limites": [
+      [
+       9.176439,
+       -79.655974
+      ],
+      [
+       9.203119,
+       -79.613023
+      ]
+     ],
+     "dimensiones": [
+      472,
+      297
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "2021_detallado": {
+     "limites": [
+      [
+       9.176439,
+       -79.655974
+      ],
+      [
+       9.203119,
+       -79.613023
+      ]
+     ],
+     "dimensiones": [
+      472,
+      297
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "2021_general": {
+     "limites": [
+      [
+       9.176439,
+       -79.655974
+      ],
+      [
+       9.203119,
+       -79.613023
+      ]
+     ],
+     "dimensiones": [
+      472,
+      297
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "2023_general": {
+     "limites": [
+      [
+       9.176439,
+       -79.655974
+      ],
+      [
+       9.203119,
+       -79.613023
+      ]
+     ],
+     "dimensiones": [
+      472,
+      297
+     ],
+     "tamano_pixel_m": 10.0
+    }
+   },
+   "superficies": [
+    "1992_historico",
+    "2000_historico",
+    "2012_binario",
+    "2012_detallado",
+    "2019_general",
+    "2021_detallado",
+    "2021_general",
+    "2023_general"
+   ]
+  },
+  "s39": {
+   "nombre": "Río Obispo",
+   "mapas": {
+    "2000_historico": {
+     "limites": [
+      [
+       9.013552,
+       -79.664061
+      ],
+      [
+       9.093502,
+       -79.607754
+      ]
+     ],
+     "dimensiones": [
+      619,
+      890
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "1992_historico": {
+     "limites": [
+      [
+       9.013552,
+       -79.664061
+      ],
+      [
+       9.093502,
+       -79.607754
+      ]
+     ],
+     "dimensiones": [
+      619,
+      890
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "2012_binario": {
+     "limites": [
+      [
+       9.013552,
+       -79.664061
+      ],
+      [
+       9.093502,
+       -79.607754
+      ]
+     ],
+     "dimensiones": [
+      619,
+      890
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "2012_detallado": {
+     "limites": [
+      [
+       9.013552,
+       -79.664061
+      ],
+      [
+       9.093502,
+       -79.607754
+      ]
+     ],
+     "dimensiones": [
+      619,
+      890
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "2019_general": {
+     "limites": [
+      [
+       9.013552,
+       -79.664061
+      ],
+      [
+       9.093502,
+       -79.607754
+      ]
+     ],
+     "dimensiones": [
+      619,
+      890
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "2021_detallado": {
+     "limites": [
+      [
+       9.013552,
+       -79.664061
+      ],
+      [
+       9.093502,
+       -79.607754
+      ]
+     ],
+     "dimensiones": [
+      619,
+      890
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "2023_general": {
+     "limites": [
+      [
+       9.013552,
+       -79.664061
+      ],
+      [
+       9.093502,
+       -79.607754
+      ]
+     ],
+     "dimensiones": [
+      619,
+      890
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "2021_general": {
+     "limites": [
+      [
+       9.013552,
+       -79.664061
+      ],
+      [
+       9.093502,
+       -79.607754
+      ]
+     ],
+     "dimensiones": [
+      619,
+      890
+     ],
+     "tamano_pixel_m": 10.0
+    }
+   },
+   "superficies": [
+    "1992_historico",
+    "2000_historico",
+    "2012_binario",
+    "2012_detallado",
+    "2019_general",
+    "2021_detallado",
+    "2021_general",
+    "2023_general"
+   ]
+  },
+  "s40": {
+   "nombre": "Río Paja",
+   "mapas": {
+    "1992_historico": {
+     "limites": [
+      [
+       8.985069,
+       -79.799526
+      ],
+      [
+       9.082271,
+       -79.709195
+      ]
+     ],
+     "dimensiones": [
+      826,
+      900
+     ],
+     "tamano_pixel_m": 12.0
+    },
+    "2000_historico": {
+     "limites": [
+      [
+       8.985069,
+       -79.799526
+      ],
+      [
+       9.082271,
+       -79.709195
+      ]
+     ],
+     "dimensiones": [
+      826,
+      900
+     ],
+     "tamano_pixel_m": 12.0
+    },
+    "2012_binario": {
+     "limites": [
+      [
+       8.985069,
+       -79.799526
+      ],
+      [
+       9.082271,
+       -79.709195
+      ]
+     ],
+     "dimensiones": [
+      826,
+      900
+     ],
+     "tamano_pixel_m": 12.0
+    },
+    "2012_detallado": {
+     "limites": [
+      [
+       8.985069,
+       -79.799526
+      ],
+      [
+       9.082271,
+       -79.709195
+      ]
+     ],
+     "dimensiones": [
+      826,
+      900
+     ],
+     "tamano_pixel_m": 12.0
+    },
+    "2019_general": {
+     "limites": [
+      [
+       8.985069,
+       -79.799526
+      ],
+      [
+       9.082271,
+       -79.709195
+      ]
+     ],
+     "dimensiones": [
+      826,
+      900
+     ],
+     "tamano_pixel_m": 12.0
+    },
+    "2021_detallado": {
+     "limites": [
+      [
+       8.985069,
+       -79.799526
+      ],
+      [
+       9.082271,
+       -79.709195
+      ]
+     ],
+     "dimensiones": [
+      826,
+      900
+     ],
+     "tamano_pixel_m": 12.0
+    },
+    "2021_general": {
+     "limites": [
+      [
+       8.985069,
+       -79.799526
+      ],
+      [
+       9.082271,
+       -79.709195
+      ]
+     ],
+     "dimensiones": [
+      826,
+      900
+     ],
+     "tamano_pixel_m": 12.0
+    },
+    "2023_general": {
+     "limites": [
+      [
+       8.985069,
+       -79.799526
+      ],
+      [
+       9.082271,
+       -79.709195
+      ]
+     ],
+     "dimensiones": [
+      826,
+      900
+     ],
+     "tamano_pixel_m": 12.0
+    }
+   },
+   "superficies": [
+    "1992_historico",
+    "2000_historico",
+    "2012_binario",
+    "2012_detallado",
+    "2019_general",
+    "2021_detallado",
+    "2021_general",
+    "2023_general"
+   ]
+  },
+  "s41": {
+   "nombre": "Río Palenque I",
+   "mapas": {
+    "1992_historico": {
+     "limites": [
+      [
+       9.257675,
+       -79.824097
+      ],
+      [
+       9.309957,
+       -79.780678
+      ]
+     ],
+     "dimensiones": [
+      477,
+      582
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "2000_historico": {
+     "limites": [
+      [
+       9.257675,
+       -79.824097
+      ],
+      [
+       9.309957,
+       -79.780678
+      ]
+     ],
+     "dimensiones": [
+      477,
+      582
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "2012_binario": {
+     "limites": [
+      [
+       9.257675,
+       -79.824097
+      ],
+      [
+       9.309957,
+       -79.780678
+      ]
+     ],
+     "dimensiones": [
+      477,
+      582
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "2012_detallado": {
+     "limites": [
+      [
+       9.257675,
+       -79.824097
+      ],
+      [
+       9.309957,
+       -79.780678
+      ]
+     ],
+     "dimensiones": [
+      477,
+      582
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "2019_general": {
+     "limites": [
+      [
+       9.257675,
+       -79.824097
+      ],
+      [
+       9.309957,
+       -79.780678
+      ]
+     ],
+     "dimensiones": [
+      477,
+      582
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "2021_detallado": {
+     "limites": [
+      [
+       9.257675,
+       -79.824097
+      ],
+      [
+       9.309957,
+       -79.780678
+      ]
+     ],
+     "dimensiones": [
+      477,
+      582
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "2021_general": {
+     "limites": [
+      [
+       9.257675,
+       -79.824097
+      ],
+      [
+       9.309957,
+       -79.780678
+      ]
+     ],
+     "dimensiones": [
+      477,
+      582
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "2023_general": {
+     "limites": [
+      [
+       9.257675,
+       -79.824097
+      ],
+      [
+       9.309957,
+       -79.780678
+      ]
+     ],
+     "dimensiones": [
+      477,
+      582
+     ],
+     "tamano_pixel_m": 10.0
+    }
+   },
+   "superficies": [
+    "1992_historico",
+    "2000_historico",
+    "2012_binario",
+    "2012_detallado",
+    "2019_general",
+    "2021_detallado",
+    "2021_general",
+    "2023_general"
+   ]
+  },
+  "s42": {
+   "nombre": "Río Palenque II",
+   "mapas": {
+    "1992_historico": {
+     "limites": [
+      [
+       9.161531,
+       -79.708287
+      ],
+      [
+       9.237528,
+       -79.660147
+      ]
+     ],
+     "dimensiones": [
+      529,
+      846
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "2000_historico": {
+     "limites": [
+      [
+       9.161531,
+       -79.708287
+      ],
+      [
+       9.237528,
+       -79.660147
+      ]
+     ],
+     "dimensiones": [
+      529,
+      846
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "2012_detallado": {
+     "limites": [
+      [
+       9.161531,
+       -79.708287
+      ],
+      [
+       9.237528,
+       -79.660147
+      ]
+     ],
+     "dimensiones": [
+      529,
+      846
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "2012_binario": {
+     "limites": [
+      [
+       9.161531,
+       -79.708287
+      ],
+      [
+       9.237528,
+       -79.660147
+      ]
+     ],
+     "dimensiones": [
+      529,
+      846
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "2019_general": {
+     "limites": [
+      [
+       9.161531,
+       -79.708287
+      ],
+      [
+       9.237528,
+       -79.660147
+      ]
+     ],
+     "dimensiones": [
+      529,
+      846
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "2021_detallado": {
+     "limites": [
+      [
+       9.161531,
+       -79.708287
+      ],
+      [
+       9.237528,
+       -79.660147
+      ]
+     ],
+     "dimensiones": [
+      529,
+      846
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "2023_general": {
+     "limites": [
+      [
+       9.161531,
+       -79.708287
+      ],
+      [
+       9.237528,
+       -79.660147
+      ]
+     ],
+     "dimensiones": [
+      529,
+      846
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "2021_general": {
+     "limites": [
+      [
+       9.161531,
+       -79.708287
+      ],
+      [
+       9.237528,
+       -79.660147
+      ]
+     ],
+     "dimensiones": [
+      529,
+      846
+     ],
+     "tamano_pixel_m": 10.0
+    }
+   },
+   "superficies": [
+    "1992_historico",
+    "2000_historico",
+    "2012_binario",
+    "2012_detallado",
+    "2019_general",
+    "2021_detallado",
+    "2021_general",
+    "2023_general"
+   ]
+  },
+  "s43": {
+   "nombre": "Río Pelón",
+   "mapas": {
+    "1992_historico": {
+     "limites": [
+      [
+       9.174059,
+       -79.788927
+      ],
+      [
+       9.204422,
+       -79.749069
+      ]
+     ],
+     "dimensiones": [
+      438,
+      338
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "2012_binario": {
+     "limites": [
+      [
+       9.174059,
+       -79.788927
+      ],
+      [
+       9.204422,
+       -79.749069
+      ]
+     ],
+     "dimensiones": [
+      438,
+      338
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "2012_detallado": {
+     "limites": [
+      [
+       9.174059,
+       -79.788927
+      ],
+      [
+       9.204422,
+       -79.749069
+      ]
+     ],
+     "dimensiones": [
+      438,
+      338
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "2000_historico": {
+     "limites": [
+      [
+       9.174059,
+       -79.788927
+      ],
+      [
+       9.204422,
+       -79.749069
+      ]
+     ],
+     "dimensiones": [
+      438,
+      338
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "2019_general": {
+     "limites": [
+      [
+       9.174059,
+       -79.788927
+      ],
+      [
+       9.204422,
+       -79.749069
+      ]
+     ],
+     "dimensiones": [
+      438,
+      338
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "2021_detallado": {
+     "limites": [
+      [
+       9.174059,
+       -79.788927
+      ],
+      [
+       9.204422,
+       -79.749069
+      ]
+     ],
+     "dimensiones": [
+      438,
+      338
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "2021_general": {
+     "limites": [
+      [
+       9.174059,
+       -79.788927
+      ],
+      [
+       9.204422,
+       -79.749069
+      ]
+     ],
+     "dimensiones": [
+      438,
+      338
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "2023_general": {
+     "limites": [
+      [
+       9.174059,
+       -79.788927
+      ],
+      [
+       9.204422,
+       -79.749069
+      ]
+     ],
+     "dimensiones": [
+      438,
+      338
+     ],
+     "tamano_pixel_m": 10.0
+    }
+   },
+   "superficies": [
+    "1992_historico",
+    "2000_historico",
+    "2012_binario",
+    "2012_detallado",
+    "2019_general",
+    "2021_detallado",
+    "2021_general",
+    "2023_general"
+   ]
+  },
+  "s44": {
+   "nombre": "Río Pequení",
+   "mapas": {
+    "1992_historico": {
+     "limites": [
+      [
+       9.323032,
+       -79.556916
+      ],
+      [
+       9.502405,
+       -79.392469
+      ]
+     ],
+     "dimensiones": [
+      814,
+      900
+     ],
+     "tamano_pixel_m": 22.2
+    },
+    "2012_detallado": {
+     "limites": [
+      [
+       9.323032,
+       -79.556916
+      ],
+      [
+       9.502405,
+       -79.392469
+      ]
+     ],
+     "dimensiones": [
+      814,
+      900
+     ],
+     "tamano_pixel_m": 22.2
+    },
+    "2000_historico": {
+     "limites": [
+      [
+       9.323032,
+       -79.556916
+      ],
+      [
+       9.502405,
+       -79.392469
+      ]
+     ],
+     "dimensiones": [
+      814,
+      900
+     ],
+     "tamano_pixel_m": 22.2
+    },
+    "2012_binario": {
+     "limites": [
+      [
+       9.323032,
+       -79.556916
+      ],
+      [
+       9.502405,
+       -79.392469
+      ]
+     ],
+     "dimensiones": [
+      814,
+      900
+     ],
+     "tamano_pixel_m": 22.2
+    },
+    "2019_general": {
+     "limites": [
+      [
+       9.323032,
+       -79.556916
+      ],
+      [
+       9.502405,
+       -79.392469
+      ]
+     ],
+     "dimensiones": [
+      814,
+      900
+     ],
+     "tamano_pixel_m": 22.2
+    },
+    "2021_detallado": {
+     "limites": [
+      [
+       9.323032,
+       -79.556916
+      ],
+      [
+       9.502405,
+       -79.392469
+      ]
+     ],
+     "dimensiones": [
+      814,
+      900
+     ],
+     "tamano_pixel_m": 22.2
+    },
+    "2021_general": {
+     "limites": [
+      [
+       9.323032,
+       -79.556916
+      ],
+      [
+       9.502405,
+       -79.392469
+      ]
+     ],
+     "dimensiones": [
+      814,
+      900
+     ],
+     "tamano_pixel_m": 22.2
+    },
+    "2023_general": {
+     "limites": [
+      [
+       9.323032,
+       -79.556916
+      ],
+      [
+       9.502405,
+       -79.392469
+      ]
+     ],
+     "dimensiones": [
+      814,
+      900
+     ],
+     "tamano_pixel_m": 22.2
+    }
+   },
+   "superficies": [
+    "1992_historico",
+    "2000_historico",
+    "2012_binario",
+    "2012_detallado",
+    "2019_general",
+    "2021_detallado",
+    "2021_general",
+    "2023_general"
+   ]
+  },
+  "s45": {
+   "nombre": "Río Pescado",
+   "mapas": {
+    "1992_historico": {
+     "limites": [
+      [
+       8.958524,
+       -79.827845
+      ],
+      [
+       9.041395,
+       -79.761561
+      ]
+     ],
+     "dimensiones": [
+      711,
+      900
+     ],
+     "tamano_pixel_m": 10.3
+    },
+    "2000_historico": {
+     "limites": [
+      [
+       8.958524,
+       -79.827845
+      ],
+      [
+       9.041395,
+       -79.761561
+      ]
+     ],
+     "dimensiones": [
+      711,
+      900
+     ],
+     "tamano_pixel_m": 10.3
+    },
+    "2012_binario": {
+     "limites": [
+      [
+       8.958524,
+       -79.827845
+      ],
+      [
+       9.041395,
+       -79.761561
+      ]
+     ],
+     "dimensiones": [
+      711,
+      900
+     ],
+     "tamano_pixel_m": 10.3
+    },
+    "2012_detallado": {
+     "limites": [
+      [
+       8.958524,
+       -79.827845
+      ],
+      [
+       9.041395,
+       -79.761561
+      ]
+     ],
+     "dimensiones": [
+      711,
+      900
+     ],
+     "tamano_pixel_m": 10.3
+    },
+    "2019_general": {
+     "limites": [
+      [
+       8.958524,
+       -79.827845
+      ],
+      [
+       9.041395,
+       -79.761561
+      ]
+     ],
+     "dimensiones": [
+      711,
+      900
+     ],
+     "tamano_pixel_m": 10.3
+    },
+    "2021_detallado": {
+     "limites": [
+      [
+       8.958524,
+       -79.827845
+      ],
+      [
+       9.041395,
+       -79.761561
+      ]
+     ],
+     "dimensiones": [
+      711,
+      900
+     ],
+     "tamano_pixel_m": 10.3
+    },
+    "2023_general": {
+     "limites": [
+      [
+       8.958524,
+       -79.827845
+      ],
+      [
+       9.041395,
+       -79.761561
+      ]
+     ],
+     "dimensiones": [
+      711,
+      900
+     ],
+     "tamano_pixel_m": 10.3
+    },
+    "2021_general": {
+     "limites": [
+      [
+       8.958524,
+       -79.827845
+      ],
+      [
+       9.041395,
+       -79.761561
+      ]
+     ],
+     "dimensiones": [
+      711,
+      900
+     ],
+     "tamano_pixel_m": 10.3
+    }
+   },
+   "superficies": [
+    "1992_historico",
+    "2000_historico",
+    "2012_binario",
+    "2012_detallado",
+    "2019_general",
+    "2021_detallado",
+    "2021_general",
+    "2023_general"
+   ]
+  },
+  "s46": {
+   "nombre": "Río Piedras",
+   "mapas": {
+    "1992_historico": {
+     "limites": [
+      [
+       9.238542,
+       -79.403889
+      ],
+      [
+       9.370859,
+       -79.246351
+      ]
+     ],
+     "dimensiones": [
+      900,
+      766
+     ],
+     "tamano_pixel_m": 19.2
+    },
+    "2000_historico": {
+     "limites": [
+      [
+       9.238542,
+       -79.403889
+      ],
+      [
+       9.370859,
+       -79.246351
+      ]
+     ],
+     "dimensiones": [
+      900,
+      766
+     ],
+     "tamano_pixel_m": 19.2
+    },
+    "2012_binario": {
+     "limites": [
+      [
+       9.238542,
+       -79.403889
+      ],
+      [
+       9.370859,
+       -79.246351
+      ]
+     ],
+     "dimensiones": [
+      900,
+      766
+     ],
+     "tamano_pixel_m": 19.2
+    },
+    "2012_detallado": {
+     "limites": [
+      [
+       9.238542,
+       -79.403889
+      ],
+      [
+       9.370859,
+       -79.246351
+      ]
+     ],
+     "dimensiones": [
+      900,
+      766
+     ],
+     "tamano_pixel_m": 19.2
+    },
+    "2019_general": {
+     "limites": [
+      [
+       9.238542,
+       -79.403889
+      ],
+      [
+       9.370859,
+       -79.246351
+      ]
+     ],
+     "dimensiones": [
+      900,
+      766
+     ],
+     "tamano_pixel_m": 19.2
+    },
+    "2021_general": {
+     "limites": [
+      [
+       9.238542,
+       -79.403889
+      ],
+      [
+       9.370859,
+       -79.246351
+      ]
+     ],
+     "dimensiones": [
+      900,
+      766
+     ],
+     "tamano_pixel_m": 19.2
+    },
+    "2021_detallado": {
+     "limites": [
+      [
+       9.238542,
+       -79.403889
+      ],
+      [
+       9.370859,
+       -79.246351
+      ]
+     ],
+     "dimensiones": [
+      900,
+      766
+     ],
+     "tamano_pixel_m": 19.2
+    },
+    "2023_general": {
+     "limites": [
+      [
+       9.238542,
+       -79.403889
+      ],
+      [
+       9.370859,
+       -79.246351
+      ]
+     ],
+     "dimensiones": [
+      900,
+      766
+     ],
+     "tamano_pixel_m": 19.2
+    }
+   },
+   "superficies": [
+    "1992_historico",
+    "2000_historico",
+    "2012_binario",
+    "2012_detallado",
+    "2019_general",
+    "2021_detallado",
+    "2021_general",
+    "2023_general"
+   ]
+  },
+  "s47": {
+   "nombre": "Río Salamanca",
+   "mapas": {
+    "2000_historico": {
+     "limites": [
+      [
+       9.329146,
+       -79.603185
+      ],
+      [
+       9.396609,
+       -79.564127
+      ]
+     ],
+     "dimensiones": [
+      429,
+      751
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "1992_historico": {
+     "limites": [
+      [
+       9.329146,
+       -79.603185
+      ],
+      [
+       9.396609,
+       -79.564127
+      ]
+     ],
+     "dimensiones": [
+      429,
+      751
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "2012_binario": {
+     "limites": [
+      [
+       9.329146,
+       -79.603185
+      ],
+      [
+       9.396609,
+       -79.564127
+      ]
+     ],
+     "dimensiones": [
+      429,
+      751
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "2012_detallado": {
+     "limites": [
+      [
+       9.329146,
+       -79.603185
+      ],
+      [
+       9.396609,
+       -79.564127
+      ]
+     ],
+     "dimensiones": [
+      429,
+      751
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "2019_general": {
+     "limites": [
+      [
+       9.329146,
+       -79.603185
+      ],
+      [
+       9.396609,
+       -79.564127
+      ]
+     ],
+     "dimensiones": [
+      429,
+      751
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "2021_general": {
+     "limites": [
+      [
+       9.329146,
+       -79.603185
+      ],
+      [
+       9.396609,
+       -79.564127
+      ]
+     ],
+     "dimensiones": [
+      429,
+      751
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "2021_detallado": {
+     "limites": [
+      [
+       9.329146,
+       -79.603185
+      ],
+      [
+       9.396609,
+       -79.564127
+      ]
+     ],
+     "dimensiones": [
+      429,
+      751
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "2023_general": {
+     "limites": [
+      [
+       9.329146,
+       -79.603185
+      ],
+      [
+       9.396609,
+       -79.564127
+      ]
+     ],
+     "dimensiones": [
+      429,
+      751
+     ],
+     "tamano_pixel_m": 10.0
+    }
+   },
+   "superficies": [
+    "1992_historico",
+    "2000_historico",
+    "2012_binario",
+    "2012_detallado",
+    "2019_general",
+    "2021_detallado",
+    "2021_general",
+    "2023_general"
+   ]
+  },
+  "s48": {
+   "nombre": "Río Tinajones",
+   "mapas": {
+    "1992_historico": {
+     "limites": [
+      [
+       8.915044,
+       -79.952927
+      ],
+      [
+       9.061864,
+       -79.871502
+      ]
+     ],
+     "dimensiones": [
+      493,
+      900
+     ],
+     "tamano_pixel_m": 18.2
+    },
+    "2000_historico": {
+     "limites": [
+      [
+       8.915044,
+       -79.952927
+      ],
+      [
+       9.061864,
+       -79.871502
+      ]
+     ],
+     "dimensiones": [
+      493,
+      900
+     ],
+     "tamano_pixel_m": 18.2
+    },
+    "2012_detallado": {
+     "limites": [
+      [
+       8.915044,
+       -79.952927
+      ],
+      [
+       9.061864,
+       -79.871502
+      ]
+     ],
+     "dimensiones": [
+      493,
+      900
+     ],
+     "tamano_pixel_m": 18.2
+    },
+    "2012_binario": {
+     "limites": [
+      [
+       8.915044,
+       -79.952927
+      ],
+      [
+       9.061864,
+       -79.871502
+      ]
+     ],
+     "dimensiones": [
+      493,
+      900
+     ],
+     "tamano_pixel_m": 18.2
+    },
+    "2021_detallado": {
+     "limites": [
+      [
+       8.915044,
+       -79.952927
+      ],
+      [
+       9.061864,
+       -79.871502
+      ]
+     ],
+     "dimensiones": [
+      493,
+      900
+     ],
+     "tamano_pixel_m": 18.2
+    },
+    "2019_general": {
+     "limites": [
+      [
+       8.915044,
+       -79.952927
+      ],
+      [
+       9.061864,
+       -79.871502
+      ]
+     ],
+     "dimensiones": [
+      493,
+      900
+     ],
+     "tamano_pixel_m": 18.2
+    },
+    "2023_general": {
+     "limites": [
+      [
+       8.915044,
+       -79.952927
+      ],
+      [
+       9.061864,
+       -79.871502
+      ]
+     ],
+     "dimensiones": [
+      493,
+      900
+     ],
+     "tamano_pixel_m": 18.2
+    },
+    "2021_general": {
+     "limites": [
+      [
+       8.915044,
+       -79.952927
+      ],
+      [
+       9.061864,
+       -79.871502
+      ]
+     ],
+     "dimensiones": [
+      493,
+      900
+     ],
+     "tamano_pixel_m": 18.2
+    }
+   },
+   "superficies": [
+    "1992_historico",
+    "2000_historico",
+    "2012_binario",
+    "2012_detallado",
+    "2019_general",
+    "2021_detallado",
+    "2021_general",
+    "2023_general"
+   ]
+  },
+  "s49": {
+   "nombre": "Río Trinidad",
+   "mapas": {
+    "1992_historico": {
+     "limites": [
+      [
+       8.682086,
+       -80.057188
+      ],
+      [
+       9.008483,
+       -79.935837
+      ]
+     ],
+     "dimensiones": [
+      331,
+      901
+     ],
+     "tamano_pixel_m": 40.3
+    },
+    "2000_historico": {
+     "limites": [
+      [
+       8.682086,
+       -80.057188
+      ],
+      [
+       9.008483,
+       -79.935837
+      ]
+     ],
+     "dimensiones": [
+      331,
+      901
+     ],
+     "tamano_pixel_m": 40.3
+    },
+    "2012_binario": {
+     "limites": [
+      [
+       8.682086,
+       -80.057188
+      ],
+      [
+       9.008483,
+       -79.935837
+      ]
+     ],
+     "dimensiones": [
+      331,
+      901
+     ],
+     "tamano_pixel_m": 40.3
+    },
+    "2012_detallado": {
+     "limites": [
+      [
+       8.682086,
+       -80.057188
+      ],
+      [
+       9.008483,
+       -79.935837
+      ]
+     ],
+     "dimensiones": [
+      331,
+      901
+     ],
+     "tamano_pixel_m": 40.3
+    },
+    "2019_general": {
+     "limites": [
+      [
+       8.682086,
+       -80.057188
+      ],
+      [
+       9.008483,
+       -79.935837
+      ]
+     ],
+     "dimensiones": [
+      331,
+      901
+     ],
+     "tamano_pixel_m": 40.3
+    },
+    "2021_detallado": {
+     "limites": [
+      [
+       8.682086,
+       -80.057188
+      ],
+      [
+       9.008483,
+       -79.935837
+      ]
+     ],
+     "dimensiones": [
+      331,
+      901
+     ],
+     "tamano_pixel_m": 40.3
+    },
+    "2023_general": {
+     "limites": [
+      [
+       8.682086,
+       -80.057188
+      ],
+      [
+       9.008483,
+       -79.935837
+      ]
+     ],
+     "dimensiones": [
+      331,
+      901
+     ],
+     "tamano_pixel_m": 40.3
+    },
+    "2021_general": {
+     "limites": [
+      [
+       8.682086,
+       -80.057188
+      ],
+      [
+       9.008483,
+       -79.935837
+      ]
+     ],
+     "dimensiones": [
+      331,
+      901
+     ],
+     "tamano_pixel_m": 40.3
+    }
+   },
+   "superficies": [
+    "1992_historico",
+    "2000_historico",
+    "2012_binario",
+    "2012_detallado",
+    "2019_general",
+    "2021_detallado",
+    "2021_general",
+    "2023_general"
+   ]
+  },
+  "s50": {
+   "nombre": "Subcuenca L. Alajuela",
+   "mapas": {
+    "1992_historico": {
+     "limites": [
+      [
+       9.167725,
+       -79.630979
+      ],
+      [
+       9.395381,
+       -79.495905
+      ]
+     ],
+     "dimensiones": [
+      527,
+      900
+     ],
+     "tamano_pixel_m": 28.2
+    },
+    "2000_historico": {
+     "limites": [
+      [
+       9.167725,
+       -79.630979
+      ],
+      [
+       9.395381,
+       -79.495905
+      ]
+     ],
+     "dimensiones": [
+      527,
+      900
+     ],
+     "tamano_pixel_m": 28.2
+    },
+    "2012_binario": {
+     "limites": [
+      [
+       9.167725,
+       -79.630979
+      ],
+      [
+       9.395381,
+       -79.495905
+      ]
+     ],
+     "dimensiones": [
+      527,
+      900
+     ],
+     "tamano_pixel_m": 28.2
+    },
+    "2012_detallado": {
+     "limites": [
+      [
+       9.167725,
+       -79.630979
+      ],
+      [
+       9.395381,
+       -79.495905
+      ]
+     ],
+     "dimensiones": [
+      527,
+      900
+     ],
+     "tamano_pixel_m": 28.2
+    },
+    "2019_general": {
+     "limites": [
+      [
+       9.167725,
+       -79.630979
+      ],
+      [
+       9.395381,
+       -79.495905
+      ]
+     ],
+     "dimensiones": [
+      527,
+      900
+     ],
+     "tamano_pixel_m": 28.2
+    },
+    "2021_detallado": {
+     "limites": [
+      [
+       9.167725,
+       -79.630979
+      ],
+      [
+       9.395381,
+       -79.495905
+      ]
+     ],
+     "dimensiones": [
+      527,
+      900
+     ],
+     "tamano_pixel_m": 28.2
+    },
+    "2023_general": {
+     "limites": [
+      [
+       9.167725,
+       -79.630979
+      ],
+      [
+       9.395381,
+       -79.495905
+      ]
+     ],
+     "dimensiones": [
+      527,
+      900
+     ],
+     "tamano_pixel_m": 28.2
+    },
+    "2021_general": {
+     "limites": [
+      [
+       9.167725,
+       -79.630979
+      ],
+      [
+       9.395381,
+       -79.495905
+      ]
+     ],
+     "dimensiones": [
+      527,
+      900
+     ],
+     "tamano_pixel_m": 28.2
+    }
+   },
+   "superficies": [
+    "1992_historico",
+    "2000_historico",
+    "2012_binario",
+    "2012_detallado",
+    "2019_general",
+    "2021_detallado",
+    "2021_general",
+    "2023_general"
+   ]
+  },
+  "s51": {
+   "nombre": "Subcuenca L. Gatún",
+   "mapas": {
+    "1992_historico": {
+     "limites": [
+      [
+       8.957764,
+       -80.121585
+      ],
+      [
+       9.367047,
+       -79.593999
+      ]
+     ],
+     "dimensiones": [
+      901,
+      708
+     ],
+     "tamano_pixel_m": 64.4
+    },
+    "2000_historico": {
+     "limites": [
+      [
+       8.957764,
+       -80.121585
+      ],
+      [
+       9.367047,
+       -79.593999
+      ]
+     ],
+     "dimensiones": [
+      901,
+      708
+     ],
+     "tamano_pixel_m": 64.4
+    },
+    "2012_binario": {
+     "limites": [
+      [
+       8.957764,
+       -80.121585
+      ],
+      [
+       9.367047,
+       -79.593999
+      ]
+     ],
+     "dimensiones": [
+      901,
+      708
+     ],
+     "tamano_pixel_m": 64.4
+    },
+    "2012_detallado": {
+     "limites": [
+      [
+       8.957764,
+       -80.121585
+      ],
+      [
+       9.367047,
+       -79.593999
+      ]
+     ],
+     "dimensiones": [
+      901,
+      708
+     ],
+     "tamano_pixel_m": 64.4
+    },
+    "2019_general": {
+     "limites": [
+      [
+       8.957764,
+       -80.121585
+      ],
+      [
+       9.367047,
+       -79.593999
+      ]
+     ],
+     "dimensiones": [
+      901,
+      708
+     ],
+     "tamano_pixel_m": 64.4
+    },
+    "2021_detallado": {
+     "limites": [
+      [
+       8.957764,
+       -80.121585
+      ],
+      [
+       9.367047,
+       -79.593999
+      ]
+     ],
+     "dimensiones": [
+      901,
+      708
+     ],
+     "tamano_pixel_m": 64.4
+    },
+    "2023_general": {
+     "limites": [
+      [
+       8.957764,
+       -80.121585
+      ],
+      [
+       9.367047,
+       -79.593999
+      ]
+     ],
+     "dimensiones": [
+      901,
+      708
+     ],
+     "tamano_pixel_m": 64.4
+    },
+    "2021_general": {
+     "limites": [
+      [
+       8.957764,
+       -80.121585
+      ],
+      [
+       9.367047,
+       -79.593999
+      ]
+     ],
+     "dimensiones": [
+      901,
+      708
+     ],
+     "tamano_pixel_m": 64.4
+    }
+   },
+   "superficies": [
+    "1992_historico",
+    "2000_historico",
+    "2012_binario",
+    "2012_detallado",
+    "2019_general",
+    "2021_detallado",
+    "2021_general",
+    "2023_general"
+   ]
+  },
+  "s52": {
+   "nombre": "Subcuenca L. Miraflores",
+   "mapas": {
+    "1992_historico": {
+     "limites": [
+      [
+       8.994169,
+       -79.59682
+      ],
+      [
+       9.001086,
+       -79.586906
+      ]
+     ],
+     "dimensiones": [
+      109,
+      77
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "2000_historico": {
+     "limites": [
+      [
+       8.994169,
+       -79.59682
+      ],
+      [
+       9.001086,
+       -79.586906
+      ]
+     ],
+     "dimensiones": [
+      109,
+      77
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "2012_binario": {
+     "limites": [
+      [
+       8.994169,
+       -79.59682
+      ],
+      [
+       9.001086,
+       -79.586906
+      ]
+     ],
+     "dimensiones": [
+      109,
+      77
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "2012_detallado": {
+     "limites": [
+      [
+       8.994169,
+       -79.59682
+      ],
+      [
+       9.001086,
+       -79.586906
+      ]
+     ],
+     "dimensiones": [
+      109,
+      77
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "2019_general": {
+     "limites": [
+      [
+       8.994169,
+       -79.59682
+      ],
+      [
+       9.001086,
+       -79.586906
+      ]
+     ],
+     "dimensiones": [
+      109,
+      77
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "2021_general": {
+     "limites": [
+      [
+       8.994169,
+       -79.59682
+      ],
+      [
+       9.001086,
+       -79.586906
+      ]
+     ],
+     "dimensiones": [
+      109,
+      77
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "2021_detallado": {
+     "limites": [
+      [
+       8.994169,
+       -79.59682
+      ],
+      [
+       9.001086,
+       -79.586906
+      ]
+     ],
+     "dimensiones": [
+      109,
+      77
+     ],
+     "tamano_pixel_m": 10.0
+    },
+    "2023_general": {
+     "limites": [
+      [
+       8.994169,
+       -79.59682
+      ],
+      [
+       9.001086,
+       -79.586906
+      ]
+     ],
+     "dimensiones": [
+      109,
+      77
+     ],
+     "tamano_pixel_m": 10.0
+    }
+   },
+   "superficies": [
+    "1992_historico",
+    "2000_historico",
+    "2012_binario",
+    "2012_detallado",
+    "2019_general",
+    "2021_detallado",
+    "2021_general",
+    "2023_general"
+   ]
+  }
+ },
+ "generado": "2026-11-23T16:01:15+00:00",
+ "proyecto": "geoportal-513817",
+ "productos": [
+  "1992_historico",
+  "2000_historico",
+  "2012_binario",
+  "2012_detallado",
+  "2019_general",
+  "2021_general",
+  "2021_detallado",
+  "2023_general"
+ ],
+ "errores": []
+}
