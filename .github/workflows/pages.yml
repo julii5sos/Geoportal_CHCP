@@ -8,7 +8,7 @@ on:
   push:
     branches: [main]
   workflow_run:
-    workflows: ["Actualizar datos con Earth Engine", "Generar muestra de validación"]
+    workflows: ["Actualizar datos con Earth Engine", "Generar muestra de validación", "Coberturas SINIA (mapas y superficies)"]
     types: [completed]
     branches: [main]
   workflow_dispatch:

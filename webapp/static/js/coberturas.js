@@ -61,6 +61,55 @@
     $('#cob-product-info').innerHTML = `<b>${esc(p.tipo === 'TABLE' ? 'Vector' : `Ráster ${p.resolucion_m} m`)}</b>${p.escala_cartografica ? ` · escala ${esc(p.escala_cartografica)}` : ''} · ${esc(p.crs)} · NoData ${p.nodata ?? 'no aplica'}<br>${esc(p.uso_analitico)}<br><span class="cob-mask">Máscara forestal para fragmentación: códigos ${mask.codes.join(', ')}${mask.opcionales ? ` (opcionales: ${mask.codes_with_optional.filter((c) => !mask.codes.includes(c)).join(', ')})` : ''}.</span>`;
   }
 
+  // ------------------------------------------------------------- mapas precalculados (sitio estático)
+  // data/coberturas: un PNG de códigos por territorio y producto (255 = sin dato), coloreado
+  // aquí con la leyenda; filtrar categorías o ver grupos derivados no requiere recalcular.
+  const territorioId = () => { const n = $('#cob-area').value; return n ? st.territory.subbasins.features.find((f) => f.properties.nombre === n)?.properties.id : 'chcp'; };
+  const cobFile = (ruta) => `datos/coberturas/${ruta}`;
+  const cacheCodigos = new Map();
+  function codigosPng(url) {
+    if (!cacheCodigos.has(url)) {
+      cacheCodigos.set(url, new Promise((ok, mal) => {
+        const im = new Image();
+        im.onload = () => {
+          const c = document.createElement('canvas'); c.width = im.naturalWidth; c.height = im.naturalHeight;
+          const ctx = c.getContext('2d', { willReadFrequently: true }); ctx.drawImage(im, 0, 0);
+          const d = ctx.getImageData(0, 0, c.width, c.height).data, v = new Uint8Array(c.width * c.height);
+          for (let i = 0; i < v.length; i += 1) v[i] = d[i * 4];
+          ok({ v, w: c.width, h: c.height });
+        };
+        im.onerror = () => { cacheCodigos.delete(url); mal(new Error('No se pudo leer el mapa precalculado.')); };
+        im.src = url;
+      }));
+    }
+    return cacheCodigos.get(url);
+  }
+  const hexRgb = (h) => { const n = parseInt(String(h || '#9e9e9e').slice(1), 16); return [(n >> 16) & 255, (n >> 8) & 255, n & 255]; };
+  /** Mapa del territorio elegido si existe; si no, el de la cuenca completa. */
+  function fuenteMapa(key) {
+    const t = st.cobIndice?.territorios || {}, id = territorioId();
+    if (t[id]?.mapas?.[key]) return { id, meta: t[id].mapas[key] };
+    if (t.chcp?.mapas?.[key]) return { id: 'chcp', meta: t.chcp.mapas[key] };
+    return null;
+  }
+  async function capaEstatica(slot, key, codes) {
+    const fuente = fuenteMapa(key);
+    if (!fuente) return null;
+    const { v, w, h } = await codigosPng(cobFile(`mapas/${fuente.id}/${key}.v.png`));
+    const activos = new Set(codes), groups = st.catalog.groups;
+    const color = new Map(legendOf(key).map((r) => [r.codigo, hexRgb(st.view === 'derivado' ? groups[r.grupo_derivado].color : r.color)]));
+    const c = document.createElement('canvas'); c.width = w; c.height = h;
+    const ctx = c.getContext('2d'), img = ctx.createImageData(w, h);
+    for (let i = 0; i < v.length; i += 1) {
+      const k = v[i];
+      if (k === 255 || !activos.has(k)) continue;
+      const col = color.get(k) || [158, 158, 158];
+      img.data[i * 4] = col[0]; img.data[i * 4 + 1] = col[1]; img.data[i * 4 + 2] = col[2]; img.data[i * 4 + 3] = 255;
+    }
+    ctx.putImageData(img, 0, 0);
+    return { capa: L.imageOverlay(c.toDataURL(), fuente.meta.limites, { pane: slot === 'a' ? 'paneA' : 'paneB', opacity: 0.85, className: 'cob-raster', attribution: 'SINIA–MiAMBIENTE · precalculado con Google Earth Engine' }), fuente };
+  }
+
   // ------------------------------------------------------------- teselas
   let tileTimer = null;
   function scheduleTiles() { clearTimeout(tileTimer); tileTimer = setTimeout(loadTiles, 350); }
@@ -70,6 +119,15 @@
     const tag = $(`#cob-tag-${slot}`);
     if (tag) tag.classList.add('loading');
     try {
+      if (window.CHCP_STATIC) {
+        const r = await capaEstatica(slot, key, codes);
+        if (!r) { if (tag) tag.textContent += ' · mapa pendiente de precálculo'; return; }
+        if (st.layers[slot]) map.removeLayer(st.layers[slot]);
+        st.layers[slot] = r.capa.addTo(map);
+        if (tag && !tag.dataset.res) { tag.dataset.res = '1'; tag.insertAdjacentHTML('beforeend', ` <small>· celdas de ${number(r.fuente.meta.tamano_pixel_m, 0)} m${r.fuente.id === 'chcp' && territorioId() !== 'chcp' ? ' (mapa de la cuenca)' : ''}</small>`); }
+        updateSwipe();
+        return;
+      }
       const response = await api('/api/v1/sinia/tiles', { method: 'POST', body: JSON.stringify({ product: key, codes, view: st.view }) });
       st.layers[slot] = L.tileLayer(response.tile_url, { pane: slot === 'a' ? 'paneA' : 'paneB', opacity: 0.85, attribution: 'SINIA–MiAMBIENTE · Google Earth Engine' }).addTo(map);
       updateSwipe();
@@ -80,8 +138,8 @@
     }
   }
   function loadTiles() {
-    if (window.CHCP_STATIC) {
-      $('#cob-tags').innerHTML = `<span class="cob-tag">${esc(productLabel(st.a))} · capa visible en la versión completa${window.CHCP_FULL_URL ? '' : ''}</span>`;
+    if (window.CHCP_STATIC && !st.cobIndice) {
+      $('#cob-tags').innerHTML = `<span class="cob-tag">${esc(productLabel(st.a))} · los mapas de este producto aún no se han precalculado</span>`;
       $('#cob-swipe').hidden = true;
       return;
     }
@@ -144,13 +202,31 @@
     $('#cob-csv').disabled = false;
   }
   const STATIC_PRODUCTS = { 2019: '2019_general', 2021: '2021_general', 2023: '2023_general' };
+  /** Superficies precalculadas de data/coberturas (los ocho productos), con la leyenda vigente. */
+  async function superficiesPrecalculadas(products) {
+    const id = territorioId();
+    if (!st.cobIndice?.territorios?.[id]?.superficies?.length) return null;
+    const datos = await (await fetch(cobFile(`estadisticas/${id}.json`))).json();
+    if (!products.every((k) => datos[k])) return null;
+    const result = products.map((key) => {
+      const p = datos[key], legend = new Map(legendOf(key).map((r) => [r.codigo, r]));
+      const classes = p.classes.map((c) => { const r = legend.get(c.code) || {}; return { ...c, label: r.categoria || c.label, color: r.color || c.color, status: r.estado || c.status, group: r.grupo_derivado || c.group }; });
+      const groups = {};
+      classes.forEach((c) => { groups[c.group] = (groups[c.group] || 0) + c.area_ha; });
+      return { ...p, classes, limitations: product(key).limitaciones || p.limitations || [],
+        derived_groups: Object.entries(groups).filter(([, ha]) => ha > 0).sort((a, b) => b[1] - a[1]).map(([g, ha]) => ({ group: g, label: st.catalog.groups[g].nombre, color: st.catalog.groups[g].color, area_ha: ha, percentage: ha / (p.classified_ha || 1) * 100 })) };
+    });
+    const comparability = products.length === 2 ? st.catalog.comparability.find((c) => (c.a === products[0] && c.b === products[1]) || (c.a === products[1] && c.b === products[0])) : null;
+    const name = $('#cob-area').value;
+    return { area: { label: name || 'Cuenca Hidrográfica del Canal de Panamá' }, result: { products: result, comparability }, warnings: [] };
+  }
   function staticStats(products) {
     const name = $('#cob-area').value;
     const record = Object.values(st.panel?.territorios || {}).find((t) => (name ? t.nombre === name : t.id === 'chcp'));
     if (!record) throw new Error('No hay indicadores precalculados para este territorio.');
     const result = products.map((key) => {
       const item = (record.sinia || []).find((p) => STATIC_PRODUCTS[p.year] === key);
-      if (!item) throw new Error(`La superficie de ${productLabel(key)} solo se calcula en la versión completa. En esta versión están disponibles 2019, 2021 y 2023.`);
+      if (!item) throw new Error(`La superficie de ${productLabel(key)} para este territorio aún no se ha precalculado.`);
       const legend = legendOf(key);
       const classes = item.classes.map((c) => { const row = legend.find((r) => r.codigo === c.code) || {}; return { ...c, color: row.color || c.color, status: row.estado, group: row.grupo_derivado }; });
       const groups = {};
@@ -165,8 +241,11 @@
   }
   async function computeStats() {
     if (window.CHCP_STATIC) {
-      try { renderStats(staticStats(st.compare ? [st.a, st.b] : [st.a])); $('#cob-results-sub').textContent += ` · precalculado ${String(st.panel?.generado || '').slice(0, 10)}`; }
-      catch (error) { $('#cob-results-body').innerHTML = `<div class="cob-loading error">${esc(error.message)}</div>`; }
+      const products = st.compare ? [st.a, st.b] : [st.a];
+      try {
+        const pre = await superficiesPrecalculadas(products).catch(() => null);
+        renderStats(pre || staticStats(products));
+      } catch (error) { $('#cob-results-body').innerHTML = `<div class="cob-loading error">${esc(error.message)}</div>`; }
       return;
     }
     const products = st.compare ? [st.a, st.b] : [st.a];
@@ -202,7 +281,10 @@
   // ------------------------------------------------------------- arranque
   try {
     [st.catalog, st.territory] = await Promise.all([api('/api/v1/sinia/catalog'), api('/api/v1/territory')]);
-    if (window.CHCP_STATIC) st.panel = await api('/api/v1/panel/statistics');
+    if (window.CHCP_STATIC) {
+      st.panel = await api('/api/v1/panel/statistics');
+      st.cobIndice = await fetch(cobFile('indice.json')).then((r) => (r.ok ? r.json() : null)).catch(() => null);
+    }
   } catch (error) {
     $('#cob-results-body').innerHTML = `<div class="cob-loading error">No se pudo cargar el catálogo: ${esc(error.message)}</div>`;
     return;
@@ -221,13 +303,15 @@
   $$('input[name="cob-view"]').forEach((r) => r.addEventListener('change', () => { st.view = r.value; renderLegend(); loadTiles(); if (st.stats) renderStats(st.stats); }));
   $('#cob-all').addEventListener('click', () => { st.active[st.a] = new Set(legendOf(st.a).map((r) => r.codigo)); renderLegend(); scheduleTiles(); });
   $('#cob-none').addEventListener('click', () => { st.active[st.a] = new Set(); renderLegend(); scheduleTiles(); });
-  $('#cob-area').addEventListener('change', () => { drawArea(); history.replaceState(null, '', $('#cob-area').value ? `#${encodeURIComponent($('#cob-area').value)}` : location.pathname); });
+  $('#cob-area').addEventListener('change', () => { drawArea(); if (window.CHCP_STATIC) loadTiles(); history.replaceState(null, '', $('#cob-area').value ? `#${encodeURIComponent($('#cob-area').value)}` : location.pathname); });
   $('#cob-stats').addEventListener('click', computeStats);
   $('#cob-csv').addEventListener('click', exportCsv);
 
   if (window.CHCP_STATIC) {
     $('#cob-stats').textContent = 'Ver superficies';
-    $('#cob-results-sub').innerHTML = `Versión publicada sin Earth Engine: superficies precalculadas de 2019, 2021 y 2023 por subcuenca. Leyendas y estados de verificación de los ocho productos.${window.CHCP_FULL_URL ? ` <a href="${window.CHCP_FULL_URL}/coberturas">Versión completa ↗</a>` : ''}`;
+    $('#cob-results-sub').innerHTML = st.cobIndice
+      ? `Mapas y superficies de los ocho productos, precalculados con Earth Engine el ${esc(String(st.cobIndice.generado || '').slice(0, 10))} para la cuenca y cada subcuenca. Las superficies se calculan a la escala original de cada producto.`
+      : 'Versión publicada sin Earth Engine: superficies precalculadas de 2019, 2021 y 2023 por subcuenca. Los mapas de los ocho productos se añadirán al ejecutar «Coberturas SINIA (mapas y superficies)».';
   }
   basinLayer = L.geoJSON(st.territory.basin, { pane: 'paneRef', style: { color: '#0a4393', weight: 1, dashArray: '4 4', fill: false }, interactive: false }).addTo(map);
   renderLegend(); renderProductInfo(); drawArea(); loadTiles();
