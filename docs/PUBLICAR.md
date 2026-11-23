@@ -51,9 +51,15 @@ lea sus datos. Si alguien abre `index.html` directamente, la página lo explica.
 
 ## Actualizar los análisis
 
-- **Automático:** el día 1 de cada mes.
-- **Manual:** Actions → «Actualizar datos con Earth Engine» → **Run workflow**
-  (opcional: «Solo N territorios» para una prueba rápida).
+- **Automático:** el día 1 de cada mes recalcula todo; el día 2 continúa con lo que faltara.
+- **Manual:** Actions → «Actualizar datos con Earth Engine» → **Run workflow**.
+  - `completo` (por defecto): continúa donde quedó la ejecución anterior.
+  - `rehacer-todo`: empieza de cero los 54 territorios.
+  - «Solo N territorios»: para una prueba rápida.
+
+Un cálculo completo con mapas tarda más que el límite de 6 horas de GitHub. No es un
+error: al agotarse el tiempo se guarda lo avanzado y basta con ejecutar otra vez en modo
+`completo`. El registro del paso «Recalcular» muestra el avance territorio por territorio.
 
 El flujo verifica primero Earth Engine con la cuenta de servicio (Qda. Bonita, 7
 comprobaciones), recalcula los 54 territorios, guarda `data/estadisticas_territoriales.json`
