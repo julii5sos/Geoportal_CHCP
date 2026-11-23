@@ -42,3 +42,46 @@
 - La referencia también tiene error; la fotointerpretación de degradación es especialmente incierta.
 - Los resultados son válidos para la CHCP y para el período evaluado.
 - La exactitud de un mapa no se traslada automáticamente al índice de preevaluación, que combina varias fuentes con reglas.
+
+## 6. Evaluación oficial del mapa de cobertura 2021 (informe de MiAMBIENTE, abril de 2022)
+
+El informe final del Mapa de Cobertura Boscosa y Uso de Suelo 2021 (sección 10, Cuadros N° 3–5) compara el mapa con 9 800 muestras del **Mapatón 2020**, la interpretación de imágenes de alta resolución del Inventario Nacional de Gases de Efecto Invernadero. La interpretaron tres especialistas que no participaron en el mapa.
+
+- **Matriz:** transcrita en `scripts/aplicar_informe_mcbyus2021.py`. Reproduce exactamente las cifras publicadas: exactitud global **70.3 %** y **kappa 0.615**.
+- **Datos para la interfaz:** `data/validacion/exactitud_oficial_mcbyus2021.json`, que se muestra en la página de Validación y en el simulador.
+
+| Clase (Mapatón) | Exactitud de usuario | Exactitud de productor | Muestras de referencia |
+|---|---:|---:|---:|
+| Bosque maduro | 88 % | 90 % | 3 345 |
+| Pasto | 72 % | 74 % | 2 368 |
+| Bosque secundario | 52 % | 60 % | 1 870 |
+| Rastrojos | 28 % | 25 % | 769 |
+| Cultivos anuales | 74 % | 38 % | 480 |
+| Humedales | 77 % | 68 % | 261 |
+| Asentamientos | 63 % | 56 % | 260 |
+| Bosque de mangle | 81 % | 84 % | 232 |
+| Bosque plantado de latifoliadas | 72 % | 62 % | 94 |
+| Cultivos permanentes | 77 % | 59 % | 87 |
+| Otras tierras | 38 % | 35 % | 23 |
+| Bosque plantado de coníferas | 71 % | 91 % | 11 |
+
+**Agregado bosque / no bosque (derivado por el geoportal).** «Bosque y otras tierras boscosas» son las clases C, F, L, M, R y S, como en el mapa general que usa la conectividad.
+
+| | Referencia: bosque | Referencia: no bosque |
+|---|---:|---:|
+| Mapa: bosque | 5,815 | 755 |
+| Mapa: no bosque | 506 | 2,724 |
+
+- Acuerdo global: **87.1 %**.
+- Bosque: exactitud de usuario 88.5 %, de productor 92.0 %.
+- No bosque: exactitud de usuario 84.3 %, de productor 78.3 %.
+
+**Lectura.** El mapa distingue bien el bosque maduro. Los límites entre **bosque secundario, rastrojo y pasto** son la principal fuente de error: el rastrojo tiene 28 % de exactitud de usuario y el bosque secundario, 52 %. Para la conectividad, que agrupa bosque y rastrojo, el acuerdo sube a 87 %. Aun así, una de cada nueve celdas cartografiadas como bosque no lo es según la referencia, y en el simulador esos errores se convierten en parches o en brechas.
+
+**Por qué no sustituye la validación de la sección 4:**
+- **Año distinto:** la referencia es de 2020 y el mapa de 2021, así que parte del desacuerdo puede ser cambio real.
+- **Sin diseño muestral documentado:** el informe no describe un diseño con probabilidades de inclusión conocidas. Sin eso no se pueden estimar superficies corregidas por error ni intervalos de confianza (Olofsson et al. 2014).
+- **Escala nacional:** no hay cifras de la cuenca.
+- **Versión del mapa:** evalúa la versión del informe (abril de 2022). El asset del proyecto difiere de esa versión en la cuenca (B.7).
+
+Por eso se muestra como **evaluación oficial de referencia** y no como validación del geoportal (condiciones 3 y 6 de la auditoría).

@@ -189,10 +189,11 @@
     return partes.join(' y ');
   }
   function textoValidacion() {
-    const v = st.validacion;
-    if (!v) return 'Su exactitud no se ha evaluado todavía: la muestra de validación independiente está pendiente.';
-    if (v.estado === 'completa') return `Validación independiente completa (${v.interpretados} puntos).`;
-    return `Validación independiente ${v.estado === 'preliminar' ? 'preliminar' : 'sin interpretar'} (${v.interpretados} de ${v.total_puntos} puntos): su exactitud todavía no está evaluada.`;
+    const v = st.validacion, o = st.exactitudOficial?.bosque_y_otras_tierras_boscosas;
+    const oficial = o ? ` La evaluación oficial del mapa (MiAMBIENTE 2022, frente al Mapatón 2020, todo el país) da ${number(o.exactitud_global * 100, 0)} % de acuerdo entre bosque y no bosque, pero solo 52 % de exactitud de usuario en bosque secundario y 28 % en rastrojo.` : '';
+    if (!v) return `Su exactitud en la cuenca no se ha evaluado todavía: la muestra de validación independiente está pendiente.${oficial}`;
+    if (v.estado === 'completa') return `Validación independiente completa (${v.interpretados} puntos).${oficial}`;
+    return `Validación independiente ${v.estado === 'preliminar' ? 'preliminar' : 'sin interpretar'} (${v.interpretados} de ${v.total_puntos} puntos): su exactitud en la cuenca todavía no está evaluada.${oficial}`;
   }
   /** Evalúa cada candidato: ganancia exacta por umbral, efectividad, cruces y robustez. */
   function evaluar() {
@@ -317,7 +318,8 @@
   function etiquetaCodigo(cod) {
     const x = leyendaDetalle().get(Number(cod));
     if (!x) return null;
-    return x.verificada ? x.categoria : `Código ${x.codigo} (sin verificar)`;
+    // Verificadas: nombre oficial. El resto ya lleva en su etiqueta «Código N · …» y su estado.
+    return x.verificada ? x.categoria : x.categoria || `Código ${x.codigo} (sin verificar)`;
   }
   /** Texto con las principales coberturas de una composición { código o clase: metros|km }. */
   function textoComposicion(comp, total, unidad = '%', max = 3) {
@@ -714,6 +716,7 @@
   $('#rs-ref').addEventListener('change', () => { if (st.areas) { prioridades(); actualizar(); } });
   $('#rs-excluir').addEventListener('change', () => { if (st.areas) prioridades(); });
   $('#rs-plan-btn').addEventListener('click', () => { if (st.areas) plan(); });
+  fetch(window.CHCP.valFile('exactitud_oficial_mcbyus2021.json')).then((r) => (r.ok ? r.json() : null)).then((j) => { st.exactitudOficial = j; if (st.areas) actualizar(); }).catch(() => {});
   fetch(window.CHCP.valFile('indice.json')).then((r) => (r.ok ? r.json() : null)).then((j) => { st.validacion = (j?.mapas || []).find((x) => x.mapa === 'sinia_2021') || null; if (st.areas) actualizar(); }).catch(() => {});
   const pedido = new URLSearchParams(location.search).get('id');
   const conRed = listas.find((t) => (t.estructura_2021?.metricas_red?.numero_componentes || 0) > 1) || listas[0] || subs[0];

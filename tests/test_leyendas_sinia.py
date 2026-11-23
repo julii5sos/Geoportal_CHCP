@@ -174,3 +174,31 @@ class DocumentosGeneradosTests(unittest.TestCase):
             self.assertEqual(d.read_text(encoding="utf-8"), (RAIZ / "docs" / "DICCIONARIO_CAPAS_SINIA.md").read_text(encoding="utf-8"),
                              "Ejecute: python scripts/generar_diccionario_sinia.py")
             self.assertEqual(v.read_text(encoding="utf-8"), (RAIZ / "docs" / "VALIDACION_ASSETS_GEE.md").read_text(encoding="utf-8"))
+
+
+class InformeOficialMcbyus2021Tests(unittest.TestCase):
+    def test_matriz_reproduce_las_cifras_del_informe(self):
+        spec = importlib.util.spec_from_file_location("inf", RAIZ / "scripts" / "aplicar_informe_mcbyus2021.py")
+        mod = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(mod)
+        e = mod.exactitud()
+        self.assertEqual(e["muestras"], 9800)
+        self.assertAlmostEqual(e["exactitud_global"], 0.703, places=3)
+        self.assertAlmostEqual(e["kappa"], 0.615, places=3)
+        b = e["bosque_y_otras_tierras_boscosas"]
+        self.assertEqual(sum(b["matriz_2x2"].values()), 9800)
+
+    def test_codigos_documentados_por_el_informe_no_son_oficiales(self):
+        filas = {f["codigo"]: f for f in L.leyenda("2021_detallado")}
+        verificados = {c for c, f in filas.items() if f["estado"] == "verificada_espacialmente"}
+        self.assertEqual(len(verificados), 18)
+        for c, f in filas.items():
+            self.assertIn("nombre_informe_oficial", f)
+            if c not in verificados:
+                self.assertEqual(f["estado"], "documentada_informe_oficial")
+                self.assertFalse(L.es_oficial(f))
+                self.assertIn(f["nombre_informe_oficial"], f["categoria"])
+        self.assertEqual(filas[33]["nombre_informe_oficial"], "Albinas")
+        # Los 18 verificados coinciden en nombre con la leyenda numerada del informe.
+        self.assertEqual(filas[26]["nombre_informe_oficial"], filas[26]["categoria"])
+        self.assertEqual(filas[14]["nombre_informe_oficial"], "Café")
