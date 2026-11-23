@@ -82,6 +82,8 @@ def construir(destino: Path, app_completa: str, repo_url: str) -> list[str]:
         generados.append(archivo)
     if (RAIZ / "data" / "subcuencas").exists():
         shutil.copytree(RAIZ / "data" / "subcuencas", destino / "datos" / "subcuencas")
+    if (RAIZ / "data" / "coberturas").exists():
+        shutil.copytree(RAIZ / "data" / "coberturas", destino / "datos" / "coberturas")
     if (RAIZ / "data" / "hidrografia").exists():
         shutil.copytree(RAIZ / "data" / "hidrografia", destino / "datos" / "hidrografia")
     if (RAIZ / "data" / "validacion").exists():
