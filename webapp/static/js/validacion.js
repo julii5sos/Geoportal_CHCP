@@ -80,7 +80,13 @@
     const s = st.series?.[p.id];
     const lineas = s ? `<div class="va-series"><div><b>NDVI por año</b><small>Bosque estable ≈ 0,7–0,9. Una caída fuerte <b>y sostenida</b> sugiere desmonte; valores bajos todos los años indican agua, suelo o construcción.</small>${G.linea({ anios: I.anios_series, valores: I.anios_series.map((a) => s.ndvi?.[a] ?? null), min: -0.2, max: 1, alto: 130, bandas: BANDAS_NDVI, marcasY: [0, 0.5, 1] })}</div>
       <div><b>Radar VH por año (dB)</b><small>Atraviesa las nubes. Una caída de más de 3 dB que se mantiene sugiere pérdida de dosel; variaciones menores de 2 dB son ruido. Muy bajo todos los años = agua.</small>${G.linea({ anios: I.anios_series, valores: I.anios_series.map((a) => s.vh?.[a] ?? null), color: '#5e3c99', min: -32, max: -8, decimales: 1, alto: 130, bandas: BANDAS_VH, marcasY: [-30, -20, -10] })}</div></div>` : '';
-    return `<div class="va-img"><div class="va-img-bar"><span>Sentinel-2 sin nubes (mediana de cada año), ${lado} m de lado; el recuadro es la celda de ${st.diseno.escala_m} m evaluada.</span>
+    const guia = `<details class="va-guia" ${st.guiaVista ? '' : 'open'}><summary>Cómo decidir la clase de este punto</summary><ol>
+      <li><b>Recortes 2020 · 2022 · 2025</b> (amplíelos): mire solo el recuadro amarillo. ¿Era bosque en 2020? ¿Sigue siéndolo en 2025?</li>
+      <li><b>NDVI</b>: línea en la franja verde todos los años = vegetación densa; baja y se queda baja = posible desmonte; en la franja azul todos los años = agua o suelo.</li>
+      <li><b>Radar</b>: línea plana = sin cambio (diferencias menores de 2 dB son ruido); escalón hacia abajo de más de 3 dB que se mantiene = posible pérdida de dosel.</li>
+      <li><b>Mapa de abajo</b>: foto de alta resolución de una sola fecha. Sirve para reconocer qué hay (casas, caminos, agua, pasto), no para ver el cambio.</li>
+      <li>Si las ayudas no coinciden o no se ve, elija «Sin evidencia suficiente».</li></ol></details>`;
+    return `${guia}<div class="va-img"><div class="va-img-bar"><span>Sentinel-2 sin nubes (mediana de cada año), ${lado} m de lado; el recuadro es la celda de ${st.diseno.escala_m} m evaluada.</span>
       ${I.infrarrojo ? `<div class="pe-lg-modo" role="radiogroup" aria-label="Combinación de bandas"><button type="button" data-ir="0" aria-pressed="${!ir}">Color natural</button><button type="button" data-ir="1" aria-pressed="${!!ir}">Infrarrojo</button></div>` : ''}
       <button type="button" class="btn btn-s va-amp" data-ampliar>Ampliar (tecla A)</button></div>
       <div class="va-chips">${chips}</div>${ir ? '<p class="rs-note">Infrarrojo (SWIR · NIR · rojo): vegetación en verde brillante, suelo desnudo o pasto seco en rosado o marrón, <b>agua en negro o azul oscuro</b>.</p>' : ''}${lineas}</div>`;
@@ -124,7 +130,7 @@
     const hechos = st.muestra.filter((p) => p[campoClase()]).length;
     const p = st.muestra[st.i];
     cont.innerHTML = `<div class="va-int">
-      <div class="va-int-map">${panelImagenes(p)}<div id="va-map"></div><p class="rs-note">Imagen: Esri World Imagery (fecha única). Para ver el cambio 2020–2025 use <a target="_blank" rel="noopener" href="https://earth.google.com/web/@${p.lat},${p.lon},300a,800d,35y,0h,0t,0r">Google Earth</a> o Google Earth Pro con imágenes históricas (<a href="${valFile(`${st.mapa}/muestra.kml`)}" download>KML</a>).</p></div>
+      <div class="va-int-map">${panelImagenes(p)}<div id="va-map"></div><p class="rs-note"><b>Recuadro amarillo:</b> la celda de ${st.diseno.escala_m} m que se clasifica. <b>Círculo:</b> 150 m alrededor, solo como contexto. Imagen de alta resolución Esri de una sola fecha (desconocida): muestra qué hay, no el cambio. Si quiere ver otras fechas, use <a target="_blank" rel="noopener" href="https://earth.google.com/web/@${p.lat},${p.lon},300a,800d,35y,0h,0t,0r">Google Earth</a> o Google Earth Pro con imágenes históricas (<a href="${valFile(`${st.mapa}/muestra.kml`)}" download>KML</a>).</p></div>
       <div class="va-int-form">
         <div class="va-prog"><span>Punto <b>${st.i + 1}</b> de ${st.muestra.length} · ${esc(p.id)}</span><i><b style="width:${hechos / st.muestra.length * 100}%"></b></i><small>${hechos} interpretados</small></div>
         <p class="rs-note">${number(p.lat, 5)}, ${number(p.lon, 5)} · el recuadro amarillo es el píxel de ${st.diseno.escala_m} m evaluado.</p>
@@ -139,6 +145,7 @@
       </div></div>`;
     if (st.map) st.map.remove();
     if (G) G.activarTooltips($('#va-int'));
+    const det = $('#va-int .va-guia'); if (det) det.addEventListener('toggle', () => { st.guiaVista = !det.open; });
     $$('#va-int [data-ampliar]').forEach((b) => b.addEventListener('click', () => ampliar(p)));
     $$('#va-int [data-ir]').forEach((b) => b.addEventListener('click', () => { st.infrarrojo = b.dataset.ir === '1'; renderInterpretacion(); }));
     st.map = L.map('va-map', { zoomControl: true });

@@ -886,6 +886,10 @@ html.app #main-content:has(.pg) { overflow-y:auto; background:#f3f6fa; }
 .va-series small b { display:inline; font-size:inherit; color:inherit; }
 .va-series small { display:block; font-size:11px; color:#6b7686; line-height:1.35; margin-bottom:2px; }
 .va-sin-img { font-size:12.5px; color:#5d4a00; background:#fff8e1; border:1px solid #f3d36b; border-radius:8px; padding:8px 10px; }
+.va-guia { background:#f3f7fc; border:1px solid var(--line); border-radius:8px; padding:8px 12px; margin-bottom:10px; font-size:12.5px; color:#2b3747; }
+.va-guia summary { cursor:pointer; font-weight:800; color:var(--azul-tinta); }
+.va-guia ol { margin:6px 0 0; padding-left:18px; line-height:1.45; }
+.va-guia li + li { margin-top:3px; }
 .va-img-bar { display:flex; flex-wrap:wrap; align-items:center; gap:8px; margin-bottom:6px; font-size:12px; color:#5b6675; }
 .va-img-bar > span { flex:1 1 220px; }
 .g-banda { font-size:9.5px; fill:#4d5868; }
