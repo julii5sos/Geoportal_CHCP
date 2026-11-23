@@ -52,4 +52,5 @@ class FichaRutaTests(unittest.TestCase):
         self.assertEqual(cliente.get("/restauracion").status_code, 200)
         self.assertEqual(cliente.get("/api/v1/panel/maps/s5/..%2F..%2Fsecretos.png").status_code, 404)
         self.assertEqual(cliente.get("/api/v1/panel/maps/s5/config.py").status_code, 400)
-        self.assertEqual(cliente.get("/api/v1/panel/maps/s5/eri.png").status_code, 404)
+        # Un archivo válido que no existe (los datos reales pueden ya incluir eri.png).
+        self.assertEqual(cliente.get("/api/v1/panel/maps/s5/capa_inexistente.png").status_code, 404)
