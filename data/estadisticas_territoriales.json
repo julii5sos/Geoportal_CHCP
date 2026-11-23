@@ -6,7 +6,7 @@
  "procesamiento": {
   "tipo": "B",
   "descripcion": "Precalculado con Earth Engine (proceso reproducible)",
-  "fecha_procesamiento": "2026-11-23T15:17:10+00:00",
+  "fecha_procesamiento": "2026-11-23T21:08:04+00:00",
   "version_codigo": "673654448096",
   "workflow_run": "45203408802",
   "repositorio": "julii5sos/Geoportal_CHCP",
@@ -345,7 +345,7 @@
    "id": "chcp",
    "nombre": "Cuenca Hidrográfica del Canal de Panamá",
    "grupo": "Cuenca",
-   "area_ha": 342460.18053996935,
+   "area_ha": 342460.18053996895,
    "preevaluacion": {
     "puntaje": 4.0,
     "puntaje_maximo": 6.5,
@@ -411,7 +411,7 @@
     "coincidencia_varias_fuentes": 7084.600914,
     "pct_coincidencia_varias_fuentes": 2.068737
    },
-   "procesado": "2026-11-23T15:21:02",
+   "procesado": "2026-11-23T21:11:19",
    "jrc_ha": {
     "tmf_estable": 137698.2709933815,
     "tmf_degradacion": 34032.57482545919,
@@ -428,10 +428,10 @@
     "esri_arboles_final": 238489.80055009015
    },
    "ndvi": {
-    "ndvi_inicial_medio": 0.6469540981305658,
+    "ndvi_inicial_medio": 0.6469540981305655,
     "ndvi_final_medio": 0.6737570070133702,
     "ndvi_delta_medio": 0.02680290888280488,
-    "ndvi_disminucion": 4049.20344333308
+    "ndvi_disminucion": 4049.2034433330805
    },
    "gedi_altura_m": 11.93113842900976,
    "serie_anual": [
@@ -613,8 +613,8 @@
     "color": "#F2C94C",
     "lectura": "Condición intermedia; conviene revisar los componentes más débiles.",
     "componentes": {
-     "integridad_estructural": 0.3925365398322905,
-     "conectividad": 0.5563454985671056,
+     "integridad_estructural": 0.3925365398322904,
+     "conectividad": 0.5563454985671055,
      "estabilidad_topografica": 0.8959231406092307,
      "proximidad_riparia": 0.5573131104465384
     },
@@ -630,7 +630,7 @@
       "clave": "baja",
       "clase": "Baja",
       "color": "#F79009",
-      "area_ha": 53172.23401183076
+      "area_ha": 53172.234011830755
      },
      {
       "clave": "media",
@@ -642,13 +642,13 @@
       "clave": "alta",
       "clase": "Alta",
       "color": "#76B72A",
-      "area_ha": 107248.286727798
+      "area_ha": 107248.28672779801
      },
      {
       "clave": "muy_alta",
       "clase": "Muy alta",
       "color": "#00544D",
-      "area_ha": 44961.15635987286
+      "area_ha": 44961.15635987285
      }
     ],
     "pesos": {
@@ -770,7 +770,7 @@
    "id": "s0",
    "nombre": "Lago Alajuela",
    "grupo": "Lagos",
-   "area_ha": 4472.028022204948,
+   "area_ha": 4472.028022206937,
    "preevaluacion": {
     "puntaje": 5.0,
     "puntaje_maximo": 6.5,
@@ -836,7 +836,7 @@
     "coincidencia_varias_fuentes": 49.934245,
     "pct_coincidencia_varias_fuentes": 1.116591
    },
-   "procesado": "2026-11-23T15:48:11",
+   "procesado": "2026-11-23T21:32:56",
    "jrc_ha": {
     "tmf_estable": 47.95385598923062,
     "tmf_degradacion": 63.42763424483582,
@@ -853,9 +853,9 @@
     "esri_arboles_final": 170.97025700883543
    },
    "ndvi": {
-    "ndvi_inicial_medio": 0.11579943450034351,
-    "ndvi_final_medio": 0.004588375589721636,
-    "ndvi_delta_medio": -0.11121105891062183,
+    "ndvi_inicial_medio": 0.11579943450034352,
+    "ndvi_final_medio": 0.004588375589721638,
+    "ndvi_delta_medio": -0.11121105891062184,
     "ndvi_disminucion": 581.6458610864257
    },
    "gedi_altura_m": 1.02074223451417,
@@ -1274,7 +1274,7 @@
    "id": "s1",
    "nombre": "Lago Gatún",
    "grupo": "Lagos",
-   "area_ha": 38171.975136412955,
+   "area_ha": 38171.97513637299,
    "preevaluacion": {
     "puntaje": 4.0,
     "puntaje_maximo": 6.5,
@@ -1340,7 +1340,7 @@
     "coincidencia_varias_fuentes": 47.589925,
     "pct_coincidencia_varias_fuentes": 0.124672
    },
-   "procesado": "2026-11-23T15:56:45",
+   "procesado": "2026-11-23T21:38:25",
    "jrc_ha": {
     "tmf_estable": 2213.8808591700945,
     "tmf_degradacion": 587.9211885437663,
@@ -1357,10 +1357,10 @@
     "esri_arboles_final": 803.0122318808503
    },
    "ndvi": {
-    "ndvi_inicial_medio": 0.006456277530794128,
-    "ndvi_final_medio": -0.029181067969390975,
+    "ndvi_inicial_medio": 0.0064562775307941255,
+    "ndvi_final_medio": -0.029181067969390972,
     "ndvi_delta_medio": -0.0356373455001851,
-    "ndvi_disminucion": 887.9271990029608
+    "ndvi_disminucion": 887.9271990029611
    },
    "gedi_altura_m": 0.8766862628069668,
    "serie_anual": [
@@ -1547,7 +1547,7 @@
      "umbral_m": 500.0,
      "numero_nodos": 863,
      "numero_aristas": 2428,
-     "numero_relaciones_mostradas": 814,
+     "numero_relaciones_mostradas": 813,
      "numero_parches_conectados": 857,
      "numero_parches_aislados": 6,
      "porcentaje_parches_aislados": 0.6952,
@@ -1719,7 +1719,7 @@
     "color": "#F79009",
     "lectura": "Persisten limitaciones importantes en uno o varios componentes.",
     "componentes": {
-     "integridad_estructural": 0.05376737599790042,
+     "integridad_estructural": 0.053767375997900414,
      "conectividad": 0.05234372200177828,
      "estabilidad_topografica": 0.9958163216392885,
      "proximidad_riparia": 0.6821183843857155
@@ -1730,7 +1730,7 @@
       "clave": "muy_baja",
       "clase": "Muy baja",
       "color": "#B42318",
-      "area_ha": 1883.1843057695553
+      "area_ha": 1883.184305769555
      },
      {
       "clave": "baja",
@@ -1742,7 +1742,7 @@
       "clave": "media",
       "clase": "Media",
       "color": "#F2C94C",
-      "area_ha": 6818.199912284868
+      "area_ha": 6818.199912284869
      },
      {
       "clave": "alta",
@@ -1784,7 +1784,7 @@
    }
   },
   "s2": {
-   "version_datos": 4,
+   "version_datos": -1,
    "id": "s2",
    "nombre": "Lago Miraflores",
    "grupo": "Cuenca de Miraflores",
@@ -2462,7 +2462,7 @@
    }
   },
   "s3": {
-   "version_datos": 4,
+   "version_datos": -1,
    "id": "s3",
    "nombre": "Qda. Ancha",
    "grupo": "Cuenca de Alajuela",
@@ -2961,7 +2961,7 @@
    }
   },
   "s4": {
-   "version_datos": 4,
+   "version_datos": -1,
    "id": "s4",
    "nombre": "Qda. Bonita",
    "grupo": "Cuenca de Alajuela",
@@ -22856,8 +22856,7 @@
  },
  "errores": {
   "s0": "KeyError: 'coordinates'",
-  "s1": "KeyError: 'coordinates'",
-  "s3": "KeyError: 'coordinates'"
+  "s1": "KeyError: 'coordinates'"
  },
- "generado": "2026-11-23T16:04:24"
+ "generado": "2026-11-23T21:38:25"
 }
