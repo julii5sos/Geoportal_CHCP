@@ -35,6 +35,7 @@ El propósito es aportar información técnica que:
 | ¿Qué parches sostienen la conectividad del paisaje? | **Conectividad estructural**: red de parches, IIC y parches clave (dIIC) |
 | ¿Dónde convendría restaurar para reconectar el bosque? | **Simulador de restauración**: escenarios y ganancia de conectividad |
 | ¿Por dónde podría conectarse un parche con el Corredor Mesoamericano? | **Rutas al corredor**, por menor costo y bosques de ribera (hidrografía IGNTG) |
+| ¿Cómo evolucionó cada fuente año por año? ¿Qué cambió entre dos años? | **Plataforma SIG → temas**: barra de años, series y comparación (JRC 1990–2025, Hansen 2001–2025, ESRI y NDVI 2017–2025) |
 | ¿Qué cobertura oficial había en cada año? | **Coberturas SINIA**: 8 productos de MiAMBIENTE (1992–2023) |
 | ¿Y en mi propia finca o parcela? | **Plataforma SIG → Polígono**: dibuje o suba un GeoJSON o KML |
 

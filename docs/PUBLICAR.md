@@ -24,6 +24,13 @@ SINIA**, **Sitios de campo**, **Metodología** y **Acerca**.
 | Polígono dibujado o subido (GeoJSON o KML) | Estimación local en el navegador sobre los mapas precalculados (tipo C) |
 | Simulador de restauración y rutas al corredor | Cálculo en el navegador sobre la red y los mapas precalculados |
 
+## Series anuales (barra de años de la Plataforma SIG)
+
+Actions → «Series anuales (mapas y superficies por año)» → **Run workflow**. Calcula, para la CHCP
+y las 53 subcuencas, los mapas y las superficies por año de JRC (1990–2025), Hansen (2001–2025),
+ESRI (2017–2025) y NDVI (2017–2025). Es reanudable: si se agota el tiempo, se vuelve a ejecutar y
+sigue con lo pendiente. Opciones: «territorios» y «productos» para una prueba (p. ej. `s5` y `jrc`).
+
 ## Versión sin conexión
 
 Cada publicación genera además `descargas/Geoportal_CHCP_sin_conexion.zip` (enlace al pie de

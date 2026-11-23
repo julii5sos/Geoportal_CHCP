@@ -204,3 +204,21 @@ Detalle y estado en `docs/auditoria/E_COHERENCIA_ECOLOGICA.md` (tabla de limitac
 
 - La ribera sin bosque tiene una resistencia menor que las otras tierras: así la ruta tiende a seguir los ríos donde habría que restaurar, que son franjas protegidas por ley.
 - Las rutas informan los km por ribera con bosque, los km de ribera sin bosque y los km por plantación.
+
+## Series anuales y Plataforma SIG por temas (2026-11-23)
+
+- **Por qué:** la Plataforma SIG mostraba sobre todo JRC; ESRI, NDVI, Hansen y GEDI apenas aparecían, y no se podía ver la evolución año por año ni comparar dos años.
+- **Series anuales (`scripts/precalcular_series.py`, flujo «Series anuales»):** por territorio (CHCP y 53 subcuencas), mapas por año y superficies por clase.
+  - JRC TMF 1990–2025: estado de cada año (6 clases).
+  - Hansen 2001–2025: año de la pérdida (un mapa) y superficie por año, más la cobertura arbórea del año 2000 (≥ 30 %).
+  - ESRI 2017–2025: clase de cada año (sin la clase 10, nubes).
+  - NDVI 2017–2025: los cinco intervalos de METODOLOGIA.md y el NDVI medio.
+  - Superficies con `ee.Image.pixelArea` a la escala nativa (30, 30, 10 y 20 m). Mapas como PNG de valores (255 = sin dato) que el navegador colorea y filtra por clase.
+- **El índice no cambia:** MT-2026.7 sigue usando los períodos fijos (`PERIODOS_ANALISIS`). Las series sirven para ver la evolución y comparar años; cada tarjeta dice qué período usa el índice.
+- **Plataforma SIG por temas** (modelo MapBiomas): un tema a la vez (preevaluación, JRC, Hansen, ESRI, NDVI, GEDI, SINIA, fragmentación, corredores, franjas riparias, ERI).
+  - Leyenda con clases que se pueden ocultar y barra de años sobre el mapa.
+  - Panel de gráficas: superficie por clase del año, evolución, comparación de dos años (mancuernas) y subcuencas con mayor proporción de una clase.
+  - La preevaluación muestra las cinco fuentes con el mismo peso visual, cada una con su umbral y su señal.
+  - Cada gráfica tiene tooltip, leyenda y tabla equivalente.
+- **Polígonos:** las series se calculan en el navegador contando los píxeles de los mapas por año dentro del polígono ∩ subcuenca (superficie aproximada, como el resto de la estimación local).
+- **Sin series todavía:** cada tema muestra las cifras del período del índice y un aviso de que las series se generan con el flujo «Series anuales».
