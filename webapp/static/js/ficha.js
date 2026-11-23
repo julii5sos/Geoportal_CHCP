@@ -234,7 +234,7 @@
           <tr><td>NDVI Sentinel-2</td><td>Vigor de la vegetación</td><td>Sensible a nubes, fenología y sequía; no equivale a pérdida de bosque.</td></tr>
           <tr><td>GEDI</td><td>Altura del dosel por láser</td><td>Muestreo por huellas, no cobertura continua.</td></tr>
           <tr><td>SINIA–MiAMBIENTE</td><td>Cartografía oficial (2019, 2021, 2023)</td><td>Escalas y métodos distintos entre años.</td></tr></tbody></table>
-        <p class="fi-note"><b>Pendiente:</b> exactitud por clase, matrices de confusión y superficies ajustadas por error requieren puntos de referencia independientes (buenas prácticas FAO / Olofsson et al., 2014). Esa evaluación se incorporará en una próxima actualización; hasta entonces, las superficies de esta ficha son estimaciones de mapa sin intervalo de confianza.</p></section>
+        <p class="fi-note"><b>Pendiente:</b> exactitud por clase, matrices de confusión y superficies ajustadas por error requieren puntos de referencia independientes (buenas prácticas FAO / Olofsson et al., 2014). Esa evaluación, con imágenes satelitales de alta resolución, está en curso: vea la página «Validación de mapas».</p></section>
       <section class="fi-sec fi-gloss"><h2>${icon('doc', 22)} Glosario breve</h2><dl>
         <dt>Parche</dt><dd>Área continua de bosque.</dd><dt>Borde</dt><dd>Límite entre bosque y otra cobertura; el bosque cercano al borde recibe más perturbaciones.</dd>
         <dt>Bosque interior (núcleo)</dt><dd>Bosque a más de cierta distancia de cualquier borde.</dd><dt>Red / componente</dt><dd>Grupo de parches suficientemente cercanos para considerarse conectados.</dd>
