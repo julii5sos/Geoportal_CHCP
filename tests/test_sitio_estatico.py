@@ -31,6 +31,45 @@ class SitioEstaticoTests(unittest.TestCase):
             self.assertNotIn("private_key", todo)
 
 
+class PaqueteSinConexionTests(unittest.TestCase):
+    def test_paquete_con_lanzadores_y_sitio(self):
+        import zipfile
+        spec = importlib.util.spec_from_file_location("sitio", RAIZ / "scripts" / "construir_sitio_estatico.py")
+        mod = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(mod)
+        with tempfile.TemporaryDirectory() as tmp:
+            destino = Path(tmp) / "sitio"
+            destino.mkdir()
+            (destino / "index.html").write_text("<!doctype html>", encoding="utf-8")
+            (destino / "datos").mkdir()
+            (destino / "datos" / "a.json").write_text("{}", encoding="utf-8")
+            salida = mod.empaquetar_sin_conexion(destino)
+            with zipfile.ZipFile(salida) as z:
+                nombres = set(z.namelist())
+                bat = z.read("Geoportal_CHCP/Abrir Geoportal (Windows).bat").decode("ascii")
+                info = z.getinfo("Geoportal_CHCP/Abrir Geoportal (Mac o Linux).command")
+            self.assertIn("Geoportal_CHCP/sitio/index.html", nombres)
+            self.assertIn("Geoportal_CHCP/sitio/datos/a.json", nombres)
+            self.assertIn("Geoportal_CHCP/servidor.ps1", nombres)
+            self.assertIn("Geoportal_CHCP/LEEME.txt", nombres)
+            self.assertFalse(any("descargas" in n for n in nombres))  # el zip no se incluye a sí mismo
+            self.assertIn('%~dp0servidor.ps1', bat)
+            self.assertIn("\r\n", bat)
+            self.assertTrue((info.external_attr >> 16) & 0o111)
+
+    def test_servidor_windows_solo_sirve_la_carpeta_sitio(self):
+        ps1 = (RAIZ / "scripts" / "sin_conexion" / "servidor.ps1").read_bytes()
+        self.assertTrue(ps1.startswith(b"\xef\xbb\xbf"))  # UTF-8 con BOM: PowerShell 5.1 lee bien los acentos
+        texto = ps1.decode("utf-8-sig")
+        self.assertIn("http://localhost:$puerto/", texto)
+        self.assertIn("$archivo.StartsWith($raiz)", texto)
+
+    def test_aviso_al_abrir_como_archivo(self):
+        js = (RAIZ / "webapp" / "static" / "js" / "common.js").read_text(encoding="utf-8")
+        self.assertIn("location.protocol === 'file:'", js)
+        self.assertIn("Abrir Geoportal (Windows).bat", js)
+
+
 class FichaRutaTests(unittest.TestCase):
     def test_ruta_geometria_rechaza_identificadores_invalidos(self):
         try:

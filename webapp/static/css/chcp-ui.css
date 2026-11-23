@@ -708,3 +708,8 @@ html.app #main-content:has(.pg) { overflow-y:auto; background:#f3f6fa; }
 .tour-pestana-btn { display:inline-flex; align-items:center; gap:8px; border:0; cursor:pointer; background:var(--azul); color:#fff; font-weight:700; font-size:13px; padding:9px 16px 9px 10px; border-radius:999px; box-shadow:0 8px 24px rgba(10,30,70,.28); }
 .tour-pestana-btn span { display:inline-flex; width:22px; height:22px; border-radius:50%; align-items:center; justify-content:center; background:var(--verde); color:var(--azul-tinta); font-size:13px; }
 .tour-pestana-btn:hover { background:var(--azul-tinta); }
+
+/* Aviso al abrir el sitio como archivo (file://) */
+#chcp-file-aviso { position:sticky; top:0; z-index:5000; display:grid; gap:4px; padding:14px 20px; background:#fff4d6; border-bottom:2px solid #e0a800; color:#3a2c00; font-size:14px; line-height:1.45; }
+#chcp-file-aviso a { color:#0a4393; font-weight:700; }
+.foot .foot-links a { color:#fff; font-weight:700; text-decoration:underline; }

@@ -1,0 +1,35 @@
+﻿GEOPORTAL CHCP · VERSIÓN SIN CONEXIÓN
+=====================================
+
+Herramienta de preevaluación ambiental y análisis geoespacial de la Cuenca
+Hidrográfica del Canal de Panamá: cobertura boscosa, fragmentación del paisaje
+y conectividad ecológica.
+
+Versión en línea (no requiere descargar nada):
+  https://julii5sos.github.io/Geoportal_CHCP/
+
+CÓMO ABRIRLA
+------------
+1. Descomprima TODO el archivo .zip (clic derecho > «Extraer todo»).
+   No la abra desde dentro del .zip.
+2. Windows: doble clic en «Abrir Geoportal (Windows).bat».
+   Mac o Linux: doble clic en «Abrir Geoportal (Mac o Linux).command»
+   (o, en una terminal: sh "Abrir Geoportal (Mac o Linux).command").
+3. Se abre el navegador. Deje abierta la ventana negra mientras usa el
+   geoportal; ciérrela para terminar.
+
+Si Windows muestra «Windows protegió su PC», pulse «Más información» y
+«Ejecutar de todas formas». El archivo solo sirve la carpeta «sitio» en su
+propio equipo (http://localhost); no instala nada ni envía datos.
+
+POR QUÉ NO BASTA CON ABRIR index.html
+-------------------------------------
+Los navegadores no permiten que una página abierta como archivo lea sus datos
+(mapas, indicadores). Por eso se incluye este pequeño servidor local.
+
+NOTAS
+-----
+- El mapa de fondo (gris, satélite, topográfico) se descarga de internet; sin
+  conexión los análisis funcionan, pero el fondo aparece vacío.
+- Los resultados son una evaluación preliminar basada en datos satelitales y
+  corresponden a la fecha del último cálculo indicada en cada página.

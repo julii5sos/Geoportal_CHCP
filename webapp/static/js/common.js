@@ -112,6 +112,22 @@
     burger.setAttribute('aria-expanded', String(open));
   });
 
+  // Abierto con doble clic (file://): el navegador bloquea la lectura de los datos. Se explica
+  // qué hacer en lugar de mostrar una página vacía.
+  const SITIO_EN_LINEA = 'https://julii5sos.github.io/Geoportal_CHCP/';
+  if (location.protocol === 'file:') {
+    const avisar = () => {
+      if (document.getElementById('chcp-file-aviso')) return;
+      const d = document.createElement('div');
+      d.id = 'chcp-file-aviso'; d.setAttribute('role', 'alert');
+      d.innerHTML = `<b>Esta página se abrió como archivo y el navegador no le deja leer sus datos.</b>
+        <span>Ábrala en línea en <a href="${SITIO_EN_LINEA}">${SITIO_EN_LINEA}</a>, o cierre esta pestaña y use
+        «Abrir Geoportal (Windows).bat» (o «Abrir Geoportal (Mac o Linux).command») de la carpeta descomprimida.</span>`;
+      document.body.prepend(d);
+    };
+    if (document.body) avisar(); else document.addEventListener('DOMContentLoaded', avisar);
+  }
+
   window.CHCP = {$, $$, escapeHtml, number, hectares, api, mapFile, valFile, hidroFile, consultarActualizacion, pendiente, procedencia, toast, readPortalState, writePortalState, normalizeSearch};
 })();
 

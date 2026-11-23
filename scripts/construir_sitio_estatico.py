@@ -6,6 +6,7 @@ No incluye nada que requiera Earth Engine en el momento ni credenciales.
 
     python scripts/construir_sitio_estatico.py                       # genera sitio/
     python scripts/construir_sitio_estatico.py --app-completa https://usuario-geoportal-chcp.hf.space
+    python scripts/construir_sitio_estatico.py --paquete-sin-conexion   # + descargas/Geoportal_CHCP_sin_conexion.zip
 """
 
 from __future__ import annotations
@@ -101,13 +102,45 @@ def construir(destino: Path, app_completa: str, repo_url: str) -> list[str]:
     return generados
 
 
+PAQUETE = "descargas/Geoportal_CHCP_sin_conexion.zip"
+
+
+def empaquetar_sin_conexion(destino: Path) -> Path:
+    """Zip con el sitio y lanzadores que lo sirven en http://localhost (Windows sin instalar nada).
+
+    Abrir index.html con doble clic no funciona: el navegador bloquea la lectura de datos
+    desde file://. El paquete queda dentro del propio sitio para descargarlo desde la página.
+    """
+    import zipfile
+
+    salida = destino / PAQUETE
+    salida.parent.mkdir(parents=True, exist_ok=True)
+    lanzadores = RAIZ / "scripts" / "sin_conexion"
+    base = "Geoportal_CHCP"
+    with zipfile.ZipFile(salida, "w", zipfile.ZIP_DEFLATED, compresslevel=6) as z:
+        for archivo in sorted(lanzadores.iterdir()):
+            info = zipfile.ZipInfo(f"{base}/{archivo.name}")
+            info.compress_type = zipfile.ZIP_DEFLATED
+            ejecutable = archivo.suffix in (".command", ".sh")
+            info.external_attr = (0o100755 if ejecutable else 0o100644) << 16
+            z.writestr(info, archivo.read_bytes())
+        for archivo in sorted(destino.rglob("*")):
+            if archivo.is_file() and archivo.parent != salida.parent:
+                z.write(archivo, f"{base}/sitio/{archivo.relative_to(destino).as_posix()}")
+    return salida
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument("--destino", default=str(RAIZ / "sitio"))
     parser.add_argument("--app-completa", default=os.getenv("CHCP_FULL_APP_URL", ""), help="URL de la versión completa (Hugging Face), si existe")
     parser.add_argument("--repo", default="https://github.com/julii5sos/Geoportal_CHCP")
+    parser.add_argument("--paquete-sin-conexion", action="store_true", help=f"Además genera {PAQUETE}")
     args = parser.parse_args()
     archivos = construir(Path(args.destino), args.app_completa, args.repo)
+    if args.paquete_sin_conexion:
+        zip_ = empaquetar_sin_conexion(Path(args.destino))
+        archivos.append(f"{PAQUETE} ({zip_.stat().st_size / 1e6:.0f} MB)")
     print(f"Sitio estático en {args.destino}: {', '.join(archivos)}")
     print("Para verlo localmente: python -m http.server 8000 --directory sitio  →  http://127.0.0.1:8000")
     return 0
