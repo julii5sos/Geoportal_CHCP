@@ -1,8 +1,56 @@
 {
  "metodologia": "MT-2026.7-DIAGNOSTICO-INTEGRADO",
- "version_datos": 2,
+ "version_datos": 3,
  "proyecto": "geoportal-513817",
  "umbral_conectividad_m": 500,
+ "procesamiento": {
+  "tipo": "B",
+  "descripcion": "Precalculado con Earth Engine (proceso reproducible)",
+  "fecha_procesamiento": "2026-11-23T00:18:37+00:00",
+  "version_codigo": "50595dba6958",
+  "workflow_run": "45087961620",
+  "repositorio": "julii5sos/Geoportal_CHCP",
+  "metodologia": "MT-2026.7-DIAGNOSTICO-INTEGRADO",
+  "version_datos": 3,
+  "proyecto_gee": "geoportal-513817",
+  "fuentes": [
+   {
+    "fuente": "JRC TMF (Annual Changes v1_2024)",
+    "periodo": "estado a diciembre 2025; serie 2020–2025",
+    "resolucion_m": 30
+   },
+   {
+    "fuente": "Hansen Global Forest Change",
+    "periodo": "pérdida 2021–2025",
+    "resolucion_m": 30
+   },
+   {
+    "fuente": "ESRI 10 m Annual LULC",
+    "periodo": "2017 y 2024",
+    "resolucion_m": 10
+   },
+   {
+    "fuente": "Sentinel-2 SR armonizado (NDVI)",
+    "periodo": "medianas 2020 y 2025",
+    "resolucion_m": 10
+   },
+   {
+    "fuente": "GEDI altura de dosel (Open Foris)",
+    "periodo": "compuesto",
+    "resolucion_m": 30
+   },
+   {
+    "fuente": "SINIA–MiAMBIENTE (assets del proyecto geoportal-513817)",
+    "periodo": "2019, 2021, 2023",
+    "resolucion_m": "10–20"
+   },
+   {
+    "fuente": "Almanaque Azul (corredores y puntos críticos)",
+    "periodo": "publicación vigente",
+    "resolucion_m": "vector"
+   }
+  ]
+ },
  "capas_mapa": [
   {
    "clave": "sinia_2021",
@@ -287,7 +335,7 @@
  },
  "territorios": {
   "chcp": {
-   "version_datos": 2,
+   "version_datos": 3,
    "id": "chcp",
    "nombre": "Cuenca Hidrográfica del Canal de Panamá",
    "grupo": "Cuenca",
@@ -320,6 +368,44 @@
     "combinacion_territorial": "Cambios + corredor",
     "lectura_integrada": "Urgencia por cambios: Alta; valor del corredor: Alto; condición estructural: No evaluada."
    },
+   "metricas_indice": {
+    "tmf_estable": 137698.270993,
+    "tmf_degradacion": 34032.574825,
+    "tmf_deforestacion": 19377.279474,
+    "tmf_recuperacion": 34472.157094,
+    "tmf_agua": 39358.116476,
+    "tmf_otra_cobertura": 76091.350529,
+    "coincidencia_1_fuente": 67160.774958,
+    "coincidencia_2_fuentes": 6617.356369,
+    "coincidencia_3_fuentes": 467.244545,
+    "hansen_post": 4265.000456,
+    "hansen_pre": 15199.499536,
+    "linea_base": 232741.443669,
+    "esri_arboles_final": 238489.80055,
+    "esri_salida": 12817.609173,
+    "esri_ganancia": 14568.900252,
+    "esri_estable": 223920.900298,
+    "ndvi_disminucion": 4049.203443,
+    "ndvi_area_datos": 341013.492689,
+    "area_ha": 342460.18054,
+    "gedi_altura": 11.931138,
+    "gedi_area_datos": 340375.26697,
+    "gedi_cobertura_pct": 99.391195,
+    "ndvi_inicial_medio": 0.646954,
+    "ndvi_final_medio": 0.673757,
+    "ndvi_delta_medio": 0.026803,
+    "ndvi_cobertura_pct": 99.57756,
+    "pct_tmf_defor": 5.658258,
+    "pct_tmf_degrad": 9.937674,
+    "pct_tmf_recuperacion": 10.066034,
+    "pct_esri_salida": 3.742803,
+    "pct_esri_ganancia": 4.254188,
+    "pct_linea_base": 67.961607,
+    "pct_ndvi_disminucion": 1.182387,
+    "coincidencia_varias_fuentes": 7084.600914,
+    "pct_coincidencia_varias_fuentes": 2.068737
+   },
+   "procesado": "2026-11-23T00:20:57",
    "jrc_ha": {
     "tmf_estable": 137698.2709933815,
     "tmf_degradacion": 34032.57482545919,
@@ -337,9 +423,9 @@
    },
    "ndvi": {
     "ndvi_inicial_medio": 0.6469540981305654,
-    "ndvi_final_medio": 0.6737570070133704,
-    "ndvi_delta_medio": 0.026802908882804868,
-    "ndvi_disminucion": 4049.2034433330805
+    "ndvi_final_medio": 0.6737570070133703,
+    "ndvi_delta_medio": 0.026802908882804875,
+    "ndvi_disminucion": 4049.20344333308
    },
    "gedi_altura_m": 11.93113842900976,
    "serie_anual": [
@@ -521,7 +607,7 @@
     "color": "#F2C94C",
     "lectura": "Condición intermedia; conviene revisar los componentes más débiles.",
     "componentes": {
-     "integridad_estructural": 0.3925365398322904,
+     "integridad_estructural": 0.3925365398322905,
      "conectividad": 0.5563454985671056,
      "estabilidad_topografica": 0.8959231406092307,
      "proximidad_riparia": 0.5573131104465384
@@ -532,7 +618,7 @@
       "clave": "muy_baja",
       "clase": "Muy baja",
       "color": "#B42318",
-      "area_ha": 3468.8062049695086
+      "area_ha": 3468.806204969509
      },
      {
       "clave": "baja",
@@ -550,13 +636,13 @@
       "clave": "alta",
       "clase": "Alta",
       "color": "#76B72A",
-      "area_ha": 107248.286727798
+      "area_ha": 107248.28672779803
      },
      {
       "clave": "muy_alta",
       "clase": "Muy alta",
       "color": "#00544D",
-      "area_ha": 44961.15635987286
+      "area_ha": 44961.15635987285
      }
     ],
     "pesos": {
@@ -587,7 +673,7 @@
    "mapas": {
     "limites": [
      [
-      8.627485,
+      8.628124,
       -80.147786
      ],
      [
@@ -595,17 +681,17 @@
       -79.217149
      ]
     ],
-    "tamano_pixel_m": 113.7,
+    "tamano_pixel_m": 42.6,
     "dimensiones": [
-     900,
-     880
+     2400,
+     2345
     ],
     "capas": [
      "sinia_2021",
      "jrc_2025",
      "hansen",
      "esri_cambio",
-     "ndvi_cambio",
+     "coincidencia",
      "riparia"
     ],
     "valores": [
@@ -613,14 +699,14 @@
      "jrc_2025",
      "hansen",
      "esri_cambio",
-     "ndvi_cambio",
+     "coincidencia",
      "riparia",
-     "gedi",
-     "aux"
+     "gedi"
     ],
     "errores": {
-     "eri": "EEException: Reprojection output too large (9774x9418 pixels).",
-     "coincidencia": "EEException: Reprojection output too large (10258x9967 pixels)."
+     "ndvi_cambio": "EEException: User memory limit exceeded.",
+     "eri": "EEException: User memory limit exceeded.",
+     "aux": "EEException: User memory limit exceeded."
     },
     "rios": 472
    },
@@ -670,11 +756,11 @@
    }
   },
   "s0": {
-   "version_datos": 2,
+   "version_datos": 3,
    "id": "s0",
    "nombre": "Lago Alajuela",
    "grupo": "Lagos",
-   "area_ha": 4472.028022206937,
+   "area_ha": 4472.028022204948,
    "preevaluacion": {
     "puntaje": 5.0,
     "puntaje_maximo": 6.5,
@@ -703,6 +789,44 @@
     "combinacion_territorial": "Cambios + corredor + estructura",
     "lectura_integrada": "Urgencia por cambios: Alta; valor del corredor: Medio; condición estructural: Conectividad predominante."
    },
+   "metricas_indice": {
+    "tmf_estable": 47.953856,
+    "tmf_degradacion": 63.427634,
+    "tmf_deforestacion": 64.789701,
+    "tmf_recuperacion": 69.395454,
+    "tmf_agua": 3895.812504,
+    "tmf_otra_cobertura": 311.24339,
+    "coincidencia_1_fuente": 287.615776,
+    "coincidencia_2_fuentes": 49.820733,
+    "coincidencia_3_fuentes": 0.113512,
+    "hansen_post": 3.663641,
+    "hansen_pre": 41.568226,
+    "linea_base": 572.714368,
+    "esri_arboles_final": 170.970257,
+    "esri_salida": 95.569695,
+    "esri_ganancia": 24.669954,
+    "esri_estable": 146.300303,
+    "ndvi_disminucion": 581.645861,
+    "ndvi_area_datos": 4451.206931,
+    "area_ha": 4472.028022,
+    "gedi_altura": 1.020742,
+    "gedi_area_datos": 4069.58312,
+    "gedi_cobertura_pct": 91.000841,
+    "ndvi_inicial_medio": 0.115799,
+    "ndvi_final_medio": 0.004588,
+    "ndvi_delta_medio": -0.111211,
+    "ndvi_cobertura_pct": 99.534415,
+    "pct_tmf_defor": 1.448777,
+    "pct_tmf_degrad": 1.418319,
+    "pct_tmf_recuperacion": 1.551767,
+    "pct_esri_salida": 2.137055,
+    "pct_esri_ganancia": 0.55165,
+    "pct_linea_base": 12.806592,
+    "pct_ndvi_disminucion": 13.006311,
+    "coincidencia_varias_fuentes": 49.934245,
+    "pct_coincidencia_varias_fuentes": 1.116591
+   },
+   "procesado": "2026-11-23T00:30:01",
    "jrc_ha": {
     "tmf_estable": 47.95385598923062,
     "tmf_degradacion": 63.42763424483582,
@@ -719,9 +843,9 @@
     "esri_arboles_final": 170.97025700883543
    },
    "ndvi": {
-    "ndvi_inicial_medio": 0.1157994345003435,
-    "ndvi_final_medio": 0.004588375589721637,
-    "ndvi_delta_medio": -0.11121105891062183,
+    "ndvi_inicial_medio": 0.11579943450034352,
+    "ndvi_final_medio": 0.0045883755897216365,
+    "ndvi_delta_medio": -0.11121105891062186,
     "ndvi_disminucion": 581.6458610864257
    },
    "gedi_altura_m": 1.02074223451417,
@@ -885,48 +1009,48 @@
    "estructura_2021": {
     "metricas_clase": {
      "numero_parches": 131,
-     "area_total_bosque_ha": 182.7072,
+     "area_total_bosque_ha": 182.6734,
      "porcentaje_paisaje_bosque": 4.1025,
-     "densidad_parches_por_100ha": 2.9415,
-     "densidad_borde_m_ha": 55.3485,
+     "densidad_parches_por_100ha": 2.942,
+     "densidad_borde_m_ha": 54.3075,
      "indice_parche_mayor_pct": 0.5522,
-     "area_media_parche_ha": 1.3947,
+     "area_media_parche_ha": 1.3945,
      "area_mediana_parche_ha": 0.2126,
-     "desviacion_area_parche_ha": 3.9539,
-     "indice_forma_medio": 3.4524
+     "desviacion_area_parche_ha": 3.9532,
+     "indice_forma_medio": 3.3806
     },
     "metricas_red": {
      "umbral_m": 500.0,
      "numero_nodos": 131,
-     "numero_aristas": 377,
-     "numero_relaciones_mostradas": 123,
+     "numero_aristas": 385,
+     "numero_relaciones_mostradas": 122,
      "numero_parches_conectados": 130,
      "numero_parches_aislados": 1,
      "porcentaje_parches_aislados": 0.7634,
      "numero_componentes": 2,
      "tamano_componente_mayor": 130,
      "porcentaje_nodos_componente_mayor": 99.2366,
-     "densidad_red": 0.04427481,
+     "densidad_red": 0.04521433,
      "numero_parches_contexto": 262,
      "numero_aristas_contexto": 944,
-     "numero_conexiones_fuera_area": 354,
-     "numero_parches_continuidad_exterior": 128,
-     "distancia_media_conexiones_m": 206.39,
-     "distancia_maxima_conexiones_m": 499.2,
+     "numero_conexiones_fuera_area": 349,
+     "numero_parches_continuidad_exterior": 129,
+     "distancia_media_conexiones_m": 208.74,
+     "distancia_maxima_conexiones_m": 499.78,
      "numero_brechas_potenciales": 1,
-     "distancia_media_brechas_potenciales_m": 518.3,
+     "distancia_media_brechas_potenciales_m": 572.7,
      "red_totalmente_conectada": false,
      "intermediacion_aproximada": true,
      "cercania_calculada": false
     },
     "metricas_paisaje": {
      "area_nucleo": {
-      "area_bosque_ha": 182.7072,
+      "area_bosque_ha": 182.6734,
       "por_profundidad": [
        {
         "profundidad_m": 50.0,
-        "area_nucleo_ha": 0.074,
-        "porcentaje_bosque_nucleo": 0.0405,
+        "area_nucleo_ha": 0.1586,
+        "porcentaje_bosque_nucleo": 0.0868,
         "parches_con_nucleo": 2,
         "parches_sin_nucleo": 129
        },
@@ -949,71 +1073,71 @@
      "area_nucleo_ha": 0,
      "porcentaje_bosque_nucleo": 0.0,
      "profundidad_borde_referencia_m": 100.0,
-     "enn_medio_m": 71.88,
-     "enn_mediana_m": 46.97,
-     "enn_maximo_m": 713.05,
-     "cohesion": 96.8662,
-     "iic": 0.00051956,
+     "enn_medio_m": 71.19,
+     "enn_mediana_m": 51.04,
+     "enn_maximo_m": 727.53,
+     "cohesion": 96.8723,
+     "iic": 0.00052434,
      "diic_principales": [
       {
-       "area_ha": 20.239,
-       "diic_pct": 32.6704,
-       "es_puente": true,
-       "parche_id": 236
-      },
-      {
-       "area_ha": 23.8811,
-       "diic_pct": 24.6834,
-       "es_puente": true,
-       "parche_id": 254
-      },
-      {
-       "area_ha": 16.3619,
-       "diic_pct": 24.4677,
-       "es_puente": true,
-       "parche_id": 138
-      },
-      {
-       "area_ha": 24.5915,
-       "diic_pct": 22.6119,
-       "es_puente": true,
-       "parche_id": 9
-      },
-      {
-       "area_ha": 8.096,
-       "diic_pct": 20.7348,
-       "es_puente": true,
-       "parche_id": 166
-      },
-      {
-       "area_ha": 10.5277,
-       "diic_pct": 14.7318,
-       "es_puente": true,
-       "parche_id": 113
-      },
-      {
-       "area_ha": 7.8634,
-       "diic_pct": 11.7688,
-       "es_puente": true,
-       "parche_id": 3
-      },
-      {
-       "area_ha": 8.6956,
-       "diic_pct": 10.062,
-       "es_puente": false,
-       "parche_id": 174
-      },
-      {
-       "area_ha": 6.9324,
-       "diic_pct": 9.1347,
+       "area_ha": 20.2355,
+       "diic_pct": 31.5013,
        "es_puente": true,
        "parche_id": 242
       },
       {
-       "area_ha": 5.1137,
-       "diic_pct": 4.8658,
+       "area_ha": 16.359,
+       "diic_pct": 25.1956,
+       "es_puente": true,
+       "parche_id": 179
+      },
+      {
+       "area_ha": 23.8776,
+       "diic_pct": 23.77,
        "es_puente": false,
-       "parche_id": 82
+       "parche_id": 257
+      },
+      {
+       "area_ha": 24.5864,
+       "diic_pct": 23.0353,
+       "es_puente": false,
+       "parche_id": 8
+      },
+      {
+       "area_ha": 8.0944,
+       "diic_pct": 19.5902,
+       "es_puente": true,
+       "parche_id": 157
+      },
+      {
+       "area_ha": 10.5256,
+       "diic_pct": 15.1643,
+       "es_puente": true,
+       "parche_id": 124
+      },
+      {
+       "area_ha": 7.8618,
+       "diic_pct": 10.4101,
+       "es_puente": true,
+       "parche_id": 46
+      },
+      {
+       "area_ha": 8.694,
+       "diic_pct": 10.3857,
+       "es_puente": false,
+       "parche_id": 162
+      },
+      {
+       "area_ha": 6.9311,
+       "diic_pct": 9.0318,
+       "es_puente": true,
+       "parche_id": 247
+      },
+      {
+       "area_ha": 5.1127,
+       "diic_pct": 5.6224,
+       "es_puente": false,
+       "parche_id": 69
       }
      ],
      "umbral_m": 500.0,
@@ -1021,43 +1145,43 @@
     },
     "top_conectores": [
      {
-      "patch_id": 236,
-      "area_ha": 20.239,
-      "indice_conector": 0.984676,
+      "patch_id": 242,
+      "area_ha": 20.2355,
+      "indice_conector": 1.0,
       "prioridad_conectividad": "Alta",
-      "grado": 37,
+      "grado": 40,
       "componente": 1
      },
      {
-      "patch_id": 138,
-      "area_ha": 16.3619,
-      "indice_conector": 0.770736,
+      "patch_id": 179,
+      "area_ha": 16.359,
+      "indice_conector": 0.733688,
       "prioridad_conectividad": "Alta",
-      "grado": 35,
+      "grado": 33,
       "componente": 1
      },
      {
-      "patch_id": 113,
-      "area_ha": 10.5277,
-      "indice_conector": 0.693971,
+      "patch_id": 124,
+      "area_ha": 10.5256,
+      "indice_conector": 0.668859,
+      "prioridad_conectividad": "Alta",
+      "grado": 28,
+      "componente": 1
+     },
+     {
+      "patch_id": 157,
+      "area_ha": 8.0944,
+      "indice_conector": 0.562553,
+      "prioridad_conectividad": "Alta",
+      "grado": 18,
+      "componente": 1
+     },
+     {
+      "patch_id": 46,
+      "area_ha": 7.8618,
+      "indice_conector": 0.549125,
       "prioridad_conectividad": "Alta",
       "grado": 25,
-      "componente": 1
-     },
-     {
-      "patch_id": 3,
-      "area_ha": 7.8634,
-      "indice_conector": 0.560228,
-      "prioridad_conectividad": "Alta",
-      "grado": 26,
-      "componente": 1
-     },
-     {
-      "patch_id": 166,
-      "area_ha": 8.096,
-      "indice_conector": 0.522877,
-      "prioridad_conectividad": "Alta",
-      "grado": 15,
       "componente": 1
      }
     ],
@@ -1136,11 +1260,11 @@
    }
   },
   "s1": {
-   "version_datos": 2,
+   "version_datos": 3,
    "id": "s1",
    "nombre": "Lago Gatún",
    "grupo": "Lagos",
-   "area_ha": 38171.975136412955,
+   "area_ha": 38171.97513637299,
    "preevaluacion": {
     "puntaje": 4.0,
     "puntaje_maximo": 6.5,
@@ -1169,6 +1293,44 @@
     "combinacion_territorial": "Cambios + corredor + estructura",
     "lectura_integrada": "Urgencia por cambios: Alta; valor del corredor: Alto; condición estructural: Conectividad predominante."
    },
+   "metricas_indice": {
+    "tmf_estable": 2213.880859,
+    "tmf_degradacion": 587.921189,
+    "tmf_deforestacion": 168.728886,
+    "tmf_recuperacion": 366.716373,
+    "tmf_agua": 33543.92276,
+    "tmf_otra_cobertura": 1126.56197,
+    "coincidencia_1_fuente": 1014.832613,
+    "coincidencia_2_fuentes": 46.907655,
+    "coincidencia_3_fuentes": 0.68227,
+    "hansen_post": 9.446402,
+    "hansen_pre": 53.104924,
+    "linea_base": 3243.840015,
+    "esri_arboles_final": 803.012232,
+    "esri_salida": 113.388168,
+    "esri_ganancia": 270.772859,
+    "esri_estable": 532.239373,
+    "ndvi_disminucion": 887.927199,
+    "ndvi_area_datos": 37995.930483,
+    "area_ha": 38171.975136,
+    "gedi_altura": 0.876686,
+    "gedi_area_datos": 35310.159749,
+    "gedi_cobertura_pct": 92.502836,
+    "ndvi_inicial_medio": 0.006456,
+    "ndvi_final_medio": -0.029181,
+    "ndvi_delta_medio": -0.035637,
+    "ndvi_cobertura_pct": 99.538812,
+    "pct_tmf_defor": 0.442023,
+    "pct_tmf_degrad": 1.540191,
+    "pct_tmf_recuperacion": 0.960695,
+    "pct_esri_salida": 0.297046,
+    "pct_esri_ganancia": 0.70935,
+    "pct_linea_base": 8.497962,
+    "pct_ndvi_disminucion": 2.326123,
+    "coincidencia_varias_fuentes": 47.589925,
+    "pct_coincidencia_varias_fuentes": 0.124672
+   },
+   "procesado": "2026-11-23T00:36:00",
    "jrc_ha": {
     "tmf_estable": 2213.8808591700945,
     "tmf_degradacion": 587.9211885437663,
@@ -1185,10 +1347,10 @@
     "esri_arboles_final": 803.0122318808503
    },
    "ndvi": {
-    "ndvi_inicial_medio": 0.0064562775307941255,
-    "ndvi_final_medio": -0.029181067969390975,
-    "ndvi_delta_medio": -0.035637345500185096,
-    "ndvi_disminucion": 887.9271990029612
+    "ndvi_inicial_medio": 0.006456277530794125,
+    "ndvi_final_medio": -0.02918106796939098,
+    "ndvi_delta_medio": -0.0356373455001851,
+    "ndvi_disminucion": 887.9271990029611
    },
    "gedi_altura_m": 0.8766862628069668,
    "serie_anual": [
@@ -1361,55 +1523,55 @@
    "estructura_2021": {
     "metricas_clase": {
      "numero_parches": 863,
-     "area_total_bosque_ha": 1385.014,
-     "porcentaje_paisaje_bosque": 3.6434,
-     "densidad_parches_por_100ha": 2.2702,
-     "densidad_borde_m_ha": 39.5687,
+     "area_total_bosque_ha": 1384.46,
+     "porcentaje_paisaje_bosque": 3.6435,
+     "densidad_parches_por_100ha": 2.2712,
+     "densidad_borde_m_ha": 38.7832,
      "indice_parche_mayor_pct": 0.4461,
-     "area_media_parche_ha": 1.6049,
-     "area_mediana_parche_ha": 0.2654,
-     "desviacion_area_parche_ha": 8.4434,
-     "indice_forma_medio": 3.1253
+     "area_media_parche_ha": 1.6042,
+     "area_mediana_parche_ha": 0.2652,
+     "desviacion_area_parche_ha": 8.4401,
+     "indice_forma_medio": 3.0602
     },
     "metricas_red": {
      "umbral_m": 500.0,
      "numero_nodos": 863,
-     "numero_aristas": 2447,
-     "numero_relaciones_mostradas": 819,
-     "numero_parches_conectados": 858,
-     "numero_parches_aislados": 5,
-     "porcentaje_parches_aislados": 0.5794,
-     "numero_componentes": 17,
-     "tamano_componente_mayor": 734,
-     "porcentaje_nodos_componente_mayor": 85.0521,
-     "densidad_red": 0.00657879,
-     "numero_parches_contexto": 1404,
-     "numero_aristas_contexto": 5036,
-     "numero_conexiones_fuera_area": 1583,
+     "numero_aristas": 2428,
+     "numero_relaciones_mostradas": 813,
+     "numero_parches_conectados": 857,
+     "numero_parches_aislados": 6,
+     "porcentaje_parches_aislados": 0.6952,
+     "numero_componentes": 18,
+     "tamano_componente_mayor": 733,
+     "porcentaje_nodos_componente_mayor": 84.9363,
+     "densidad_red": 0.00652771,
+     "numero_parches_contexto": 1405,
+     "numero_aristas_contexto": 4962,
+     "numero_conexiones_fuera_area": 1520,
      "numero_parches_continuidad_exterior": 845,
-     "distancia_media_conexiones_m": 237.56,
-     "distancia_maxima_conexiones_m": 499.19,
-     "numero_brechas_potenciales": 5,
-     "distancia_media_brechas_potenciales_m": 722.2,
+     "distancia_media_conexiones_m": 235.69,
+     "distancia_maxima_conexiones_m": 499.94,
+     "numero_brechas_potenciales": 6,
+     "distancia_media_brechas_potenciales_m": 676.02,
      "red_totalmente_conectada": false,
      "intermediacion_aproximada": true,
      "cercania_calculada": false
     },
     "metricas_paisaje": {
      "area_nucleo": {
-      "area_bosque_ha": 1385.014,
+      "area_bosque_ha": 1384.46,
       "por_profundidad": [
        {
         "profundidad_m": 50.0,
-        "area_nucleo_ha": 11.2849,
-        "porcentaje_bosque_nucleo": 0.8148,
-        "parches_con_nucleo": 6,
-        "parches_sin_nucleo": 857
+        "area_nucleo_ha": 13.0666,
+        "porcentaje_bosque_nucleo": 0.9438,
+        "parches_con_nucleo": 7,
+        "parches_sin_nucleo": 856
        },
        {
         "profundidad_m": 100.0,
-        "area_nucleo_ha": 0.3972,
-        "porcentaje_bosque_nucleo": 0.0287,
+        "area_nucleo_ha": 0.9252,
+        "porcentaje_bosque_nucleo": 0.0668,
         "parches_con_nucleo": 1,
         "parches_sin_nucleo": 862
        },
@@ -1422,74 +1584,74 @@
        }
       ]
      },
-     "area_nucleo_ha": 0.3972,
-     "porcentaje_bosque_nucleo": 0.0287,
+     "area_nucleo_ha": 0.9252,
+     "porcentaje_bosque_nucleo": 0.0668,
      "profundidad_borde_referencia_m": 100.0,
-     "enn_medio_m": 136.62,
-     "enn_mediana_m": 80.89,
-     "enn_maximo_m": 8033.45,
-     "cohesion": 98.0163,
-     "iic": 0.00017927,
+     "enn_medio_m": 128.81,
+     "enn_mediana_m": 82.27,
+     "enn_maximo_m": 8055.35,
+     "cohesion": 98.011,
+     "iic": 0.00018185,
      "diic_principales": [
       {
-       "area_ha": 169.5838,
-       "diic_pct": 57.2725,
+       "area_ha": 169.5141,
+       "diic_pct": 46.6544,
        "es_puente": true,
-       "parche_id": 883
+       "parche_id": 884
       },
       {
-       "area_ha": 119.1355,
-       "diic_pct": 35.3049,
+       "area_ha": 119.0951,
+       "diic_pct": 37.9566,
        "es_puente": true,
-       "parche_id": 1179
+       "parche_id": 1196
       },
       {
-       "area_ha": 43.5524,
-       "diic_pct": 30.0053,
+       "area_ha": 70.092,
+       "diic_pct": 19.5176,
        "es_puente": true,
-       "parche_id": 980
+       "parche_id": 1113
       },
       {
-       "area_ha": 70.1184,
-       "diic_pct": 25.6172,
-       "es_puente": true,
-       "parche_id": 1101
-      },
-      {
-       "area_ha": 34.3451,
-       "diic_pct": 11.3146,
-       "es_puente": true,
-       "parche_id": 1081
-      },
-      {
-       "area_ha": 25.3025,
-       "diic_pct": 6.6442,
+       "area_ha": 43.5352,
+       "diic_pct": 10.8568,
        "es_puente": false,
-       "parche_id": 1347
+       "parche_id": 994
       },
       {
-       "area_ha": 29.8594,
-       "diic_pct": 6.0295,
+       "area_ha": 25.2959,
+       "diic_pct": 6.8454,
        "es_puente": false,
-       "parche_id": 991
+       "parche_id": 1351
       },
       {
-       "area_ha": 43.0676,
-       "diic_pct": 5.8505,
-       "es_puente": false,
-       "parche_id": 1348
+       "area_ha": 34.3326,
+       "diic_pct": 6.7741,
+       "es_puente": true,
+       "parche_id": 1091
       },
       {
-       "area_ha": 34.0823,
-       "diic_pct": 5.4491,
+       "area_ha": 29.8476,
+       "diic_pct": 6.1258,
        "es_puente": true,
        "parche_id": 1004
       },
       {
-       "area_ha": 23.6386,
-       "diic_pct": 5.0741,
+       "area_ha": 43.0611,
+       "diic_pct": 5.995,
+       "es_puente": false,
+       "parche_id": 1265
+      },
+      {
+       "area_ha": 34.0683,
+       "diic_pct": 5.0015,
        "es_puente": true,
-       "parche_id": 181
+       "parche_id": 1018
+      },
+      {
+       "area_ha": 23.6264,
+       "diic_pct": 2.7828,
+       "es_puente": true,
+       "parche_id": 186
       }
      ],
      "umbral_m": 500.0,
@@ -1497,47 +1659,47 @@
     },
     "top_conectores": [
      {
-      "patch_id": 883,
-      "area_ha": 169.5838,
-      "indice_conector": 0.988719,
+      "patch_id": 884,
+      "area_ha": 169.5141,
+      "indice_conector": 0.984908,
       "prioridad_conectividad": "Alta",
-      "grado": 51,
+      "grado": 52,
       "componente": 1
      },
      {
-      "patch_id": 1101,
-      "area_ha": 70.1184,
-      "indice_conector": 0.669903,
+      "patch_id": 1196,
+      "area_ha": 119.0951,
+      "indice_conector": 0.704426,
       "prioridad_conectividad": "Alta",
-      "grado": 45,
+      "grado": 42,
       "componente": 1
      },
      {
-      "patch_id": 1179,
-      "area_ha": 119.1355,
-      "indice_conector": 0.643809,
-      "prioridad_conectividad": "Alta",
-      "grado": 44,
-      "componente": 1
-     },
-     {
-      "patch_id": 267,
-      "area_ha": 6.0482,
-      "indice_conector": 0.632765,
+      "patch_id": 275,
+      "area_ha": 6.0451,
+      "indice_conector": 0.623058,
       "prioridad_conectividad": "Alta",
       "grado": 35,
       "componente": 1
      },
      {
-      "patch_id": 764,
-      "area_ha": 1.4042,
-      "indice_conector": 0.617292,
+      "patch_id": 1113,
+      "area_ha": 70.092,
+      "indice_conector": 0.590463,
       "prioridad_conectividad": "Alta",
-      "grado": 35,
+      "grado": 46,
+      "componente": 1
+     },
+     {
+      "patch_id": 768,
+      "area_ha": 1.4036,
+      "indice_conector": 0.588755,
+      "prioridad_conectividad": "Alta",
+      "grado": 33,
       "componente": 1
      }
     ],
-    "brechas_potenciales": 5,
+    "brechas_potenciales": 6,
     "conecta_corredor": true,
     "corredor_nombre": "Corredor biológico mesoamericano este"
    },
@@ -1547,9 +1709,9 @@
     "color": "#F79009",
     "lectura": "Persisten limitaciones importantes en uno o varios componentes.",
     "componentes": {
-     "integridad_estructural": 0.053767375997900435,
+     "integridad_estructural": 0.05376737599790042,
      "conectividad": 0.05234372200177828,
-     "estabilidad_topografica": 0.9958163216392885,
+     "estabilidad_topografica": 0.9958163216392882,
      "proximidad_riparia": 0.6821183843857155
     },
     "componente_limitante_etiqueta": "Conectividad del bosque",
@@ -1570,7 +1732,7 @@
       "clave": "media",
       "clase": "Media",
       "color": "#F2C94C",
-      "area_ha": 6818.199912284869
+      "area_ha": 6818.199912284868
      },
      {
       "clave": "alta",
@@ -1612,11 +1774,11 @@
    }
   },
   "s2": {
-   "version_datos": 2,
+   "version_datos": 3,
    "id": "s2",
    "nombre": "Lago Miraflores",
    "grupo": "Cuenca de Miraflores",
-   "area_ha": 9961.47782724972,
+   "area_ha": 9961.47782724967,
    "preevaluacion": {
     "puntaje": 4.0,
     "puntaje_maximo": 6.5,
@@ -1645,6 +1807,44 @@
     "combinacion_territorial": "Cambios + corredor + estructura",
     "lectura_integrada": "Urgencia por cambios: Alta; valor del corredor: Alto; condición estructural: Conectividad intermedia."
    },
+   "metricas_indice": {
+    "tmf_estable": 5210.5775,
+    "tmf_degradacion": 887.640703,
+    "tmf_deforestacion": 725.775201,
+    "tmf_recuperacion": 873.244236,
+    "tmf_agua": 412.908505,
+    "tmf_otra_cobertura": 1808.999985,
+    "coincidencia_1_fuente": 1699.811526,
+    "coincidencia_2_fuentes": 161.048623,
+    "coincidencia_3_fuentes": 10.816984,
+    "hansen_post": 36.440943,
+    "hansen_pre": 387.128827,
+    "linea_base": 8254.814665,
+    "esri_arboles_final": 8013.459225,
+    "esri_salida": 202.829606,
+    "esri_ganancia": 88.202097,
+    "esri_estable": 7925.257127,
+    "ndvi_disminucion": 66.078701,
+    "ndvi_area_datos": 9916.878365,
+    "area_ha": 9961.477827,
+    "gedi_altura": 12.555504,
+    "gedi_area_datos": 9811.569207,
+    "gedi_cobertura_pct": 98.495117,
+    "ndvi_inicial_medio": 0.683999,
+    "ndvi_final_medio": 0.725927,
+    "ndvi_delta_medio": 0.041928,
+    "ndvi_cobertura_pct": 99.552281,
+    "pct_tmf_defor": 7.285819,
+    "pct_tmf_degrad": 8.910733,
+    "pct_tmf_recuperacion": 8.766212,
+    "pct_esri_salida": 2.03614,
+    "pct_esri_ganancia": 0.885432,
+    "pct_linea_base": 82.86737,
+    "pct_ndvi_disminucion": 0.663342,
+    "coincidencia_varias_fuentes": 171.865607,
+    "pct_coincidencia_varias_fuentes": 1.725302
+   },
+   "procesado": "2026-11-23T00:36:43",
    "jrc_ha": {
     "tmf_estable": 5210.577499737898,
     "tmf_degradacion": 887.6407030680308,
@@ -1662,8 +1862,8 @@
    },
    "ndvi": {
     "ndvi_inicial_medio": 0.6839988685372864,
-    "ndvi_final_medio": 0.7259266064416839,
-    "ndvi_delta_medio": 0.04192773790439696,
+    "ndvi_final_medio": 0.7259266064416838,
+    "ndvi_delta_medio": 0.041927737904396946,
     "ndvi_disminucion": 66.0787007964369
    },
    "gedi_altura_m": 12.555504474684305,
@@ -1827,20 +2027,20 @@
    "estructura_2021": {
     "metricas_clase": {
      "numero_parches": 75,
-     "area_total_bosque_ha": 7473.7799,
-     "porcentaje_paisaje_bosque": 75.3389,
-     "densidad_parches_por_100ha": 0.756,
-     "densidad_borde_m_ha": 39.6156,
-     "indice_parche_mayor_pct": 29.4395,
-     "area_media_parche_ha": 99.6504,
-     "area_mediana_parche_ha": 1.3114,
-     "desviacion_area_parche_ha": 408.4264,
-     "indice_forma_medio": 2.2421
+     "area_total_bosque_ha": 7472.0774,
+     "porcentaje_paisaje_bosque": 75.3388,
+     "densidad_parches_por_100ha": 0.7562,
+     "densidad_borde_m_ha": 38.7994,
+     "indice_parche_mayor_pct": 29.4398,
+     "area_media_parche_ha": 99.6277,
+     "area_mediana_parche_ha": 1.3112,
+     "desviacion_area_parche_ha": 408.3349,
+     "indice_forma_medio": 2.2018
     },
     "metricas_red": {
      "umbral_m": 500.0,
      "numero_nodos": 75,
-     "numero_aristas": 221,
+     "numero_aristas": 217,
      "numero_relaciones_mostradas": 71,
      "numero_parches_conectados": 75,
      "numero_parches_aislados": 0,
@@ -1848,13 +2048,13 @@
      "numero_componentes": 2,
      "tamano_componente_mayor": 45,
      "porcentaje_nodos_componente_mayor": 60.0,
-     "densidad_red": 0.07963964,
-     "numero_parches_contexto": 123,
-     "numero_aristas_contexto": 384,
-     "numero_conexiones_fuera_area": 98,
+     "densidad_red": 0.0781982,
+     "numero_parches_contexto": 129,
+     "numero_aristas_contexto": 412,
+     "numero_conexiones_fuera_area": 107,
      "numero_parches_continuidad_exterior": 32,
-     "distancia_media_conexiones_m": 186.69,
-     "distancia_maxima_conexiones_m": 498.51,
+     "distancia_media_conexiones_m": 183.27,
+     "distancia_maxima_conexiones_m": 499.9,
      "numero_brechas_potenciales": 0,
      "distancia_media_brechas_potenciales_m": 0.0,
      "red_totalmente_conectada": false,
@@ -1863,99 +2063,99 @@
     },
     "metricas_paisaje": {
      "area_nucleo": {
-      "area_bosque_ha": 7473.7799,
+      "area_bosque_ha": 7472.0774,
       "por_profundidad": [
        {
         "profundidad_m": 50.0,
-        "area_nucleo_ha": 6023.3925,
-        "porcentaje_bosque_nucleo": 80.5937,
-        "parches_con_nucleo": 31,
-        "parches_sin_nucleo": 44
+        "area_nucleo_ha": 6053.8087,
+        "porcentaje_bosque_nucleo": 81.0191,
+        "parches_con_nucleo": 32,
+        "parches_sin_nucleo": 43
        },
        {
         "profundidad_m": 100.0,
-        "area_nucleo_ha": 4976.7337,
-        "porcentaje_bosque_nucleo": 66.5892,
-        "parches_con_nucleo": 19,
-        "parches_sin_nucleo": 56
+        "area_nucleo_ha": 5023.8847,
+        "porcentaje_bosque_nucleo": 67.2354,
+        "parches_con_nucleo": 21,
+        "parches_sin_nucleo": 54
        },
        {
         "profundidad_m": 200.0,
-        "area_nucleo_ha": 3472.2081,
-        "porcentaje_bosque_nucleo": 46.4585,
-        "parches_con_nucleo": 15,
-        "parches_sin_nucleo": 60
+        "area_nucleo_ha": 3536.1615,
+        "porcentaje_bosque_nucleo": 47.325,
+        "parches_con_nucleo": 16,
+        "parches_sin_nucleo": 59
        }
       ]
      },
-     "area_nucleo_ha": 4976.7337,
-     "porcentaje_bosque_nucleo": 66.5892,
+     "area_nucleo_ha": 5023.8847,
+     "porcentaje_bosque_nucleo": 67.2354,
      "profundidad_borde_referencia_m": 100.0,
-     "enn_medio_m": 29.56,
-     "enn_mediana_m": 17.42,
-     "enn_maximo_m": 436.56,
-     "cohesion": 99.7313,
-     "iic": 0.20922029,
+     "enn_medio_m": 29.83,
+     "enn_mediana_m": 20.11,
+     "enn_maximo_m": 377.34,
+     "cohesion": 99.7322,
+     "iic": 0.20920855,
      "diic_principales": [
       {
-       "area_ha": 2920.4639,
-       "diic_pct": 66.1274,
+       "area_ha": 2919.8328,
+       "diic_pct": 66.1271,
        "es_puente": true,
-       "parche_id": 86
+       "parche_id": 90
       },
       {
-       "area_ha": 1964.3854,
-       "diic_pct": 28.0582,
+       "area_ha": 1963.9148,
+       "diic_pct": 28.059,
        "es_puente": true,
-       "parche_id": 14
+       "parche_id": 42
       },
       {
-       "area_ha": 716.3147,
-       "diic_pct": 14.6619,
+       "area_ha": 716.1453,
+       "diic_pct": 14.6622,
        "es_puente": false,
-       "parche_id": 59
+       "parche_id": 33
       },
       {
-       "area_ha": 226.4871,
-       "diic_pct": 4.6625,
+       "area_ha": 226.4406,
+       "diic_pct": 4.6599,
        "es_puente": true,
-       "parche_id": 80
+       "parche_id": 85
       },
       {
-       "area_ha": 326.2146,
+       "area_ha": 326.132,
        "diic_pct": 4.4951,
        "es_puente": false,
-       "parche_id": 16
+       "parche_id": 11
       },
       {
-       "area_ha": 202.0856,
-       "diic_pct": 3.9734,
-       "es_puente": false,
-       "parche_id": 108
+       "area_ha": 202.0448,
+       "diic_pct": 4.0644,
+       "es_puente": true,
+       "parche_id": 116
       },
       {
-       "area_ha": 282.17,
+       "area_ha": 282.0975,
        "diic_pct": 3.8991,
        "es_puente": false,
-       "parche_id": 12
+       "parche_id": 8
       },
       {
-       "area_ha": 192.0849,
+       "area_ha": 192.0402,
        "diic_pct": 3.8023,
+       "es_puente": false,
+       "parche_id": 25
+      },
+      {
+       "area_ha": 102.1612,
+       "diic_pct": 2.0782,
        "es_puente": false,
        "parche_id": 58
       },
       {
-       "area_ha": 102.1828,
-       "diic_pct": 2.0781,
+       "area_ha": 120.47,
+       "diic_pct": 1.7339,
        "es_puente": false,
-       "parche_id": 53
-      },
-      {
-       "area_ha": 120.4943,
-       "diic_pct": 1.7338,
-       "es_puente": false,
-       "parche_id": 77
+       "parche_id": 101
       }
      ],
      "umbral_m": 500.0,
@@ -1963,43 +2163,43 @@
     },
     "top_conectores": [
      {
-      "patch_id": 86,
-      "area_ha": 2920.4639,
+      "patch_id": 90,
+      "area_ha": 2919.8328,
       "indice_conector": 1.0,
       "prioridad_conectividad": "Alta",
-      "grado": 33,
+      "grado": 35,
       "componente": 3
      },
      {
-      "patch_id": 14,
-      "area_ha": 1964.3854,
-      "indice_conector": 0.634481,
+      "patch_id": 42,
+      "area_ha": 1963.9148,
+      "indice_conector": 0.625567,
       "prioridad_conectividad": "Alta",
-      "grado": 29,
+      "grado": 30,
       "componente": 1
      },
      {
-      "patch_id": 108,
-      "area_ha": 202.0856,
-      "indice_conector": 0.579365,
+      "patch_id": 116,
+      "area_ha": 202.0448,
+      "indice_conector": 0.545721,
       "prioridad_conectividad": "Alta",
-      "grado": 27,
+      "grado": 26,
       "componente": 3
      },
      {
-      "patch_id": 80,
-      "area_ha": 226.4871,
-      "indice_conector": 0.426009,
+      "patch_id": 85,
+      "area_ha": 226.4406,
+      "indice_conector": 0.377238,
       "prioridad_conectividad": "Alta",
-      "grado": 21,
+      "grado": 19,
       "componente": 3
      },
      {
-      "patch_id": 53,
-      "area_ha": 102.1828,
-      "indice_conector": 0.309861,
+      "patch_id": 58,
+      "area_ha": 102.1612,
+      "indice_conector": 0.356172,
       "prioridad_conectividad": "Alta",
-      "grado": 16,
+      "grado": 19,
       "componente": 3
      }
     ],
@@ -2075,10 +2275,181 @@
     "ndvi_inicial": 2020,
     "ndvi_final": 2025,
     "ndvi_final_visual": 2025
+   },
+   "mapas": {
+    "limites": [
+     [
+      8.938581,
+      -79.669581
+     ],
+     [
+      9.117636,
+      -79.558383
+     ]
+    ],
+    "tamano_pixel_m": 22.1,
+    "dimensiones": [
+     552,
+     900
+    ],
+    "capas": [
+     "sinia_2021",
+     "jrc_2025",
+     "hansen",
+     "esri_cambio",
+     "ndvi_cambio",
+     "eri",
+     "coincidencia",
+     "riparia"
+    ],
+    "valores": [
+     "sinia_2021",
+     "jrc_2025",
+     "hansen",
+     "esri_cambio",
+     "ndvi_cambio",
+     "eri",
+     "coincidencia",
+     "riparia",
+     "gedi",
+     "aux"
+    ],
+    "errores": {},
+    "rios": 14
+   },
+   "sitios": [
+    {
+     "id": "s2-96616478",
+     "lat": 8.966058,
+     "lon": -79.647796,
+     "area_ha": 270.19,
+     "fuentes": 3
+    },
+    {
+     "id": "s2-00816476",
+     "lat": 9.0081,
+     "lon": -79.647637,
+     "area_ha": 142.62,
+     "fuentes": 3
+    },
+    {
+     "id": "s2-04645831",
+     "lat": 9.046403,
+     "lon": -79.583137,
+     "area_ha": 20.75,
+     "fuentes": 3
+    },
+    {
+     "id": "s2-01955822",
+     "lat": 9.019524,
+     "lon": -79.582161,
+     "area_ha": 8.6,
+     "fuentes": 3
+    },
+    {
+     "id": "s2-00356187",
+     "lat": 9.003503,
+     "lon": -79.618652,
+     "area_ha": 160.18,
+     "fuentes": 2
+    },
+    {
+     "id": "s2-07285728",
+     "lat": 9.072802,
+     "lon": -79.572773,
+     "area_ha": 79.19,
+     "fuentes": 2
+    },
+    {
+     "id": "s2-99316029",
+     "lat": 8.993099,
+     "lon": -79.602878,
+     "area_ha": 54.28,
+     "fuentes": 2
+    },
+    {
+     "id": "s2-03196076",
+     "lat": 9.031942,
+     "lon": -79.607609,
+     "area_ha": 53.03,
+     "fuentes": 2
+    },
+    {
+     "id": "s2-00896306",
+     "lat": 9.008941,
+     "lon": -79.630613,
+     "area_ha": 52.77,
+     "fuentes": 2
+    },
+    {
+     "id": "s2-98746098",
+     "lat": 8.987442,
+     "lon": -79.60982,
+     "area_ha": 48.96,
+     "fuentes": 2
+    },
+    {
+     "id": "s2-00625931",
+     "lat": 9.006153,
+     "lon": -79.593138,
+     "area_ha": 29.09,
+     "fuentes": 2
+    },
+    {
+     "id": "s2-08095902",
+     "lat": 9.080878,
+     "lon": -79.590199,
+     "area_ha": 18.98,
+     "fuentes": 2
+    }
+   ],
+   "riparia": {
+    "longitud_cauces_km": 62.7,
+    "franjas": [
+     {
+      "ancho_m": 30,
+      "area_ha": 306.25,
+      "bosque_sinia_ha": 217.17,
+      "bosque_sinia_pct": 70.9,
+      "arboles_esri_pct": 73.3
+     },
+     {
+      "ancho_m": 50,
+      "area_ha": 627.24,
+      "bosque_sinia_ha": 442.48,
+      "bosque_sinia_pct": 70.5,
+      "arboles_esri_pct": 73.3
+     },
+     {
+      "ancho_m": 100,
+      "area_ha": 1396.66,
+      "bosque_sinia_ha": 980.6,
+      "bosque_sinia_pct": 70.2,
+      "arboles_esri_pct": 73.3
+     }
+    ],
+    "sin_bosque_por_pendiente": [
+     {
+      "pendiente": "0–15 %",
+      "area_ha": 157.17
+     },
+     {
+      "pendiente": "15–30 %",
+      "area_ha": 24.88
+     },
+     {
+      "pendiente": "≥ 30 %",
+      "area_ha": 2.7
+     }
+    ],
+    "franja_referencia_m": 50,
+    "area_drenaje_minima_km2": 1.0,
+    "nota": "Cauces MERIT Hydro (90 m, drenaje ≥ 1 km²); distancias interpoladas, indicativas. Bosque: SINIA 2021 (oficial) y árboles ESRI 2024 como segunda fuente.",
+    "escala_m": 10
    }
   },
   "s3": {
-   "version_datos": 2,
+   "version_datos": 3,
    "id": "s3",
    "nombre": "Qda. Ancha",
    "grupo": "Cuenca de Alajuela",
@@ -2111,6 +2482,44 @@
     "combinacion_territorial": "Cambios + corredor",
     "lectura_integrada": "Urgencia por cambios: Alta; valor del corredor: Alto; condición estructural: Conectada al umbral."
    },
+   "metricas_indice": {
+    "tmf_estable": 390.995083,
+    "tmf_degradacion": 414.078664,
+    "tmf_deforestacion": 204.1718,
+    "tmf_recuperacion": 226.000346,
+    "tmf_agua": 1.756658,
+    "tmf_otra_cobertura": 175.995478,
+    "coincidencia_1_fuente": 594.442695,
+    "coincidencia_2_fuentes": 83.399069,
+    "coincidencia_3_fuentes": 5.2163,
+    "hansen_post": 66.164056,
+    "hansen_pre": 108.675898,
+    "linea_base": 1216.43773,
+    "esri_arboles_final": 1331.771922,
+    "esri_salida": 46.989663,
+    "esri_ganancia": 25.904068,
+    "esri_estable": 1305.867853,
+    "ndvi_disminucion": 11.861708,
+    "ndvi_area_datos": 1413.018835,
+    "area_ha": 1418.918224,
+    "gedi_altura": 13.345286,
+    "gedi_area_datos": 1374.848335,
+    "gedi_cobertura_pct": 96.894121,
+    "ndvi_inicial_medio": 0.764593,
+    "ndvi_final_medio": 0.793638,
+    "ndvi_delta_medio": 0.029045,
+    "ndvi_cobertura_pct": 99.584233,
+    "pct_tmf_defor": 14.389258,
+    "pct_tmf_degrad": 29.182701,
+    "pct_tmf_recuperacion": 15.927651,
+    "pct_esri_salida": 3.311654,
+    "pct_esri_ganancia": 1.825621,
+    "pct_linea_base": 85.729939,
+    "pct_ndvi_disminucion": 0.835968,
+    "coincidencia_varias_fuentes": 88.615369,
+    "pct_coincidencia_varias_fuentes": 6.245277
+   },
+   "procesado": "2026-11-23T00:39:49",
    "jrc_ha": {
     "tmf_estable": 390.99508298699766,
     "tmf_degradacion": 414.078664147883,
@@ -2288,20 +2697,20 @@
    "estructura_2021": {
     "metricas_clase": {
      "numero_parches": 12,
-     "area_total_bosque_ha": 991.3428,
+     "area_total_bosque_ha": 991.1784,
      "porcentaje_paisaje_bosque": 70.1552,
-     "densidad_parches_por_100ha": 0.8492,
-     "densidad_borde_m_ha": 108.1361,
+     "densidad_parches_por_100ha": 0.8494,
+     "densidad_borde_m_ha": 106.4361,
      "indice_parche_mayor_pct": 69.7121,
-     "area_media_parche_ha": 82.6119,
-     "area_mediana_parche_ha": 0.3487,
-     "desviacion_area_parche_ha": 272.1053,
-     "indice_forma_medio": 2.8889
+     "area_media_parche_ha": 82.5982,
+     "area_mediana_parche_ha": 0.3486,
+     "desviacion_area_parche_ha": 272.0602,
+     "indice_forma_medio": 2.8702
     },
     "metricas_red": {
      "umbral_m": 500.0,
      "numero_nodos": 12,
-     "numero_aristas": 17,
+     "numero_aristas": 16,
      "numero_relaciones_mostradas": 11,
      "numero_parches_conectados": 12,
      "numero_parches_aislados": 0,
@@ -2309,13 +2718,13 @@
      "numero_componentes": 1,
      "tamano_componente_mayor": 12,
      "porcentaje_nodos_componente_mayor": 100.0,
-     "densidad_red": 0.25757576,
-     "numero_parches_contexto": 25,
-     "numero_aristas_contexto": 42,
-     "numero_conexiones_fuera_area": 18,
+     "densidad_red": 0.24242424,
+     "numero_parches_contexto": 27,
+     "numero_aristas_contexto": 50,
+     "numero_conexiones_fuera_area": 22,
      "numero_parches_continuidad_exterior": 9,
-     "distancia_media_conexiones_m": 96.0,
-     "distancia_maxima_conexiones_m": 455.28,
+     "distancia_media_conexiones_m": 103.87,
+     "distancia_maxima_conexiones_m": 495.09,
      "numero_brechas_potenciales": 0,
      "distancia_media_brechas_potenciales_m": 0.0,
      "red_totalmente_conectada": true,
@@ -2324,81 +2733,81 @@
     },
     "metricas_paisaje": {
      "area_nucleo": {
-      "area_bosque_ha": 991.3428,
+      "area_bosque_ha": 991.1784,
       "por_profundidad": [
        {
         "profundidad_m": 50.0,
-        "area_nucleo_ha": 500.4314,
-        "porcentaje_bosque_nucleo": 50.4802,
+        "area_nucleo_ha": 504.7102,
+        "porcentaje_bosque_nucleo": 50.9202,
         "parches_con_nucleo": 1,
         "parches_sin_nucleo": 11
        },
        {
         "profundidad_m": 100.0,
-        "area_nucleo_ha": 251.3356,
-        "porcentaje_bosque_nucleo": 25.353,
+        "area_nucleo_ha": 261.1683,
+        "porcentaje_bosque_nucleo": 26.3493,
         "parches_con_nucleo": 1,
         "parches_sin_nucleo": 11
        },
        {
         "profundidad_m": 200.0,
-        "area_nucleo_ha": 41.6389,
-        "porcentaje_bosque_nucleo": 4.2003,
+        "area_nucleo_ha": 47.5461,
+        "porcentaje_bosque_nucleo": 4.7969,
         "parches_con_nucleo": 1,
         "parches_sin_nucleo": 11
        }
       ]
      },
-     "area_nucleo_ha": 251.3356,
-     "porcentaje_bosque_nucleo": 25.353,
+     "area_nucleo_ha": 261.1683,
+     "porcentaje_bosque_nucleo": 26.3493,
      "profundidad_borde_referencia_m": 100.0,
-     "enn_medio_m": 35.06,
-     "enn_mediana_m": 23.53,
-     "enn_maximo_m": 130.19,
-     "cohesion": 99.935,
-     "iic": 0.48907542,
+     "enn_medio_m": 36.64,
+     "enn_mediana_m": 22.42,
+     "enn_maximo_m": 151.31,
+     "cohesion": 99.9348,
+     "iic": 0.48907608,
      "diic_principales": [
       {
-       "area_ha": 985.0813,
+       "area_ha": 984.918,
        "diic_pct": 99.9991,
        "es_puente": true,
-       "parche_id": 19
+       "parche_id": 20
       },
       {
-       "area_ha": 1.6732,
+       "area_ha": 1.6729,
        "diic_pct": 0.1696,
        "es_puente": false,
        "parche_id": 4
       },
       {
-       "area_ha": 1.5917,
+       "area_ha": 1.5914,
        "diic_pct": 0.1614,
        "es_puente": false,
        "parche_id": 11
       },
       {
-       "area_ha": 0.7792,
+       "area_ha": 0.779,
        "diic_pct": 0.079,
        "es_puente": false,
        "parche_id": 10
       },
       {
-       "area_ha": 0.7207,
+       "area_ha": 0.7206,
        "diic_pct": 0.073,
        "es_puente": false,
        "parche_id": 3
       },
       {
-       "area_ha": 0.4077,
+       "area_ha": 0.4076,
        "diic_pct": 0.0413,
        "es_puente": false,
-       "parche_id": 16
+       "parche_id": 17
       },
       {
-       "area_ha": 0.2896,
+       "area_ha": 0.2895,
        "diic_pct": 0.0293,
        "es_puente": false,
-       "parche_id": 15
+       "parche_id": 16
       },
       {
        "area_ha": 0.2803,
@@ -2407,7 +2816,7 @@
        "parche_id": 2
       },
       {
-       "area_ha": 0.2801,
+       "area_ha": 0.28,
        "diic_pct": 0.0284,
        "es_puente": false,
        "parche_id": 9
@@ -2416,7 +2825,7 @@
        "area_ha": 0.1263,
        "diic_pct": 0.0128,
        "es_puente": false,
-       "parche_id": 21
+       "parche_id": 22
       }
      ],
      "umbral_m": 500.0,
@@ -2424,43 +2833,43 @@
     },
     "top_conectores": [
      {
-      "patch_id": 19,
-      "area_ha": 985.0813,
+      "patch_id": 20,
+      "area_ha": 984.918,
       "indice_conector": 1.0,
       "prioridad_conectividad": "Alta",
-      "grado": 24,
+      "grado": 26,
       "componente": 1
      },
      {
       "patch_id": 11,
-      "area_ha": 1.5917,
-      "indice_conector": 0.104024,
+      "area_ha": 1.5914,
+      "indice_conector": 0.114223,
       "prioridad_conectividad": "Alta",
-      "grado": 6,
-      "componente": 1
-     },
-     {
-      "patch_id": 21,
-      "area_ha": 0.1263,
-      "indice_conector": 0.092268,
-      "prioridad_conectividad": "Alta",
-      "grado": 3,
+      "grado": 7,
       "componente": 1
      },
      {
       "patch_id": 9,
-      "area_ha": 0.2801,
-      "indice_conector": 0.080601,
-      "prioridad_conectividad": "Media",
+      "area_ha": 0.28,
+      "indice_conector": 0.07409,
+      "prioridad_conectividad": "Alta",
       "grado": 5,
       "componente": 1
      },
      {
-      "patch_id": 5,
-      "area_ha": 0.0885,
-      "indice_conector": 0.047554,
+      "patch_id": 22,
+      "area_ha": 0.1263,
+      "indice_conector": 0.062857,
       "prioridad_conectividad": "Media",
-      "grado": 2,
+      "grado": 3,
+      "componente": 1
+     },
+     {
+      "patch_id": 8,
+      "area_ha": 0.0242,
+      "indice_conector": 0.036895,
+      "prioridad_conectividad": "Media",
+      "grado": 3,
       "componente": 1
      }
     ],
@@ -2536,181 +2945,10 @@
     "ndvi_inicial": 2020,
     "ndvi_final": 2025,
     "ndvi_final_visual": 2025
-   },
-   "mapas": {
-    "limites": [
-     [
-      9.2935,
-      -79.57138
-     ],
-     [
-      9.331768,
-      -79.512301
-     ]
-    ],
-    "tamano_pixel_m": 10.0,
-    "dimensiones": [
-     649,
-     426
-    ],
-    "capas": [
-     "sinia_2021",
-     "jrc_2025",
-     "hansen",
-     "esri_cambio",
-     "ndvi_cambio",
-     "eri",
-     "coincidencia",
-     "riparia"
-    ],
-    "valores": [
-     "sinia_2021",
-     "jrc_2025",
-     "hansen",
-     "esri_cambio",
-     "ndvi_cambio",
-     "eri",
-     "coincidencia",
-     "riparia",
-     "gedi",
-     "aux"
-    ],
-    "errores": {},
-    "rios": 2
-   },
-   "sitios": [
-    {
-     "id": "s3-32215327",
-     "lat": 9.322076,
-     "lon": -79.532679,
-     "area_ha": 150.82,
-     "fuentes": 3
-    },
-    {
-     "id": "s3-30605447",
-     "lat": 9.305986,
-     "lon": -79.544707,
-     "area_ha": 116.18,
-     "fuentes": 3
-    },
-    {
-     "id": "s3-32725189",
-     "lat": 9.327167,
-     "lon": -79.518905,
-     "area_ha": 31.37,
-     "fuentes": 3
-    },
-    {
-     "id": "s3-31015344",
-     "lat": 9.310134,
-     "lon": -79.53435,
-     "area_ha": 26.94,
-     "fuentes": 3
-    },
-    {
-     "id": "s3-31125579",
-     "lat": 9.311221,
-     "lon": -79.557885,
-     "area_ha": 223.75,
-     "fuentes": 2
-    },
-    {
-     "id": "s3-30105350",
-     "lat": 9.300959,
-     "lon": -79.53499,
-     "area_ha": 43.33,
-     "fuentes": 2
-    },
-    {
-     "id": "s3-31795420",
-     "lat": 9.317918,
-     "lon": -79.542003,
-     "area_ha": 12.32,
-     "fuentes": 2
-    },
-    {
-     "id": "s3-32465669",
-     "lat": 9.324609,
-     "lon": -79.566863,
-     "area_ha": 5.58,
-     "fuentes": 2
-    },
-    {
-     "id": "s3-31765470",
-     "lat": 9.317617,
-     "lon": -79.547047,
-     "area_ha": 5.14,
-     "fuentes": 2
-    },
-    {
-     "id": "s3-30625638",
-     "lat": 9.306187,
-     "lon": -79.563839,
-     "area_ha": 2.48,
-     "fuentes": 2
-    },
-    {
-     "id": "s3-31535454",
-     "lat": 9.315265,
-     "lon": -79.545404,
-     "area_ha": 2.39,
-     "fuentes": 2
-    },
-    {
-     "id": "s3-29645381",
-     "lat": 9.296367,
-     "lon": -79.538127,
-     "area_ha": 1.42,
-     "fuentes": 2
-    }
-   ],
-   "riparia": {
-    "longitud_cauces_km": 7.0,
-    "franjas": [
-     {
-      "ancho_m": 30,
-      "area_ha": 28.81,
-      "bosque_sinia_ha": 24.11,
-      "bosque_sinia_pct": 83.7,
-      "arboles_esri_pct": 94.0
-     },
-     {
-      "ancho_m": 50,
-      "area_ha": 69.71,
-      "bosque_sinia_ha": 56.53,
-      "bosque_sinia_pct": 81.1,
-      "arboles_esri_pct": 95.0
-     },
-     {
-      "ancho_m": 100,
-      "area_ha": 174.27,
-      "bosque_sinia_ha": 129.46,
-      "bosque_sinia_pct": 74.3,
-      "arboles_esri_pct": 93.0
-     }
-    ],
-    "sin_bosque_por_pendiente": [
-     {
-      "pendiente": "0–15 %",
-      "area_ha": 4.42
-     },
-     {
-      "pendiente": "15–30 %",
-      "area_ha": 5.94
-     },
-     {
-      "pendiente": "≥ 30 %",
-      "area_ha": 2.82
-     }
-    ],
-    "franja_referencia_m": 50,
-    "area_drenaje_minima_km2": 1.0,
-    "nota": "Cauces MERIT Hydro (90 m, drenaje ≥ 1 km²); distancias interpoladas, indicativas. Bosque: SINIA 2021 (oficial) y árboles ESRI 2024 como segunda fuente.",
-    "escala_m": 10
    }
   },
   "s4": {
-   "version_datos": 2,
+   "version_datos": 3,
    "id": "s4",
    "nombre": "Qda. Bonita",
    "grupo": "Cuenca de Alajuela",
@@ -2743,6 +2981,44 @@
     "combinacion_territorial": "Cambios + corredor",
     "lectura_integrada": "Urgencia por cambios: Alta; valor del corredor: Alto; condición estructural: Conectada al umbral."
    },
+   "metricas_indice": {
+    "tmf_estable": 104.681219,
+    "tmf_degradacion": 111.474659,
+    "tmf_deforestacion": 22.860019,
+    "tmf_recuperacion": 127.433012,
+    "tmf_agua": 0.556813,
+    "tmf_otra_cobertura": 140.855879,
+    "coincidencia_1_fuente": 159.576018,
+    "coincidencia_2_fuentes": 7.364362,
+    "coincidencia_3_fuentes": 0.0,
+    "hansen_post": 2.151638,
+    "hansen_pre": 30.831275,
+    "linea_base": 392.638848,
+    "esri_arboles_final": 454.961993,
+    "esri_salida": 17.696467,
+    "esri_ganancia": 11.754102,
+    "esri_estable": 443.207891,
+    "ndvi_disminucion": 1.337564,
+    "ndvi_area_datos": 507.870482,
+    "area_ha": 509.998549,
+    "gedi_altura": 13.046561,
+    "gedi_area_datos": 488.911971,
+    "gedi_cobertura_pct": 95.865365,
+    "ndvi_inicial_medio": 0.757354,
+    "ndvi_final_medio": 0.808174,
+    "ndvi_delta_medio": 0.05082,
+    "ndvi_cobertura_pct": 99.582731,
+    "pct_tmf_defor": 4.482369,
+    "pct_tmf_degrad": 21.857838,
+    "pct_tmf_recuperacion": 24.986936,
+    "pct_esri_salida": 3.469905,
+    "pct_esri_ganancia": 2.304732,
+    "pct_linea_base": 76.988228,
+    "pct_ndvi_disminucion": 0.262268,
+    "coincidencia_varias_fuentes": 7.364362,
+    "pct_coincidencia_varias_fuentes": 1.443997
+   },
+   "procesado": "2026-11-23T00:40:02",
    "jrc_ha": {
     "tmf_estable": 104.68121929048914,
     "tmf_degradacion": 111.4746589910458,
@@ -2920,15 +3196,15 @@
    "estructura_2021": {
     "metricas_clase": {
      "numero_parches": 6,
-     "area_total_bosque_ha": 377.6973,
-     "porcentaje_paisaje_bosque": 74.3646,
-     "densidad_parches_por_100ha": 1.1813,
-     "densidad_borde_m_ha": 91.5251,
-     "indice_parche_mayor_pct": 69.27,
-     "area_media_parche_ha": 62.9495,
-     "area_mediana_parche_ha": 3.0048,
-     "desviacion_area_parche_ha": 129.3649,
-     "indice_forma_medio": 3.3265
+     "area_total_bosque_ha": 377.6147,
+     "porcentaje_paisaje_bosque": 74.3645,
+     "densidad_parches_por_100ha": 1.1816,
+     "densidad_borde_m_ha": 89.3497,
+     "indice_parche_mayor_pct": 69.2699,
+     "area_media_parche_ha": 62.9358,
+     "area_mediana_parche_ha": 3.0042,
+     "desviacion_area_parche_ha": 129.3366,
+     "indice_forma_medio": 3.2218
     },
     "metricas_red": {
      "umbral_m": 500.0,
@@ -2942,12 +3218,12 @@
      "tamano_componente_mayor": 6,
      "porcentaje_nodos_componente_mayor": 100.0,
      "densidad_red": 0.6,
-     "numero_parches_contexto": 30,
-     "numero_aristas_contexto": 93,
-     "numero_conexiones_fuera_area": 46,
+     "numero_parches_contexto": 31,
+     "numero_aristas_contexto": 101,
+     "numero_conexiones_fuera_area": 50,
      "numero_parches_continuidad_exterior": 6,
-     "distancia_media_conexiones_m": 174.9,
-     "distancia_maxima_conexiones_m": 475.19,
+     "distancia_media_conexiones_m": 192.68,
+     "distancia_maxima_conexiones_m": 497.05,
      "numero_brechas_potenciales": 0,
      "distancia_media_brechas_potenciales_m": 0.0,
      "red_totalmente_conectada": true,
@@ -2956,69 +3232,69 @@
     },
     "metricas_paisaje": {
      "area_nucleo": {
-      "area_bosque_ha": 377.6973,
+      "area_bosque_ha": 377.6147,
       "por_profundidad": [
        {
         "profundidad_m": 50.0,
-        "area_nucleo_ha": 226.9064,
-        "porcentaje_bosque_nucleo": 60.0763,
+        "area_nucleo_ha": 228.6732,
+        "porcentaje_bosque_nucleo": 60.5573,
         "parches_con_nucleo": 2,
         "parches_sin_nucleo": 4
        },
        {
         "profundidad_m": 100.0,
-        "area_nucleo_ha": 136.5471,
-        "porcentaje_bosque_nucleo": 36.1525,
+        "area_nucleo_ha": 138.4124,
+        "porcentaje_bosque_nucleo": 36.6544,
         "parches_con_nucleo": 1,
         "parches_sin_nucleo": 5
        },
        {
         "profundidad_m": 200.0,
-        "area_nucleo_ha": 39.6546,
-        "porcentaje_bosque_nucleo": 10.499,
+        "area_nucleo_ha": 40.0545,
+        "porcentaje_bosque_nucleo": 10.6072,
         "parches_con_nucleo": 1,
         "parches_sin_nucleo": 5
        }
       ]
      },
-     "area_nucleo_ha": 136.5471,
-     "porcentaje_bosque_nucleo": 36.1525,
+     "area_nucleo_ha": 138.4124,
+     "porcentaje_bosque_nucleo": 36.6544,
      "profundidad_borde_referencia_m": 100.0,
-     "enn_medio_m": 67.71,
-     "enn_mediana_m": 56.06,
-     "enn_maximo_m": 138.62,
-     "cohesion": 99.7715,
-     "iic": 0.51647926,
+     "enn_medio_m": 72.58,
+     "enn_mediana_m": 58.98,
+     "enn_maximo_m": 148.97,
+     "cohesion": 99.7742,
+     "iic": 0.51647864,
      "diic_principales": [
       {
-       "area_ha": 351.8218,
+       "area_ha": 351.7449,
        "diic_pct": 99.6736,
        "es_puente": true,
-       "parche_id": 12
-      },
-      {
-       "area_ha": 19.5671,
-       "diic_pct": 5.5226,
-       "es_puente": false,
-       "parche_id": 22
-      },
-      {
-       "area_ha": 4.9981,
-       "diic_pct": 1.39,
-       "es_puente": false,
        "parche_id": 13
       },
       {
-       "area_ha": 1.0114,
-       "diic_pct": 0.1958,
+       "area_ha": 19.5626,
+       "diic_pct": 5.5225,
        "es_puente": false,
-       "parche_id": 18
+       "parche_id": 24
       },
       {
-       "area_ha": 0.2984,
+       "area_ha": 4.9972,
+       "diic_pct": 1.39,
+       "es_puente": false,
+       "parche_id": 12
+      },
+      {
+       "area_ha": 1.0112,
+       "diic_pct": 0.1958,
+       "es_puente": false,
+       "parche_id": 20
+      },
+      {
+       "area_ha": 0.2983,
        "diic_pct": 0.0578,
        "es_puente": false,
-       "parche_id": 17
+       "parche_id": 19
       },
       {
        "area_ha": 0.0004,
@@ -3032,25 +3308,25 @@
     },
     "top_conectores": [
      {
-      "patch_id": 12,
-      "area_ha": 351.8218,
+      "patch_id": 13,
+      "area_ha": 351.7449,
       "indice_conector": 1.0,
       "prioridad_conectividad": "Alta",
       "grado": 21,
       "componente": 1
      },
      {
-      "patch_id": 22,
-      "area_ha": 19.5671,
-      "indice_conector": 0.48167,
+      "patch_id": 24,
+      "area_ha": 19.5626,
+      "indice_conector": 0.535751,
       "prioridad_conectividad": "Alta",
-      "grado": 13,
+      "grado": 15,
       "componente": 1
      },
      {
-      "patch_id": 13,
-      "area_ha": 4.9981,
-      "indice_conector": 0.378351,
+      "patch_id": 12,
+      "area_ha": 4.9972,
+      "indice_conector": 0.397597,
       "prioridad_conectividad": "Media",
       "grado": 10,
       "componente": 1
@@ -3058,17 +3334,17 @@
      {
       "patch_id": 2,
       "area_ha": 0.0004,
-      "indice_conector": 0.272523,
+      "indice_conector": 0.287085,
       "prioridad_conectividad": "Baja",
       "grado": 8,
       "componente": 1
      },
      {
-      "patch_id": 17,
-      "area_ha": 0.2984,
-      "indice_conector": 0.102564,
+      "patch_id": 19,
+      "area_ha": 0.2983,
+      "indice_conector": 0.126702,
       "prioridad_conectividad": "Baja",
-      "grado": 6,
+      "grado": 7,
       "componente": 1
      }
     ],
@@ -3318,11 +3594,11 @@
    }
   },
   "s5": {
-   "version_datos": 2,
+   "version_datos": 3,
    "id": "s5",
    "nombre": "Qda. Honda",
    "grupo": "Cuenca de Gatún",
-   "area_ha": 720.2634276991685,
+   "area_ha": 720.2634276991636,
    "preevaluacion": {
     "puntaje": 2.0,
     "puntaje_maximo": 6.5,
@@ -3350,6 +3626,44 @@
     "combinacion_territorial": "Cambios + corredor",
     "lectura_integrada": "Urgencia por cambios: Media; valor del corredor: Alto; condición estructural: Conectada al umbral."
    },
+   "metricas_indice": {
+    "tmf_estable": 90.691432,
+    "tmf_degradacion": 104.436279,
+    "tmf_deforestacion": 28.453363,
+    "tmf_recuperacion": 179.954013,
+    "tmf_agua": 6.820635,
+    "tmf_otra_cobertura": 306.666715,
+    "coincidencia_1_fuente": 178.881796,
+    "coincidencia_2_fuentes": 7.122268,
+    "coincidencia_3_fuentes": 0.0,
+    "hansen_post": 0.0,
+    "hansen_pre": 49.547678,
+    "linea_base": 531.259722,
+    "esri_arboles_final": 612.680276,
+    "esri_salida": 31.048835,
+    "esri_ganancia": 47.130826,
+    "esri_estable": 565.54945,
+    "ndvi_disminucion": 9.18873,
+    "ndvi_area_datos": 717.237612,
+    "area_ha": 720.263428,
+    "gedi_altura": 9.241085,
+    "gedi_area_datos": 680.503237,
+    "gedi_cobertura_pct": 94.479771,
+    "ndvi_inicial_medio": 0.733001,
+    "ndvi_final_medio": 0.759704,
+    "ndvi_delta_medio": 0.026704,
+    "ndvi_cobertura_pct": 99.579902,
+    "pct_tmf_defor": 3.950411,
+    "pct_tmf_degrad": 14.499734,
+    "pct_tmf_recuperacion": 24.984472,
+    "pct_esri_salida": 4.310761,
+    "pct_esri_ganancia": 6.543554,
+    "pct_linea_base": 73.759086,
+    "pct_ndvi_disminucion": 1.275746,
+    "coincidencia_varias_fuentes": 7.122268,
+    "pct_coincidencia_varias_fuentes": 0.988842
+   },
+   "procesado": "2026-11-23T00:43:33",
    "jrc_ha": {
     "tmf_estable": 90.6914322358428,
     "tmf_degradacion": 104.43627946166431,
@@ -3527,15 +3841,15 @@
    "estructura_2021": {
     "metricas_clase": {
      "numero_parches": 6,
-     "area_total_bosque_ha": 451.1581,
-     "porcentaje_paisaje_bosque": 62.8973,
-     "densidad_parches_por_100ha": 0.8365,
-     "densidad_borde_m_ha": 81.1803,
-     "indice_parche_mayor_pct": 50.2493,
-     "area_media_parche_ha": 75.193,
-     "area_mediana_parche_ha": 8.7058,
-     "desviacion_area_parche_ha": 130.0822,
-     "indice_forma_medio": 2.9668
+     "area_total_bosque_ha": 451.0338,
+     "porcentaje_paisaje_bosque": 62.897,
+     "densidad_parches_por_100ha": 0.8367,
+     "densidad_borde_m_ha": 78.5002,
+     "indice_parche_mayor_pct": 50.2489,
+     "area_media_parche_ha": 75.1723,
+     "area_mediana_parche_ha": 8.7034,
+     "desviacion_area_parche_ha": 130.0459,
+     "indice_forma_medio": 2.8881
     },
     "metricas_red": {
      "umbral_m": 500.0,
@@ -3550,11 +3864,11 @@
      "porcentaje_nodos_componente_mayor": 100.0,
      "densidad_red": 0.4,
      "numero_parches_contexto": 33,
-     "numero_aristas_contexto": 77,
-     "numero_conexiones_fuera_area": 33,
+     "numero_aristas_contexto": 76,
+     "numero_conexiones_fuera_area": 32,
      "numero_parches_continuidad_exterior": 5,
-     "distancia_media_conexiones_m": 223.07,
-     "distancia_maxima_conexiones_m": 479.09,
+     "distancia_media_conexiones_m": 220.61,
+     "distancia_maxima_conexiones_m": 492.2,
      "numero_brechas_potenciales": 0,
      "distancia_media_brechas_potenciales_m": 0.0,
      "red_totalmente_conectada": true,
@@ -3563,75 +3877,75 @@
     },
     "metricas_paisaje": {
      "area_nucleo": {
-      "area_bosque_ha": 451.1581,
+      "area_bosque_ha": 451.0338,
       "por_profundidad": [
        {
         "profundidad_m": 50.0,
-        "area_nucleo_ha": 270.7895,
-        "porcentaje_bosque_nucleo": 60.021,
+        "area_nucleo_ha": 275.3859,
+        "porcentaje_bosque_nucleo": 61.0566,
         "parches_con_nucleo": 3,
         "parches_sin_nucleo": 3
        },
        {
         "profundidad_m": 100.0,
-        "area_nucleo_ha": 177.496,
-        "porcentaje_bosque_nucleo": 39.3423,
+        "area_nucleo_ha": 183.527,
+        "porcentaje_bosque_nucleo": 40.6903,
         "parches_con_nucleo": 3,
         "parches_sin_nucleo": 3
        },
        {
         "profundidad_m": 200.0,
-        "area_nucleo_ha": 53.4579,
-        "porcentaje_bosque_nucleo": 11.849,
+        "area_nucleo_ha": 62.8665,
+        "porcentaje_bosque_nucleo": 13.9383,
         "parches_con_nucleo": 2,
         "parches_sin_nucleo": 4
        }
       ]
      },
-     "area_nucleo_ha": 177.496,
-     "porcentaje_bosque_nucleo": 39.3423,
+     "area_nucleo_ha": 183.527,
+     "porcentaje_bosque_nucleo": 40.6903,
      "profundidad_borde_referencia_m": 100.0,
-     "enn_medio_m": 52.77,
-     "enn_mediana_m": 39.49,
-     "enn_maximo_m": 115.55,
-     "cohesion": 99.7548,
-     "iic": 0.32856412,
+     "enn_medio_m": 50.31,
+     "enn_mediana_m": 38.28,
+     "enn_maximo_m": 100.1,
+     "cohesion": 99.7539,
+     "iic": 0.32856076,
      "diic_principales": [
       {
-       "area_ha": 360.4348,
-       "diic_pct": 96.7232,
+       "area_ha": 360.3343,
+       "diic_pct": 96.7231,
        "es_puente": true,
        "parche_id": 4
       },
       {
-       "area_ha": 72.5428,
-       "diic_pct": 19.1001,
+       "area_ha": 72.5242,
+       "diic_pct": 19.1005,
        "es_puente": false,
-       "parche_id": 24
+       "parche_id": 25
       },
       {
-       "area_ha": 16.5991,
-       "diic_pct": 4.1874,
+       "area_ha": 16.5945,
+       "diic_pct": 4.1873,
        "es_puente": false,
        "parche_id": 2
       },
       {
-       "area_ha": 0.8125,
+       "area_ha": 0.8123,
        "diic_pct": 0.2025,
        "es_puente": false,
-       "parche_id": 12
+       "parche_id": 11
       },
       {
-       "area_ha": 0.4591,
+       "area_ha": 0.459,
        "diic_pct": 0.1144,
        "es_puente": false,
-       "parche_id": 10
+       "parche_id": 9
       },
       {
-       "area_ha": 0.3097,
+       "area_ha": 0.3096,
        "diic_pct": 0.0771,
        "es_puente": false,
-       "parche_id": 6
+       "parche_id": 22
       }
      ],
      "umbral_m": 500.0,
@@ -3640,40 +3954,40 @@
     "top_conectores": [
      {
       "patch_id": 4,
-      "area_ha": 360.4348,
+      "area_ha": 360.3343,
       "indice_conector": 1.0,
       "prioridad_conectividad": "Alta",
-      "grado": 24,
+      "grado": 23,
       "componente": 1
      },
      {
-      "patch_id": 24,
-      "area_ha": 72.5428,
-      "indice_conector": 0.42083,
+      "patch_id": 25,
+      "area_ha": 72.5242,
+      "indice_conector": 0.430988,
       "prioridad_conectividad": "Alta",
       "grado": 11,
       "componente": 1
      },
      {
       "patch_id": 2,
-      "area_ha": 16.5991,
-      "indice_conector": 0.055578,
+      "area_ha": 16.5945,
+      "indice_conector": 0.057495,
       "prioridad_conectividad": "Media",
       "grado": 3,
       "componente": 1
      },
      {
-      "patch_id": 10,
-      "area_ha": 0.4591,
-      "indice_conector": 0.046226,
+      "patch_id": 9,
+      "area_ha": 0.459,
+      "indice_conector": 0.044972,
       "prioridad_conectividad": "Baja",
       "grado": 2,
       "componente": 1
      },
      {
-      "patch_id": 12,
-      "area_ha": 0.8125,
-      "indice_conector": 0.041811,
+      "patch_id": 11,
+      "area_ha": 0.8123,
+      "indice_conector": 0.043803,
       "prioridad_conectividad": "Baja",
       "grado": 3,
       "componente": 1
@@ -3925,11 +4239,11 @@
    }
   },
   "s6": {
-   "version_datos": 2,
+   "version_datos": 3,
    "id": "s6",
    "nombre": "Qda. La Leona",
    "grupo": "Cuenca de Gatún",
-   "area_ha": 880.0327233700784,
+   "area_ha": 880.0327233700788,
    "preevaluacion": {
     "puntaje": 4.5,
     "puntaje_maximo": 6.5,
@@ -3958,6 +4272,44 @@
     "combinacion_territorial": "Cambios + conexión potencial",
     "lectura_integrada": "Urgencia por cambios: Alta; valor del corredor: Sin intersección; condición estructural: Conectada al umbral. Aunque el área no intersecta un corredor publicado, la cobertura 2021 muestra una conexión estructural potencial hacia Corredor del Canal de Panamá."
    },
+   "metricas_indice": {
+    "tmf_estable": 42.272784,
+    "tmf_degradacion": 101.877628,
+    "tmf_deforestacion": 43.17509,
+    "tmf_recuperacion": 288.590931,
+    "tmf_agua": 0.0,
+    "tmf_otra_cobertura": 400.396675,
+    "coincidencia_1_fuente": 170.927309,
+    "coincidencia_2_fuentes": 7.949303,
+    "coincidencia_3_fuentes": 1.501525,
+    "hansen_post": 14.909202,
+    "hansen_pre": 68.692223,
+    "linea_base": 450.765967,
+    "esri_arboles_final": 570.534208,
+    "esri_salida": 13.919697,
+    "esri_ganancia": 106.552311,
+    "esri_estable": 463.981897,
+    "ndvi_disminucion": 3.839335,
+    "ndvi_area_datos": 876.338392,
+    "area_ha": 880.032723,
+    "gedi_altura": 7.462833,
+    "gedi_area_datos": 843.97995,
+    "gedi_cobertura_pct": 95.903246,
+    "ndvi_inicial_medio": 0.701748,
+    "ndvi_final_medio": 0.745845,
+    "ndvi_delta_medio": 0.044097,
+    "ndvi_cobertura_pct": 99.580205,
+    "pct_tmf_defor": 4.906078,
+    "pct_tmf_degrad": 11.576573,
+    "pct_tmf_recuperacion": 32.793205,
+    "pct_esri_salida": 1.581725,
+    "pct_esri_ganancia": 12.107767,
+    "pct_linea_base": 51.221501,
+    "pct_ndvi_disminucion": 0.436272,
+    "coincidencia_varias_fuentes": 9.450828,
+    "pct_coincidencia_varias_fuentes": 1.073918
+   },
+   "procesado": "2026-11-23T00:50:04",
    "jrc_ha": {
     "tmf_estable": 42.272783930395164,
     "tmf_degradacion": 101.87762818248835,
@@ -4123,26 +4475,26 @@
     "area_ha": 0.0,
     "porcentaje": 0.0,
     "intersecta_mesoamericano": false,
-    "distancia_mas_cercano_m": 4262.4,
+    "distancia_mas_cercano_m": 3667.6,
     "lista": []
    },
    "estructura_2021": {
     "metricas_clase": {
      "numero_parches": 9,
-     "area_total_bosque_ha": 514.8599,
+     "area_total_bosque_ha": 514.6204,
      "porcentaje_paisaje_bosque": 58.748,
-     "densidad_parches_por_100ha": 1.0269,
-     "densidad_borde_m_ha": 83.5738,
+     "densidad_parches_por_100ha": 1.0274,
+     "densidad_borde_m_ha": 81.9536,
      "indice_parche_mayor_pct": 43.789,
-     "area_media_parche_ha": 57.2067,
-     "area_mediana_parche_ha": 1.7001,
-     "desviacion_area_parche_ha": 120.9132,
-     "indice_forma_medio": 3.2479
+     "area_media_parche_ha": 57.18,
+     "area_mediana_parche_ha": 1.6993,
+     "desviacion_area_parche_ha": 120.8569,
+     "indice_forma_medio": 3.1714
     },
     "metricas_red": {
      "umbral_m": 500.0,
      "numero_nodos": 9,
-     "numero_aristas": 18,
+     "numero_aristas": 19,
      "numero_relaciones_mostradas": 8,
      "numero_parches_conectados": 9,
      "numero_parches_aislados": 0,
@@ -4150,13 +4502,13 @@
      "numero_componentes": 1,
      "tamano_componente_mayor": 9,
      "porcentaje_nodos_componente_mayor": 100.0,
-     "densidad_red": 0.5,
-     "numero_parches_contexto": 462,
-     "numero_aristas_contexto": 1878,
-     "numero_conexiones_fuera_area": 88,
+     "densidad_red": 0.52777778,
+     "numero_parches_contexto": 403,
+     "numero_aristas_contexto": 1604,
+     "numero_conexiones_fuera_area": 83,
      "numero_parches_continuidad_exterior": 4,
-     "distancia_media_conexiones_m": 186.97,
-     "distancia_maxima_conexiones_m": 496.3,
+     "distancia_media_conexiones_m": 177.37,
+     "distancia_maxima_conexiones_m": 490.55,
      "numero_brechas_potenciales": 0,
      "distancia_media_brechas_potenciales_m": 0.0,
      "red_totalmente_conectada": true,
@@ -4165,93 +4517,93 @@
     },
     "metricas_paisaje": {
      "area_nucleo": {
-      "area_bosque_ha": 514.8599,
+      "area_bosque_ha": 514.6204,
       "por_profundidad": [
        {
         "profundidad_m": 50.0,
-        "area_nucleo_ha": 295.5309,
-        "porcentaje_bosque_nucleo": 57.4003,
+        "area_nucleo_ha": 296.4727,
+        "porcentaje_bosque_nucleo": 57.61,
         "parches_con_nucleo": 2,
         "parches_sin_nucleo": 7
        },
        {
         "profundidad_m": 100.0,
-        "area_nucleo_ha": 183.4387,
-        "porcentaje_bosque_nucleo": 35.6289,
+        "area_nucleo_ha": 183.5225,
+        "porcentaje_bosque_nucleo": 35.6617,
         "parches_con_nucleo": 2,
         "parches_sin_nucleo": 7
        },
        {
         "profundidad_m": 200.0,
-        "area_nucleo_ha": 64.6035,
-        "porcentaje_bosque_nucleo": 12.5478,
+        "area_nucleo_ha": 61.9284,
+        "porcentaje_bosque_nucleo": 12.0338,
         "parches_con_nucleo": 2,
         "parches_sin_nucleo": 7
        }
       ]
      },
-     "area_nucleo_ha": 183.4387,
-     "porcentaje_bosque_nucleo": 35.6289,
+     "area_nucleo_ha": 183.5225,
+     "porcentaje_bosque_nucleo": 35.6617,
      "profundidad_borde_referencia_m": 100.0,
-     "enn_medio_m": 28.53,
-     "enn_mediana_m": 15.03,
-     "enn_maximo_m": 83.09,
-     "cohesion": 99.6733,
-     "iic": 0.2771971,
+     "enn_medio_m": 31.11,
+     "enn_mediana_m": 14.26,
+     "enn_maximo_m": 92.07,
+     "cohesion": 99.6728,
+     "iic": 0.27730725,
      "diic_principales": [
       {
-       "area_ha": 383.761,
-       "diic_pct": 92.8302,
+       "area_ha": 383.5823,
+       "diic_pct": 92.833,
        "es_puente": true,
-       "parche_id": 285
+       "parche_id": 254
       },
       {
-       "area_ha": 116.9952,
-       "diic_pct": 28.2633,
+       "area_ha": 116.941,
+       "diic_pct": 28.2522,
        "es_puente": false,
-       "parche_id": 293
+       "parche_id": 261
       },
       {
-       "area_ha": 7.9767,
-       "diic_pct": 1.9269,
+       "area_ha": 7.973,
+       "diic_pct": 1.9262,
        "es_puente": false,
-       "parche_id": 289
+       "parche_id": 258
       },
       {
-       "area_ha": 2.0914,
-       "diic_pct": 0.5052,
+       "area_ha": 2.0904,
+       "diic_pct": 0.505,
        "es_puente": false,
-       "parche_id": 288
+       "parche_id": 257
       },
       {
-       "area_ha": 1.7001,
-       "diic_pct": 0.4107,
+       "area_ha": 1.6993,
+       "diic_pct": 0.4105,
        "es_puente": false,
-       "parche_id": 290
+       "parche_id": 259
       },
       {
-       "area_ha": 1.2803,
+       "area_ha": 1.2797,
        "diic_pct": 0.2835,
        "es_puente": false,
-       "parche_id": 232
+       "parche_id": 203
       },
       {
-       "area_ha": 0.6611,
-       "diic_pct": 0.1199,
+       "area_ha": 0.6608,
+       "diic_pct": 0.1596,
        "es_puente": false,
-       "parche_id": 291
+       "parche_id": 260
       },
       {
-       "area_ha": 0.3307,
+       "area_ha": 0.3305,
        "diic_pct": 0.0732,
        "es_puente": false,
-       "parche_id": 284
+       "parche_id": 253
       },
       {
        "area_ha": 0.0634,
        "diic_pct": 0.0152,
        "es_puente": false,
-       "parche_id": 292
+       "parche_id": 207
       }
      ],
      "umbral_m": 500.0,
@@ -4259,41 +4611,41 @@
     },
     "top_conectores": [
      {
-      "patch_id": 285,
-      "area_ha": 383.761,
+      "patch_id": 254,
+      "area_ha": 383.5823,
       "indice_conector": 1.0,
       "prioridad_conectividad": "Alta",
-      "grado": 75,
+      "grado": 72,
       "componente": 1
      },
      {
-      "patch_id": 293,
-      "area_ha": 116.9952,
-      "indice_conector": 0.276848,
+      "patch_id": 261,
+      "area_ha": 116.941,
+      "indice_conector": 0.329788,
       "prioridad_conectividad": "Alta",
       "grado": 18,
       "componente": 1
      },
      {
-      "patch_id": 289,
-      "area_ha": 7.9767,
-      "indice_conector": 0.154737,
+      "patch_id": 258,
+      "area_ha": 7.973,
+      "indice_conector": 0.181622,
       "prioridad_conectividad": "Alta",
       "grado": 5,
       "componente": 1
      },
      {
-      "patch_id": 292,
+      "patch_id": 207,
       "area_ha": 0.0634,
-      "indice_conector": 0.075781,
+      "indice_conector": 0.07933,
       "prioridad_conectividad": "Media",
-      "grado": 9,
+      "grado": 8,
       "componente": 1
      },
      {
-      "patch_id": 290,
-      "area_ha": 1.7001,
-      "indice_conector": 0.040052,
+      "patch_id": 259,
+      "area_ha": 1.6993,
+      "indice_conector": 0.035022,
       "prioridad_conectividad": "Media",
       "grado": 6,
       "componente": 1
@@ -4545,7 +4897,7 @@
    }
   },
   "s7": {
-   "version_datos": 2,
+   "version_datos": 3,
    "id": "s7",
    "nombre": "Qda. La Tranquilla",
    "grupo": "Cuenca de Alajuela",
@@ -4578,6 +4930,44 @@
     "combinacion_territorial": "Cambios + corredor",
     "lectura_integrada": "Urgencia por cambios: Alta; valor del corredor: Alto; condición estructural: Conectada al umbral."
    },
+   "metricas_indice": {
+    "tmf_estable": 368.844976,
+    "tmf_degradacion": 231.884942,
+    "tmf_deforestacion": 12.50002,
+    "tmf_recuperacion": 68.203489,
+    "tmf_agua": 0.002769,
+    "tmf_otra_cobertura": 7.978248,
+    "coincidencia_1_fuente": 242.009508,
+    "coincidencia_2_fuentes": 4.562301,
+    "coincidencia_3_fuentes": 0.0,
+    "hansen_post": 4.567852,
+    "hansen_pre": 15.431306,
+    "linea_base": 663.839693,
+    "esri_arboles_final": 686.997107,
+    "esri_salida": 0.735616,
+    "esri_ganancia": 1.455857,
+    "esri_estable": 685.54125,
+    "ndvi_disminucion": 0.195531,
+    "ndvi_area_datos": 689.437057,
+    "area_ha": 692.322438,
+    "gedi_altura": 17.629708,
+    "gedi_area_datos": 667.75461,
+    "gedi_cobertura_pct": 96.451389,
+    "ndvi_inicial_medio": 0.796071,
+    "ndvi_final_medio": 0.835583,
+    "ndvi_delta_medio": 0.039512,
+    "ndvi_cobertura_pct": 99.583232,
+    "pct_tmf_defor": 1.80552,
+    "pct_tmf_degrad": 33.493778,
+    "pct_tmf_recuperacion": 9.851405,
+    "pct_esri_salida": 0.106253,
+    "pct_esri_ganancia": 0.210286,
+    "pct_linea_base": 95.885913,
+    "pct_ndvi_disminucion": 0.028243,
+    "coincidencia_varias_fuentes": 4.562301,
+    "pct_coincidencia_varias_fuentes": 0.658985
+   },
+   "procesado": "2026-11-23T00:55:55",
    "jrc_ha": {
     "tmf_estable": 368.8449755515537,
     "tmf_degradacion": 231.88494169852314,
@@ -4760,15 +5150,15 @@
    "estructura_2021": {
     "metricas_clase": {
      "numero_parches": 2,
-     "area_total_bosque_ha": 643.2621,
+     "area_total_bosque_ha": 643.1561,
      "porcentaje_paisaje_bosque": 93.2985,
      "densidad_parches_por_100ha": 0.2901,
-     "densidad_borde_m_ha": 51.0286,
+     "densidad_borde_m_ha": 49.7279,
      "indice_parche_mayor_pct": 93.2564,
-     "area_media_parche_ha": 321.6311,
-     "area_mediana_parche_ha": 321.6311,
-     "desviacion_area_parche_ha": 321.341,
-     "indice_forma_medio": 2.9199
+     "area_media_parche_ha": 321.578,
+     "area_mediana_parche_ha": 321.578,
+     "desviacion_area_parche_ha": 321.288,
+     "indice_forma_medio": 2.8805
     },
     "metricas_red": {
      "umbral_m": 500.0,
@@ -4783,11 +5173,11 @@
      "porcentaje_nodos_componente_mayor": 100.0,
      "densidad_red": 1.0,
      "numero_parches_contexto": 6,
-     "numero_aristas_contexto": 8,
+     "numero_aristas_contexto": 11,
      "numero_conexiones_fuera_area": 4,
      "numero_parches_continuidad_exterior": 1,
-     "distancia_media_conexiones_m": 53.71,
-     "distancia_maxima_conexiones_m": 197.74,
+     "distancia_media_conexiones_m": 133.1,
+     "distancia_maxima_conexiones_m": 310.44,
      "numero_brechas_potenciales": 0,
      "distancia_media_brechas_potenciales_m": 0.0,
      "red_totalmente_conectada": true,
@@ -4796,48 +5186,48 @@
     },
     "metricas_paisaje": {
      "area_nucleo": {
-      "area_bosque_ha": 643.2621,
+      "area_bosque_ha": 643.1561,
       "por_profundidad": [
        {
         "profundidad_m": 50.0,
-        "area_nucleo_ha": 501.3647,
-        "porcentaje_bosque_nucleo": 77.941,
+        "area_nucleo_ha": 503.6433,
+        "porcentaje_bosque_nucleo": 78.3081,
         "parches_con_nucleo": 1,
         "parches_sin_nucleo": 1
        },
        {
         "profundidad_m": 100.0,
-        "area_nucleo_ha": 393.8993,
-        "porcentaje_bosque_nucleo": 61.2347,
+        "area_nucleo_ha": 396.8911,
+        "porcentaje_bosque_nucleo": 61.7099,
         "parches_con_nucleo": 1,
         "parches_sin_nucleo": 1
        },
        {
         "profundidad_m": 200.0,
-        "area_nucleo_ha": 232.9114,
-        "porcentaje_bosque_nucleo": 36.2079,
+        "area_nucleo_ha": 232.1632,
+        "porcentaje_bosque_nucleo": 36.0975,
         "parches_con_nucleo": 1,
         "parches_sin_nucleo": 1
        }
       ]
      },
-     "area_nucleo_ha": 393.8993,
-     "porcentaje_bosque_nucleo": 61.2347,
+     "area_nucleo_ha": 396.8911,
+     "porcentaje_bosque_nucleo": 61.7099,
      "profundidad_borde_referencia_m": 100.0,
-     "enn_medio_m": 22.79,
-     "enn_mediana_m": 22.79,
-     "enn_maximo_m": 22.79,
-     "cohesion": 99.9822,
-     "iic": 0.87006887,
+     "enn_medio_m": 19.72,
+     "enn_mediana_m": 19.72,
+     "enn_maximo_m": 19.72,
+     "cohesion": 99.9821,
+     "iic": 0.87006862,
      "diic_principales": [
       {
-       "area_ha": 642.9721,
+       "area_ha": 642.8661,
        "diic_pct": 100.0,
        "es_puente": false,
        "parche_id": 5
       },
       {
-       "area_ha": 0.2901,
+       "area_ha": 0.29,
        "diic_pct": 0.0451,
        "es_puente": false,
        "parche_id": 6
@@ -4849,7 +5239,7 @@
     "top_conectores": [
      {
       "patch_id": 5,
-      "area_ha": 642.9721,
+      "area_ha": 642.8661,
       "indice_conector": 1.0,
       "prioridad_conectividad": "Alta",
       "grado": 5,
@@ -4857,8 +5247,8 @@
      },
      {
       "patch_id": 6,
-      "area_ha": 0.2901,
-      "indice_conector": 4.7e-05,
+      "area_ha": 0.29,
+      "indice_conector": 4.6e-05,
       "prioridad_conectividad": "Baja",
       "grado": 1,
       "componente": 1
@@ -5110,7 +5500,7 @@
    }
   },
   "s8": {
-   "version_datos": 2,
+   "version_datos": 3,
    "id": "s8",
    "nombre": "Quebrada Aguas Claras",
    "grupo": "Cuenca de Gatún",
@@ -5143,6 +5533,44 @@
     "combinacion_territorial": "Cambios + corredor",
     "lectura_integrada": "Urgencia por cambios: Alta; valor del corredor: Alto; condición estructural: Conectada al umbral."
    },
+   "metricas_indice": {
+    "tmf_estable": 883.364209,
+    "tmf_degradacion": 178.409829,
+    "tmf_deforestacion": 74.721686,
+    "tmf_recuperacion": 198.550289,
+    "tmf_agua": 0.0,
+    "tmf_otra_cobertura": 198.177617,
+    "coincidencia_1_fuente": 287.240006,
+    "coincidencia_2_fuentes": 29.969077,
+    "coincidencia_3_fuentes": 4.307624,
+    "hansen_post": 28.980392,
+    "hansen_pre": 66.792139,
+    "linea_base": 1306.366892,
+    "esri_arboles_final": 1463.559562,
+    "esri_salida": 51.213098,
+    "esri_ganancia": 18.045519,
+    "esri_estable": 1445.514043,
+    "ndvi_disminucion": 4.307517,
+    "ndvi_area_datos": 1533.240171,
+    "area_ha": 1539.65747,
+    "gedi_altura": 15.549586,
+    "gedi_area_datos": 1497.5836,
+    "gedi_cobertura_pct": 97.267323,
+    "ndvi_inicial_medio": 0.798554,
+    "ndvi_final_medio": 0.812005,
+    "ndvi_delta_medio": 0.013451,
+    "ndvi_cobertura_pct": 99.5832,
+    "pct_tmf_defor": 4.853137,
+    "pct_tmf_degrad": 11.587631,
+    "pct_tmf_recuperacion": 12.895744,
+    "pct_esri_salida": 3.326266,
+    "pct_esri_ganancia": 1.172048,
+    "pct_linea_base": 84.847891,
+    "pct_ndvi_disminucion": 0.279771,
+    "coincidencia_varias_fuentes": 34.2767,
+    "pct_coincidencia_varias_fuentes": 2.226255
+   },
+   "procesado": "2026-11-23T00:59:50",
    "jrc_ha": {
     "tmf_estable": 883.3642093050712,
     "tmf_degradacion": 178.4098293487055,
@@ -5320,15 +5748,15 @@
    "estructura_2021": {
     "metricas_clase": {
      "numero_parches": 6,
-     "area_total_bosque_ha": 1355.1056,
+     "area_total_bosque_ha": 1354.7107,
      "porcentaje_paisaje_bosque": 88.3785,
-     "densidad_parches_por_100ha": 0.3913,
-     "densidad_borde_m_ha": 46.6852,
+     "densidad_parches_por_100ha": 0.3914,
+     "densidad_borde_m_ha": 45.7625,
      "indice_parche_mayor_pct": 87.9919,
-     "area_media_parche_ha": 225.8509,
-     "area_mediana_parche_ha": 0.7195,
-     "desviacion_area_parche_ha": 502.3688,
-     "indice_forma_medio": 2.415
+     "area_media_parche_ha": 225.7851,
+     "area_mediana_parche_ha": 0.7192,
+     "desviacion_area_parche_ha": 502.2224,
+     "indice_forma_medio": 2.3371
     },
     "metricas_red": {
      "umbral_m": 500.0,
@@ -5342,12 +5770,12 @@
      "tamano_componente_mayor": 6,
      "porcentaje_nodos_componente_mayor": 100.0,
      "densidad_red": 0.46666667,
-     "numero_parches_contexto": 21,
-     "numero_aristas_contexto": 45,
-     "numero_conexiones_fuera_area": 21,
+     "numero_parches_contexto": 22,
+     "numero_aristas_contexto": 46,
+     "numero_conexiones_fuera_area": 20,
      "numero_parches_continuidad_exterior": 5,
-     "distancia_media_conexiones_m": 139.99,
-     "distancia_maxima_conexiones_m": 497.33,
+     "distancia_media_conexiones_m": 109.81,
+     "distancia_maxima_conexiones_m": 459.94,
      "numero_brechas_potenciales": 0,
      "distancia_media_brechas_potenciales_m": 0.0,
      "red_totalmente_conectada": true,
@@ -5356,72 +5784,72 @@
     },
     "metricas_paisaje": {
      "area_nucleo": {
-      "area_bosque_ha": 1355.1056,
+      "area_bosque_ha": 1354.7107,
       "por_profundidad": [
        {
         "profundidad_m": 50.0,
-        "area_nucleo_ha": 1104.4846,
-        "porcentaje_bosque_nucleo": 81.5054,
+        "area_nucleo_ha": 1107.5167,
+        "porcentaje_bosque_nucleo": 81.753,
         "parches_con_nucleo": 2,
         "parches_sin_nucleo": 4
        },
        {
         "profundidad_m": 100.0,
-        "area_nucleo_ha": 937.657,
-        "porcentaje_bosque_nucleo": 69.1944,
+        "area_nucleo_ha": 942.4084,
+        "porcentaje_bosque_nucleo": 69.5653,
         "parches_con_nucleo": 1,
         "parches_sin_nucleo": 5
        },
        {
         "profundidad_m": 200.0,
-        "area_nucleo_ha": 727.0852,
-        "porcentaje_bosque_nucleo": 53.6552,
+        "area_nucleo_ha": 731.4914,
+        "porcentaje_bosque_nucleo": 53.9961,
         "parches_con_nucleo": 1,
         "parches_sin_nucleo": 5
        }
       ]
      },
-     "area_nucleo_ha": 937.657,
-     "porcentaje_bosque_nucleo": 69.1944,
+     "area_nucleo_ha": 942.4084,
+     "porcentaje_bosque_nucleo": 69.5653,
      "profundidad_borde_referencia_m": 100.0,
-     "enn_medio_m": 78.91,
-     "enn_mediana_m": 43.75,
-     "enn_maximo_m": 274.05,
-     "cohesion": 99.9711,
-     "iic": 0.77766937,
+     "enn_medio_m": 78.34,
+     "enn_mediana_m": 45.2,
+     "enn_maximo_m": 255.9,
+     "cohesion": 99.9713,
+     "iic": 0.77766966,
      "diic_principales": [
       {
-       "area_ha": 1349.178,
+       "area_ha": 1348.7849,
        "diic_pct": 99.999,
        "es_puente": true,
        "parche_id": 15
       },
       {
-       "area_ha": 3.975,
+       "area_ha": 3.9738,
        "diic_pct": 0.2945,
        "es_puente": false,
        "parche_id": 6
       },
       {
-       "area_ha": 0.9612,
+       "area_ha": 0.9609,
        "diic_pct": 0.0712,
        "es_puente": false,
-       "parche_id": 3
+       "parche_id": 21
       },
       {
-       "area_ha": 0.4777,
+       "area_ha": 0.4776,
        "diic_pct": 0.0354,
        "es_puente": false,
        "parche_id": 5
       },
       {
-       "area_ha": 0.3394,
+       "area_ha": 0.3393,
        "diic_pct": 0.0251,
        "es_puente": false,
        "parche_id": 2
       },
       {
-       "area_ha": 0.1742,
+       "area_ha": 0.1741,
        "diic_pct": 0.0129,
        "es_puente": false,
        "parche_id": 1
@@ -5433,40 +5861,40 @@
     "top_conectores": [
      {
       "patch_id": 15,
-      "area_ha": 1349.178,
+      "area_ha": 1348.7849,
       "indice_conector": 1.0,
       "prioridad_conectividad": "Alta",
-      "grado": 20,
+      "grado": 21,
       "componente": 1
      },
      {
       "patch_id": 6,
-      "area_ha": 3.975,
-      "indice_conector": 0.078309,
+      "area_ha": 3.9738,
+      "indice_conector": 0.050849,
       "prioridad_conectividad": "Alta",
-      "grado": 5,
-      "componente": 1
-     },
-     {
-      "patch_id": 5,
-      "area_ha": 0.4777,
-      "indice_conector": 0.0513,
-      "prioridad_conectividad": "Media",
       "grado": 4,
       "componente": 1
      },
      {
+      "patch_id": 5,
+      "area_ha": 0.4776,
+      "indice_conector": 0.025205,
+      "prioridad_conectividad": "Media",
+      "grado": 3,
+      "componente": 1
+     },
+     {
       "patch_id": 1,
-      "area_ha": 0.1742,
-      "indice_conector": 0.00045,
+      "area_ha": 0.1741,
+      "indice_conector": 0.00043,
       "prioridad_conectividad": "Baja",
       "grado": 2,
       "componente": 1
      },
      {
-      "patch_id": 3,
-      "area_ha": 0.9612,
-      "indice_conector": 0.000273,
+      "patch_id": 21,
+      "area_ha": 0.9609,
+      "indice_conector": 0.000238,
       "prioridad_conectividad": "Baja",
       "grado": 2,
       "componente": 1
@@ -5718,7 +6146,7 @@
    }
   },
   "s9": {
-   "version_datos": 2,
+   "version_datos": 3,
    "id": "s9",
    "nombre": "Quebrada Grande",
    "grupo": "Cuenca de Gatún",
@@ -5752,6 +6180,44 @@
     "combinacion_territorial": "Cambios recientes",
     "lectura_integrada": "Urgencia por cambios: Alta; valor del corredor: Sin intersección; condición estructural: Conectada al umbral."
    },
+   "metricas_indice": {
+    "tmf_estable": 32.96723,
+    "tmf_degradacion": 92.993856,
+    "tmf_deforestacion": 223.131494,
+    "tmf_recuperacion": 305.682889,
+    "tmf_agua": 6.570216,
+    "tmf_otra_cobertura": 2176.991115,
+    "coincidencia_1_fuente": 709.734136,
+    "coincidencia_2_fuentes": 75.905015,
+    "coincidencia_3_fuentes": 3.226445,
+    "hansen_post": 36.62456,
+    "hansen_pre": 185.80019,
+    "linea_base": 807.312836,
+    "esri_arboles_final": 890.311066,
+    "esri_salida": 284.654245,
+    "esri_ganancia": 198.00218,
+    "esri_estable": 692.308886,
+    "ndvi_disminucion": 23.116726,
+    "ndvi_area_datos": 2838.373144,
+    "area_ha": 2850.262694,
+    "gedi_altura": 3.492211,
+    "gedi_area_datos": 2788.445834,
+    "gedi_cobertura_pct": 97.831187,
+    "ndvi_inicial_medio": 0.661484,
+    "ndvi_final_medio": 0.695171,
+    "ndvi_delta_medio": 0.033687,
+    "ndvi_cobertura_pct": 99.582861,
+    "pct_tmf_defor": 7.828454,
+    "pct_tmf_degrad": 3.262642,
+    "pct_tmf_recuperacion": 10.724727,
+    "pct_esri_salida": 9.986948,
+    "pct_esri_ganancia": 6.946805,
+    "pct_linea_base": 28.324155,
+    "pct_ndvi_disminucion": 0.811038,
+    "coincidencia_varias_fuentes": 79.131461,
+    "pct_coincidencia_varias_fuentes": 2.776287
+   },
+   "procesado": "2026-11-23T01:09:11",
    "jrc_ha": {
     "tmf_estable": 32.967229638643126,
     "tmf_degradacion": 92.99385567333768,
@@ -5917,26 +6383,26 @@
     "area_ha": 0.0,
     "porcentaje": 0.0,
     "intersecta_mesoamericano": false,
-    "distancia_mas_cercano_m": 9271.6,
+    "distancia_mas_cercano_m": 8131.3,
     "lista": []
    },
    "estructura_2021": {
     "metricas_clase": {
      "numero_parches": 92,
-     "area_total_bosque_ha": 706.3315,
+     "area_total_bosque_ha": 705.9938,
      "porcentaje_paisaje_bosque": 24.8845,
-     "densidad_parches_por_100ha": 3.2412,
-     "densidad_borde_m_ha": 81.4217,
+     "densidad_parches_por_100ha": 3.2428,
+     "densidad_borde_m_ha": 80.2084,
      "indice_parche_mayor_pct": 9.6995,
-     "area_media_parche_ha": 7.6775,
-     "area_mediana_parche_ha": 0.8097,
-     "desviacion_area_parche_ha": 31.3283,
-     "indice_forma_medio": 2.6205
+     "area_media_parche_ha": 7.6738,
+     "area_mediana_parche_ha": 0.8093,
+     "desviacion_area_parche_ha": 31.3133,
+     "indice_forma_medio": 2.5845
     },
     "metricas_red": {
      "umbral_m": 500.0,
      "numero_nodos": 92,
-     "numero_aristas": 299,
+     "numero_aristas": 301,
      "numero_relaciones_mostradas": 87,
      "numero_parches_conectados": 92,
      "numero_parches_aislados": 0,
@@ -5944,13 +6410,13 @@
      "numero_componentes": 1,
      "tamano_componente_mayor": 92,
      "porcentaje_nodos_componente_mayor": 100.0,
-     "densidad_red": 0.07142857,
-     "numero_parches_contexto": 788,
-     "numero_aristas_contexto": 3512,
-     "numero_conexiones_fuera_area": 203,
-     "numero_parches_continuidad_exterior": 41,
-     "distancia_media_conexiones_m": 235.2,
-     "distancia_maxima_conexiones_m": 498.34,
+     "densidad_red": 0.07190635,
+     "numero_parches_contexto": 852,
+     "numero_aristas_contexto": 3840,
+     "numero_conexiones_fuera_area": 197,
+     "numero_parches_continuidad_exterior": 40,
+     "distancia_media_conexiones_m": 234.99,
+     "distancia_maxima_conexiones_m": 498.29,
      "numero_brechas_potenciales": 0,
      "distancia_media_brechas_potenciales_m": 0.0,
      "red_totalmente_conectada": true,
@@ -5959,99 +6425,99 @@
     },
     "metricas_paisaje": {
      "area_nucleo": {
-      "area_bosque_ha": 706.3315,
+      "area_bosque_ha": 705.9938,
       "por_profundidad": [
        {
         "profundidad_m": 50.0,
-        "area_nucleo_ha": 214.8037,
-        "porcentaje_bosque_nucleo": 30.4112,
+        "area_nucleo_ha": 215.9342,
+        "porcentaje_bosque_nucleo": 30.5859,
         "parches_con_nucleo": 16,
         "parches_sin_nucleo": 76
        },
        {
         "profundidad_m": 100.0,
-        "area_nucleo_ha": 106.607,
-        "porcentaje_bosque_nucleo": 15.0931,
-        "parches_con_nucleo": 10,
-        "parches_sin_nucleo": 82
+        "area_nucleo_ha": 105.7176,
+        "porcentaje_bosque_nucleo": 14.9743,
+        "parches_con_nucleo": 9,
+        "parches_sin_nucleo": 83
        },
        {
         "profundidad_m": 200.0,
-        "area_nucleo_ha": 22.6254,
-        "porcentaje_bosque_nucleo": 3.2032,
+        "area_nucleo_ha": 23.3183,
+        "porcentaje_bosque_nucleo": 3.3029,
         "parches_con_nucleo": 2,
         "parches_sin_nucleo": 90
        }
       ]
      },
-     "area_nucleo_ha": 106.607,
-     "porcentaje_bosque_nucleo": 15.0931,
+     "area_nucleo_ha": 105.7176,
+     "porcentaje_bosque_nucleo": 14.9743,
      "profundidad_borde_referencia_m": 100.0,
-     "enn_medio_m": 42.8,
-     "enn_mediana_m": 20.78,
-     "enn_maximo_m": 501.33,
-     "cohesion": 98.8864,
-     "iic": 0.02910289,
+     "enn_medio_m": 43.44,
+     "enn_mediana_m": 20.1,
+     "enn_maximo_m": 451.56,
+     "cohesion": 98.8833,
+     "iic": 0.03057215,
      "diic_principales": [
       {
-       "area_ha": 275.3152,
-       "diic_pct": 72.8515,
-       "es_puente": false,
-       "parche_id": 468
-      },
-      {
-       "area_ha": 110.4803,
-       "diic_pct": 24.2878,
-       "es_puente": false,
-       "parche_id": 582
-      },
-      {
-       "area_ha": 54.8503,
-       "diic_pct": 14.7555,
+       "area_ha": 275.1836,
+       "diic_pct": 76.2734,
        "es_puente": true,
-       "parche_id": 682
+       "parche_id": 545
       },
       {
-       "area_ha": 28.2231,
-       "diic_pct": 7.7173,
-       "es_puente": false,
-       "parche_id": 477
-      },
-      {
-       "area_ha": 41.4555,
-       "diic_pct": 7.3725,
-       "es_puente": false,
-       "parche_id": 556
-      },
-      {
-       "area_ha": 25.8413,
-       "diic_pct": 5.786,
-       "es_puente": false,
-       "parche_id": 384
-      },
-      {
-       "area_ha": 20.5023,
-       "diic_pct": 4.7307,
+       "area_ha": 110.4276,
+       "diic_pct": 28.0393,
        "es_puente": false,
        "parche_id": 563
       },
       {
-       "area_ha": 20.6631,
-       "diic_pct": 4.2911,
+       "area_ha": 54.8242,
+       "diic_pct": 13.3225,
        "es_puente": false,
-       "parche_id": 583
+       "parche_id": 748
       },
       {
-       "area_ha": 8.8013,
-       "diic_pct": 2.273,
+       "area_ha": 41.4359,
+       "diic_pct": 7.2705,
        "es_puente": false,
-       "parche_id": 579
+       "parche_id": 642
       },
       {
-       "area_ha": 9.8057,
-       "diic_pct": 2.0004,
+       "area_ha": 28.2095,
+       "diic_pct": 6.9728,
        "es_puente": false,
-       "parche_id": 482
+       "parche_id": 556
+      },
+      {
+       "area_ha": 25.8287,
+       "diic_pct": 5.6888,
+       "es_puente": false,
+       "parche_id": 469
+      },
+      {
+       "area_ha": 20.4926,
+       "diic_pct": 4.6594,
+       "es_puente": false,
+       "parche_id": 649
+      },
+      {
+       "area_ha": 20.6534,
+       "diic_pct": 4.0844,
+       "es_puente": false,
+       "parche_id": 666
+      },
+      {
+       "area_ha": 4.503,
+       "diic_pct": 2.3385,
+       "es_puente": true,
+       "parche_id": 475
+      },
+      {
+       "area_ha": 8.7971,
+       "diic_pct": 2.0982,
+       "es_puente": false,
+       "parche_id": 553
       }
      ],
      "umbral_m": 500.0,
@@ -6059,43 +6525,43 @@
     },
     "top_conectores": [
      {
-      "patch_id": 682,
-      "area_ha": 54.8503,
+      "patch_id": 748,
+      "area_ha": 54.8242,
       "indice_conector": 1.0,
       "prioridad_conectividad": "Alta",
-      "grado": 75,
+      "grado": 72,
       "componente": 1
      },
      {
-      "patch_id": 582,
-      "area_ha": 110.4803,
-      "indice_conector": 0.424368,
+      "patch_id": 563,
+      "area_ha": 110.4276,
+      "indice_conector": 0.414713,
       "prioridad_conectividad": "Alta",
-      "grado": 27,
+      "grado": 28,
       "componente": 1
      },
      {
-      "patch_id": 468,
-      "area_ha": 275.3152,
-      "indice_conector": 0.303978,
+      "patch_id": 545,
+      "area_ha": 275.1836,
+      "indice_conector": 0.32352,
       "prioridad_conectividad": "Alta",
-      "grado": 32,
-      "componente": 1
-     },
-     {
-      "patch_id": 477,
-      "area_ha": 28.2231,
-      "indice_conector": 0.203857,
-      "prioridad_conectividad": "Alta",
-      "grado": 18,
+      "grado": 33,
       "componente": 1
      },
      {
       "patch_id": 556,
-      "area_ha": 41.4555,
-      "indice_conector": 0.175945,
+      "area_ha": 28.2095,
+      "indice_conector": 0.192443,
       "prioridad_conectividad": "Alta",
-      "grado": 23,
+      "grado": 16,
+      "componente": 1
+     },
+     {
+      "patch_id": 654,
+      "area_ha": 0.3103,
+      "indice_conector": 0.187087,
+      "prioridad_conectividad": "Alta",
+      "grado": 25,
       "componente": 1
      }
     ],
@@ -6171,181 +6637,10 @@
     "ndvi_inicial": 2020,
     "ndvi_final": 2025,
     "ndvi_final_visual": 2025
-   },
-   "mapas": {
-    "limites": [
-     [
-      8.903555,
-      -79.99288
-     ],
-     [
-      8.996757,
-      -79.942769
-     ]
-    ],
-    "tamano_pixel_m": 11.5,
-    "dimensiones": [
-     478,
-     900
-    ],
-    "capas": [
-     "sinia_2021",
-     "jrc_2025",
-     "hansen",
-     "esri_cambio",
-     "ndvi_cambio",
-     "eri",
-     "coincidencia",
-     "riparia"
-    ],
-    "valores": [
-     "sinia_2021",
-     "jrc_2025",
-     "hansen",
-     "esri_cambio",
-     "ndvi_cambio",
-     "eri",
-     "coincidencia",
-     "riparia",
-     "gedi",
-     "aux"
-    ],
-    "errores": {},
-    "rios": 4
-   },
-   "sitios": [
-    {
-     "id": "s9-98069632",
-     "lat": 8.98063,
-     "lon": -79.963162,
-     "area_ha": 134.82,
-     "fuentes": 3
-    },
-    {
-     "id": "s9-94069639",
-     "lat": 8.940567,
-     "lon": -79.963933,
-     "area_ha": 86.76,
-     "fuentes": 3
-    },
-    {
-     "id": "s9-96089668",
-     "lat": 8.960822,
-     "lon": -79.966777,
-     "area_ha": 61.91,
-     "fuentes": 3
-    },
-    {
-     "id": "s9-95079626",
-     "lat": 8.950693,
-     "lon": -79.962617,
-     "area_ha": 58.46,
-     "fuentes": 3
-    },
-    {
-     "id": "s9-95929496",
-     "lat": 8.959243,
-     "lon": -79.949648,
-     "area_ha": 31.13,
-     "fuentes": 3
-    },
-    {
-     "id": "s9-93089794",
-     "lat": 8.930779,
-     "lon": -79.979412,
-     "area_ha": 66.0,
-     "fuentes": 2
-    },
-    {
-     "id": "s9-92389703",
-     "lat": 8.923814,
-     "lon": -79.970294,
-     "area_ha": 50.48,
-     "fuentes": 2
-    },
-    {
-     "id": "s9-96679519",
-     "lat": 8.96671,
-     "lon": -79.9519,
-     "area_ha": 34.95,
-     "fuentes": 2
-    },
-    {
-     "id": "s9-91969582",
-     "lat": 8.919581,
-     "lon": -79.958153,
-     "area_ha": 31.94,
-     "fuentes": 2
-    },
-    {
-     "id": "s9-92149780",
-     "lat": 8.921433,
-     "lon": -79.977979,
-     "area_ha": 16.94,
-     "fuentes": 2
-    },
-    {
-     "id": "s9-96859712",
-     "lat": 8.968512,
-     "lon": -79.971243,
-     "area_ha": 16.76,
-     "fuentes": 2
-    },
-    {
-     "id": "s9-92899678",
-     "lat": 8.928876,
-     "lon": -79.967796,
-     "area_ha": 11.98,
-     "fuentes": 2
-    }
-   ],
-   "riparia": {
-    "longitud_cauces_km": 17.7,
-    "franjas": [
-     {
-      "ancho_m": 30,
-      "area_ha": 86.94,
-      "bosque_sinia_ha": 45.59,
-      "bosque_sinia_pct": 52.4,
-      "arboles_esri_pct": 69.0
-     },
-     {
-      "ancho_m": 50,
-      "area_ha": 177.31,
-      "bosque_sinia_ha": 90.34,
-      "bosque_sinia_pct": 50.9,
-      "arboles_esri_pct": 67.1
-     },
-     {
-      "ancho_m": 100,
-      "area_ha": 395.46,
-      "bosque_sinia_ha": 177.78,
-      "bosque_sinia_pct": 45.0,
-      "arboles_esri_pct": 59.6
-     }
-    ],
-    "sin_bosque_por_pendiente": [
-     {
-      "pendiente": "0–15 %",
-      "area_ha": 64.35
-     },
-     {
-      "pendiente": "15–30 %",
-      "area_ha": 19.6
-     },
-     {
-      "pendiente": "≥ 30 %",
-      "area_ha": 3.02
-     }
-    ],
-    "franja_referencia_m": 50,
-    "area_drenaje_minima_km2": 1.0,
-    "nota": "Cauces MERIT Hydro (90 m, drenaje ≥ 1 km²); distancias interpoladas, indicativas. Bosque: SINIA 2021 (oficial) y árboles ESRI 2024 como segunda fuente.",
-    "escala_m": 10
    }
   },
   "s10": {
-   "version_datos": 2,
+   "version_datos": -1,
    "id": "s10",
    "nombre": "Quebrada del Medio",
    "grupo": "Cuenca de Gatún",
@@ -6977,7 +7272,7 @@
    }
   },
   "s11": {
-   "version_datos": 2,
+   "version_datos": -1,
    "id": "s11",
    "nombre": "Río Agua Salud",
    "grupo": "Cuenca de Gatún",
@@ -7609,7 +7904,7 @@
    }
   },
   "s12": {
-   "version_datos": 2,
+   "version_datos": -1,
    "id": "s12",
    "nombre": "Río Aguas Claras",
    "grupo": "Cuenca de Gatún",
@@ -8246,7 +8541,7 @@
    }
   },
   "s13": {
-   "version_datos": 2,
+   "version_datos": -1,
    "id": "s13",
    "nombre": "Río Aguas Sucias",
    "grupo": "Cuenca de Gatún",
@@ -8884,7 +9179,7 @@
    }
   },
   "s14": {
-   "version_datos": 2,
+   "version_datos": -1,
    "id": "s14",
    "nombre": "Río Baila Monos",
    "grupo": "Cuenca de Gatún",
@@ -9517,7 +9812,7 @@
    }
   },
   "s15": {
-   "version_datos": 2,
+   "version_datos": -1,
    "id": "s15",
    "nombre": "Río Benitez",
    "grupo": "Cuenca de Alajuela",
@@ -10077,7 +10372,7 @@
    }
   },
   "s16": {
-   "version_datos": 2,
+   "version_datos": -1,
    "id": "s16",
    "nombre": "Río Boquerón",
    "grupo": "Cuenca de Alajuela",
@@ -10714,7 +11009,7 @@
    }
   },
   "s17": {
-   "version_datos": 2,
+   "version_datos": -1,
    "id": "s17",
    "nombre": "Río Caraña",
    "grupo": "Cuenca de Gatún",
@@ -11273,7 +11568,7 @@
    }
   },
   "s18": {
-   "version_datos": 2,
+   "version_datos": -1,
    "id": "s18",
    "nombre": "Río Casaya",
    "grupo": "Cuenca de Gatún",
@@ -11818,7 +12113,7 @@
    }
   },
   "s19": {
-   "version_datos": 2,
+   "version_datos": -1,
    "id": "s19",
    "nombre": "Río Cañito",
    "grupo": "Cuenca de Gatún",
@@ -12451,7 +12746,7 @@
    }
   },
   "s20": {
-   "version_datos": 2,
+   "version_datos": -1,
    "id": "s20",
    "nombre": "Río Caño Quebrado",
    "grupo": "Cuenca de Gatún",
@@ -13078,7 +13373,7 @@
    }
   },
   "s21": {
-   "version_datos": 2,
+   "version_datos": -1,
    "id": "s21",
    "nombre": "Río Chagres",
    "grupo": "Cuenca de Alajuela",
@@ -13715,7 +14010,7 @@
    }
   },
   "s22": {
-   "version_datos": 2,
+   "version_datos": -1,
    "id": "s22",
    "nombre": "Río Chico",
    "grupo": "Cuenca de Alajuela",
@@ -14261,7 +14556,7 @@
    }
   },
   "s23": {
-   "version_datos": 2,
+   "version_datos": -1,
    "id": "s23",
    "nombre": "Río Chilibre",
    "grupo": "Cuenca de Gatún",
@@ -14899,7 +15194,7 @@
    }
   },
   "s24": {
-   "version_datos": 2,
+   "version_datos": -1,
    "id": "s24",
    "nombre": "Río Chilibrillo",
    "grupo": "Cuenca de Gatún",
@@ -22527,7 +22822,8 @@
  "errores": {
   "s0": "KeyError: 'coordinates'",
   "s1": "KeyError: 'coordinates'",
-  "s2": "KeyError: 'coordinates'"
+  "s3": "KeyError: 'coordinates'",
+  "s9": "KeyError: 'coordinates'"
  },
- "generado": "2026-11-22T23:32:55"
+ "generado": "2026-11-23T01:09:11"
 }
