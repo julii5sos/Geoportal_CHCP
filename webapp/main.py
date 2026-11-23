@@ -319,7 +319,7 @@ def create_app(*, testing: bool = False) -> Flask:
         from chcp.nucleo.procesamiento import enriquecer_estadisticas
 
         datos = json.loads(path.read_text(encoding="utf-8"))
-        response = jsonify(enriquecer_estadisticas(datos))
+        response = jsonify(enriquecer_estadisticas(datos, path.parent / "subcuencas"))
         response.headers["Cache-Control"] = "public, max-age=300"
         return response
 

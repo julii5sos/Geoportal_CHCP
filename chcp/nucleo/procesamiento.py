@@ -15,6 +15,7 @@ import os
 import subprocess
 from collections import Counter
 from datetime import datetime, timezone
+from pathlib import Path
 from typing import Any
 
 TIPOS = {
@@ -75,8 +76,12 @@ def estado_actualizacion(datos: dict[str, Any]) -> dict[str, Any]:
     }
 
 
-def enriquecer_estadisticas(datos: dict[str, Any]) -> dict[str, Any]:
-    """Agrega trazabilidad e indicadores experimentales al servir el panel (sin tocar el archivo)."""
+def enriquecer_estadisticas(datos: dict[str, Any], dir_subcuencas: Any = None) -> dict[str, Any]:
+    """Agrega trazabilidad e indicadores experimentales al servir el panel (sin tocar el archivo).
+
+    Si se indica ``dir_subcuencas``, marca ``red_disponible`` en cada territorio según exista
+    su red de parches precalculada (la usa el simulador de restauración).
+    """
     from chcp.nucleo.indicadores_relativos import bloque_publicable
 
     salida = dict(datos)
@@ -94,6 +99,8 @@ def enriquecer_estadisticas(datos: dict[str, Any]) -> dict[str, Any]:
     for clave, t in (datos.get("territorios") or {}).items():
         t2 = dict(t)
         t2.setdefault("version_datos", 1)
+        if dir_subcuencas is not None:
+            t2["red_disponible"] = (Path(dir_subcuencas) / f"{clave}.json").exists()
         try:
             t2["indicadores_relativos"] = bloque_publicable(t, cuenca if clave != "chcp" else None)
         except Exception:  # noqa: BLE001

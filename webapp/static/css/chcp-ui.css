@@ -405,11 +405,13 @@ html.app #main-content:has(#v-ficha) { overflow-y:auto; background:#f3f6fa; }
 .rs-note { font-size:12.5px; color:var(--muted); margin:0 0 8px; }
 .rs-main { overflow-y:auto; padding:14px 18px 30px; display:flex; flex-direction:column; gap:10px; }
 #rs-map { height:58vh; min-height:380px; border-radius:12px; border:1px solid var(--line); }
-.rs-legend { display:flex; flex-wrap:wrap; gap:6px 16px; font-size:12.5px; }
-.rs-legend span { display:inline-flex; align-items:center; gap:6px; }
-.rs-legend i { width:14px; height:14px; border-radius:3px; display:inline-block; }
-.rs-legend i.dash { height:0; border-top:3px dashed #e53935; border-radius:0; }
-.rs-legend i.fr { height:8px; background:#7cb342; border-radius:2px; box-shadow:inset 0 0 0 3px #7cb342, inset 0 3px 0 #fff; }
+.rs-legend { display:grid; grid-template-columns:repeat(auto-fit, minmax(210px, 1fr)); gap:4px 20px; background:#fff; border:1px solid var(--line); border-radius:12px; padding:12px 16px; margin:10px 0 14px; }
+.rs-lg-grupo h3 { margin:0 0 6px; font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); font-weight:700; }
+.rs-lg-grupo ul { list-style:none; margin:0; padding:0; display:grid; gap:7px; }
+.rs-lg-grupo li { display:flex; align-items:flex-start; gap:10px; font-size:13px; line-height:1.25; }
+.rs-lg-grupo li b { display:block; font-weight:600; color:var(--azul-tinta, #14275a); }
+.rs-lg-grupo li small { display:block; font-size:11.5px; color:var(--muted); margin-top:1px; }
+.rs-sym { flex:0 0 34px; width:34px; height:16px; margin-top:1px; }
 .rs-results { background:#fff; border:1px solid var(--line); border-radius:12px; padding:16px 18px; }
 .rs-res-head { display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:8px; }
 .rs-res-head h2 { margin:0; font-size:18px; color:var(--azul-tinta); }
@@ -572,3 +574,6 @@ html.app #main-content:has(.pg) { overflow-y:auto; background:#f3f6fa; }
 .pe-sec h3 svg { color:var(--azul); }
 .pe-h4 { font-size:13px; margin:10px 0 6px; color:var(--azul-tinta); }
 .pe-t { font-size:12.5px; } .pe-t td small { display:block; color:var(--muted); font-size:11px; }
+.rs-ir { border:1px solid var(--line, #cfd8e3); background:#fff; color:#1d3f8f; border-radius:999px; padding:3px 10px; margin:3px 2px; font:inherit; font-size:12px; cursor:pointer; }
+.rs-ir:hover { background:#eef3fb; }
+#rs-unir:disabled { opacity:.45; cursor:not-allowed; }
