@@ -30,11 +30,26 @@ Cada punto representa la celda de 30 × 30 m que lo contiene. Se asigna la clase
 
 ## 3. Imágenes
 
-1. **Google Earth Pro** (gratuito) con la herramienta de **imágenes históricas** (icono del reloj): cargue `muestra.kml` y compare una imagen de 2019–2020 con una de 2024–2025.
-2. **Copernicus Browser** (Sentinel-2, 10 m, gratuito) para confirmar en qué año ocurrió el cambio cuando Google Earth no tiene fechas suficientes.
-3. La imagen Esri de la página de validación es de una sola fecha: sirve para ver la cobertura actual, no para confirmar el cambio.
+La cuenca tiene nubosidad casi permanente y en Google Earth muchas fechas no dejan ver el cambio.
+Por eso la página de validación muestra, junto a cada punto:
 
-Anote en cada punto la **fecha** y la **fuente** de la imagen que decidió la clase.
+1. **Recortes Sentinel-2 sin nubes** de 2020, 2022 y 2025 (10 m, 640 × 640 m): mediana de los
+   píxeles despejados de cada año según Cloud Score+. Al combinar todas las pasadas del año,
+   las nubes desaparecen. El recuadro amarillo es la celda de 30 m evaluada.
+2. **NDVI por año** (2017–2025) en la celda: una caída fuerte y sostenida sugiere desmonte.
+3. **Radar Sentinel-1 VH por año** (dB): el radar atraviesa las nubes; un desmonte suele bajar la
+   señal varios dB. Es la mejor ayuda cuando no hay ninguna imagen óptica despejada.
+
+Complementos opcionales:
+
+- **Google Earth Pro** con imágenes históricas (cargando `muestra.kml`), cuando haya fechas despejadas: tiene más detalle.
+- **Planet NICFI** (mosaicos tropicales de 4,7 m, 2015–2025): requiere registrarse en el programa NICFI; uso no comercial.
+
+Anote en cada punto la **fecha** y la **fuente** de la imagen que decidió la clase. Si con las
+tres ayudas no se puede decidir, use «Sin evidencia suficiente».
+
+Nota de independencia: las ayudas son imágenes y series de la propia superficie, no los mapas
+evaluados; la decisión es una interpretación visual del cambio, como recomienda Olofsson et al. (2014).
 
 ## 4. Regla de independencia
 
@@ -52,6 +67,7 @@ usa para el cálculo, nunca durante la interpretación.
 ## 6. Pasos
 
 1. GitHub → Actions → **Generar muestra de validación** → mapa `senal_perdida`, valores por defecto.
+   El mismo flujo prepara las imágenes sin nubes y las series de cada punto (unos 30–60 min).
 2. Sitio → **Plataforma → Validación de mapas** → «Interpretar la muestra». El avance se guarda
    en el navegador: use siempre el mismo equipo y descargue `muestra.csv` como respaldo cada día.
 3. Al terminar (o al cerrar una jornada), suba `muestra.csv` a `data/validacion/senal_perdida/`
