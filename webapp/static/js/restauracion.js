@@ -216,7 +216,25 @@
   L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', { attribution: 'Esri World Imagery', maxZoom: 18 }).addTo(st.map);
   const colorCorr = { Alta: '#1b5e20', Mediana: '#9ccc65', 'Media-baja': '#ffb74d' };
   L.geoJSON(st.territory.corridors, { style: (f) => ({ color: colorCorr[f.properties.categoria_etiqueta] || '#7fae00', weight: 1.2, fillColor: colorCorr[f.properties.categoria_etiqueta] || '#a1d303', fillOpacity: 0.12 }), onEachFeature: (f, l) => l.bindTooltip(`${f.properties.nombre} · conectividad ${f.properties.categoria_etiqueta} (Almanaque Azul)`) }).addTo(st.map);
-  $('#rs-legend').innerHTML = '<span><i style="background:#1b7837"></i>Red principal</span><span><i style="background:#2166ac"></i>Otras redes (un color por red)</span><span><i class="dash"></i>Brecha candidata</span><span><i class="fr"></i>Enlace propuesto (hipotético)</span><span><i style="background:#1f78b4;height:3px"></i>Ríos principales</span><span><i style="background:#ffb74d55;border:1px solid #ffb74d"></i>Corredor Almanaque Azul</span>';
+  // Leyenda: cada símbolo se dibuja con el mismo estilo que usa el mapa.
+  const sim = (contenido, fondo) => `<svg class="rs-sym" viewBox="0 0 34 16" aria-hidden="true">${fondo ? `<rect width="34" height="16" rx="3" fill="${fondo}"/>` : ''}${contenido}</svg>`;
+  const caja = (c, borde = '#0b3d17', op = 0.85) => `<rect x="4" y="2" width="26" height="12" rx="2" fill="${c}" fill-opacity="${op}" stroke="${borde}" stroke-width="1"/>`;
+  const item = (simbolo, titulo, nota) => `<li>${simbolo}<span><b>${titulo}</b>${nota ? `<small>${nota}</small>` : ''}</span></li>`;
+  const otrasRedes = `<svg class="rs-sym" viewBox="0 0 34 16" aria-hidden="true">${PALETA.slice(1, 5).map((c, k) => `<rect x="${2 + k * 8}" y="2" width="7" height="12" rx="1.5" fill="${c}" fill-opacity="0.75"/>`).join('')}</svg>`;
+  $('#rs-legend').innerHTML = `
+    <div class="rs-lg-grupo"><h3>Bosque 2021</h3><ul>
+      ${item(sim(caja(PALETA[0])), 'Red principal', 'el conjunto de parches conectados más grande')}
+      ${item(otrasRedes, 'Otras redes', 'cada color es una red separada de la principal')}
+    </ul></div>
+    <div class="rs-lg-grupo"><h3>Restauración</h3><ul>
+      ${item(sim('<line x1="5" y1="8" x2="29" y2="8" stroke="#e53935" stroke-width="3" stroke-dasharray="5 4"/><circle cx="5" cy="8" r="3.2" fill="#e53935" stroke="#fff"/><circle cx="29" cy="8" r="3.2" fill="#e53935" stroke="#fff"/>'), 'Brecha candidata', 'haga clic para añadirla al escenario')}
+      ${item(sim('<line x1="3" y1="8" x2="31" y2="8" stroke="#7cb342" stroke-width="8" stroke-linecap="round"/><line x1="3" y1="8" x2="31" y2="8" stroke="#fff" stroke-width="1.6" stroke-dasharray="4 3"/>'), 'Enlace propuesto', 'hipotético: aún no es bosque')}
+    </ul></div>
+    <div class="rs-lg-grupo"><h3>Referencia</h3><ul>
+      ${item(sim('<line x1="3" y1="8" x2="31" y2="8" stroke="#fff" stroke-width="3"/>', '#5b6b5e'), 'Límite de la subcuenca', '')}
+      ${item(sim('<path d="M3 11 C10 3, 18 13, 31 5" fill="none" stroke="#1f78b4" stroke-width="2.4"/>'), 'Ríos principales', '')}
+      ${item(`<svg class="rs-sym" viewBox="0 0 34 16" aria-hidden="true">${['Alta', 'Mediana', 'Media-baja'].map((k, n) => `<rect x="${2 + n * 11}" y="2" width="9" height="12" rx="1.5" fill="${colorCorr[k]}" fill-opacity="0.3" stroke="${colorCorr[k]}" stroke-width="1.2"/>`).join('')}</svg>`, 'Corredores (Almanaque Azul)', 'conectividad alta · mediana · media-baja')}
+    </ul></div>`;
   const subs = Object.values(st.data.territorios).filter((t) => t && t.id !== 'chcp').sort((a, b) => a.nombre.localeCompare(b.nombre, 'es'));
   // red_disponible indica si existe la red de parches precalculada de la subcuenca.
   const pendiente = (t) => (t.red_disponible === undefined ? (t.version_datos ?? 0) < 0 : !t.red_disponible);
