@@ -11,7 +11,7 @@
     ['satelite', 'Satélite', 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', '#3d5a40'],
     ['topo', 'Topográfico', 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}', '#d9e4c8'],
   ];
-  const st = { data: null, territory: null, id: 'chcp', map: null, base: null, activas: new Set(['subcuencas', 'corredores', 'puntos']), opacidad: 0.85, capas: {}, geo: null, rios: null, vistaPol: null, analisisMapa: null };
+  const st = { data: null, territory: null, id: 'chcp', map: null, base: null, activas: new Set(['cuenca']), opacidad: 0.85, capas: {}, geo: null, rios: null, vistaPol: null, analisisMapa: null };
   const pct = (v, d = 0) => (v == null ? '—' : `${number(v, d)} %`);
   const t = () => st.data.territorios[st.id];
   const conMapas = () => (t()?.mapas?.capas?.length ? t() : st.data.territorios.chcp);
@@ -29,6 +29,7 @@
   function catalogo() {
     const raster = (st.data.capas_mapa || []).map((c) => ({ k: `r:${c.clave}`, nombre: c.titulo, nota: c.lectura, grupo: 'Bosque, cambio y resiliencia', disponible: fuentesMapa().some((f) => f?.mapas?.capas?.includes(c.clave)), capa: c }));
     return [
+      { k: 'cuenca', nombre: 'Límite de la cuenca', nota: 'Cuenca Hidrográfica del Canal de Panamá. Pase el cursor para ver cada subcuenca; haga clic para elegirla.', grupo: 'Territorio', disponible: true, color: '#0a4393' },
       { k: 'preevaluacion', nombre: 'Preevaluación por subcuenca', nota: 'Puntaje MT-2026.7 (0–6,5) de cada subcuenca.', grupo: 'Territorio', disponible: true, color: '#d0442c' },
       { k: 'subcuencas', nombre: 'Límites de subcuencas', nota: '53 subcuencas del Canal de Panamá.', grupo: 'Territorio', disponible: true, color: '#0a4393' },
       { k: 'corredores', nombre: 'Corredores · Almanaque Azul', nota: 'Corredores de conectividad publicados, por categoría.', grupo: 'Territorio', disponible: true, color: '#9ccc65' },
@@ -65,6 +66,18 @@
       // Debajo del velo (se recorta con la subcuenca) y transparente sobre ella si hay mapas activos.
       const hayRaster = orden.some((c) => c.k.startsWith('r:'));
       st.capas.preevaluacion = L.geoJSON(st.territory.subbasins, { pane: 'rasters', style: (f) => { const p = st.data.territorios[f.properties.id]?.preevaluacion; const propia = st.vistaPol ? st.vistaPol.ids.includes(f.properties.id) : f.properties.id === st.id; return { color: '#fff', weight: 0.8, fillColor: PRIO[p?.prioridad] || '#e5e9f0', fillOpacity: propia && hayRaster ? 0 : 0.55 }; }, onEachFeature: clicSubcuenca }).addTo(map);
+    }
+    if (st.activas.has('cuenca')) {
+      // Solo el contorno de la cuenca (y de la subcuenca elegida). Las 53 subcuencas quedan
+      // invisibles: se resaltan al pasar el cursor y se eligen con un clic.
+      const grupo = L.layerGroup().addTo(map); st.capas.cuenca = grupo;
+      if (!st.vistaPol && !st.activas.has('subcuencas') && !st.activas.has('preevaluacion')) {
+        const base = { color: '#0a4393', weight: 0, fillOpacity: 0, opacity: 0 };
+        L.geoJSON(st.territory.subbasins, { style: base, onEachFeature: (f, l) => { clicSubcuenca(f, l); l.on('mouseover', () => l.setStyle({ weight: 1.5, opacity: 0.9 })); l.on('mouseout', () => l.setStyle(base)); } }).addTo(grupo);
+      }
+      L.geoJSON(st.territory.basin, { style: { color: '#0a4393', weight: 2.5, fill: false }, interactive: false }).addTo(grupo);
+      const elegida = !st.vistaPol && st.id !== 'chcp' && st.territory.subbasins.features.find((x) => x.properties.id === st.id);
+      if (elegida) L.geoJSON(elegida, { style: { color: '#f5b700', weight: 3, fill: false }, interactive: false }).addTo(grupo);
     }
     if (st.activas.has('subcuencas')) {
       st.capas.subcuencas = L.geoJSON(st.territory.subbasins, { style: (f) => ({ color: f.properties.id === st.id && !st.vistaPol ? '#ffd54f' : '#0a4393', weight: f.properties.id === st.id && !st.vistaPol ? 3 : 1, fill: !st.activas.has('preevaluacion'), fillOpacity: 0 }), onEachFeature: clicSubcuenca }).addTo(map);
@@ -193,7 +206,7 @@
     renderCapas(); await dibujar();
     renderResultados(poli ? 'poligono' : 'territorio', elegidos);
   }
-  function capasAnalisis(k, poli) { return new Set([...(poli ? [] : ['subcuencas']), ...(k ? ANALISIS[k].capas : [])]); }
+  function capasAnalisis(k, poli) { return new Set([...(poli ? [] : ['cuenca']), ...(k ? ANALISIS[k].capas : [])]); }
   function verEnMapa(k) {
     st.analisisMapa = k; st.activas = capasAnalisis(k, !!st.vistaPol);
     $$('#pe-res-b .pe-nav a').forEach((a) => a.setAttribute('aria-current', String(a.dataset.k === k)));
@@ -513,6 +526,8 @@
   $('#pe-res-close').addEventListener('click', () => { $('#pe-res').classList.add('closed'); $('#pe-reopen').hidden = false; });
   $('#pe-reopen').addEventListener('click', () => { $('#pe-res').classList.remove('closed'); $('#pe-reopen').hidden = true; });
   iniciarPoligono();
+  // El panel de resultados se abre y se cierra con una transición: el mapa se reajusta solo.
+  if (typeof ResizeObserver !== 'undefined') new ResizeObserver(() => st.map.invalidateSize()).observe($('#smap'));
   const pedido = new URLSearchParams(location.search).get('id') || location.hash.slice(1);
   await seleccionar(pedido || 'chcp', !!pedido);
 })();

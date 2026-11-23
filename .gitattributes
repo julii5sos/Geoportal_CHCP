@@ -4,3 +4,4 @@
 *.gif binary
 *.pdf binary
 *.zip binary
+scripts/sin_conexion/* -text

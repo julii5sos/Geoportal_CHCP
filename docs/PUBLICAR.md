@@ -13,20 +13,33 @@ GitHub Actions (mensual o manual)                     GitHub Pages
 └──────────────────────────────────────┘              └──────────────────────────┘
 ```
 
-Páginas publicadas: **Inicio** (`index.html`, con buscador de subcuencas), **Monitoreo**,
-**Coberturas SINIA**, **Metodología** y **Acerca**.
+Páginas publicadas: **Inicio** (con recorrido guiado), **Panel**, **Plataforma SIG**, **Ficha
+técnica**, **Simulador de restauración** (con rutas al Corredor Mesoamericano), **Coberturas
+SINIA**, **Sitios de campo**, **Metodología** y **Acerca**.
 
-| Qué ofrece la página | Qué queda para una actualización futura |
+| Qué ofrece la página | Cómo se calcula |
 |---|---|
-| Monitoreo de la CHCP y 53 subcuencas: preevaluación MT-2026.7, dinámica JRC, serie 2020–2025, Hansen, ESRI, NDVI, SINIA 2019/2021/2023, fragmentación y conectividad 2021, corredores y rankings | Dibujar o importar un polígono y analizarlo al momento |
-| Coberturas SINIA: leyendas verificadas de los 8 productos, superficies por subcuenca, comparación con advertencias | Ver capas satelitales y SINIA como teselas sobre el mapa |
+| CHCP y 53 subcuencas: preevaluación MT-2026.7, JRC, Hansen, ESRI, NDVI, GEDI, ERI, fragmentación, conectividad, corredores y franjas riparias | Precalculado con Earth Engine (tipo B) |
+| Mapas de las capas por subcuenca y de los 8 productos SINIA | Precalculado con Earth Engine |
+| Polígono dibujado o subido (GeoJSON o KML) | Estimación local en el navegador sobre los mapas precalculados (tipo C) |
+| Simulador de restauración y rutas al corredor | Cálculo en el navegador sobre la red y los mapas precalculados |
+
+## Versión sin conexión
+
+Cada publicación genera además `descargas/Geoportal_CHCP_sin_conexion.zip` (enlace al pie de
+la página de inicio). Contiene el sitio y dos lanzadores:
+
+- `Abrir Geoportal (Windows).bat`: un servidor local en PowerShell; no instala nada.
+- `Abrir Geoportal (Mac o Linux).command`: usa `python3 -m http.server`.
+
+Hace falta porque los navegadores no permiten que una página abierta como archivo (`file://`)
+lea sus datos. Si alguien abre `index.html` directamente, la página lo explica.
 
 ## Configuración (una sola vez)
 
-1. **Fusionar** la rama `integracion-geoportal` en `main` (pull request #1).
-2. **Activar Pages:** Settings → Pages → Build and deployment → Source: **GitHub Actions**.
+1. **Activar Pages:** Settings → Pages → Build and deployment → Source: **GitHub Actions**.
    La página queda en `https://julii5sos.github.io/Geoportal_CHCP/`.
-3. **Guardar la clave de Earth Engine como secreto:** Settings → Secrets and variables →
+2. **Guardar la clave de Earth Engine como secreto:** Settings → Secrets and variables →
    Actions → **New repository secret**
    - Name: `GEE_SERVICE_ACCOUNT_JSON`
    - Secret: abra el archivo `.json` de la cuenta de servicio `geoportal-web` con el Bloc
@@ -63,8 +76,8 @@ Abra http://127.0.0.1:8000.
 
 ## Opción futura: versión completa con servidor
 
-Para habilitar el análisis de polígonos dibujados hace falta un servidor con Earth
-Engine. El repositorio incluye `deploy/publicar_cloud_run.ps1` para Google Cloud Run,
+Para analizar áreas fuera de la CHCP o con parámetros distintos hace falta un servidor con
+Earth Engine. El repositorio incluye `deploy/publicar_cloud_run.ps1` para Google Cloud Run,
 cuya capa gratuita mensual cubre un uso bajo (requiere facturación activa). Si se
 publica, defina la variable de Actions `CHCP_FULL_APP_URL` con su dirección y la
 página HTML mostrará el enlace «Análisis territorial ↗».

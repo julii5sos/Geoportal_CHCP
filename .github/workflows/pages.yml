@@ -37,7 +37,7 @@ jobs:
       - run: pip install -r requirements-web.txt pytest
       - run: python -m pytest -q
       - run: python scripts/evaluar_validacion.py
-      - run: python scripts/construir_sitio_estatico.py --destino sitio
+      - run: python scripts/construir_sitio_estatico.py --destino sitio --paquete-sin-conexion
         env:
           CHCP_FULL_APP_URL: ${{ vars.CHCP_FULL_APP_URL }}
       - uses: actions/upload-pages-artifact@v3
