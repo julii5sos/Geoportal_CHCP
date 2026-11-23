@@ -89,8 +89,10 @@ def main() -> int:
     resultados = {}
     for nombre, geo in casos().items():
         g = shape(geo)
-        terr = [datos["territorios"][f["properties"]["id"]] for f in subs if shape(f["geometry"]).intersects(g) and f["properties"]["id"] in datos["territorios"]]
-        loc_acc = EL.estimar(geo, terr, RAIZ / "data" / "mapas", CODIFICACION_VALORES)
+        tocadas = [f for f in subs if shape(f["geometry"]).intersects(g) and f["properties"]["id"] in datos["territorios"]]
+        terr = [datos["territorios"][f["properties"]["id"]] for f in tocadas]
+        loc_acc = EL.estimar(geo, terr, RAIZ / "data" / "mapas", CODIFICACION_VALORES,
+                             geometrias={f["properties"]["id"]: f["geometry"] for f in tocadas})
         loc = EL.metricas(loc_acc)
         s_loc, _ = MI.evaluar_senales(**{k: v for k, v in loc.items() if k != "area_ha"})
         _, p_loc, c_loc = MI.calcular_indice_prioridad(senal_tmf=s_loc["tmf"], senal_hansen=s_loc["hansen"], senal_esri=s_loc["esri"], senal_gedi=s_loc["gedi"], senal_ndvi=s_loc["ndvi"])

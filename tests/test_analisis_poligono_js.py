@@ -107,3 +107,61 @@ class AnalisisPoligonoJsTests(unittest.TestCase):
                        "console.log(JSON.stringify(P.metricas(acc)));")
         for k, v in py.items():
             self.assertAlmostEqual(js[k], v, places=6, msg=k)
+
+
+@unittest.skipUnless(NODE, "node no disponible")
+class FragmentacionYMascaraTests(unittest.TestCase):
+    def node(self, codigo):
+        salida = subprocess.run([NODE, "-"], input=f"const P = require({MODULO});\n{codigo}", capture_output=True, text=True, check=True)
+        return json.loads(salida.stdout)
+
+    def test_fragmentacion_poligono(self):
+        # Bosque de 200 × 200 m (celdas de 10 m); el polígono corta su mitad izquierda.
+        r = self.node("""const w = 40, h = 40, b = new Uint8Array(w * h), d = new Uint8Array(w * h);
+            for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) { const i = y * w + x; b[i] = x >= 10 && x < 30 && y >= 10 && y < 30 ? 1 : 0; d[i] = x < 20 ? 1 : 0; }
+            console.log(JSON.stringify({r: P.fragmentacion(b, d, w, h, 10), prof: P.PROFUNDIDADES_BORDE_M}));""")
+        from chcp.nucleo.metricas_paisaje import PROFUNDIDADES_BORDE_M
+        self.assertEqual(r["prof"], list(PROFUNDIDADES_BORDE_M))
+        f = r["r"]
+        self.assertAlmostEqual(f["area_ha"], 8.0)
+        self.assertAlmostEqual(f["area_bosque_ha"], 2.0)
+        self.assertEqual(f["numero_fragmentos"], 1)
+        self.assertEqual(f["fragmentos_continuan_fuera"], 1)
+        # El corte del polígono no es borde: 20 + 10 + 10 celdas de lado real.
+        self.assertAlmostEqual(f["borde_m"], 400.0)
+        nucleo = {x["profundidad_m"]: x["area_nucleo_ha"] for x in f["area_nucleo"]}
+        # Igual que shapely: el núcleo a 50 m del cuadrado completo es 100 × 100 m; la mitad cae dentro.
+        self.assertAlmostEqual(nucleo[50], 0.5)
+        self.assertAlmostEqual(nucleo[100], 0.0)
+
+    def test_sin_dato_no_es_borde_ni_area(self):
+        r = self.node("""const w = 20, h = 10, b = new Uint8Array(w * h).fill(1), d = new Uint8Array(w * h).fill(1);
+            for (let y = 0; y < h; y++) for (let x = 10; x < w; x++) b[y * w + x] = 2;
+            console.log(JSON.stringify(P.fragmentacion(b, d, w, h, 10)));""")
+        self.assertAlmostEqual(r["area_ha"], 1.0)
+        self.assertAlmostEqual(r["borde_m"], 0.0)
+        self.assertEqual(r["numero_fragmentos"], 1)
+
+    def test_mascara_subcuenca_y_hansen(self):
+        import numpy as np
+        from chcp.gee.mapas_ficha import CODIFICACION_VALORES as codec
+        from chcp.nucleo import estimacion_local as EL
+
+        # Malla 10 × 10 sobre dos subcuencas: la mitad derecha no es de esta subcuenca y trae 0.
+        limites = [[9.0, -79.8], [9.01, -79.79]]
+        capas = {"aux": np.zeros(100, "uint8"), "hansen": np.full(100, 255, "uint8")}
+        capas["hansen"][[0, 1]] = 23
+        derecha = (np.arange(100) % 10) >= 5
+        capas["hansen"][derecha] = 0
+        poligono = {"type": "Polygon", "coordinates": [[[-79.8, 9.0], [-79.79, 9.0], [-79.79, 9.01], [-79.8, 9.01], [-79.8, 9.0]]]}
+        sub = {"type": "Polygon", "coordinates": [[[-79.8, 9.0], [-79.795, 9.0], [-79.795, 9.01], [-79.8, 9.01], [-79.8, 9.0]]]}
+        masc = EL.mascara(poligono, limites, 10, 10) & EL.mascara(sub, limites, 10, 10)
+        acc = EL.acumular(EL.nuevo_acumulador(), capas, masc, None, 1.0, codec)
+        sin = EL.acumular(EL.nuevo_acumulador(), capas, EL.mascara(poligono, limites, 10, 10), None, 1.0, codec)
+        self.assertAlmostEqual(sin["area_ha"], 100.0)
+        self.assertLessEqual(acc["area_ha"], 60.0)  # la subcuenca (5–6 columnas según el borde rasterizado)
+        # Aunque se colara un píxel con 0, solo los años 2021–2025 cuentan como pérdida.
+        self.assertAlmostEqual(EL.metricas(acc)["hansen_post_2020_ha"], 2.0)
+        self.assertAlmostEqual(EL.metricas(sin)["hansen_post_2020_ha"], 2.0)
+        js = self.node(f"const acc = P.nuevoAcumulador(); acc.hansen = {{0: 40, 23: 2}}; acc.area_ha = 50; console.log(JSON.stringify(P.metricas(acc)));")
+        self.assertAlmostEqual(js["hansen_post_2020_ha"], 2.0)
