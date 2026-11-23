@@ -44,7 +44,6 @@ El propósito es aportar información técnica que:
 |---|---|
 | **Consultar** (evaluadores, público) | Abra **https://julii5sos.github.io/Geoportal_CHCP/** en cualquier navegador. No requiere instalar nada ni iniciar sesión. |
 | **Compartirlo sin internet** o en una presentación | Descargue el [paquete sin conexión](https://julii5sos.github.io/Geoportal_CHCP/descargas/Geoportal_CHCP_sin_conexion.zip) (también está al pie de la página de inicio). Descomprímalo y haga doble clic en `Abrir Geoportal (Windows).bat`, o en `Abrir Geoportal (Mac o Linux).command`. |
-| **Revisar o regenerar los cálculos** | Siga [docs/REPRODUCIBILIDAD.md](docs/REPRODUCIBILIDAD.md). Necesita Python y una cuenta de Google Earth Engine. |
 
 > Abrir un archivo `index.html` con doble clic no funciona: el navegador impide que una
 > página abierta como archivo lea sus datos. El paquete sin conexión incluye un pequeño
@@ -146,17 +145,11 @@ docs/          Metodología, decisiones, auditoría, diccionario SINIA y reprodu
 | [docs/PUBLICAR.md](docs/PUBLICAR.md) | Publicación en GitHub Pages y actualización con GitHub Actions |
 | [THIRD_PARTY_DATA.md](THIRD_PARTY_DATA.md) | Atribución y licencias de los datos de terceros |
 
-## Para desarrolladores
+## Reproducir o modificar los cálculos
 
-```powershell
-conda env create -f environment.yml
-conda activate geoportal-chcp
-earthengine authenticate                 # una vez; las credenciales quedan fuera del repositorio
-$env:GEE_PROJECT_ID = "geoportal-513817"
-python -m webapp.main                    # versión completa en http://127.0.0.1:8080
-python -m pytest                         # pruebas
-python scripts/construir_sitio_estatico.py --paquete-sin-conexion   # sitio estático en sitio/
-```
+Solo hace falta para quien quiera regenerar los resultados o cambiar el código; para usar el
+geoportal basta el enlace. La instalación (Python, Google Earth Engine) y la cadena completa
+de cálculo están en [docs/REPRODUCIBILIDAD.md](docs/REPRODUCIBILIDAD.md).
 
 ## Créditos y atribución
 
