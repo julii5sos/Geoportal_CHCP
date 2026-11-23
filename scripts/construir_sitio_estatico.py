@@ -44,7 +44,9 @@ def reescribir_enlaces(html: str, app_completa: str) -> str:
     """Convierte las rutas del servidor Flask en archivos del sitio estático."""
     import re
 
-    html = html.replace('"/static/', '"static/').replace("'/static/", "'static/")
+    # Incluye las rutas dentro de srcset ("a.png 1x, /static/b.png 2x") y url(...):
+    # en GitHub Pages el sitio vive en /Geoportal_CHCP/, así que /static/ daría 404.
+    html = re.sub(r'(["\'(,\s])/static/', r'\1static/', html)
     destinos = {"": "index.html", "panel": "panel.html", "platform": "plataforma.html", "coberturas": "coberturas.html",
                 "methodology": "metodologia.html", "about": "acerca.html", "ficha": "ficha.html",
                 "restauracion": "restauracion.html", "validacion": "validacion.html", "campo": "campo.html"}

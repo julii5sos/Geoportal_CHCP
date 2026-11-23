@@ -170,10 +170,15 @@
     st.map.fitBounds(borde.getBounds(), { padding: [20, 20] });
     try { st.geo = await api(`/api/v1/panel/geometry/${id}`); } catch (_) { st.geo = null; }
     if (!st.geo?.red?.aristas || !st.geo.parches?.features?.length) {
-      $('#rs-results').innerHTML = `<p class="rs-warn">La red de parches de ${esc(t?.nombre || id)} se generará en la próxima actualización de datos con Earth Engine. Mientras tanto puede revisar su <a href="${window.CHCP_STATIC ? 'ficha.html' : '/ficha'}?id=${encodeURIComponent(id)}">ficha técnica</a>.</p>`;
+      st.areas = null; st.unir = null;
+      $('#rs-unir').classList.remove('on'); $('#rs-unir').disabled = true; $('#rs-hint').textContent = '';
+      const listas = disponibles().filter((x) => x.id !== id).slice(0, 8);
+      $('#rs-results').innerHTML = `<p class="rs-warn"><b>${esc(t?.nombre || id)}</b> todavía no tiene su red de parches calculada, por eso no aparecen parches para unir. Se generará en la actualización de datos con Earth Engine. Mientras tanto puede revisar su <a href="${window.CHCP_STATIC ? 'ficha.html' : '/ficha'}?id=${encodeURIComponent(id)}">ficha técnica</a>.</p>${listas.length ? `<p class="rs-note">Subcuencas con la red ya disponible: ${listas.map((x) => `<button type="button" class="rs-ir" data-id="${esc(x.id)}">${esc(x.nombre)}</button>`).join(' ')}</p>` : ''}`;
+      $$('#rs-results .rs-ir').forEach((b) => b.addEventListener('click', () => elegir(b.dataset.id)));
       $('#rs-prior').innerHTML = ''; $('#rs-list').innerHTML = '';
       return;
     }
+    $('#rs-unir').disabled = false;
     try { st.rios = await (await fetch(mapFile(id, 'rios.json'))).json(); } catch (_) { st.rios = null; }
     if (st.capaRios) st.map.removeLayer(st.capaRios);
     st.capaRios = st.rios ? L.geoJSON(st.rios, { style: { color: '#1f78b4', weight: 2, opacity: 0.9 }, interactive: false }).addTo(st.map) : null;
@@ -213,8 +218,16 @@
   L.geoJSON(st.territory.corridors, { style: (f) => ({ color: colorCorr[f.properties.categoria_etiqueta] || '#7fae00', weight: 1.2, fillColor: colorCorr[f.properties.categoria_etiqueta] || '#a1d303', fillOpacity: 0.12 }), onEachFeature: (f, l) => l.bindTooltip(`${f.properties.nombre} · conectividad ${f.properties.categoria_etiqueta} (Almanaque Azul)`) }).addTo(st.map);
   $('#rs-legend').innerHTML = '<span><i style="background:#1b7837"></i>Red principal</span><span><i style="background:#2166ac"></i>Otras redes (un color por red)</span><span><i class="dash"></i>Brecha candidata</span><span><i class="fr"></i>Enlace propuesto (hipotético)</span><span><i style="background:#1f78b4;height:3px"></i>Ríos principales</span><span><i style="background:#ffb74d55;border:1px solid #ffb74d"></i>Corredor Almanaque Azul</span>';
   const subs = Object.values(st.data.territorios).filter((t) => t && t.id !== 'chcp').sort((a, b) => a.nombre.localeCompare(b.nombre, 'es'));
-  $('#rs-select').innerHTML = subs.map((t) => `<option value="${t.id}">${esc(t.nombre)}</option>`).join('');
-  $('#rs-select').addEventListener('change', (e) => { st.escenarios = { A: [], B: [] }; history.replaceState(null, '', `${location.pathname}?id=${e.target.value}`); cargar(e.target.value); });
+  // red_disponible indica si existe la red de parches precalculada de la subcuenca.
+  const pendiente = (t) => (t.red_disponible === undefined ? (t.version_datos ?? 0) < 0 : !t.red_disponible);
+  function disponibles() { return subs.filter((t) => !pendiente(t)); }
+  function elegir(id) { st.escenarios = { A: [], B: [] }; history.replaceState(null, '', `${location.pathname}?id=${id}`); cargar(id); }
+  const opcion = (t) => `<option value="${t.id}">${esc(t.nombre)}${pendiente(t) ? ' · pendiente' : ''}</option>`;
+  const listas = disponibles(), faltan = subs.filter(pendiente);
+  $('#rs-select').innerHTML = listas.length && faltan.length
+    ? `<optgroup label="Con red de parches">${listas.map(opcion).join('')}</optgroup><optgroup label="Pendientes de cálculo">${faltan.map(opcion).join('')}</optgroup>`
+    : subs.map(opcion).join('');
+  $('#rs-select').addEventListener('change', (e) => elegir(e.target.value));
   $$('#rs-scen button').forEach((b) => b.addEventListener('click', () => {
     st.esc = b.dataset.s;
     $$('#rs-scen button').forEach((x) => x.setAttribute('aria-selected', String(x === b)));
@@ -229,6 +242,6 @@
   $('#rs-limpiar').addEventListener('click', () => { st.escenarios[st.esc] = []; if (st.areas) actualizar(); });
   $('#rs-ancho').addEventListener('change', () => { if (st.areas) prioridades(); });
   const pedido = new URLSearchParams(location.search).get('id');
-  const conRed = subs.find((t) => (t.estructura_2021?.metricas_red?.numero_componentes || 0) > 1) || subs[0];
+  const conRed = listas.find((t) => (t.estructura_2021?.metricas_red?.numero_componentes || 0) > 1) || listas[0] || subs[0];
   cargar(st.data.territorios[pedido] ? pedido : conRed.id);
 })();
