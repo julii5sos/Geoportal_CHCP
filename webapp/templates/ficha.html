@@ -5,6 +5,7 @@
   <div class="fi-toolbar no-print">
     <label for="fi-select">Subcuenca</label>
     <select id="fi-select"></select>
+    <button type="button" class="ayuda-btn" id="fi-ayuda">? Cómo leer la ficha</button>
     <button class="btn btn-p" id="fi-print" type="button">Descargar PDF / imprimir</button>
     <a class="btn btn-s" id="fi-sim" href="{% if sitio_estatico %}restauracion.html{% else %}{{ url_for('restauracion') }}{% endif %}">Simular restauración</a>
     <a class="btn btn-s" id="fi-back" href="{{ url_for('panel') }}">Volver al panel</a>

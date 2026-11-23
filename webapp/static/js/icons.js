@@ -27,6 +27,9 @@
     target: '<circle cx="12" cy="12" r="7"/><circle cx="12" cy="12" r="2.2"/><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3"/>',
     pdf: '<path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M8.5 16.5v-3h1.2a1 1 0 0 1 0 2H8.5M13 13.5v3h1a1.5 1.5 0 0 0 0-3zM17 13.5h-1.6v3M15.4 15h1.2"/>',
     user: '<circle cx="12" cy="8.5" r="3.8"/><path d="M4.5 20.5c1.3-3.6 4.2-5.4 7.5-5.4s6.2 1.8 7.5 5.4"/>',
+    route: '<circle cx="5" cy="18.5" r="2"/><circle cx="19" cy="5.5" r="2"/><path d="M7 18.5h6.5a3.25 3.25 0 0 0 0-6.5h-3a3.25 3.25 0 0 1 0-6.5H17"/>',
+    polygon: '<path d="M5 8.5 11.5 4l7.5 5-2.2 10.5H7.2z"/><path d="M14 20h6M17 17v6"/>',
+    play: '<path d="M8 5.5v13l10-6.5z"/>',
   };
   window.CHCP_ICON = (name, size) => (paths[name] ? svg(paths[name], size) : '');
 })();

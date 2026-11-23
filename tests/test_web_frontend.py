@@ -20,8 +20,12 @@ class WebFrontendTests(unittest.TestCase):
         self.assertIn('id="home-map"', html)
         self.assertIn('id="territory-query"', html)
         self.assertIn('class="skip-link"', html)
-        self.assertIn("Una entrada clara para cada necesidad", html)
-        self.assertIn("Revisar metodología y datos", html)
+        # Portada guiada: preguntas, recorrido y aviso de evaluación preliminar.
+        self.assertIn("¿Qué quiere saber?", html)
+        self.assertIn('id="in-tour"', html)
+        self.assertIn("Evaluación preliminar.", html)
+        self.assertIn("Qué es y qué no es esta herramienta", html)
+        self.assertIn("tour.js", html)
 
     def test_territorial_panel_has_real_data_tabs_and_no_prefilled_science(self):
         html = self.client.get("/panel/territorial").get_data(as_text=True)
