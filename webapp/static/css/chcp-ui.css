@@ -726,3 +726,7 @@ html.app #main-content:has(.pg) { overflow-y:auto; background:#f3f6fa; }
   #v-plataforma.pe .res { width:auto; }
   #v-plataforma.pe .res.closed { display:none; }
 }
+
+.met-periodos td { vertical-align:top; font-size:13px; line-height:1.45; }
+.met-periodos td:last-child { font-weight:700; text-align:center; }
+.met-nota { font-size:14px; line-height:1.55; margin-top:14px; max-width:110ch; }
