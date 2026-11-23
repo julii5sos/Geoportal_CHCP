@@ -659,10 +659,10 @@ html.app #main-content:has(.pg) { overflow-y:auto; background:#f3f6fa; }
 @media (max-width:700px) { .in-fuentes li { grid-template-columns:1fr; gap:2px; } .in-area { flex-direction:column; align-items:stretch; } .in-area select { min-width:0; } }
 
 /* ---------------------------------------------------------------- recorrido guiado */
-.tour-capa { position:fixed; inset:0; z-index:5000; }
-.tour-foco { position:fixed; border-radius:12px; box-shadow:0 0 0 9999px rgba(6,22,48,.62); outline:3px solid var(--verde); transition:all .25s ease; pointer-events:none; }
-.tour-capa:has(.tour-foco[style*="display: none"]) { background:rgba(6,22,48,.62); }
-.tour-caja { position:fixed; background:#fff; border-radius:14px; padding:16px 18px 14px; box-shadow:0 18px 50px rgba(0,0,0,.35); transition:top .25s, left .25s; }
+.tour-capa { position:fixed; inset:0; z-index:5000; pointer-events:none; }
+.tour-foco { position:fixed; border-radius:12px; box-shadow:0 0 0 9999px rgba(6,22,48,.42); outline:3px solid var(--verde); transition:all .25s ease; pointer-events:none; }
+.tour-capa:has(.tour-foco[style*="display: none"]) { background:rgba(6,22,48,.42); }
+.tour-caja { pointer-events:auto; position:fixed; background:#fff; border-radius:14px; padding:16px 18px 14px; box-shadow:0 18px 50px rgba(0,0,0,.35); transition:top .25s, left .25s; }
 .tour-cab { display:flex; justify-content:space-between; align-items:center; font-size:11.5px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:var(--azul-medio); }
 .tour-x { border:0; background:none; font-size:22px; line-height:1; cursor:pointer; color:var(--muted); padding:0 4px; }
 .tour-caja h3 { margin:6px 0 6px; font-size:18px; color:var(--azul-tinta); }
@@ -864,3 +864,8 @@ html.app #main-content:has(.pg) { overflow-y:auto; background:#f3f6fa; }
 .pe-partes button[aria-current="true"] { background:var(--azul); color:#fff; border-color:var(--azul); }
 .wz-ayuda { margin:-4px 0 12px; font-size:13px; color:#4a5668; }
 .wz-t em { font-style:normal; font-weight:700; color:#33425a; }
+
+.tour-prueba { margin:10px 0 0; padding:8px 10px; border-radius:8px; background:#eef7e3; border-left:3px solid var(--verde); font-size:13px; line-height:1.45; color:#22361a; }
+.pe-lg-modo { display:inline-flex; border:1px solid var(--azul-linea); border-radius:999px; overflow:hidden; margin:4px 0 6px; }
+.pe-lg-modo button { border:0; background:#fff; color:var(--azul); font-weight:700; font-size:12px; padding:4px 12px; cursor:pointer; }
+.pe-lg-modo button[aria-pressed="true"] { background:var(--azul); color:#fff; }

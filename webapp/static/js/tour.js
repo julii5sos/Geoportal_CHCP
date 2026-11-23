@@ -1,7 +1,9 @@
 /* Recorrido guiado: resalta un elemento por paso y lo explica en una ventana pequeña.
    Uso: CHCP_TOUR.iniciar([{ sel: '#id', titulo: '…', texto: '…' }, …], { clave: 'inicio' })
    Un paso sin `sel` (o con un elemento que no existe o está oculto) se muestra centrado.
-   Teclado: → / Enter siguiente, ← anterior, Esc cerrar. */
+   El recorrido no bloquea la página: se puede usar la herramienta mientras se lee. Un paso con
+   `accion: { sel, evento }` avanza solo cuando el usuario hace eso (p. ej. elige una subcuenca).
+   Teclado: → siguiente, ← anterior, Esc cerrar (las flechas no se capturan dentro de un control). */
 (function () {
   let estado = null;
 
@@ -9,8 +11,13 @@
   const guardar = (clave) => { try { localStorage.setItem(`chcp-tour-${clave}`, '1'); } catch (_) { /* sin almacenamiento */ } };
   const visto = (clave) => { try { return localStorage.getItem(`chcp-tour-${clave}`) === '1'; } catch (_) { return false; } };
 
+  function quitarAccion() {
+    if (estado?.accion) { estado.accion.el.removeEventListener(estado.accion.evento, estado.accion.fn, true); estado.accion = null; }
+  }
   function cerrar() {
     if (!estado) return;
+    quitarAccion();
+    clearInterval(estado.intervalo);
     estado.capa.remove();
     window.removeEventListener('resize', estado.reubicar);
     window.removeEventListener('scroll', estado.reubicar, true);
@@ -42,9 +49,17 @@
   }
 
   function mostrar(i) {
+    quitarAccion();
     estado.i = i;
     const { pasos, caja } = estado;
     const paso = pasos[i];
+    // Aprender haciendo: si el usuario hace la acción del paso, el recorrido avanza solo.
+    const elAccion = paso.accion ? document.querySelector(paso.accion.sel) : null;
+    if (elAccion) {
+      const fn = () => { quitarAccion(); setTimeout(() => { if (!estado || estado.i !== i) return; if (i === pasos.length - 1) cerrar(); else mostrar(i + 1); }, 700); };
+      elAccion.addEventListener(paso.accion.evento, fn, true);
+      estado.accion = { el: elAccion, evento: paso.accion.evento, fn };
+    }
     const el = paso.sel ? document.querySelector(paso.sel) : null;
     if (visible(el)) {
       const r = el.getBoundingClientRect();
@@ -52,7 +67,7 @@
     }
     caja.innerHTML = `
       <div class="tour-cab"><span>Paso ${i + 1} de ${pasos.length}</span><button type="button" class="tour-x" aria-label="Cerrar el recorrido">×</button></div>
-      <h3>${paso.titulo}</h3><div class="tour-txt">${paso.texto}</div>
+      <h3>${paso.titulo}</h3><div class="tour-txt">${paso.texto}</div>${paso.prueba ? `<p class="tour-prueba"><b>Pruébelo:</b> ${paso.prueba}</p>` : ''}
       <div class="tour-pie">
         <div class="tour-puntos">${pasos.map((_, k) => `<i class="${k === i ? 'on' : ''}"></i>`).join('')}</div>
         <div>${i > 0 ? '<button type="button" class="btn btn-s tour-ant">Anterior</button>' : '<button type="button" class="btn btn-s tour-saltar">Saltar</button>'}
@@ -63,25 +78,29 @@
     caja.querySelector('.tour-ant')?.addEventListener('click', () => mostrar(i - 1));
     caja.querySelector('.tour-sig').onclick = () => (i === pasos.length - 1 ? cerrar() : mostrar(i + 1));
     requestAnimationFrame(ubicar);
-    caja.querySelector('.tour-sig').focus({ preventScroll: true });
+    if (!paso.accion) caja.querySelector('.tour-sig').focus({ preventScroll: true });
   }
 
   function iniciar(pasos, opciones = {}) {
     if (estado) cerrar();
     const capa = document.createElement('div');
     capa.className = 'tour-capa';
-    capa.innerHTML = '<div class="tour-foco"></div><div class="tour-caja" role="dialog" aria-modal="true" aria-live="polite"></div>';
+    capa.innerHTML = '<div class="tour-foco"></div><div class="tour-caja" role="dialog" aria-modal="false" aria-live="polite"></div>';
     document.body.appendChild(capa);
     estado = { pasos, opciones, i: 0, capa, foco: capa.querySelector('.tour-foco'), caja: capa.querySelector('.tour-caja') };
     estado.reubicar = () => estado && ubicar();
     estado.teclas = (e) => {
+      const enControl = e.target.closest?.('input, select, textarea, [contenteditable]') && !estado.caja.contains(e.target);
       if (e.key === 'Escape') cerrar();
+      else if (enControl) return;
       else if (e.key === 'ArrowRight') { if (estado.i < pasos.length - 1) mostrar(estado.i + 1); }
       else if (e.key === 'ArrowLeft') { if (estado.i > 0) mostrar(estado.i - 1); }
     };
     window.addEventListener('resize', estado.reubicar);
     window.addEventListener('scroll', estado.reubicar, true);
     document.addEventListener('keydown', estado.teclas);
+    // La página cambia mientras el usuario la usa: se reubica el resaltado con frecuencia.
+    estado.intervalo = setInterval(() => estado && ubicar(), 500);
     mostrar(0);
   }
 
