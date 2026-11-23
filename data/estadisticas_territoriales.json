@@ -1,17 +1,17 @@
 {
  "metodologia": "MT-2026.7-DIAGNOSTICO-INTEGRADO",
- "version_datos": 3,
+ "version_datos": 4,
  "proyecto": "geoportal-513817",
  "umbral_conectividad_m": 500,
  "procesamiento": {
   "tipo": "B",
   "descripcion": "Precalculado con Earth Engine (proceso reproducible)",
-  "fecha_procesamiento": "2026-11-23T00:18:37+00:00",
-  "version_codigo": "50595dba6958",
-  "workflow_run": "45087961620",
+  "fecha_procesamiento": "2026-11-23T15:17:10+00:00",
+  "version_codigo": "673654448096",
+  "workflow_run": "45203408802",
   "repositorio": "julii5sos/Geoportal_CHCP",
   "metodologia": "MT-2026.7-DIAGNOSTICO-INTEGRADO",
-  "version_datos": 3,
+  "version_datos": 4,
   "proyecto_gee": "geoportal-513817",
   "fuentes": [
    {
@@ -323,6 +323,12 @@
    "minimo": 0.0,
    "paso": 0.25
   },
+  "esri_2024": {
+   "tipo": "categorias"
+  },
+  "sinia_2021_detalle": {
+   "tipo": "categorias"
+  },
   "aux": {
    "tipo": "bits",
    "bits": {
@@ -335,11 +341,11 @@
  },
  "territorios": {
   "chcp": {
-   "version_datos": 3,
+   "version_datos": 4,
    "id": "chcp",
    "nombre": "Cuenca Hidrográfica del Canal de Panamá",
    "grupo": "Cuenca",
-   "area_ha": 342460.18053996895,
+   "area_ha": 342460.18053996935,
    "preevaluacion": {
     "puntaje": 4.0,
     "puntaje_maximo": 6.5,
@@ -405,7 +411,7 @@
     "coincidencia_varias_fuentes": 7084.600914,
     "pct_coincidencia_varias_fuentes": 2.068737
    },
-   "procesado": "2026-11-23T00:20:57",
+   "procesado": "2026-11-23T15:21:02",
    "jrc_ha": {
     "tmf_estable": 137698.2709933815,
     "tmf_degradacion": 34032.57482545919,
@@ -422,9 +428,9 @@
     "esri_arboles_final": 238489.80055009015
    },
    "ndvi": {
-    "ndvi_inicial_medio": 0.6469540981305654,
-    "ndvi_final_medio": 0.6737570070133703,
-    "ndvi_delta_medio": 0.026802908882804875,
+    "ndvi_inicial_medio": 0.6469540981305658,
+    "ndvi_final_medio": 0.6737570070133702,
+    "ndvi_delta_medio": 0.02680290888280488,
     "ndvi_disminucion": 4049.20344333308
    },
    "gedi_altura_m": 11.93113842900976,
@@ -624,7 +630,7 @@
       "clave": "baja",
       "clase": "Baja",
       "color": "#F79009",
-      "area_ha": 53172.23401183077
+      "area_ha": 53172.23401183076
      },
      {
       "clave": "media",
@@ -636,13 +642,13 @@
       "clave": "alta",
       "clase": "Alta",
       "color": "#76B72A",
-      "area_ha": 107248.28672779803
+      "area_ha": 107248.286727798
      },
      {
       "clave": "muy_alta",
       "clase": "Muy alta",
       "color": "#00544D",
-      "area_ha": 44961.15635987285
+      "area_ha": 44961.15635987286
      }
     ],
     "pesos": {
@@ -691,6 +697,8 @@
      "jrc_2025",
      "hansen",
      "esri_cambio",
+     "ndvi_cambio",
+     "eri",
      "coincidencia",
      "riparia"
     ],
@@ -699,15 +707,16 @@
      "jrc_2025",
      "hansen",
      "esri_cambio",
+     "ndvi_cambio",
+     "eri",
      "coincidencia",
      "riparia",
-     "gedi"
+     "gedi",
+     "aux",
+     "esri_2024",
+     "sinia_2021_detalle"
     ],
-    "errores": {
-     "ndvi_cambio": "EEException: User memory limit exceeded.",
-     "eri": "EEException: User memory limit exceeded.",
-     "aux": "EEException: User memory limit exceeded."
-    },
+    "errores": {},
     "rios": 749,
     "rios_fuente": "IGNTG 2022 · hidrografía 1:25 000"
    },
@@ -757,7 +766,7 @@
    }
   },
   "s0": {
-   "version_datos": 3,
+   "version_datos": 4,
    "id": "s0",
    "nombre": "Lago Alajuela",
    "grupo": "Lagos",
@@ -827,7 +836,7 @@
     "coincidencia_varias_fuentes": 49.934245,
     "pct_coincidencia_varias_fuentes": 1.116591
    },
-   "procesado": "2026-11-23T00:30:01",
+   "procesado": "2026-11-23T15:48:11",
    "jrc_ha": {
     "tmf_estable": 47.95385598923062,
     "tmf_degradacion": 63.42763424483582,
@@ -844,9 +853,9 @@
     "esri_arboles_final": 170.97025700883543
    },
    "ndvi": {
-    "ndvi_inicial_medio": 0.11579943450034352,
-    "ndvi_final_medio": 0.0045883755897216365,
-    "ndvi_delta_medio": -0.11121105891062186,
+    "ndvi_inicial_medio": 0.11579943450034351,
+    "ndvi_final_medio": 0.004588375589721636,
+    "ndvi_delta_medio": -0.11121105891062183,
     "ndvi_disminucion": 581.6458610864257
    },
    "gedi_altura_m": 1.02074223451417,
@@ -1261,11 +1270,11 @@
    }
   },
   "s1": {
-   "version_datos": 3,
+   "version_datos": 4,
    "id": "s1",
    "nombre": "Lago Gatún",
    "grupo": "Lagos",
-   "area_ha": 38171.97513637299,
+   "area_ha": 38171.975136412955,
    "preevaluacion": {
     "puntaje": 4.0,
     "puntaje_maximo": 6.5,
@@ -1331,7 +1340,7 @@
     "coincidencia_varias_fuentes": 47.589925,
     "pct_coincidencia_varias_fuentes": 0.124672
    },
-   "procesado": "2026-11-23T00:36:00",
+   "procesado": "2026-11-23T15:56:45",
    "jrc_ha": {
     "tmf_estable": 2213.8808591700945,
     "tmf_degradacion": 587.9211885437663,
@@ -1348,10 +1357,10 @@
     "esri_arboles_final": 803.0122318808503
    },
    "ndvi": {
-    "ndvi_inicial_medio": 0.006456277530794125,
-    "ndvi_final_medio": -0.02918106796939098,
+    "ndvi_inicial_medio": 0.006456277530794128,
+    "ndvi_final_medio": -0.029181067969390975,
     "ndvi_delta_medio": -0.0356373455001851,
-    "ndvi_disminucion": 887.9271990029611
+    "ndvi_disminucion": 887.9271990029608
    },
    "gedi_altura_m": 0.8766862628069668,
    "serie_anual": [
@@ -1538,7 +1547,7 @@
      "umbral_m": 500.0,
      "numero_nodos": 863,
      "numero_aristas": 2428,
-     "numero_relaciones_mostradas": 813,
+     "numero_relaciones_mostradas": 814,
      "numero_parches_conectados": 857,
      "numero_parches_aislados": 6,
      "porcentaje_parches_aislados": 0.6952,
@@ -1712,7 +1721,7 @@
     "componentes": {
      "integridad_estructural": 0.05376737599790042,
      "conectividad": 0.05234372200177828,
-     "estabilidad_topografica": 0.9958163216392882,
+     "estabilidad_topografica": 0.9958163216392885,
      "proximidad_riparia": 0.6821183843857155
     },
     "componente_limitante_etiqueta": "Conectividad del bosque",
@@ -1775,11 +1784,11 @@
    }
   },
   "s2": {
-   "version_datos": 3,
+   "version_datos": 4,
    "id": "s2",
    "nombre": "Lago Miraflores",
    "grupo": "Cuenca de Miraflores",
-   "area_ha": 9961.47782724967,
+   "area_ha": 9961.47782724972,
    "preevaluacion": {
     "puntaje": 4.0,
     "puntaje_maximo": 6.5,
@@ -1845,7 +1854,7 @@
     "coincidencia_varias_fuentes": 171.865607,
     "pct_coincidencia_varias_fuentes": 1.725302
    },
-   "procesado": "2026-11-23T00:36:43",
+   "procesado": "2026-11-23T15:57:41",
    "jrc_ha": {
     "tmf_estable": 5210.577499737898,
     "tmf_degradacion": 887.6407030680308,
@@ -1862,8 +1871,8 @@
     "esri_arboles_final": 8013.459224762038
    },
    "ndvi": {
-    "ndvi_inicial_medio": 0.6839988685372864,
-    "ndvi_final_medio": 0.7259266064416838,
+    "ndvi_inicial_medio": 0.6839988685372863,
+    "ndvi_final_medio": 0.7259266064416839,
     "ndvi_delta_medio": 0.041927737904396946,
     "ndvi_disminucion": 66.0787007964369
    },
@@ -2313,7 +2322,9 @@
      "coincidencia",
      "riparia",
      "gedi",
-     "aux"
+     "aux",
+     "esri_2024",
+     "sinia_2021_detalle"
     ],
     "errores": {},
     "rios": 30,
@@ -2451,7 +2462,7 @@
    }
   },
   "s3": {
-   "version_datos": 3,
+   "version_datos": 4,
    "id": "s3",
    "nombre": "Qda. Ancha",
    "grupo": "Cuenca de Alajuela",
@@ -2521,7 +2532,7 @@
     "coincidencia_varias_fuentes": 88.615369,
     "pct_coincidencia_varias_fuentes": 6.245277
    },
-   "procesado": "2026-11-23T00:39:49",
+   "procesado": "2026-11-23T16:00:41",
    "jrc_ha": {
     "tmf_estable": 390.99508298699766,
     "tmf_degradacion": 414.078664147883,
@@ -2950,11 +2961,11 @@
    }
   },
   "s4": {
-   "version_datos": 3,
+   "version_datos": 4,
    "id": "s4",
    "nombre": "Qda. Bonita",
    "grupo": "Cuenca de Alajuela",
-   "area_ha": 509.99854939582946,
+   "area_ha": 509.99854939584975,
    "preevaluacion": {
     "puntaje": 4.0,
     "puntaje_maximo": 6.5,
@@ -3020,7 +3031,7 @@
     "coincidencia_varias_fuentes": 7.364362,
     "pct_coincidencia_varias_fuentes": 1.443997
    },
-   "procesado": "2026-11-23T00:40:02",
+   "procesado": "2026-11-23T16:01:01",
    "jrc_ha": {
     "tmf_estable": 104.68121929048914,
     "tmf_degradacion": 111.4746589910458,
@@ -3459,7 +3470,9 @@
      "coincidencia",
      "riparia",
      "gedi",
-     "aux"
+     "aux",
+     "esri_2024",
+     "sinia_2021_detalle"
     ],
     "errores": {},
     "rios": 3,
@@ -3597,7 +3610,7 @@
    }
   },
   "s5": {
-   "version_datos": 3,
+   "version_datos": -1,
    "id": "s5",
    "nombre": "Qda. Honda",
    "grupo": "Cuenca de Gatún",
@@ -4243,7 +4256,7 @@
    }
   },
   "s6": {
-   "version_datos": 3,
+   "version_datos": -1,
    "id": "s6",
    "nombre": "Qda. La Leona",
    "grupo": "Cuenca de Gatún",
@@ -4902,7 +4915,7 @@
    }
   },
   "s7": {
-   "version_datos": 3,
+   "version_datos": -1,
    "id": "s7",
    "nombre": "Qda. La Tranquilla",
    "grupo": "Cuenca de Alajuela",
@@ -5506,7 +5519,7 @@
    }
   },
   "s8": {
-   "version_datos": 3,
+   "version_datos": -1,
    "id": "s8",
    "nombre": "Quebrada Aguas Claras",
    "grupo": "Cuenca de Gatún",
@@ -6153,7 +6166,7 @@
    }
   },
   "s9": {
-   "version_datos": 3,
+   "version_datos": -1,
    "id": "s9",
    "nombre": "Quebrada Grande",
    "grupo": "Cuenca de Gatún",
@@ -22844,8 +22857,7 @@
  "errores": {
   "s0": "KeyError: 'coordinates'",
   "s1": "KeyError: 'coordinates'",
-  "s3": "KeyError: 'coordinates'",
-  "s9": "KeyError: 'coordinates'"
+  "s3": "KeyError: 'coordinates'"
  },
- "generado": "2026-11-23T01:09:11"
+ "generado": "2026-11-23T16:04:24"
 }
