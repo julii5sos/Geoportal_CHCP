@@ -116,7 +116,7 @@ class BloquesTests(unittest.TestCase):
         class Img:
             def toFloat(self): return self
             def clip(self, g): return self
-            def unmask(self, v): return self
+            def unmask(self, v, mismo_contorno=True): return self
             def rename(self, n): return self
 
         class Datos:
@@ -143,7 +143,7 @@ class BloquesTests(unittest.TestCase):
         class Img:
             def toFloat(self): return self
             def clip(self, g): return self
-            def unmask(self, v): return self
+            def unmask(self, v, mismo_contorno=True): return self
             def rename(self, n): return self
 
         class Datos:
@@ -187,3 +187,11 @@ class GenerarMapasTests(unittest.TestCase):
             self.assertEqual(len(r["capas"]), len(mf.CAPAS) - 1)
             self.assertIn("aux", r["valores"])
             self.assertTrue((Path(tmp) / "jrc_2025.v.png").exists())
+
+
+class ContornoSinDatoTests(unittest.TestCase):
+    def test_fuera_del_territorio_es_sin_dato(self):
+        """Sin sameFootprint=False, fuera del recorte computePixels devuelve 0 (código válido)."""
+        from pathlib import Path
+        codigo = (Path(__file__).resolve().parents[1] / "chcp/gee/mapas_ficha.py").read_text(encoding="utf-8")
+        self.assertIn("unmask(SIN_DATO, False)", codigo)

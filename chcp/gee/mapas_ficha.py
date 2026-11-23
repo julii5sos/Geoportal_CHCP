@@ -350,7 +350,9 @@ def descargar_valores(imagen, geometria, malla: dict[str, Any], ee, partes: int 
     """
     import numpy as np
 
-    expresion = imagen.toFloat().clip(geometria).unmask(SIN_DATO).rename("v")
+    # sameFootprint=False: sin él, fuera de la geometría recortada el píxel sigue enmascarado y
+    # computePixels lo devuelve como 0 (un código válido), no como SIN_DATO.
+    expresion = imagen.toFloat().clip(geometria).unmask(SIN_DATO, False).rename("v")
     grid = malla["grid"]
     if partes == 1:
         try:

@@ -569,6 +569,11 @@ html.app #main-content:has(.pg) { overflow-y:auto; background:#f3f6fa; }
 .opt.layer-disabled { opacity:.5; cursor:not-allowed; }
 .pe-nav { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:8px; position:sticky; top:0; background:#fff; padding:4px 0 8px; z-index:2; }
 .pe-nav a { font-size:12px; font-weight:700; color:var(--azul); background:var(--azul-suave); border-radius:999px; padding:4px 10px; text-decoration:none; }
+.pe-nav a[aria-current="true"] { background:var(--azul); color:#fff; }
+.pe-nav-nota { font-size:12px; color:#5b6675; margin:0 0 4px; }
+.pe-sec h3 .pe-ver { margin-left:auto; font-size:12px; font-weight:600; }
+.pe-vista { display:grid; gap:4px; background:#fff8d6; border:1px solid #f3d36b; border-radius:10px; padding:10px 12px; margin:0 0 10px; font-size:13px; }
+.pe-vista .btn { justify-self:start; margin-top:4px; }
 .pe-sec { border-top:1px solid var(--line); padding:12px 0 6px; }
 .pe-sec h3 { display:flex; align-items:center; gap:7px; font-size:15px; color:var(--azul-tinta); margin:0 0 10px; }
 .pe-sec h3 svg { color:var(--azul); }

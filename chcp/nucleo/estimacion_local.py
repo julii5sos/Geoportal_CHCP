@@ -12,6 +12,7 @@ from pathlib import Path
 from typing import Any
 
 R = 6378137.0
+ANIOS_HANSEN = (21, 22, 23, 24, 25)  # códigos de pérdida 2021–2025 en hansen.v.png
 CAPAS = ("aux", "jrc_2025", "hansen", "esri_cambio", "sinia_2021", "coincidencia", "riparia", "eri", "ndvi_cambio", "gedi")
 
 
@@ -96,7 +97,7 @@ def metricas(acc):
         "area_ha": area,
         "tmf_deforestacion_ha": j.get(3, 0.0), "tmf_deforestacion_pct": pct(j.get(3, 0.0)),
         "tmf_degradacion_ha": j.get(2, 0.0), "tmf_degradacion_pct": pct(j.get(2, 0.0)),
-        "hansen_post_2020_ha": sum(acc["hansen"].values()),
+        "hansen_post_2020_ha": sum(acc["hansen"].get(y, 0.0) for y in ANIOS_HANSEN),
         "esri_salida_arboles_ha": e.get(1, 0.0), "esri_salida_arboles_pct": pct(e.get(1, 0.0)),
         "gedi_altura_media_m": acc["gedi_suma"] / acc["gedi_n"] if acc["gedi_n"] else 0.0,
         "gedi_cobertura_valida_pct": pct(acc["gedi_valido_ha"]), "linea_base_arborea_pct": pct(acc["linea_base_ha"]),
@@ -105,8 +106,13 @@ def metricas(acc):
     }
 
 
-def estimar(geo, territorios: list[dict[str, Any]], dir_mapas: Path, codec: dict[str, Any]):
-    """Estimación local para un polígono sobre los territorios indicados."""
+def estimar(geo, territorios: list[dict[str, Any]], dir_mapas: Path, codec: dict[str, Any],
+            geometrias: dict[str, Any] | None = None):
+    """Estimación local para un polígono sobre los territorios indicados.
+
+    ``geometrias`` (id → GeoJSON) limita cada malla a su territorio: las mallas de
+    subcuencas vecinas se solapan y fuera de su territorio no tienen datos válidos.
+    """
     import numpy as np
     from PIL import Image
 
@@ -124,5 +130,7 @@ def estimar(geo, territorios: list[dict[str, Any]], dir_mapas: Path, codec: dict
                 ancho, alto = img.size
                 capas[c] = np.asarray(img, dtype="uint8").ravel()
         masc = mascara(geo, m["limites"], ancho, alto)
+        if geometrias and geometrias.get(t["id"]) is not None:
+            masc = masc & mascara(geometrias[t["id"]], m["limites"], ancho, alto)
         acumular(acc, capas, masc, None, (m["tamano_pixel_m"] ** 2) / 10_000, codec)
     return acc

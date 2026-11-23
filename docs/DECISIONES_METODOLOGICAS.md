@@ -88,6 +88,11 @@ decisión explícita del equipo.
   - La codificación se publica en `codificacion_valores`.
 - **Cálculo en el navegador:** al dibujar o subir un polígono, el navegador lo rasteriza sobre la malla de cada subcuenca que toca, suma superficies por clase y aplica **exactamente** las reglas MT-2026.7: señales, puntaje, consistencia y prioridad de visita con corredores del Almanaque Azul. `tests/test_analisis_poligono_js.py` compara 300 casos con `metodologia_indice.py`.
 - **Red de parches:** usa los parches oficiales 2021 que toca el polígono y sus enlaces precalculados (umbral de 500 m).
+- **Cada píxel una sola vez (corrección 2026-11-23):** la máscara de cada malla es el polígono **intersecado con su subcuenca**. Las mallas de subcuencas vecinas se solapan y, fuera de su subcuenca, los mapas de valores generados hasta el 2026-11-22 tenían 0 (código válido) en lugar de 255; un polígono que cruzaba subcuencas contaba dos veces la superficie y sumaba ese 0 como pérdida Hansen. Hansen suma ahora solo los códigos 21–25. La generación usa `unmask(SIN_DATO, False)`.
+- **Fragmentación en polígonos (2026-11-23):** los parches oficiales 2021 de las subcuencas cercanas se rasterizan en una malla UTM 17N de 10 m (más gruesa solo en polígonos muy grandes) con 250 m de margen exterior.
+  - Fragmentos: bosque contiguo (8 vecinos) dentro del polígono; se indica cuántos continúan fuera.
+  - El límite dibujado **no** cuenta como borde: la densidad de borde y el bosque interior (50, 100 y 200 m, como en `metricas_paisaje.py`) se miden contra el no bosque real, también fuera del polígono. Así un trazo arbitrario no crea bordes artificiales.
+  - Por eso las cifras no son idénticas a las de la ficha de una subcuenca, donde el límite recorta los parches. La distancia entre parches y la cohesión no se calculan para polígonos porque dependen de ese recorte.
 - **Limitaciones:**
   - El píxel es de 10 a 30 m según la subcuenca. En polígonos menores de ~20 píxeles las superficies son aproximadas.
   - Los resultados corresponden a la fecha del último precálculo.

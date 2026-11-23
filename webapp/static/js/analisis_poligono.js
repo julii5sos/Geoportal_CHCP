@@ -12,6 +12,7 @@
     gedi_cobertura_minima_pct: 20.0, gedi_linea_base_minima_pct: 10.0, ndvi_disminucion_ha: 0.12,
     ndvi_disminucion_pct: 5.0, ndvi_cobertura_minima_pct: 70.0,
   };
+  const ANIOS_HANSEN = [21, 22, 23, 24, 25];
   const PESOS = { tmf: 2.0, hansen: 2.0, esri: 1.5, gedi: 0.5, ndvi: 0.5 };
   const MAXIMO = 6.5;
   const VISITA = { aporte_maximo_corredor: 1.5, porcentaje_saturacion_corredor: 25.0, aporte_maximo_solapamiento: 1.0, aporte_corredor_mesoamericano: 0.5 };
@@ -96,7 +97,8 @@
       tmf_deforestacion_ha: a.jrc[3] || 0, tmf_deforestacion_pct: pct(a.jrc[3] || 0),
       tmf_degradacion_ha: a.jrc[2] || 0, tmf_degradacion_pct: pct(a.jrc[2] || 0),
       tmf_recuperacion_ha: a.jrc[4] || 0, tmf_recuperacion_pct: pct(a.jrc[4] || 0),
-      hansen_post_2020_ha: Object.values(a.hansen).reduce((s, v) => s + v, 0),
+      // Solo los años de pérdida 2021–2025: ningún otro código cuenta como pérdida.
+      hansen_post_2020_ha: ANIOS_HANSEN.reduce((s, y) => s + (a.hansen[y] || 0), 0),
       esri_salida_arboles_ha: a.esri[1] || 0, esri_salida_arboles_pct: pct(a.esri[1] || 0),
       esri_ganancia_arboles_ha: a.esri[2] || 0, esri_ganancia_arboles_pct: pct(a.esri[2] || 0),
       gedi_altura_media_m: a.gedi_n ? a.gedi_suma / a.gedi_n : 0,
@@ -146,6 +148,98 @@
       eri_medio: acc.eri_n ? acc.eri_suma / acc.eri_n : null, ndvi_delta_medio: acc.ndvi_n ? acc.ndvi_suma / acc.ndvi_n : null };
   }
 
+  // ------------------------------------------------------------ fragmentación en un polígono
+  // Mismas profundidades de borde que chcp/nucleo/metricas_paisaje.py (lo verifica la prueba).
+  const PROFUNDIDADES_BORDE_M = [50, 100, 200];
+  const INF = 1e20;
+  /** Transformada de distancia euclídea exacta (Felzenszwalb y Huttenlocher, 2012) en una línea. */
+  function edt1d(f, n, d, v, z) {
+    let k = 0; v[0] = 0; z[0] = -INF; z[1] = INF;
+    for (let q = 1; q < n; q += 1) {
+      let s = ((f[q] + q * q) - (f[v[k]] + v[k] * v[k])) / (2 * q - 2 * v[k]);
+      while (s <= z[k]) { k -= 1; s = ((f[q] + q * q) - (f[v[k]] + v[k] * v[k])) / (2 * q - 2 * v[k]); }
+      k += 1; v[k] = q; z[k] = s; z[k + 1] = INF;
+    }
+    k = 0;
+    for (let q = 0; q < n; q += 1) { while (z[k + 1] < q) k += 1; d[q] = (q - v[k]) ** 2 + f[v[k]]; }
+  }
+  /** Distancia al cuadrado (en celdas) de cada celda a la celda «fuente» más cercana. */
+  function distanciaCuadrada(fuente, w, h) {
+    const out = new Float64Array(w * h);
+    for (let i = 0; i < out.length; i += 1) out[i] = fuente[i] ? 0 : INF;
+    const n = Math.max(w, h), f = new Float64Array(n), d = new Float64Array(n), v = new Int32Array(n), z = new Float64Array(n + 1);
+    for (let x = 0; x < w; x += 1) { for (let y = 0; y < h; y += 1) f[y] = out[y * w + x]; edt1d(f, h, d, v, z); for (let y = 0; y < h; y += 1) out[y * w + x] = d[y]; }
+    for (let y = 0; y < h; y += 1) { for (let x = 0; x < w; x += 1) f[x] = out[y * w + x]; edt1d(f, w, d, v, z); for (let x = 0; x < w; x += 1) out[y * w + x] = d[x]; }
+    return out;
+  }
+  /**
+   * Fragmentación del bosque oficial dentro de un polígono, sobre una malla métrica.
+   * bosque: 1 = bosque, 0 = no bosque conocido, 2 = sin dato (fuera de las subcuencas cargadas).
+   * dentro: 1 = la celda está dentro del polígono. La malla incluye un margen exterior.
+   * El límite del polígono no es borde de bosque: borde y bosque interior se miden contra el
+   * no bosque real, también fuera del polígono (dentro del margen), para no crear bordes artificiales.
+   */
+  function fragmentacion(bosque, dentro, w, h, celda, profundidades = PROFUNDIDADES_BORDE_M) {
+    const haCelda = celda * celda / 10000;
+    let nArea = 0, nBosque = 0, borde = 0;
+    const etiqueta = new Int32Array(w * h), pila = new Int32Array(w * h);
+    const tam = [], fuera = [];
+    for (let i = 0; i < w * h; i += 1) {
+      if (!dentro[i] || bosque[i] === 2) continue;
+      nArea += 1;
+      if (bosque[i] !== 1) continue;
+      nBosque += 1;
+      const x = i % w, y = (i - x) / w;
+      if (x > 0 && bosque[i - 1] === 0) borde += 1;
+      if (x < w - 1 && bosque[i + 1] === 0) borde += 1;
+      if (y > 0 && bosque[i - w] === 0) borde += 1;
+      if (y < h - 1 && bosque[i + w] === 0) borde += 1;
+      if (etiqueta[i]) continue;
+      // Fragmento: bosque contiguo (8 vecinos) dentro del polígono.
+      const id = tam.length + 1; let n = 0, sale = false, top = 0;
+      pila[top++] = i; etiqueta[i] = id;
+      while (top) {
+        const j = pila[--top]; n += 1;
+        const jx = j % w, jy = (j - jx) / w;
+        for (let dy = -1; dy <= 1; dy += 1) for (let dx = -1; dx <= 1; dx += 1) {
+          if (!dx && !dy) continue;
+          const nx = jx + dx, ny = jy + dy;
+          if (nx < 0 || ny < 0 || nx >= w || ny >= h) continue;
+          const k = ny * w + nx;
+          if (bosque[k] !== 1) continue;
+          if (!dentro[k]) { sale = true; continue; }
+          if (!etiqueta[k]) { etiqueta[k] = id; pila[top++] = k; }
+        }
+      }
+      tam.push(n); fuera.push(sale);
+    }
+    const areaHa = nArea * haCelda, bosqueHa = nBosque * haCelda;
+    const noBosque = new Uint8Array(w * h);
+    for (let i = 0; i < noBosque.length; i += 1) noBosque[i] = bosque[i] === 0 ? 1 : 0;
+    const d2 = distanciaCuadrada(noBosque, w, h);
+    const nucleo = profundidades.map((p) => {
+      // Celda interior: su centro está a ≥ p m del borde (borde = centro del no bosque − media celda).
+      let n = 0;
+      for (let i = 0; i < d2.length; i += 1) if (dentro[i] && bosque[i] === 1 && Math.sqrt(d2[i]) * celda - celda / 2 >= p) n += 1;
+      return { profundidad_m: p, area_nucleo_ha: n * haCelda, porcentaje_bosque_nucleo: nBosque ? n / nBosque * 100 : 0 };
+    });
+    const mayor = tam.length ? Math.max(...tam) : 0;
+    return {
+      celda_m: celda,
+      area_ha: areaHa,
+      area_bosque_ha: bosqueHa,
+      porcentaje_bosque: areaHa ? bosqueHa / areaHa * 100 : 0,
+      numero_fragmentos: tam.length,
+      fragmentos_continuan_fuera: fuera.filter(Boolean).length,
+      fragmento_mayor_ha: mayor * haCelda,
+      indice_fragmento_mayor_pct: areaHa ? mayor * haCelda / areaHa * 100 : 0,
+      area_media_fragmento_ha: tam.length ? bosqueHa / tam.length : 0,
+      borde_m: borde * celda,
+      densidad_borde_m_ha: areaHa ? borde * celda / areaHa : 0,
+      area_nucleo: nucleo,
+    };
+  }
+
   // ------------------------------------------------------------ geometría
   const R = 6378137;
   const merc = (lon, lat) => [R * lon * Math.PI / 180, R * Math.log(Math.tan(Math.PI / 4 + lat * Math.PI / 360))];
@@ -191,7 +285,7 @@
     return polys.length ? { type: 'MultiPolygon', coordinates: polys } : null;
   }
 
-  const api = { UMBRALES, PESOS, VISITA, clasificar, evaluarSenales, indice, consistencia, prioridadVisita, estructura, metricas, acumular, nuevoAcumulador, evaluar, transformador, poligonos, areaHa, caja, leerKml };
+  const api = { UMBRALES, PESOS, VISITA, PROFUNDIDADES_BORDE_M, clasificar, evaluarSenales, indice, consistencia, prioridadVisita, estructura, metricas, acumular, nuevoAcumulador, evaluar, distanciaCuadrada, fragmentacion, transformador, poligonos, areaHa, caja, leerKml };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   else raiz.CHCP_POLIGONO = api;
 })(typeof window !== 'undefined' ? window : globalThis);
