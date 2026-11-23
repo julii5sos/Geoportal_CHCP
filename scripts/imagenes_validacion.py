@@ -3,8 +3,10 @@
 En la Cuenca del Canal la nubosidad casi permanente impide ver el cambio en Google Earth. Para
 cada punto de ``data/validacion/<mapa>/muestra.csv`` se preparan, con Earth Engine:
 
-* **Recortes Sentinel-2 sin nubes** (color natural, 10 m, 640 × 640 m) de varios años: mediana
-  anual de los píxeles despejados según Cloud Score+ (``cs_cdf`` ≥ 0,6).
+* **Recortes Sentinel-2 sin nubes** (10 m, 640 × 640 m) de varios años: mediana anual de los
+  píxeles despejados según Cloud Score+ (``cs_cdf`` ≥ 0,6), en color natural y en infrarrojo
+  (SWIR · NIR · rojo), donde el agua se ve negra y el suelo desnudo rosado, de modo que no se
+  confunden con un desmonte.
 * **Serie de NDVI** anual (misma mediana sin nubes) en la celda de 30 m del punto.
 * **Serie de radar Sentinel-1** (retrodispersión VH anual, dB): el radar atraviesa las nubes; un
   desmonte suele bajar la señal VH varios dB.
@@ -12,7 +14,8 @@ cada punto de ``data/validacion/<mapa>/muestra.csv`` se preparan, con Earth Engi
 Son ayudas para la interpretación visual (referencia de mejor calidad que el mapa de 30 m); no
 contienen la clase del mapa, así que la interpretación sigue siendo ciega.
 
-Salida en data/validacion/<mapa>/imagenes/: ``<id>_<año>.jpg``, ``series.json`` e ``indice.json``.
+Salida en data/validacion/<mapa>/imagenes/: ``<id>_<año>.jpg`` (color natural),
+``<id>_<año>_ir.jpg`` (infrarrojo), ``series.json`` e ``indice.json``.
 Reanudable: no repite recortes que ya existen.
 
     python scripts/imagenes_validacion.py --mapa senal_perdida
@@ -38,6 +41,11 @@ PIXELES = 64              # recorte de 64 × 64 píxeles
 ESCALA_M = 10             # … de 10 m en el terreno (640 m de lado)
 UMBRAL_DESPEJADO = 0.6    # Cloud Score+ cs_cdf
 HILOS = 6
+# sufijo del archivo → (bandas R, G, B; máximo de reflectancia por banda; gamma)
+COMBINACIONES = {
+    "": (["B4", "B3", "B2"], [0.18, 0.18, 0.18], 1.3),      # color natural
+    "_ir": (["B11", "B8", "B4"], [0.40, 0.50, 0.20], 1.1),  # infrarrojo: vegetación verde, suelo rosado, agua negra
+}
 
 
 def leer_muestra(mapa: str) -> list[dict]:
@@ -75,12 +83,17 @@ def s1_vh(anio: int, region, ee):
     return col.median()
 
 
-def recorte(p: dict, anio: int, destino: Path, ee) -> None:
-    ruta = destino / f"{p['id']}_{anio}.jpg"
+def nombre_recorte(pid: str, anio: int, sufijo: str = "") -> str:
+    return f"{pid}_{anio}{sufijo}.jpg"
+
+
+def recorte(p: dict, anio: int, destino: Path, ee, sufijo: str = "") -> None:
+    ruta = destino / nombre_recorte(p["id"], anio, sufijo)
     if ruta.exists():
         return
+    bandas, maximos, gamma = COMBINACIONES[sufijo]
     region = ee.Geometry.Point([p["lon"], p["lat"]]).buffer(500)
-    img = s2_despejado(anio, region, ee).select(["B4", "B3", "B2"]).visualize(min=0.0, max=0.18, gamma=1.3)
+    img = s2_despejado(anio, region, ee).select(bandas).visualize(min=[0.0, 0.0, 0.0], max=maximos, gamma=gamma)
     for intento in range(3):
         try:
             datos = ee.data.computePixels({"expression": img, "fileFormat": "JPEG", "grid": malla_punto(p["lon"], p["lat"])})
@@ -124,6 +137,7 @@ def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     ap.add_argument("--mapa", default="senal_perdida")
     ap.add_argument("--sin-series", action="store_true")
+    ap.add_argument("--rehacer-series", action="store_true", help="recalcula series.json aunque ya exista")
     args = ap.parse_args(argv)
 
     import ee
@@ -134,27 +148,29 @@ def main(argv=None) -> int:
     puntos = leer_muestra(args.mapa)
     destino = RAIZ / "data" / "validacion" / args.mapa / "imagenes"
     destino.mkdir(parents=True, exist_ok=True)
-    tareas = [(p, a) for p in puntos for a in ANIOS_RECORTES if not (destino / f"{p['id']}_{a}.jpg").exists()]
+    tareas = [(p, a, suf) for p in puntos for a in ANIOS_RECORTES for suf in COMBINACIONES
+              if not (destino / nombre_recorte(p["id"], a, suf)).exists()]
     print(f"Proyecto {proyecto}: {len(puntos)} puntos, {len(tareas)} recortes pendientes", flush=True)
     errores = 0
     with ThreadPoolExecutor(max_workers=HILOS) as pool:
-        futuros = {pool.submit(recorte, p, a, destino, ee): (p, a) for p, a in tareas}
+        futuros = {pool.submit(recorte, p, a, destino, ee, suf): (p, a, suf) for p, a, suf in tareas}
         for k, fut in enumerate(as_completed(futuros), 1):
             try:
                 fut.result()
             except Exception as exc:  # noqa: BLE001
                 errores += 1
-                p, a = futuros[fut]
-                print(f"  ✗ {p['id']} {a}: {str(exc)[:120]}", flush=True)
+                p, a, suf = futuros[fut]
+                print(f"  ✗ {p['id']} {a}{suf}: {str(exc)[:120]}", flush=True)
             if k % 50 == 0 or k == len(tareas):
                 print(f"  [{k}/{len(tareas)}] recortes", flush=True)
-    if not args.sin_series:
+    if not args.sin_series and (args.rehacer_series or not (destino / "series.json").exists()):
         (destino / "series.json").write_text(json.dumps(series(puntos, ee), separators=(",", ":")), encoding="utf-8")
     (destino / "indice.json").write_text(json.dumps({
         "generado": datetime.now(timezone.utc).isoformat(timespec="seconds"), "proyecto": proyecto,
         "anios_recortes": list(ANIOS_RECORTES), "anios_series": list(ANIOS_SERIES),
         "recorte": {"pixeles": PIXELES, "escala_m": ESCALA_M, "lado_m": PIXELES * ESCALA_M},
-        "fuentes": {"recortes": "Sentinel-2 SR armonizado, mediana anual de píxeles despejados (Cloud Score+ cs_cdf ≥ 0,6), color natural",
+        "infrarrojo": True,
+        "fuentes": {"recortes": "Sentinel-2 SR armonizado, mediana anual de píxeles despejados (Cloud Score+ cs_cdf ≥ 0,6), color natural (B4/B3/B2) e infrarrojo (B11/B8/B4)",
                     "ndvi": "Misma mediana anual de Sentinel-2", "vh": "Sentinel-1 GRD IW, VH, mediana anual (dB)"},
     }, ensure_ascii=False, indent=1), encoding="utf-8")
     if errores:

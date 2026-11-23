@@ -38,6 +38,12 @@ class GraficasTests(unittest.TestCase):
         html = self.node("""console.log(JSON.stringify(G.mancuernas({filas:[{etiqueta:'Bosque',color:'#1d6b35',a:100,b:60}],anioA:2020,anioB:2025})))""")
         self.assertIn("−40 ha", html)
 
+    def test_linea_escala_fija_con_bandas(self):
+        html = self.node("""console.log(JSON.stringify(G.linea({anios:[2020,2021,2022],valores:[-14.1,-14.3,-13.9],min:-32,max:-8,bandas:[{desde:-32,hasta:-22,etiqueta:'agua',color:'#2166ac'}],marcasY:[-30,-20,-10]})))""")
+        self.assertIn('class="g-banda"', html)
+        self.assertIn(">agua<", html)
+        self.assertIn(">−30<", html.replace("-30", "−30"))
+
     def test_tabla_equivalente(self):
         html = self.node("console.log(JSON.stringify(G.tablaDatos(['Año','Valor'],[[2020,'1 ha']])))")
         self.assertIn("<details", html)

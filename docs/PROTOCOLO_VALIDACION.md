@@ -35,10 +35,22 @@ Por eso la página de validación muestra, junto a cada punto:
 
 1. **Recortes Sentinel-2 sin nubes** de 2020, 2022 y 2025 (10 m, 640 × 640 m): mediana de los
    píxeles despejados de cada año según Cloud Score+. Al combinar todas las pasadas del año,
-   las nubes desaparecen. El recuadro amarillo es la celda de 30 m evaluada.
-2. **NDVI por año** (2017–2025) en la celda: una caída fuerte y sostenida sugiere desmonte.
-3. **Radar Sentinel-1 VH por año** (dB): el radar atraviesa las nubes; un desmonte suele bajar la
-   señal varios dB. Es la mejor ayuda cuando no hay ninguna imagen óptica despejada.
+   las nubes desaparecen. El recuadro amarillo es la celda de 30 m evaluada. Cada recorte se
+   amplía con un clic (o la tecla A); en la vista ampliada se alterna entre años con ← →.
+   Hay dos combinaciones: **color natural** y **infrarrojo** (SWIR · NIR · rojo), en la que la
+   vegetación es verde brillante, el suelo desnudo o el pasto seco rosado o marrón y el **agua
+   negra o azul oscuro**.
+2. **NDVI por año** (2017–2025) en la celda, en escala fija de −0,2 a 1 con franjas de
+   referencia: bosque ≈ 0,6–0,9; pasto o cultivo 0,2–0,6; agua, suelo o construcción < 0,2. Una
+   caída fuerte **y sostenida** sugiere desmonte.
+3. **Radar Sentinel-1 VH por año** (dB), en escala fija de −32 a −8 dB: el radar atraviesa las
+   nubes; un desmonte suele bajar la señal más de 3 dB de forma sostenida. Variaciones menores de
+   2 dB son ruido. Las franjas son orientativas: bosque por encima de ≈ −16 dB, pasto o suelo
+   entre −22 y −16 dB, agua por debajo de ≈ −22 dB.
+
+**Agua no es desmonte.** Si el punto es agua (NDVI bajo y radar muy bajo todos los años, negro en
+infrarrojo), la clase es «No bosque». Solo es «Pérdida» si antes había bosque y después deja de
+haberlo, por ejemplo un bosque inundado por un embalse o una crecida permanente.
 
 Complementos opcionales:
 

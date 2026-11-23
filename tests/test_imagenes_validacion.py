@@ -27,6 +27,21 @@ class ImagenesValidacionTests(unittest.TestCase):
         self.assertIn(2025, self.m.ANIOS_RECORTES)
         self.assertEqual(self.m.ANIOS_SERIES[0], 2017)
 
+    def test_infrarrojo_distingue_agua_de_desmonte(self):
+        bandas, maximos, _ = self.m.COMBINACIONES["_ir"]
+        self.assertEqual(bandas, ["B11", "B8", "B4"])
+        self.assertEqual(len(maximos), 3)
+        self.assertEqual(self.m.nombre_recorte("p1", 2025, "_ir"), "p1_2025_ir.jpg")
+        self.assertEqual(self.m.nombre_recorte("p1", 2025), "p1_2025.jpg")
+
+    def test_graficas_con_escala_fija_y_bandas_de_referencia(self):
+        js = (RAIZ / "webapp/static/js/validacion.js").read_text(encoding="utf-8")
+        self.assertIn("BANDAS_VH", js)
+        self.assertIn("min: -32, max: -8", js)
+        self.assertIn("min: -0.2, max: 1", js)
+        self.assertIn("function ampliar(p)", js)
+        self.assertIn("agua", js)
+
     def test_pagina_muestra_las_imagenes(self):
         js = (RAIZ / "webapp/static/js/validacion.js").read_text(encoding="utf-8")
         self.assertIn("imagenes/indice.json", js)

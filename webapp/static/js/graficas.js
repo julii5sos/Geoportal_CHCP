@@ -99,7 +99,7 @@
   }
 
   /** Línea de una serie continua (p. ej. NDVI medio), con punto final rotulado. */
-  function linea({ anios, valores, color = '#01665e', min, max, decimales = 2, alto = 150 }) {
+  function linea({ anios, valores, color = '#01665e', min, max, decimales = 2, alto = 150, bandas = [], marcasY }) {
     const W = 560, H = alto, m = { l: 44, r: 40, t: 12, b: 24 };
     const v = valores.map((x) => (x == null ? null : Number(x)));
     const val = v.filter((x) => x != null);
@@ -108,7 +108,12 @@
     const x = (i) => m.l + (W - m.l - m.r) * (anios.length > 1 ? i / (anios.length - 1) : 0.5);
     const y = (z) => m.t + (H - m.t - m.b) * (1 - (z - lo) / ((hi - lo) || 1));
     let s = `<svg class="g-svg" viewBox="0 0 ${W} ${H}" role="img" aria-label="Línea por año">`;
-    [lo, (lo + hi) / 2, hi].forEach((t) => { s += `<line class="g-grid" x1="${m.l}" x2="${W - m.r}" y1="${y(t)}" y2="${y(t)}"/><text class="g-eje" x="${m.l - 6}" y="${y(t) + 3.5}" text-anchor="end">${nf(t, 2)}</text>`; });
+    // Franjas de referencia (p. ej. valores típicos de bosque, suelo o agua), detrás de la línea.
+    bandas.forEach((b) => {
+      const y1 = y(Math.min(Math.max(b.hasta, lo), hi)), y2 = y(Math.min(Math.max(b.desde, lo), hi));
+      s += `<rect x="${m.l}" y="${y1}" width="${W - m.l - m.r}" height="${Math.max(y2 - y1, 0)}" fill="${b.color}" opacity=".16"/><text class="g-banda" x="${m.l + 4}" y="${y1 + 11}">${esc(b.etiqueta)}</text>`;
+    });
+    (marcasY || [lo, (lo + hi) / 2, hi]).forEach((t) => { s += `<line class="g-grid" x1="${m.l}" x2="${W - m.r}" y1="${y(t)}" y2="${y(t)}"/><text class="g-eje" x="${m.l - 6}" y="${y(t) + 3.5}" text-anchor="end">${nf(t, Number.isInteger(t) ? 0 : decimales)}</text>`; });
     const pts = v.map((z, i) => (z == null ? null : [x(i), y(z)]));
     let d = ''; pts.forEach((p, i) => { if (p) d += `${d && pts[i - 1] ? 'L' : 'M'}${p[0]},${p[1]}`; });
     s += `<path d="${d}" fill="none" stroke="${color}" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>`;
