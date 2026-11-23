@@ -1,0 +1,9548 @@
+{
+ "fecha": "2026-11-23T20:57:54",
+ "asset": "projects/geoportal-513817/assets/SINIA_2012_USO_SUELO_RASTER5M",
+ "servicio": "https://geoportal.miambiente.gob.pa/server/rest/services/Nodo_Suelos/MapServer/2",
+ "parametros": {
+  "puntos": 30,
+  "radio": 5,
+  "semilla": 20261122,
+  "pausa": 0.15
+ },
+ "metadatos_servicio": {
+  "name": "Cobertura de Bosque y Uso de Suelo, año 2012 (1:50.000)",
+  "type": "Raster Layer",
+  "description": "",
+  "copyrightText": "",
+  "pixelSizeX": null,
+  "pixelSizeY": null,
+  "extent": {
+   "xmin": 274026.8882000009,
+   "ymin": 796233.1821096931,
+   "xmax": 923691.8882000009,
+   "ymax": 1066688.182109693,
+   "spatialReference": {
+    "wkid": 32617,
+    "latestWkid": 32617,
+    "xyTolerance": 0.001,
+    "zTolerance": 0.001,
+    "mTolerance": 0.001,
+    "falseX": -5120900,
+    "falseY": -9998100,
+    "xyUnits": 10000,
+    "falseZ": -100000,
+    "zUnits": 10000,
+    "falseM": -100000,
+    "mUnits": 10000
+   }
+  },
+  "minScale": 0,
+  "maxScale": 0,
+  "bandCount": null,
+  "pixelType": null,
+  "currentVersion": 11.3
+ },
+ "leyenda_servicio": [
+  {
+   "label": "Bosque latifoliado mixto maduro",
+   "url": "ff6c6a93e7df834a38115a5f83902d56",
+   "imageData": "iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAPklEQVQ4jWNhoDJgoZ2BEQz/KTJpBQMjqoFUAiyjBlIMWCg3AhWMGkg5YKGCGShg1EDKASIMoeUZ9QykEgAAmOYC+kaZfl4AAAAASUVORK5CYII=",
+   "contentType": "image/png",
+   "groupId": "0",
+   "height": 20,
+   "width": 20
+  },
+  {
+   "label": "Bosque latifoliado mixto secundario",
+   "url": "dacf7ac46ca6ac3141123b2e2af33c7d",
+   "imageData": "iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAPklEQVQ4jWNhoDJgoZ2Byxj+U2RSFAMjqoFUAiyjBlIMWCg3AhWMGkg5YKGCGShg1EDKASIMoeUZ9QykEgAAfhYCrPPNfGEAAAAASUVORK5CYII=",
+   "contentType": "image/png",
+   "groupId": "0",
+   "height": 20,
+   "width": 20
+  },
+  {
+   "label": "Bosque de mangle",
+   "url": "76de6b20683dcc51f6b9e4f2be6ba8eb",
+   "imageData": "iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAQElEQVQ4jWNhoDJgoZmBGQxb/1Ni0AwGb0YUA6kFWEYNpBiwUG4EKhg1kHLAQgUzUMCogZQDeBjCyjOqGUgtAABV1QQ1Bt18OQAAAABJRU5ErkJggg==",
+   "contentType": "image/png",
+   "groupId": "0",
+   "height": 20,
+   "width": 20
+  },
+  {
+   "label": "Bosque de orey",
+   "url": "9fb01d50edc49c9b65debe8ad87496f1",
+   "imageData": "iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAPklEQVQ4jWNhoDJgoZ2BpS7/KTKpew8jqoFUAiyjBlIMWCg3AhWMGkg5YKGCGShg1EDKASIMoeUZ9QykEgAAdiwEmfqRscMAAAAASUVORK5CYII=",
+   "contentType": "image/png",
+   "groupId": "0",
+   "height": 20,
+   "width": 20
+  },
+  {
+   "label": "Bosque de cativo",
+   "url": "96651fafcca3358064bf05cfc3e84deb",
+   "imageData": "iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAPklEQVQ4jWNhoDJgoZ2BK1r+U2RSRA0jqoFUAiyjBlIMWCg3AhWMGkg5YKGCGShg1EDKASIMoeUZ9QykEgAATuQEJlk8tXAAAAAASUVORK5CYII=",
+   "contentType": "image/png",
+   "groupId": "0",
+   "height": 20,
+   "width": 20
+  },
+  {
+   "label": "Bosque de rafia",
+   "url": "f562dc9848d977cc49300fd120e2821d",
+   "imageData": "iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAPElEQVQ4je3UsQ0AIBQCUUwYnM01sZIa7P4N8MojyvEbKGEnkIRlYCsOGMec8AbMY8GwBsx7f3h/VgNbHWEABFIEcn8dAAAAAElFTkSuQmCC",
+   "contentType": "image/png",
+   "groupId": "0",
+   "height": 20,
+   "width": 20
+  },
+  {
+   "label": "Bosque plantado de coníferas",
+   "url": "afb880f04f85eca1ade4861c71da5a2e",
+   "imageData": "iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAQElEQVQ4jWNhoDJgoZmBwjZa/ykx6O2Ra4woBlILsIwaSDFgodwIVDBqIOWAhQpmoIBRAykH8DCElWdUM5BaAACOWQbZLONZKwAAAABJRU5ErkJggg==",
+   "contentType": "image/png",
+   "groupId": "0",
+   "height": 20,
+   "width": 20
+  },
+  {
+   "label": "Bosque plantado de latifoliadas",
+   "url": "b4d4c43ede17970fe3c44b1ebd431a5f",
+   "imageData": "iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAQElEQVQ4jWNhoDJgoZmBIdl6/ykxaM3US4woBlILsIwaSDFgodwIVDBqIOWAhQpmoIBRAykH8DCElWdUM5BaAABmPAZlfB1OWQAAAABJRU5ErkJggg==",
+   "contentType": "image/png",
+   "groupId": "0",
+   "height": 20,
+   "width": 20
+  },
+  {
+   "label": "Rastrojo y vegetación arbustiva",
+   "url": "c32327d23462036865a5bffdaf3530ad",
+   "imageData": "iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAQElEQVQ4jWNhoDJgoZmBU24y/KfEoBx1BkYUA6kFWEYNpBiwUG4EKhg1kHLAQgUzUMCogZQDeBjCyjOqGUgtAAA7dAPlZKXGagAAAABJRU5ErkJggg==",
+   "contentType": "image/png",
+   "groupId": "0",
+   "height": 20,
+   "width": 20
+  },
+  {
+   "label": "Vegetación herbácea",
+   "url": "03bdf54227b8fa50244a56c69179aca0",
+   "imageData": "iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAQElEQVQ4jWNhoDJgoZmBt77W/KfEIDXuFkYUA6kFWEYNpBiwUG4EKhg1kHLAQgUzUMCogZQDeBjCyjOqGUgtAADtpQUHeOVNpQAAAABJRU5ErkJggg==",
+   "contentType": "image/png",
+   "groupId": "0",
+   "height": 20,
+   "width": 20
+  },
+  {
+   "label": "Vegetación baja inundable",
+   "url": "ba9c400483673d20adae68dfc2398e36",
+   "imageData": "iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAPklEQVQ4jWNhoDJgoZ2B/5f9p8gkxihGVAOpBFhGDaQYsFBuBCoYNZBywEIFM1DAqIGUA0QYQssz6hlIJQAAJW4DreQnqi0AAAAASUVORK5CYII=",
+   "contentType": "image/png",
+   "groupId": "0",
+   "height": 20,
+   "width": 20
+  },
+  {
+   "label": "Afloramiento rocoso y tierra desnuda",
+   "url": "1c932c6a6f4de1231a693931a837a496",
+   "imageData": "iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAP0lEQVQ4je3UsQ0AIBBCUU3YmDmYWaszuRrs7g/wCgqwwuEbKOk4EMndwFQY0A4+0RvQDwGjNaDf27D+LAamuiZyBauwuEHrAAAAAElFTkSuQmCC",
+   "contentType": "image/png",
+   "groupId": "0",
+   "height": 20,
+   "width": 20
+  },
+  {
+   "label": "Playa y arenal natural",
+   "url": "983cae0749be8373e62e402c9d68975d",
+   "imageData": "iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAQElEQVQ4jWNhoDJgoZmBz549+0+JQVJSUowoBlILsIwaSDFgodwIVDBqIOWAhQpmoIBRAykH8DCElWdUM5BaAADKmwSgVw39tAAAAABJRU5ErkJggg==",
+   "contentType": "image/png",
+   "groupId": "0",
+   "height": 20,
+   "width": 20
+  },
+  {
+   "label": "Café",
+   "url": "a8798eb838b2ca26f6a056b447840cc8",
+   "imageData": "iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAQElEQVQ4jWNhoDJgoZmBTvoM/ykxaN9FBkYUA6kFWEYNpBiwUG4EKhg1kHLAQgUzUMCogZQDeBjCyjOqGUgtAACSZgThghPPVwAAAABJRU5ErkJggg==",
+   "contentType": "image/png",
+   "groupId": "0",
+   "height": 20,
+   "width": 20
+  },
+  {
+   "label": "Cítrico",
+   "url": "504fec6fbf9e1a7349db7544bf2c0b40",
+   "imageData": "iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAP0lEQVQ4je3UsQ0AIBBCUS5hRod0ybPShBrs7g/wCgqIcPwG9kY7UC2UgKk4oB19QhvQjwFDGtDvbXj/LAamOiZpA6lqLs9EAAAAAElFTkSuQmCC",
+   "contentType": "image/png",
+   "groupId": "0",
+   "height": 20,
+   "width": 20
+  },
+  {
+   "label": "Palma aceitera",
+   "url": "4d9d976b8b2800dd2e71143e39bf27a6",
+   "imageData": "iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAQElEQVQ4jWNhoDJgoZmB/8tN/lNiEGPnGUYUA6kFWEYNpBiwUG4EKhg1kHLAQgUzUMCogZQDeBjCyjOqGUgtAAAknwWoiofq+gAAAABJRU5ErkJggg==",
+   "contentType": "image/png",
+   "groupId": "0",
+   "height": 20,
+   "width": 20
+  },
+  {
+   "label": "Plátano/banano",
+   "url": "ba843815b8ac318925474ee17f5648f7",
+   "imageData": "iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAQElEQVQ4jWNhoDJgoZmBZ8t8/1NikHHXZkYUA6kFWEYNpBiwUG4EKhg1kHLAQgUzUMCogZQDeBjCyjOqGUgtAAAt2gXCG6KzlwAAAABJRU5ErkJggg==",
+   "contentType": "image/png",
+   "groupId": "0",
+   "height": 20,
+   "width": 20
+  },
+  {
+   "label": "Otro cultivo permanente",
+   "url": "0d77e7f52e6bb3277c9eddd57954ae6d",
+   "imageData": "iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAQElEQVQ4jWNhoDJgoZmB/+/s+E+JQYwqHowoBlILsIwaSDFgodwIVDBqIOWAhQpmoIBRAykH8DCElWdUM5BaAADU/AS/kcoY8wAAAABJRU5ErkJggg==",
+   "contentType": "image/png",
+   "groupId": "0",
+   "height": 20,
+   "width": 20
+  },
+  {
+   "label": "Arroz",
+   "url": "41ea10e61b25f757bf680850465ed1c2",
+   "imageData": "iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAQElEQVQ4jWNhoDJgoZmBZ88y/KfEIGNjBkYUA6kFWEYNpBiwUG4EKhg1kHLAQgUzUMCogZQDeBjCyjOqGUgtAAArwwO4+TbpaQAAAABJRU5ErkJggg==",
+   "contentType": "image/png",
+   "groupId": "0",
+   "height": 20,
+   "width": 20
+  },
+  {
+   "label": "Caña de azúcar",
+   "url": "59487dbb310a152e415c977faeab0626",
+   "imageData": "iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAQElEQVQ4jWNhoDJgoZmB/5fX/afEIMbIJkYUA6kFWEYNpBiwUG4EKhg1kHLAQgUzUMCogZQDeBjCyjOqGUgtAAD66gUuSI6t4wAAAABJRU5ErkJggg==",
+   "contentType": "image/png",
+   "groupId": "0",
+   "height": 20,
+   "width": 20
+  },
+  {
+   "label": "Horticultura mixta",
+   "url": "516204eadcf241eeb697bf34f9a11412",
+   "imageData": "iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAQElEQVQ4jWNhoDJgoZmBZ2Ni/lNikPGSJYwoBlILsIwaSDFgodwIVDBqIOWAhQpmoIBRAykH8DCElWdUM5BaAAAxsQXNlHLQ7gAAAABJRU5ErkJggg==",
+   "contentType": "image/png",
+   "groupId": "0",
+   "height": 20,
+   "width": 20
+  },
+  {
+   "label": "Maíz",
+   "url": "153cbc446f329ccc38c88b07c59209d8",
+   "imageData": "iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAQElEQVQ4jWNhoDJgoZmBu/v7/1NikGthISOKgdQCLKMGUgxYKDcCFYwaSDlgoYIZKGDUQMoBPAxh5RnVDKQWAAAVFgV5CSNsXAAAAABJRU5ErkJggg==",
+   "contentType": "image/png",
+   "groupId": "0",
+   "height": 20,
+   "width": 20
+  },
+  {
+   "label": "Piña",
+   "url": "d08dca79275515e0eb26ebceeefdb07d",
+   "imageData": "iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAP0lEQVQ4je3UsQ0AIBBCUUkY0hHd8qzOhBrs7g/wCgq4wvEbWHXKgYANAVNxQDv6hDagHwOGNKDf27D/LAamus5kBKymjDKLAAAAAElFTkSuQmCC",
+   "contentType": "image/png",
+   "groupId": "0",
+   "height": 20,
+   "width": 20
+  },
+  {
+   "label": "Otro cultivo anual",
+   "url": "55975194507b7a8c90ff5d9cc03f4603",
+   "imageData": "iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAQElEQVQ4jWNhoDJgoZmB/28z/KfEIEZVBkYUA6kFWEYNpBiwUG4EKhg1kHLAQgUzUMCogZQDeBjCyjOqGUgtAAAVkQN4VbSlqwAAAABJRU5ErkJggg==",
+   "contentType": "image/png",
+   "groupId": "0",
+   "height": 20,
+   "width": 20
+  },
+  {
+   "label": "Área heterogénea de producción agropecuaria",
+   "url": "27056ea0b0a2885f24f3fe2a853e1179",
+   "imageData": "iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAQElEQVQ4jWNhoDJgoZmBKyoZ/lNiUEQ7AyOKgdQCLKMGUgxYKDcCFYwaSDlgoYIZKGDUQMoBPAxh5RnVDKQWAABVgAQxy/u9IQAAAABJRU5ErkJggg==",
+   "contentType": "image/png",
+   "groupId": "0",
+   "height": 20,
+   "width": 20
+  },
+  {
+   "label": "Pasto",
+   "url": "63aebd5d8cdf2c88b24d60af9f9958db",
+   "imageData": "iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAPUlEQVQ4je3UoQ0AMBBCUS5h/5Wvqk3QUMcf4AkERDh+A3exDjSDETAVC9rRJ7SCfgwYUkG/t+H9sxiY6gAJMQNUbcp4vQAAAABJRU5ErkJggg==",
+   "contentType": "image/png",
+   "groupId": "0",
+   "height": 20,
+   "width": 20
+  },
+  {
+   "label": "Superficie de agua",
+   "url": "ebf076b7aa0793ec68c6070aed318ff5",
+   "imageData": "iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAQElEQVQ4jWNhoDJgoZmBDR+f/afEoAZ+KUYUA6kFWEYNpBiwUG4EKhg1kHLAQgUzUMCogZQDRHkILc+oZiC1AADqSQT7K5yWrwAAAABJRU5ErkJggg==",
+   "contentType": "image/png",
+   "groupId": "0",
+   "height": 20,
+   "width": 20
+  },
+  {
+   "label": "Área poblada",
+   "url": "f2c5dae169c5fc091592761e9e28c5b5",
+   "imageData": "iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAOklEQVQ4jWNhoDJgoZmB/8GIfMAIRrR0IbUAC9VMgoJRAykHLFQwAwWMGkg5YBnBBjJCyzOqGUgtAABgfwJTnasaYgAAAABJRU5ErkJggg==",
+   "contentType": "image/png",
+   "groupId": "0",
+   "height": 20,
+   "width": 20
+  },
+  {
+   "label": "Infraestructura",
+   "url": "8da5d42b5ebd8e49657c3ce824b807a4",
+   "imageData": "iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAPklEQVQ4je3UsQ0AIAACQUzY1ZmcVitNqMGOH+AKCohw/AYuYDvQBIaAqVjQjj6hFfRjwJAK+r0N75/FwFQHg/UCuVj7MFAAAAAASUVORK5CYII=",
+   "contentType": "image/png",
+   "groupId": "0",
+   "height": 20,
+   "width": 20
+  },
+  {
+   "label": "Explotación minera",
+   "url": "ab580be13448203b0c893207342371d5",
+   "imageData": "iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAQElEQVQ4jWNhoDJgoZmByxjO/KfEoCgGE0YUA6kFWEYNpBiwUG4EKhg1kHLAQgUzUMCogZQDeBjCyjOqGUgtAAA4dgPgVbZyoQAAAABJRU5ErkJggg==",
+   "contentType": "image/png",
+   "groupId": "0",
+   "height": 20,
+   "width": 20
+  },
+  {
+   "label": "Estanque para acuicultura",
+   "url": "2e3244698ec8d89cfddf761c740e99ff",
+   "imageData": "iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAP0lEQVQ4je3UsQ0AIBBCUUnY2Dmc+azOhBrs7g/wCgq4wvEbWLvKgXAAAVNxQDv6hDagHwOGNKDf27D/LAamuuDzBOGMj4hkAAAAAElFTkSuQmCC",
+   "contentType": "image/png",
+   "groupId": "0",
+   "height": 20,
+   "width": 20
+  },
+  {
+   "label": "Salinera",
+   "url": "a5431756938eb1df93d0048d4ea5027a",
+   "imageData": "iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAQElEQVQ4jWNhoDJgoZmBly79/0+JQXp6jIwoBlILsIwaSDFgodwIVDBqIOWAhQpmoIBRAykH8DCElWdUM5BaAADP8ASvUccY1wAAAABJRU5ErkJggg==",
+   "contentType": "image/png",
+   "groupId": "0",
+   "height": 20,
+   "width": 20
+  }
+ ],
+ "por_codigo": {
+  "1": {
+   "puntos_interiores": 30,
+   "acuerdo_mismo_codigo_pct": 100.0,
+   "valor_servicio_dominante": "1",
+   "acuerdo_dominante_pct": 100.0,
+   "valores_servicio": {
+    "1": 30
+   },
+   "categorias_servicio": {
+    "Bosque latifoliado mixto maduro": 30
+   },
+   "estabilidad_desplazamiento_10m_pct": 100.0,
+   "decision": "verificado_interior"
+  },
+  "2": {
+   "puntos_interiores": 30,
+   "acuerdo_mismo_codigo_pct": 100.0,
+   "valor_servicio_dominante": "2",
+   "acuerdo_dominante_pct": 100.0,
+   "valores_servicio": {
+    "2": 30
+   },
+   "categorias_servicio": {
+    "Bosque latifoliado mixto secundario": 30
+   },
+   "estabilidad_desplazamiento_10m_pct": 100.0,
+   "decision": "verificado_interior"
+  },
+  "7": {
+   "puntos_interiores": 30,
+   "acuerdo_mismo_codigo_pct": 100.0,
+   "valor_servicio_dominante": "7",
+   "acuerdo_dominante_pct": 100.0,
+   "valores_servicio": {
+    "7": 30
+   },
+   "categorias_servicio": {
+    "Bosque plantado de coníferas": 30
+   },
+   "estabilidad_desplazamiento_10m_pct": 100.0,
+   "decision": "verificado_interior"
+  },
+  "8": {
+   "puntos_interiores": 30,
+   "acuerdo_mismo_codigo_pct": 100.0,
+   "valor_servicio_dominante": "8",
+   "acuerdo_dominante_pct": 100.0,
+   "valores_servicio": {
+    "8": 30
+   },
+   "categorias_servicio": {
+    "Bosque plantado de latifoliadas": 30
+   },
+   "estabilidad_desplazamiento_10m_pct": 100.0,
+   "decision": "verificado_interior"
+  },
+  "9": {
+   "puntos_interiores": 30,
+   "acuerdo_mismo_codigo_pct": 100.0,
+   "valor_servicio_dominante": "9",
+   "acuerdo_dominante_pct": 100.0,
+   "valores_servicio": {
+    "9": 30
+   },
+   "categorias_servicio": {
+    "Rastrojo y vegetación arbustiva": 30
+   },
+   "estabilidad_desplazamiento_10m_pct": 100.0,
+   "decision": "verificado_interior"
+  },
+  "10": {
+   "puntos_interiores": 30,
+   "acuerdo_mismo_codigo_pct": 100.0,
+   "valor_servicio_dominante": "10",
+   "acuerdo_dominante_pct": 100.0,
+   "valores_servicio": {
+    "10": 30
+   },
+   "categorias_servicio": {
+    "Vegetación herbácea": 30
+   },
+   "estabilidad_desplazamiento_10m_pct": 100.0,
+   "decision": "verificado_interior"
+  },
+  "11": {
+   "puntos_interiores": 30,
+   "acuerdo_mismo_codigo_pct": 100.0,
+   "valor_servicio_dominante": "11",
+   "acuerdo_dominante_pct": 100.0,
+   "valores_servicio": {
+    "11": 30
+   },
+   "categorias_servicio": {
+    "Vegetación baja inundable": 30
+   },
+   "estabilidad_desplazamiento_10m_pct": 100.0,
+   "decision": "verificado_interior"
+  },
+  "12": {
+   "puntos_interiores": 30,
+   "acuerdo_mismo_codigo_pct": 100.0,
+   "valor_servicio_dominante": "12",
+   "acuerdo_dominante_pct": 100.0,
+   "valores_servicio": {
+    "12": 30
+   },
+   "categorias_servicio": {
+    "Afloramiento rocoso y tierra desnuda": 30
+   },
+   "estabilidad_desplazamiento_10m_pct": 100.0,
+   "decision": "verificado_interior"
+  },
+  "22": {
+   "puntos_interiores": 30,
+   "acuerdo_mismo_codigo_pct": 100.0,
+   "valor_servicio_dominante": "22",
+   "acuerdo_dominante_pct": 100.0,
+   "valores_servicio": {
+    "22": 30
+   },
+   "categorias_servicio": {
+    "Maíz": 30
+   },
+   "estabilidad_desplazamiento_10m_pct": 100.0,
+   "decision": "verificado_interior"
+  },
+  "23": {
+   "puntos_interiores": 30,
+   "acuerdo_mismo_codigo_pct": 100.0,
+   "valor_servicio_dominante": "23",
+   "acuerdo_dominante_pct": 100.0,
+   "valores_servicio": {
+    "23": 30
+   },
+   "categorias_servicio": {
+    "Piña": 30
+   },
+   "estabilidad_desplazamiento_10m_pct": 100.0,
+   "decision": "verificado_interior"
+  },
+  "26": {
+   "puntos_interiores": 30,
+   "acuerdo_mismo_codigo_pct": 100.0,
+   "valor_servicio_dominante": "26",
+   "acuerdo_dominante_pct": 100.0,
+   "valores_servicio": {
+    "26": 30
+   },
+   "categorias_servicio": {
+    "Pasto": 30
+   },
+   "estabilidad_desplazamiento_10m_pct": 100.0,
+   "decision": "verificado_interior"
+  },
+  "27": {
+   "puntos_interiores": 30,
+   "acuerdo_mismo_codigo_pct": 100.0,
+   "valor_servicio_dominante": "27",
+   "acuerdo_dominante_pct": 100.0,
+   "valores_servicio": {
+    "27": 30
+   },
+   "categorias_servicio": {
+    "Superficie de agua": 30
+   },
+   "estabilidad_desplazamiento_10m_pct": 100.0,
+   "decision": "verificado_interior"
+  },
+  "28": {
+   "puntos_interiores": 30,
+   "acuerdo_mismo_codigo_pct": 100.0,
+   "valor_servicio_dominante": "28",
+   "acuerdo_dominante_pct": 100.0,
+   "valores_servicio": {
+    "28": 30
+   },
+   "categorias_servicio": {
+    "Área poblada": 30
+   },
+   "estabilidad_desplazamiento_10m_pct": 100.0,
+   "decision": "verificado_interior"
+  },
+  "29": {
+   "puntos_interiores": 30,
+   "acuerdo_mismo_codigo_pct": 100.0,
+   "valor_servicio_dominante": "29",
+   "acuerdo_dominante_pct": 100.0,
+   "valores_servicio": {
+    "29": 30
+   },
+   "categorias_servicio": {
+    "Infraestructura": 30
+   },
+   "estabilidad_desplazamiento_10m_pct": 100.0,
+   "decision": "verificado_interior"
+  },
+  "30": {
+   "puntos_interiores": 30,
+   "acuerdo_mismo_codigo_pct": 100.0,
+   "valor_servicio_dominante": "30",
+   "acuerdo_dominante_pct": 100.0,
+   "valores_servicio": {
+    "30": 30
+   },
+   "categorias_servicio": {
+    "Explotación minera": 30
+   },
+   "estabilidad_desplazamiento_10m_pct": 100.0,
+   "decision": "verificado_interior"
+  }
+ },
+ "puntos": [
+  {
+   "codigo_asset": 1,
+   "lon": -79.76699732381492,
+   "lat": 9.264375877119422,
+   "servicio": {
+    "categoria": "Bosque latifoliado mixto maduro",
+    "valor_servicio": "1",
+    "rgb": [
+     0,
+     88,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "1",
+    "1",
+    "1",
+    "1"
+   ]
+  },
+  {
+   "codigo_asset": 1,
+   "lon": -79.4685977731002,
+   "lat": 9.21860271276535,
+   "servicio": {
+    "categoria": "Bosque latifoliado mixto maduro",
+    "valor_servicio": "1",
+    "rgb": [
+     0,
+     88,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "1",
+    "1",
+    "1",
+    "1"
+   ]
+  },
+  {
+   "codigo_asset": 1,
+   "lon": -79.66589142238321,
+   "lat": 9.173315888900289,
+   "servicio": {
+    "categoria": "Bosque latifoliado mixto maduro",
+    "valor_servicio": "1",
+    "rgb": [
+     0,
+     88,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "1",
+    "1",
+    "1",
+    "1"
+   ]
+  },
+  {
+   "codigo_asset": 1,
+   "lon": -80.09536188396464,
+   "lat": 8.970477582375553,
+   "servicio": {
+    "categoria": "Bosque latifoliado mixto maduro",
+    "valor_servicio": "1",
+    "rgb": [
+     0,
+     88,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "1",
+    "1",
+    "1",
+    "1"
+   ]
+  },
+  {
+   "codigo_asset": 1,
+   "lon": -79.9044114743229,
+   "lat": 8.964082520018628,
+   "servicio": {
+    "categoria": "Bosque latifoliado mixto maduro",
+    "valor_servicio": "1",
+    "rgb": [
+     0,
+     88,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "1",
+    "1",
+    "1",
+    "1"
+   ]
+  },
+  {
+   "codigo_asset": 1,
+   "lon": -79.59727626786417,
+   "lat": 9.36859745903541,
+   "servicio": {
+    "categoria": "Bosque latifoliado mixto maduro",
+    "valor_servicio": "1",
+    "rgb": [
+     0,
+     88,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "1",
+    "1",
+    "1",
+    "1"
+   ]
+  },
+  {
+   "codigo_asset": 1,
+   "lon": -79.5295656728298,
+   "lat": 9.3075601530685,
+   "servicio": {
+    "categoria": "Bosque latifoliado mixto maduro",
+    "valor_servicio": "1",
+    "rgb": [
+     0,
+     88,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "1",
+    "1",
+    "1",
+    "1"
+   ]
+  },
+  {
+   "codigo_asset": 1,
+   "lon": -79.81208951081935,
+   "lat": 9.18639568341331,
+   "servicio": {
+    "categoria": "Bosque latifoliado mixto maduro",
+    "valor_servicio": "1",
+    "rgb": [
+     0,
+     88,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "1",
+    "1",
+    "1",
+    "1"
+   ]
+  },
+  {
+   "codigo_asset": 1,
+   "lon": -79.66436246937933,
+   "lat": 9.156310042980461,
+   "servicio": {
+    "categoria": "Bosque latifoliado mixto maduro",
+    "valor_servicio": "1",
+    "rgb": [
+     0,
+     88,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "1",
+    "1",
+    "1",
+    "1"
+   ]
+  },
+  {
+   "codigo_asset": 1,
+   "lon": -79.49026288393985,
+   "lat": 9.376476218125353,
+   "servicio": {
+    "categoria": "Bosque latifoliado mixto maduro",
+    "valor_servicio": "1",
+    "rgb": [
+     0,
+     88,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "1",
+    "1",
+    "1",
+    "1"
+   ]
+  },
+  {
+   "codigo_asset": 1,
+   "lon": -79.86296602389844,
+   "lat": 9.214186705996473,
+   "servicio": {
+    "categoria": "Bosque latifoliado mixto maduro",
+    "valor_servicio": "1",
+    "rgb": [
+     0,
+     88,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "1",
+    "1",
+    "1",
+    "1"
+   ]
+  },
+  {
+   "codigo_asset": 1,
+   "lon": -79.50655933013738,
+   "lat": 9.139553751034073,
+   "servicio": {
+    "categoria": "Bosque latifoliado mixto maduro",
+    "valor_servicio": "1",
+    "rgb": [
+     0,
+     88,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "1",
+    "1",
+    "1",
+    "1"
+   ]
+  },
+  {
+   "codigo_asset": 1,
+   "lon": -79.68628566304447,
+   "lat": 9.15819875768319,
+   "servicio": {
+    "categoria": "Bosque latifoliado mixto maduro",
+    "valor_servicio": "1",
+    "rgb": [
+     0,
+     88,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "1",
+    "1",
+    "1",
+    "1"
+   ]
+  },
+  {
+   "codigo_asset": 1,
+   "lon": -79.6902755186662,
+   "lat": 9.049564212166286,
+   "servicio": {
+    "categoria": "Bosque latifoliado mixto maduro",
+    "valor_servicio": "1",
+    "rgb": [
+     0,
+     88,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "1",
+    "1",
+    "1",
+    "1"
+   ]
+  },
+  {
+   "codigo_asset": 1,
+   "lon": -79.48080580506648,
+   "lat": 9.183481254547694,
+   "servicio": {
+    "categoria": "Bosque latifoliado mixto maduro",
+    "valor_servicio": "1",
+    "rgb": [
+     0,
+     88,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "1",
+    "1",
+    "1",
+    "1"
+   ]
+  },
+  {
+   "codigo_asset": 1,
+   "lon": -79.52889642174574,
+   "lat": 9.271615038749344,
+   "servicio": {
+    "categoria": "Bosque latifoliado mixto maduro",
+    "valor_servicio": "1",
+    "rgb": [
+     0,
+     88,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "1",
+    "1",
+    "1",
+    "1"
+   ]
+  },
+  {
+   "codigo_asset": 1,
+   "lon": -79.7291999292241,
+   "lat": 9.104365765526238,
+   "servicio": {
+    "categoria": "Bosque latifoliado mixto maduro",
+    "valor_servicio": "1",
+    "rgb": [
+     0,
+     88,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "1",
+    "1",
+    "1",
+    "1"
+   ]
+  },
+  {
+   "codigo_asset": 1,
+   "lon": -79.71602293908671,
+   "lat": 9.099933765569567,
+   "servicio": {
+    "categoria": "Bosque latifoliado mixto maduro",
+    "valor_servicio": "1",
+    "rgb": [
+     0,
+     88,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "1",
+    "1",
+    "1",
+    "1"
+   ]
+  },
+  {
+   "codigo_asset": 1,
+   "lon": -79.68009483089575,
+   "lat": 9.12196012724081,
+   "servicio": {
+    "categoria": "Bosque latifoliado mixto maduro",
+    "valor_servicio": "1",
+    "rgb": [
+     0,
+     88,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "1",
+    "1",
+    "1",
+    "1"
+   ]
+  },
+  {
+   "codigo_asset": 1,
+   "lon": -79.63521321287541,
+   "lat": 9.068533570581257,
+   "servicio": {
+    "categoria": "Bosque latifoliado mixto maduro",
+    "valor_servicio": "1",
+    "rgb": [
+     0,
+     88,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "1",
+    "1",
+    "1",
+    "1"
+   ]
+  },
+  {
+   "codigo_asset": 1,
+   "lon": -79.2865128696087,
+   "lat": 9.301592825917979,
+   "servicio": {
+    "categoria": "Bosque latifoliado mixto maduro",
+    "valor_servicio": "1",
+    "rgb": [
+     0,
+     88,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "1",
+    "1",
+    "1",
+    "1"
+   ]
+  },
+  {
+   "codigo_asset": 1,
+   "lon": -79.90450256436498,
+   "lat": 8.964037572263916,
+   "servicio": {
+    "categoria": "Bosque latifoliado mixto maduro",
+    "valor_servicio": "1",
+    "rgb": [
+     0,
+     88,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "1",
+    "1",
+    "1",
+    "1"
+   ]
+  },
+  {
+   "codigo_asset": 1,
+   "lon": -79.63582715714645,
+   "lat": 9.002072607505784,
+   "servicio": {
+    "categoria": "Bosque latifoliado mixto maduro",
+    "valor_servicio": "1",
+    "rgb": [
+     0,
+     88,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "1",
+    "1",
+    "1",
+    "1"
+   ]
+  },
+  {
+   "codigo_asset": 1,
+   "lon": -79.79542644761206,
+   "lat": 9.066926127365157,
+   "servicio": {
+    "categoria": "Bosque latifoliado mixto maduro",
+    "valor_servicio": "1",
+    "rgb": [
+     0,
+     88,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "1",
+    "1",
+    "1",
+    "1"
+   ]
+  },
+  {
+   "codigo_asset": 1,
+   "lon": -79.64764128452482,
+   "lat": 9.186540711145662,
+   "servicio": {
+    "categoria": "Bosque latifoliado mixto maduro",
+    "valor_servicio": "1",
+    "rgb": [
+     0,
+     88,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "1",
+    "1",
+    "1",
+    "1"
+   ]
+  },
+  {
+   "codigo_asset": 1,
+   "lon": -79.88233318141785,
+   "lat": 9.133218833315576,
+   "servicio": {
+    "categoria": "Bosque latifoliado mixto maduro",
+    "valor_servicio": "1",
+    "rgb": [
+     0,
+     88,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "1",
+    "1",
+    "1",
+    "1"
+   ]
+  },
+  {
+   "codigo_asset": 1,
+   "lon": -80.0817968817207,
+   "lat": 9.047182248184328,
+   "servicio": {
+    "categoria": "Bosque latifoliado mixto maduro",
+    "valor_servicio": "1",
+    "rgb": [
+     0,
+     88,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "1",
+    "1",
+    "1",
+    "1"
+   ]
+  },
+  {
+   "codigo_asset": 1,
+   "lon": -79.92719962536694,
+   "lat": 9.146919400719513,
+   "servicio": {
+    "categoria": "Bosque latifoliado mixto maduro",
+    "valor_servicio": "1",
+    "rgb": [
+     0,
+     88,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "1",
+    "1",
+    "1",
+    "1"
+   ]
+  },
+  {
+   "codigo_asset": 1,
+   "lon": -79.66593482043612,
+   "lat": 9.100522481364779,
+   "servicio": {
+    "categoria": "Bosque latifoliado mixto maduro",
+    "valor_servicio": "1",
+    "rgb": [
+     0,
+     88,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "1",
+    "1",
+    "1",
+    "1"
+   ]
+  },
+  {
+   "codigo_asset": 1,
+   "lon": -79.79545827838407,
+   "lat": 9.273380121026207,
+   "servicio": {
+    "categoria": "Bosque latifoliado mixto maduro",
+    "valor_servicio": "1",
+    "rgb": [
+     0,
+     88,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "1",
+    "1",
+    "1",
+    "1"
+   ]
+  },
+  {
+   "codigo_asset": 2,
+   "lon": -79.53870144271316,
+   "lat": 9.365241208141361,
+   "servicio": {
+    "categoria": "Bosque latifoliado mixto secundario",
+    "valor_servicio": "2",
+    "rgb": [
+     0,
+     166,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "2",
+    "2",
+    "2",
+    "2"
+   ]
+  },
+  {
+   "codigo_asset": 2,
+   "lon": -79.81769810634542,
+   "lat": 9.01667324637319,
+   "servicio": {
+    "categoria": "Bosque latifoliado mixto secundario",
+    "valor_servicio": "2",
+    "rgb": [
+     0,
+     166,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "2",
+    "2",
+    "2",
+    "2"
+   ]
+  },
+  {
+   "codigo_asset": 2,
+   "lon": -80.06365867456371,
+   "lat": 8.683205893735495,
+   "servicio": {
+    "categoria": "Bosque latifoliado mixto secundario",
+    "valor_servicio": "2",
+    "rgb": [
+     0,
+     166,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "2",
+    "2",
+    "2",
+    "2"
+   ]
+  },
+  {
+   "codigo_asset": 2,
+   "lon": -79.93732807371633,
+   "lat": 8.982944077550728,
+   "servicio": {
+    "categoria": "Bosque latifoliado mixto secundario",
+    "valor_servicio": "2",
+    "rgb": [
+     0,
+     166,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "2",
+    "2",
+    "2",
+    "2"
+   ]
+  },
+  {
+   "codigo_asset": 2,
+   "lon": -79.7559476985278,
+   "lat": 9.02564819047329,
+   "servicio": {
+    "categoria": "Bosque latifoliado mixto secundario",
+    "valor_servicio": "2",
+    "rgb": [
+     0,
+     166,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "2",
+    "2",
+    "2",
+    "2"
+   ]
+  },
+  {
+   "codigo_asset": 2,
+   "lon": -79.36750351751795,
+   "lat": 9.265942467733947,
+   "servicio": {
+    "categoria": "Bosque latifoliado mixto secundario",
+    "valor_servicio": "2",
+    "rgb": [
+     0,
+     166,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "2",
+    "2",
+    "2",
+    "2"
+   ]
+  },
+  {
+   "codigo_asset": 2,
+   "lon": -79.92209349339913,
+   "lat": 9.074375345957638,
+   "servicio": {
+    "categoria": "Bosque latifoliado mixto secundario",
+    "valor_servicio": "2",
+    "rgb": [
+     0,
+     166,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "2",
+    "2",
+    "2",
+    "2"
+   ]
+  },
+  {
+   "codigo_asset": 2,
+   "lon": -79.58107623090525,
+   "lat": 9.366995771767012,
+   "servicio": {
+    "categoria": "Bosque latifoliado mixto secundario",
+    "valor_servicio": "2",
+    "rgb": [
+     0,
+     166,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "2",
+    "2",
+    "2",
+    "2"
+   ]
+  },
+  {
+   "codigo_asset": 2,
+   "lon": -80.11539760657324,
+   "lat": 8.922863764735897,
+   "servicio": {
+    "categoria": "Bosque latifoliado mixto secundario",
+    "valor_servicio": "2",
+    "rgb": [
+     0,
+     166,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "2",
+    "2",
+    "2",
+    "2"
+   ]
+  },
+  {
+   "codigo_asset": 2,
+   "lon": -79.78906749592667,
+   "lat": 9.292077608594354,
+   "servicio": {
+    "categoria": "Bosque latifoliado mixto secundario",
+    "valor_servicio": "2",
+    "rgb": [
+     0,
+     166,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "2",
+    "2",
+    "2",
+    "2"
+   ]
+  },
+  {
+   "codigo_asset": 2,
+   "lon": -79.64648315953829,
+   "lat": 9.191961923532775,
+   "servicio": {
+    "categoria": "Bosque latifoliado mixto secundario",
+    "valor_servicio": "2",
+    "rgb": [
+     0,
+     166,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "2",
+    "2",
+    "2",
+    "2"
+   ]
+  },
+  {
+   "codigo_asset": 2,
+   "lon": -79.72368439187642,
+   "lat": 9.196764626130728,
+   "servicio": {
+    "categoria": "Bosque latifoliado mixto secundario",
+    "valor_servicio": "2",
+    "rgb": [
+     0,
+     166,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "2",
+    "2",
+    "2",
+    "2"
+   ]
+  },
+  {
+   "codigo_asset": 2,
+   "lon": -79.63300138307677,
+   "lat": 9.207238202882056,
+   "servicio": {
+    "categoria": "Bosque latifoliado mixto secundario",
+    "valor_servicio": "2",
+    "rgb": [
+     0,
+     166,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "2",
+    "2",
+    "2",
+    "2"
+   ]
+  },
+  {
+   "codigo_asset": 2,
+   "lon": -79.76448071415068,
+   "lat": 9.057553768321013,
+   "servicio": {
+    "categoria": "Bosque latifoliado mixto secundario",
+    "valor_servicio": "2",
+    "rgb": [
+     0,
+     166,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "2",
+    "2",
+    "2",
+    "2"
+   ]
+  },
+  {
+   "codigo_asset": 2,
+   "lon": -79.53655510948582,
+   "lat": 9.31233602202189,
+   "servicio": {
+    "categoria": "Bosque latifoliado mixto secundario",
+    "valor_servicio": "2",
+    "rgb": [
+     0,
+     166,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "2",
+    "2",
+    "2",
+    "2"
+   ]
+  },
+  {
+   "codigo_asset": 2,
+   "lon": -79.93255623992609,
+   "lat": 8.934953970770408,
+   "servicio": {
+    "categoria": "Bosque latifoliado mixto secundario",
+    "valor_servicio": "2",
+    "rgb": [
+     0,
+     166,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "2",
+    "2",
+    "2",
+    "2"
+   ]
+  },
+  {
+   "codigo_asset": 2,
+   "lon": -79.54111823164699,
+   "lat": 9.30955166745081,
+   "servicio": {
+    "categoria": "Bosque latifoliado mixto secundario",
+    "valor_servicio": "2",
+    "rgb": [
+     0,
+     166,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "2",
+    "2",
+    "2",
+    "2"
+   ]
+  },
+  {
+   "codigo_asset": 2,
+   "lon": -80.07177880547776,
+   "lat": 8.979915263224134,
+   "servicio": {
+    "categoria": "Bosque latifoliado mixto secundario",
+    "valor_servicio": "2",
+    "rgb": [
+     0,
+     166,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "2",
+    "2",
+    "2",
+    "2"
+   ]
+  },
+  {
+   "codigo_asset": 2,
+   "lon": -79.63190913074311,
+   "lat": 9.207279270047355,
+   "servicio": {
+    "categoria": "Bosque latifoliado mixto secundario",
+    "valor_servicio": "2",
+    "rgb": [
+     0,
+     166,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "2",
+    "2",
+    "2",
+    "2"
+   ]
+  },
+  {
+   "codigo_asset": 2,
+   "lon": -79.71929092416552,
+   "lat": 9.341795566110891,
+   "servicio": {
+    "categoria": "Bosque latifoliado mixto secundario",
+    "valor_servicio": "2",
+    "rgb": [
+     0,
+     166,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "2",
+    "2",
+    "2",
+    "2"
+   ]
+  },
+  {
+   "codigo_asset": 2,
+   "lon": -79.59077152436672,
+   "lat": 9.138715041387908,
+   "servicio": {
+    "categoria": "Bosque latifoliado mixto secundario",
+    "valor_servicio": "2",
+    "rgb": [
+     0,
+     166,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "2",
+    "2",
+    "2",
+    "2"
+   ]
+  },
+  {
+   "codigo_asset": 2,
+   "lon": -79.9628018163625,
+   "lat": 8.949283597459079,
+   "servicio": {
+    "categoria": "Bosque latifoliado mixto secundario",
+    "valor_servicio": "2",
+    "rgb": [
+     0,
+     166,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "2",
+    "2",
+    "2",
+    "2"
+   ]
+  },
+  {
+   "codigo_asset": 2,
+   "lon": -79.94258921847667,
+   "lat": 8.987978400492803,
+   "servicio": {
+    "categoria": "Bosque latifoliado mixto secundario",
+    "valor_servicio": "2",
+    "rgb": [
+     0,
+     166,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "2",
+    "2",
+    "2",
+    "2"
+   ]
+  },
+  {
+   "codigo_asset": 2,
+   "lon": -79.63961363877648,
+   "lat": 9.191619605308523,
+   "servicio": {
+    "categoria": "Bosque latifoliado mixto secundario",
+    "valor_servicio": "2",
+    "rgb": [
+     0,
+     166,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "2",
+    "2",
+    "2",
+    "2"
+   ]
+  },
+  {
+   "codigo_asset": 2,
+   "lon": -79.64498607640324,
+   "lat": 9.309690323119721,
+   "servicio": {
+    "categoria": "Bosque latifoliado mixto secundario",
+    "valor_servicio": "2",
+    "rgb": [
+     0,
+     166,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "2",
+    "2",
+    "2",
+    "2"
+   ]
+  },
+  {
+   "codigo_asset": 2,
+   "lon": -79.42051604625463,
+   "lat": 9.174497393409206,
+   "servicio": {
+    "categoria": "Bosque latifoliado mixto secundario",
+    "valor_servicio": "2",
+    "rgb": [
+     0,
+     166,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "2",
+    "2",
+    "2",
+    "2"
+   ]
+  },
+  {
+   "codigo_asset": 2,
+   "lon": -79.86535917240887,
+   "lat": 9.234315565465025,
+   "servicio": {
+    "categoria": "Bosque latifoliado mixto secundario",
+    "valor_servicio": "2",
+    "rgb": [
+     0,
+     166,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "2",
+    "2",
+    "2",
+    "2"
+   ]
+  },
+  {
+   "codigo_asset": 2,
+   "lon": -79.54581508180064,
+   "lat": 9.185512059797325,
+   "servicio": {
+    "categoria": "Bosque latifoliado mixto secundario",
+    "valor_servicio": "2",
+    "rgb": [
+     0,
+     166,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "2",
+    "2",
+    "2",
+    "2"
+   ]
+  },
+  {
+   "codigo_asset": 2,
+   "lon": -79.91933874806125,
+   "lat": 8.96050901770327,
+   "servicio": {
+    "categoria": "Bosque latifoliado mixto secundario",
+    "valor_servicio": "2",
+    "rgb": [
+     0,
+     166,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "2",
+    "2",
+    "2",
+    "2"
+   ]
+  },
+  {
+   "codigo_asset": 2,
+   "lon": -79.93862672881578,
+   "lat": 8.989911395378751,
+   "servicio": {
+    "categoria": "Bosque latifoliado mixto secundario",
+    "valor_servicio": "2",
+    "rgb": [
+     0,
+     166,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "2",
+    "2",
+    "2",
+    "2"
+   ]
+  },
+  {
+   "codigo_asset": 7,
+   "lon": -80.00927511732552,
+   "lat": 9.034467760037499,
+   "servicio": {
+    "categoria": "Bosque plantado de coníferas",
+    "valor_servicio": "7",
+    "rgb": [
+     19,
+     60,
+     42
+    ]
+   },
+   "servicio_desplazado": [
+    "7",
+    "7",
+    "7",
+    "7"
+   ]
+  },
+  {
+   "codigo_asset": 7,
+   "lon": -79.92270432922648,
+   "lat": 9.021969850701106,
+   "servicio": {
+    "categoria": "Bosque plantado de coníferas",
+    "valor_servicio": "7",
+    "rgb": [
+     19,
+     60,
+     42
+    ]
+   },
+   "servicio_desplazado": [
+    "7",
+    "7",
+    "7",
+    "7"
+   ]
+  },
+  {
+   "codigo_asset": 7,
+   "lon": -79.7819581026513,
+   "lat": 9.307743023695062,
+   "servicio": {
+    "categoria": "Bosque plantado de coníferas",
+    "valor_servicio": "7",
+    "rgb": [
+     19,
+     60,
+     42
+    ]
+   },
+   "servicio_desplazado": [
+    "7",
+    "7",
+    "7",
+    "7"
+   ]
+  },
+  {
+   "codigo_asset": 7,
+   "lon": -79.77827829636132,
+   "lat": 9.30565055047712,
+   "servicio": {
+    "categoria": "Bosque plantado de coníferas",
+    "valor_servicio": "7",
+    "rgb": [
+     19,
+     60,
+     42
+    ]
+   },
+   "servicio_desplazado": [
+    "7",
+    "7",
+    "7",
+    "7"
+   ]
+  },
+  {
+   "codigo_asset": 7,
+   "lon": -79.92075923202644,
+   "lat": 9.018346725677326,
+   "servicio": {
+    "categoria": "Bosque plantado de coníferas",
+    "valor_servicio": "7",
+    "rgb": [
+     19,
+     60,
+     42
+    ]
+   },
+   "servicio_desplazado": [
+    "7",
+    "7",
+    "7",
+    "7"
+   ]
+  },
+  {
+   "codigo_asset": 7,
+   "lon": -79.40376538419291,
+   "lat": 9.21696474468066,
+   "servicio": {
+    "categoria": "Bosque plantado de coníferas",
+    "valor_servicio": "7",
+    "rgb": [
+     19,
+     60,
+     42
+    ]
+   },
+   "servicio_desplazado": [
+    "7",
+    "7",
+    "7",
+    "7"
+   ]
+  },
+  {
+   "codigo_asset": 7,
+   "lon": -80.0076300161346,
+   "lat": 9.037221666690925,
+   "servicio": {
+    "categoria": "Bosque plantado de coníferas",
+    "valor_servicio": "7",
+    "rgb": [
+     19,
+     60,
+     42
+    ]
+   },
+   "servicio_desplazado": [
+    "7",
+    "7",
+    "7",
+    "7"
+   ]
+  },
+  {
+   "codigo_asset": 7,
+   "lon": -79.39613306476807,
+   "lat": 9.214353959876737,
+   "servicio": {
+    "categoria": "Bosque plantado de coníferas",
+    "valor_servicio": "7",
+    "rgb": [
+     19,
+     60,
+     42
+    ]
+   },
+   "servicio_desplazado": [
+    "7",
+    "7",
+    "7",
+    "7"
+   ]
+  },
+  {
+   "codigo_asset": 7,
+   "lon": -79.77877554844191,
+   "lat": 9.306646981014165,
+   "servicio": {
+    "categoria": "Bosque plantado de coníferas",
+    "valor_servicio": "7",
+    "rgb": [
+     19,
+     60,
+     42
+    ]
+   },
+   "servicio_desplazado": [
+    "7",
+    "7",
+    "7",
+    "7"
+   ]
+  },
+  {
+   "codigo_asset": 7,
+   "lon": -79.92714562329581,
+   "lat": 8.934667053780915,
+   "servicio": {
+    "categoria": "Bosque plantado de coníferas",
+    "valor_servicio": "7",
+    "rgb": [
+     19,
+     60,
+     42
+    ]
+   },
+   "servicio_desplazado": [
+    "7",
+    "7",
+    "7",
+    "7"
+   ]
+  },
+  {
+   "codigo_asset": 7,
+   "lon": -79.78077884190851,
+   "lat": 9.306518190721189,
+   "servicio": {
+    "categoria": "Bosque plantado de coníferas",
+    "valor_servicio": "7",
+    "rgb": [
+     19,
+     60,
+     42
+    ]
+   },
+   "servicio_desplazado": [
+    "7",
+    "7",
+    "7",
+    "7"
+   ]
+  },
+  {
+   "codigo_asset": 7,
+   "lon": -79.41586194643105,
+   "lat": 9.208247754900539,
+   "servicio": {
+    "categoria": "Bosque plantado de coníferas",
+    "valor_servicio": "7",
+    "rgb": [
+     19,
+     60,
+     42
+    ]
+   },
+   "servicio_desplazado": [
+    "7",
+    "7",
+    "7",
+    "7"
+   ]
+  },
+  {
+   "codigo_asset": 7,
+   "lon": -79.77914032555115,
+   "lat": 9.306467370395472,
+   "servicio": {
+    "categoria": "Bosque plantado de coníferas",
+    "valor_servicio": "7",
+    "rgb": [
+     19,
+     60,
+     42
+    ]
+   },
+   "servicio_desplazado": [
+    "7",
+    "7",
+    "7",
+    "7"
+   ]
+  },
+  {
+   "codigo_asset": 7,
+   "lon": -80.0085465743462,
+   "lat": 9.034737105965618,
+   "servicio": {
+    "categoria": "Bosque plantado de coníferas",
+    "valor_servicio": "7",
+    "rgb": [
+     19,
+     60,
+     42
+    ]
+   },
+   "servicio_desplazado": [
+    "7",
+    "7",
+    "7",
+    "7"
+   ]
+  },
+  {
+   "codigo_asset": 7,
+   "lon": -79.91938340464291,
+   "lat": 9.022140971288653,
+   "servicio": {
+    "categoria": "Bosque plantado de coníferas",
+    "valor_servicio": "7",
+    "rgb": [
+     19,
+     60,
+     42
+    ]
+   },
+   "servicio_desplazado": [
+    "7",
+    "7",
+    "7",
+    "7"
+   ]
+  },
+  {
+   "codigo_asset": 7,
+   "lon": -79.41417687382,
+   "lat": 9.208602008494363,
+   "servicio": {
+    "categoria": "Bosque plantado de coníferas",
+    "valor_servicio": "7",
+    "rgb": [
+     19,
+     60,
+     42
+    ]
+   },
+   "servicio_desplazado": [
+    "7",
+    "7",
+    "7",
+    "7"
+   ]
+  },
+  {
+   "codigo_asset": 7,
+   "lon": -79.92057648885095,
+   "lat": 9.018617495514423,
+   "servicio": {
+    "categoria": "Bosque plantado de coníferas",
+    "valor_servicio": "7",
+    "rgb": [
+     19,
+     60,
+     42
+    ]
+   },
+   "servicio_desplazado": [
+    "7",
+    "7",
+    "7",
+    "7"
+   ]
+  },
+  {
+   "codigo_asset": 7,
+   "lon": -79.92189164300683,
+   "lat": 9.019932669239477,
+   "servicio": {
+    "categoria": "Bosque plantado de coníferas",
+    "valor_servicio": "7",
+    "rgb": [
+     19,
+     60,
+     42
+    ]
+   },
+   "servicio_desplazado": [
+    "7",
+    "7",
+    "7",
+    "7"
+   ]
+  },
+  {
+   "codigo_asset": 7,
+   "lon": -79.92289109558432,
+   "lat": 9.020342559105549,
+   "servicio": {
+    "categoria": "Bosque plantado de coníferas",
+    "valor_servicio": "7",
+    "rgb": [
+     19,
+     60,
+     42
+    ]
+   },
+   "servicio_desplazado": [
+    "7",
+    "7",
+    "7",
+    "7"
+   ]
+  },
+  {
+   "codigo_asset": 7,
+   "lon": -80.0081805711367,
+   "lat": 9.03550483800201,
+   "servicio": {
+    "categoria": "Bosque plantado de coníferas",
+    "valor_servicio": "7",
+    "rgb": [
+     19,
+     60,
+     42
+    ]
+   },
+   "servicio_desplazado": [
+    "7",
+    "7",
+    "7",
+    "7"
+   ]
+  },
+  {
+   "codigo_asset": 7,
+   "lon": -79.92682677639039,
+   "lat": 8.934847003559058,
+   "servicio": {
+    "categoria": "Bosque plantado de coníferas",
+    "valor_servicio": "7",
+    "rgb": [
+     19,
+     60,
+     42
+    ]
+   },
+   "servicio_desplazado": [
+    "7",
+    "7",
+    "7",
+    "7"
+   ]
+  },
+  {
+   "codigo_asset": 7,
+   "lon": -79.92687211807231,
+   "lat": 8.934892352740464,
+   "servicio": {
+    "categoria": "Bosque plantado de coníferas",
+    "valor_servicio": "7",
+    "rgb": [
+     19,
+     60,
+     42
+    ]
+   },
+   "servicio_desplazado": [
+    "7",
+    "7",
+    "7",
+    "7"
+   ]
+  },
+  {
+   "codigo_asset": 7,
+   "lon": -80.01059684795963,
+   "lat": 9.033521728388378,
+   "servicio": {
+    "categoria": "Bosque plantado de coníferas",
+    "valor_servicio": "7",
+    "rgb": [
+     19,
+     60,
+     42
+    ]
+   },
+   "servicio_desplazado": [
+    "7",
+    "7",
+    "7",
+    "7"
+   ]
+  },
+  {
+   "codigo_asset": 7,
+   "lon": -79.78142283630854,
+   "lat": 9.304576149650272,
+   "servicio": {
+    "categoria": "Bosque plantado de coníferas",
+    "valor_servicio": "7",
+    "rgb": [
+     19,
+     60,
+     42
+    ]
+   },
+   "servicio_desplazado": [
+    "7",
+    "7",
+    "7",
+    "7"
+   ]
+  },
+  {
+   "codigo_asset": 7,
+   "lon": -79.78033195998313,
+   "lat": 9.30412027208691,
+   "servicio": {
+    "categoria": "Bosque plantado de coníferas",
+    "valor_servicio": "7",
+    "rgb": [
+     19,
+     60,
+     42
+    ]
+   },
+   "servicio_desplazado": [
+    "7",
+    "7",
+    "7",
+    "7"
+   ]
+  },
+  {
+   "codigo_asset": 7,
+   "lon": -79.92673543149483,
+   "lat": 8.934982393315668,
+   "servicio": {
+    "categoria": "Bosque plantado de coníferas",
+    "valor_servicio": "7",
+    "rgb": [
+     19,
+     60,
+     42
+    ]
+   },
+   "servicio_desplazado": [
+    "7",
+    "7",
+    "7",
+    "7"
+   ]
+  },
+  {
+   "codigo_asset": 7,
+   "lon": -80.00936485735392,
+   "lat": 9.03492019125645,
+   "servicio": {
+    "categoria": "Bosque plantado de coníferas",
+    "valor_servicio": "7",
+    "rgb": [
+     19,
+     60,
+     42
+    ]
+   },
+   "servicio_desplazado": [
+    "7",
+    "7",
+    "7",
+    "7"
+   ]
+  },
+  {
+   "codigo_asset": 7,
+   "lon": -79.78133023372094,
+   "lat": 9.305027982623063,
+   "servicio": {
+    "categoria": "Bosque plantado de coníferas",
+    "valor_servicio": "7",
+    "rgb": [
+     19,
+     60,
+     42
+    ]
+   },
+   "servicio_desplazado": [
+    "7",
+    "7",
+    "7",
+    "7"
+   ]
+  },
+  {
+   "codigo_asset": 7,
+   "lon": -79.77855941041553,
+   "lat": 9.303345553911187,
+   "servicio": {
+    "categoria": "Bosque plantado de coníferas",
+    "valor_servicio": "7",
+    "rgb": [
+     19,
+     60,
+     42
+    ]
+   },
+   "servicio_desplazado": [
+    "7",
+    "7",
+    "7",
+    "7"
+   ]
+  },
+  {
+   "codigo_asset": 7,
+   "lon": -79.39619059801024,
+   "lat": 9.211686943969701,
+   "servicio": {
+    "categoria": "Bosque plantado de coníferas",
+    "valor_servicio": "7",
+    "rgb": [
+     19,
+     60,
+     42
+    ]
+   },
+   "servicio_desplazado": [
+    "7",
+    "7",
+    "7",
+    "7"
+   ]
+  },
+  {
+   "codigo_asset": 8,
+   "lon": -79.60670615261255,
+   "lat": 9.344129861470034,
+   "servicio": {
+    "categoria": "Bosque plantado de latifoliadas",
+    "valor_servicio": "8",
+    "rgb": [
+     84,
+     107,
+     46
+    ]
+   },
+   "servicio_desplazado": [
+    "8",
+    "8",
+    "8",
+    "8"
+   ]
+  },
+  {
+   "codigo_asset": 8,
+   "lon": -79.9287219007471,
+   "lat": 9.094200182517822,
+   "servicio": {
+    "categoria": "Bosque plantado de latifoliadas",
+    "valor_servicio": "8",
+    "rgb": [
+     84,
+     107,
+     46
+    ]
+   },
+   "servicio_desplazado": [
+    "8",
+    "8",
+    "8",
+    "8"
+   ]
+  },
+  {
+   "codigo_asset": 8,
+   "lon": -79.85072421259689,
+   "lat": 9.072349204233388,
+   "servicio": {
+    "categoria": "Bosque plantado de latifoliadas",
+    "valor_servicio": "8",
+    "rgb": [
+     84,
+     107,
+     46
+    ]
+   },
+   "servicio_desplazado": [
+    "8",
+    "8",
+    "8",
+    "8"
+   ]
+  },
+  {
+   "codigo_asset": 8,
+   "lon": -79.6873302289087,
+   "lat": 9.183476997085377,
+   "servicio": {
+    "categoria": "Bosque plantado de latifoliadas",
+    "valor_servicio": "8",
+    "rgb": [
+     84,
+     107,
+     46
+    ]
+   },
+   "servicio_desplazado": [
+    "8",
+    "8",
+    "8",
+    "8"
+   ]
+  },
+  {
+   "codigo_asset": 8,
+   "lon": -79.91389457009498,
+   "lat": 9.138107633752359,
+   "servicio": {
+    "categoria": "Bosque plantado de latifoliadas",
+    "valor_servicio": "8",
+    "rgb": [
+     84,
+     107,
+     46
+    ]
+   },
+   "servicio_desplazado": [
+    "8",
+    "8",
+    "8",
+    "8"
+   ]
+  },
+  {
+   "codigo_asset": 8,
+   "lon": -79.78365647551868,
+   "lat": 8.995627350654175,
+   "servicio": {
+    "categoria": "Bosque plantado de latifoliadas",
+    "valor_servicio": "8",
+    "rgb": [
+     84,
+     107,
+     46
+    ]
+   },
+   "servicio_desplazado": [
+    "8",
+    "8",
+    "8",
+    "8"
+   ]
+  },
+  {
+   "codigo_asset": 8,
+   "lon": -80.07174505309456,
+   "lat": 8.957395695726337,
+   "servicio": {
+    "categoria": "Bosque plantado de latifoliadas",
+    "valor_servicio": "8",
+    "rgb": [
+     84,
+     107,
+     46
+    ]
+   },
+   "servicio_desplazado": [
+    "8",
+    "8",
+    "8",
+    "8"
+   ]
+  },
+  {
+   "codigo_asset": 8,
+   "lon": -79.89338061600485,
+   "lat": 8.987427086719364,
+   "servicio": {
+    "categoria": "Bosque plantado de latifoliadas",
+    "valor_servicio": "8",
+    "rgb": [
+     84,
+     107,
+     46
+    ]
+   },
+   "servicio_desplazado": [
+    "8",
+    "8",
+    "8",
+    "8"
+   ]
+  },
+  {
+   "codigo_asset": 8,
+   "lon": -79.64003291671452,
+   "lat": 9.200980234416537,
+   "servicio": {
+    "categoria": "Bosque plantado de latifoliadas",
+    "valor_servicio": "8",
+    "rgb": [
+     84,
+     107,
+     46
+    ]
+   },
+   "servicio_desplazado": [
+    "8",
+    "8",
+    "8",
+    "8"
+   ]
+  },
+  {
+   "codigo_asset": 8,
+   "lon": -79.49027458065346,
+   "lat": 9.160735102282866,
+   "servicio": {
+    "categoria": "Bosque plantado de latifoliadas",
+    "valor_servicio": "8",
+    "rgb": [
+     84,
+     107,
+     46
+    ]
+   },
+   "servicio_desplazado": [
+    "8",
+    "8",
+    "8",
+    "8"
+   ]
+  },
+  {
+   "codigo_asset": 8,
+   "lon": -79.78617082987748,
+   "lat": 9.046186778835917,
+   "servicio": {
+    "categoria": "Bosque plantado de latifoliadas",
+    "valor_servicio": "8",
+    "rgb": [
+     84,
+     107,
+     46
+    ]
+   },
+   "servicio_desplazado": [
+    "8",
+    "8",
+    "8",
+    "8"
+   ]
+  },
+  {
+   "codigo_asset": 8,
+   "lon": -79.88208768554048,
+   "lat": 9.021532019601596,
+   "servicio": {
+    "categoria": "Bosque plantado de latifoliadas",
+    "valor_servicio": "8",
+    "rgb": [
+     84,
+     107,
+     46
+    ]
+   },
+   "servicio_desplazado": [
+    "8",
+    "8",
+    "8",
+    "8"
+   ]
+  },
+  {
+   "codigo_asset": 8,
+   "lon": -79.66614801923758,
+   "lat": 9.274594390637256,
+   "servicio": {
+    "categoria": "Bosque plantado de latifoliadas",
+    "valor_servicio": "8",
+    "rgb": [
+     84,
+     107,
+     46
+    ]
+   },
+   "servicio_desplazado": [
+    "8",
+    "8",
+    "8",
+    "8"
+   ]
+  },
+  {
+   "codigo_asset": 8,
+   "lon": -79.91371170515859,
+   "lat": 9.12336622731169,
+   "servicio": {
+    "categoria": "Bosque plantado de latifoliadas",
+    "valor_servicio": "8",
+    "rgb": [
+     84,
+     107,
+     46
+    ]
+   },
+   "servicio_desplazado": [
+    "8",
+    "8",
+    "8",
+    "8"
+   ]
+  },
+  {
+   "codigo_asset": 8,
+   "lon": -79.63278945121404,
+   "lat": 9.379180296889963,
+   "servicio": {
+    "categoria": "Bosque plantado de latifoliadas",
+    "valor_servicio": "8",
+    "rgb": [
+     84,
+     107,
+     46
+    ]
+   },
+   "servicio_desplazado": [
+    "8",
+    "8",
+    "8",
+    "8"
+   ]
+  },
+  {
+   "codigo_asset": 8,
+   "lon": -79.84164334066679,
+   "lat": 9.066984998913966,
+   "servicio": {
+    "categoria": "Bosque plantado de latifoliadas",
+    "valor_servicio": "8",
+    "rgb": [
+     84,
+     107,
+     46
+    ]
+   },
+   "servicio_desplazado": [
+    "8",
+    "8",
+    "8",
+    "8"
+   ]
+  },
+  {
+   "codigo_asset": 8,
+   "lon": -79.58031300396263,
+   "lat": 9.137408349108652,
+   "servicio": {
+    "categoria": "Bosque plantado de latifoliadas",
+    "valor_servicio": "8",
+    "rgb": [
+     84,
+     107,
+     46
+    ]
+   },
+   "servicio_desplazado": [
+    "8",
+    "8",
+    "8",
+    "8"
+   ]
+  },
+  {
+   "codigo_asset": 8,
+   "lon": -79.91238592570336,
+   "lat": 8.98929232297067,
+   "servicio": {
+    "categoria": "Bosque plantado de latifoliadas",
+    "valor_servicio": "8",
+    "rgb": [
+     84,
+     107,
+     46
+    ]
+   },
+   "servicio_desplazado": [
+    "8",
+    "8",
+    "8",
+    "8"
+   ]
+  },
+  {
+   "codigo_asset": 8,
+   "lon": -79.63906767224361,
+   "lat": 9.368624800702687,
+   "servicio": {
+    "categoria": "Bosque plantado de latifoliadas",
+    "valor_servicio": "8",
+    "rgb": [
+     84,
+     107,
+     46
+    ]
+   },
+   "servicio_desplazado": [
+    "8",
+    "8",
+    "8",
+    "8"
+   ]
+  },
+  {
+   "codigo_asset": 8,
+   "lon": -79.66190281331961,
+   "lat": 8.985167944947586,
+   "servicio": {
+    "categoria": "Bosque plantado de latifoliadas",
+    "valor_servicio": "8",
+    "rgb": [
+     84,
+     107,
+     46
+    ]
+   },
+   "servicio_desplazado": [
+    "8",
+    "8",
+    "8",
+    "8"
+   ]
+  },
+  {
+   "codigo_asset": 8,
+   "lon": -79.6349627754096,
+   "lat": 9.312138768569051,
+   "servicio": {
+    "categoria": "Bosque plantado de latifoliadas",
+    "valor_servicio": "8",
+    "rgb": [
+     84,
+     107,
+     46
+    ]
+   },
+   "servicio_desplazado": [
+    "8",
+    "8",
+    "8",
+    "8"
+   ]
+  },
+  {
+   "codigo_asset": 8,
+   "lon": -79.6640713116665,
+   "lat": 9.25808387695355,
+   "servicio": {
+    "categoria": "Bosque plantado de latifoliadas",
+    "valor_servicio": "8",
+    "rgb": [
+     84,
+     107,
+     46
+    ]
+   },
+   "servicio_desplazado": [
+    "8",
+    "8",
+    "8",
+    "8"
+   ]
+  },
+  {
+   "codigo_asset": 8,
+   "lon": -79.58076811659718,
+   "lat": 9.137364917033189,
+   "servicio": {
+    "categoria": "Bosque plantado de latifoliadas",
+    "valor_servicio": "8",
+    "rgb": [
+     84,
+     107,
+     46
+    ]
+   },
+   "servicio_desplazado": [
+    "8",
+    "8",
+    "8",
+    "8"
+   ]
+  },
+  {
+   "codigo_asset": 8,
+   "lon": -79.78656406269869,
+   "lat": 9.292069112146077,
+   "servicio": {
+    "categoria": "Bosque plantado de latifoliadas",
+    "valor_servicio": "8",
+    "rgb": [
+     84,
+     107,
+     46
+    ]
+   },
+   "servicio_desplazado": [
+    "8",
+    "8",
+    "8",
+    "8"
+   ]
+  },
+  {
+   "codigo_asset": 8,
+   "lon": -79.60619905680623,
+   "lat": 9.23060061899101,
+   "servicio": {
+    "categoria": "Bosque plantado de latifoliadas",
+    "valor_servicio": "8",
+    "rgb": [
+     84,
+     107,
+     46
+    ]
+   },
+   "servicio_desplazado": [
+    "8",
+    "8",
+    "8",
+    "8"
+   ]
+  },
+  {
+   "codigo_asset": 8,
+   "lon": -79.69007573838117,
+   "lat": 9.191670642698568,
+   "servicio": {
+    "categoria": "Bosque plantado de latifoliadas",
+    "valor_servicio": "8",
+    "rgb": [
+     84,
+     107,
+     46
+    ]
+   },
+   "servicio_desplazado": [
+    "8",
+    "8",
+    "8",
+    "8"
+   ]
+  },
+  {
+   "codigo_asset": 8,
+   "lon": -79.78384347175337,
+   "lat": 9.048439843371687,
+   "servicio": {
+    "categoria": "Bosque plantado de latifoliadas",
+    "valor_servicio": "8",
+    "rgb": [
+     84,
+     107,
+     46
+    ]
+   },
+   "servicio_desplazado": [
+    "8",
+    "8",
+    "8",
+    "8"
+   ]
+  },
+  {
+   "codigo_asset": 8,
+   "lon": -79.63172268976882,
+   "lat": 9.384194729609135,
+   "servicio": {
+    "categoria": "Bosque plantado de latifoliadas",
+    "valor_servicio": "8",
+    "rgb": [
+     84,
+     107,
+     46
+    ]
+   },
+   "servicio_desplazado": [
+    "8",
+    "8",
+    "8",
+    "8"
+   ]
+  },
+  {
+   "codigo_asset": 8,
+   "lon": -79.9469142056911,
+   "lat": 9.00223449172016,
+   "servicio": {
+    "categoria": "Bosque plantado de latifoliadas",
+    "valor_servicio": "8",
+    "rgb": [
+     84,
+     107,
+     46
+    ]
+   },
+   "servicio_desplazado": [
+    "8",
+    "8",
+    "8",
+    "8"
+   ]
+  },
+  {
+   "codigo_asset": 8,
+   "lon": -79.58017849353486,
+   "lat": 9.13691049273269,
+   "servicio": {
+    "categoria": "Bosque plantado de latifoliadas",
+    "valor_servicio": "8",
+    "rgb": [
+     84,
+     107,
+     46
+    ]
+   },
+   "servicio_desplazado": [
+    "8",
+    "8",
+    "8",
+    "8"
+   ]
+  },
+  {
+   "codigo_asset": 9,
+   "lon": -79.64126675774006,
+   "lat": 9.211519467497125,
+   "servicio": {
+    "categoria": "Rastrojo y vegetación arbustiva",
+    "valor_servicio": "9",
+    "rgb": [
+     148,
+     217,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "9",
+    "9",
+    "9",
+    "9"
+   ]
+  },
+  {
+   "codigo_asset": 9,
+   "lon": -79.78373208993861,
+   "lat": 9.3212683486875,
+   "servicio": {
+    "categoria": "Rastrojo y vegetación arbustiva",
+    "valor_servicio": "9",
+    "rgb": [
+     148,
+     217,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "9",
+    "9",
+    "9",
+    "9"
+   ]
+  },
+  {
+   "codigo_asset": 9,
+   "lon": -79.74476198248512,
+   "lat": 9.064133280466919,
+   "servicio": {
+    "categoria": "Rastrojo y vegetación arbustiva",
+    "valor_servicio": "9",
+    "rgb": [
+     148,
+     217,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "9",
+    "9",
+    "9",
+    "9"
+   ]
+  },
+  {
+   "codigo_asset": 9,
+   "lon": -79.6739189667827,
+   "lat": 9.326075838418909,
+   "servicio": {
+    "categoria": "Rastrojo y vegetación arbustiva",
+    "valor_servicio": "9",
+    "rgb": [
+     148,
+     217,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "9",
+    "9",
+    "9",
+    "9"
+   ]
+  },
+  {
+   "codigo_asset": 9,
+   "lon": -79.5466319860252,
+   "lat": 9.197179806850116,
+   "servicio": {
+    "categoria": "Rastrojo y vegetación arbustiva",
+    "valor_servicio": "9",
+    "rgb": [
+     148,
+     217,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "9",
+    "9",
+    "9",
+    "9"
+   ]
+  },
+  {
+   "codigo_asset": 9,
+   "lon": -79.61015094345382,
+   "lat": 9.150771053627619,
+   "servicio": {
+    "categoria": "Rastrojo y vegetación arbustiva",
+    "valor_servicio": "9",
+    "rgb": [
+     148,
+     217,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "9",
+    "9",
+    "9",
+    "9"
+   ]
+  },
+  {
+   "codigo_asset": 9,
+   "lon": -79.41607726379587,
+   "lat": 9.292336202903257,
+   "servicio": {
+    "categoria": "Rastrojo y vegetación arbustiva",
+    "valor_servicio": "9",
+    "rgb": [
+     148,
+     217,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "9",
+    "9",
+    "9",
+    "9"
+   ]
+  },
+  {
+   "codigo_asset": 9,
+   "lon": -79.57374343795314,
+   "lat": 9.142039400977707,
+   "servicio": {
+    "categoria": "Rastrojo y vegetación arbustiva",
+    "valor_servicio": "9",
+    "rgb": [
+     148,
+     217,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "9",
+    "9",
+    "9",
+    "9"
+   ]
+  },
+  {
+   "codigo_asset": 9,
+   "lon": -79.67533484281437,
+   "lat": 9.32481514402798,
+   "servicio": {
+    "categoria": "Rastrojo y vegetación arbustiva",
+    "valor_servicio": "9",
+    "rgb": [
+     148,
+     217,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "9",
+    "9",
+    "9",
+    "9"
+   ]
+  },
+  {
+   "codigo_asset": 9,
+   "lon": -79.54124054541654,
+   "lat": 9.291015772641115,
+   "servicio": {
+    "categoria": "Rastrojo y vegetación arbustiva",
+    "valor_servicio": "9",
+    "rgb": [
+     148,
+     217,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "9",
+    "9",
+    "9",
+    "9"
+   ]
+  },
+  {
+   "codigo_asset": 9,
+   "lon": -79.68113604620193,
+   "lat": 9.185082122683086,
+   "servicio": {
+    "categoria": "Rastrojo y vegetación arbustiva",
+    "valor_servicio": "9",
+    "rgb": [
+     148,
+     217,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "9",
+    "9",
+    "9",
+    "9"
+   ]
+  },
+  {
+   "codigo_asset": 9,
+   "lon": -79.89952791804903,
+   "lat": 9.04505248091706,
+   "servicio": {
+    "categoria": "Rastrojo y vegetación arbustiva",
+    "valor_servicio": "9",
+    "rgb": [
+     148,
+     217,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "9",
+    "9",
+    "9",
+    "9"
+   ]
+  },
+  {
+   "codigo_asset": 9,
+   "lon": -79.55577497182655,
+   "lat": 9.342570118925424,
+   "servicio": {
+    "categoria": "Rastrojo y vegetación arbustiva",
+    "valor_servicio": "9",
+    "rgb": [
+     148,
+     217,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "9",
+    "9",
+    "9",
+    "9"
+   ]
+  },
+  {
+   "codigo_asset": 9,
+   "lon": -79.57486835142578,
+   "lat": 9.110802491185781,
+   "servicio": {
+    "categoria": "Rastrojo y vegetación arbustiva",
+    "valor_servicio": "9",
+    "rgb": [
+     148,
+     217,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "9",
+    "9",
+    "9",
+    "9"
+   ]
+  },
+  {
+   "codigo_asset": 9,
+   "lon": -79.52119948242202,
+   "lat": 9.381037386665938,
+   "servicio": {
+    "categoria": "Rastrojo y vegetación arbustiva",
+    "valor_servicio": "9",
+    "rgb": [
+     148,
+     217,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "9",
+    "9",
+    "9",
+    "9"
+   ]
+  },
+  {
+   "codigo_asset": 9,
+   "lon": -79.7273747762627,
+   "lat": 9.284221935981897,
+   "servicio": {
+    "categoria": "Rastrojo y vegetación arbustiva",
+    "valor_servicio": "9",
+    "rgb": [
+     148,
+     217,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "9",
+    "9",
+    "9",
+    "9"
+   ]
+  },
+  {
+   "codigo_asset": 9,
+   "lon": -79.67172226945154,
+   "lat": 9.171483603883617,
+   "servicio": {
+    "categoria": "Rastrojo y vegetación arbustiva",
+    "valor_servicio": "9",
+    "rgb": [
+     148,
+     217,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "9",
+    "9",
+    "9",
+    "9"
+   ]
+  },
+  {
+   "codigo_asset": 9,
+   "lon": -79.41603155084046,
+   "lat": 9.292381208383814,
+   "servicio": {
+    "categoria": "Rastrojo y vegetación arbustiva",
+    "valor_servicio": "9",
+    "rgb": [
+     148,
+     217,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "9",
+    "9",
+    "9",
+    "9"
+   ]
+  },
+  {
+   "codigo_asset": 9,
+   "lon": -79.54376323286549,
+   "lat": 9.352196168341289,
+   "servicio": {
+    "categoria": "Rastrojo y vegetación arbustiva",
+    "valor_servicio": "9",
+    "rgb": [
+     148,
+     217,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "9",
+    "9",
+    "9",
+    "9"
+   ]
+  },
+  {
+   "codigo_asset": 9,
+   "lon": -79.73464098336069,
+   "lat": 9.2123569835927,
+   "servicio": {
+    "categoria": "Rastrojo y vegetación arbustiva",
+    "valor_servicio": "9",
+    "rgb": [
+     148,
+     217,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "9",
+    "9",
+    "9",
+    "9"
+   ]
+  },
+  {
+   "codigo_asset": 9,
+   "lon": -79.90524852744711,
+   "lat": 9.048641786915969,
+   "servicio": {
+    "categoria": "Rastrojo y vegetación arbustiva",
+    "valor_servicio": "9",
+    "rgb": [
+     148,
+     217,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "9",
+    "9",
+    "9",
+    "9"
+   ]
+  },
+  {
+   "codigo_asset": 9,
+   "lon": -79.29161437539976,
+   "lat": 9.300667975764155,
+   "servicio": {
+    "categoria": "Rastrojo y vegetación arbustiva",
+    "valor_servicio": "9",
+    "rgb": [
+     148,
+     217,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "9",
+    "9",
+    "9",
+    "9"
+   ]
+  },
+  {
+   "codigo_asset": 9,
+   "lon": -79.88947135760144,
+   "lat": 9.046288235519444,
+   "servicio": {
+    "categoria": "Rastrojo y vegetación arbustiva",
+    "valor_servicio": "9",
+    "rgb": [
+     148,
+     217,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "9",
+    "9",
+    "9",
+    "9"
+   ]
+  },
+  {
+   "codigo_asset": 9,
+   "lon": -79.92750029053107,
+   "lat": 8.937788122503074,
+   "servicio": {
+    "categoria": "Rastrojo y vegetación arbustiva",
+    "valor_servicio": "9",
+    "rgb": [
+     148,
+     217,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "9",
+    "9",
+    "9",
+    "9"
+   ]
+  },
+  {
+   "codigo_asset": 9,
+   "lon": -79.77343315535018,
+   "lat": 9.311421414922831,
+   "servicio": {
+    "categoria": "Rastrojo y vegetación arbustiva",
+    "valor_servicio": "9",
+    "rgb": [
+     148,
+     217,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "9",
+    "9",
+    "9",
+    "9"
+   ]
+  },
+  {
+   "codigo_asset": 9,
+   "lon": -79.78121910404222,
+   "lat": 9.03079705437474,
+   "servicio": {
+    "categoria": "Rastrojo y vegetación arbustiva",
+    "valor_servicio": "9",
+    "rgb": [
+     148,
+     217,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "9",
+    "9",
+    "9",
+    "9"
+   ]
+  },
+  {
+   "codigo_asset": 9,
+   "lon": -79.67537678037603,
+   "lat": 9.32576477549155,
+   "servicio": {
+    "categoria": "Rastrojo y vegetación arbustiva",
+    "valor_servicio": "9",
+    "rgb": [
+     148,
+     217,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "9",
+    "9",
+    "9",
+    "9"
+   ]
+  },
+  {
+   "codigo_asset": 9,
+   "lon": -79.95838441636572,
+   "lat": 8.91942702234339,
+   "servicio": {
+    "categoria": "Rastrojo y vegetación arbustiva",
+    "valor_servicio": "9",
+    "rgb": [
+     148,
+     217,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "9",
+    "9",
+    "9",
+    "9"
+   ]
+  },
+  {
+   "codigo_asset": 9,
+   "lon": -79.55517017343071,
+   "lat": 9.345732421626991,
+   "servicio": {
+    "categoria": "Rastrojo y vegetación arbustiva",
+    "valor_servicio": "9",
+    "rgb": [
+     148,
+     217,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "9",
+    "9",
+    "9",
+    "9"
+   ]
+  },
+  {
+   "codigo_asset": 9,
+   "lon": -79.6726398194686,
+   "lat": 9.16945236786485,
+   "servicio": {
+    "categoria": "Rastrojo y vegetación arbustiva",
+    "valor_servicio": "9",
+    "rgb": [
+     148,
+     217,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "9",
+    "9",
+    "9",
+    "9"
+   ]
+  },
+  {
+   "codigo_asset": 10,
+   "lon": -79.54676205291015,
+   "lat": 9.309574719100405,
+   "servicio": {
+    "categoria": "Vegetación herbácea",
+    "valor_servicio": "10",
+    "rgb": [
+     218,
+     245,
+     124
+    ]
+   },
+   "servicio_desplazado": [
+    "10",
+    "10",
+    "10",
+    "10"
+   ]
+  },
+  {
+   "codigo_asset": 10,
+   "lon": -79.78790882536097,
+   "lat": 9.08403799657686,
+   "servicio": {
+    "categoria": "Vegetación herbácea",
+    "valor_servicio": "10",
+    "rgb": [
+     218,
+     245,
+     124
+    ]
+   },
+   "servicio_desplazado": [
+    "10",
+    "10",
+    "10",
+    "10"
+   ]
+  },
+  {
+   "codigo_asset": 10,
+   "lon": -79.60157017870486,
+   "lat": 9.273443585000077,
+   "servicio": {
+    "categoria": "Vegetación herbácea",
+    "valor_servicio": "10",
+    "rgb": [
+     218,
+     245,
+     124
+    ]
+   },
+   "servicio_desplazado": [
+    "10",
+    "10",
+    "10",
+    "10"
+   ]
+  },
+  {
+   "codigo_asset": 10,
+   "lon": -79.55699275291684,
+   "lat": 9.433313167231406,
+   "servicio": {
+    "categoria": "Vegetación herbácea",
+    "valor_servicio": "10",
+    "rgb": [
+     218,
+     245,
+     124
+    ]
+   },
+   "servicio_desplazado": [
+    "10",
+    "10",
+    "10",
+    "10"
+   ]
+  },
+  {
+   "codigo_asset": 10,
+   "lon": -79.90855878197699,
+   "lat": 8.945872050219087,
+   "servicio": {
+    "categoria": "Vegetación herbácea",
+    "valor_servicio": "10",
+    "rgb": [
+     218,
+     245,
+     124
+    ]
+   },
+   "servicio_desplazado": [
+    "10",
+    "10",
+    "10",
+    "10"
+   ]
+  },
+  {
+   "codigo_asset": 10,
+   "lon": -79.7754004129758,
+   "lat": 9.029828166500677,
+   "servicio": {
+    "categoria": "Vegetación herbácea",
+    "valor_servicio": "10",
+    "rgb": [
+     218,
+     245,
+     124
+    ]
+   },
+   "servicio_desplazado": [
+    "10",
+    "10",
+    "10",
+    "10"
+   ]
+  },
+  {
+   "codigo_asset": 10,
+   "lon": -79.68197862499676,
+   "lat": 9.178710085134536,
+   "servicio": {
+    "categoria": "Vegetación herbácea",
+    "valor_servicio": "10",
+    "rgb": [
+     218,
+     245,
+     124
+    ]
+   },
+   "servicio_desplazado": [
+    "10",
+    "10",
+    "10",
+    "10"
+   ]
+  },
+  {
+   "codigo_asset": 10,
+   "lon": -79.788182223669,
+   "lat": 9.08390325752668,
+   "servicio": {
+    "categoria": "Vegetación herbácea",
+    "valor_servicio": "10",
+    "rgb": [
+     218,
+     245,
+     124
+    ]
+   },
+   "servicio_desplazado": [
+    "10",
+    "10",
+    "10",
+    "10"
+   ]
+  },
+  {
+   "codigo_asset": 10,
+   "lon": -79.6332296375349,
+   "lat": 9.135712524623486,
+   "servicio": {
+    "categoria": "Vegetación herbácea",
+    "valor_servicio": "10",
+    "rgb": [
+     218,
+     245,
+     124
+    ]
+   },
+   "servicio_desplazado": [
+    "10",
+    "10",
+    "10",
+    "10"
+   ]
+  },
+  {
+   "codigo_asset": 10,
+   "lon": -79.54674774323641,
+   "lat": 9.268884894119099,
+   "servicio": {
+    "categoria": "Vegetación herbácea",
+    "valor_servicio": "10",
+    "rgb": [
+     218,
+     245,
+     124
+    ]
+   },
+   "servicio_desplazado": [
+    "10",
+    "10",
+    "10",
+    "10"
+   ]
+  },
+  {
+   "codigo_asset": 10,
+   "lon": -79.54143504964557,
+   "lat": 9.429948682806094,
+   "servicio": {
+    "categoria": "Vegetación herbácea",
+    "valor_servicio": "10",
+    "rgb": [
+     218,
+     245,
+     124
+    ]
+   },
+   "servicio_desplazado": [
+    "10",
+    "10",
+    "10",
+    "10"
+   ]
+  },
+  {
+   "codigo_asset": 10,
+   "lon": -79.81905124428259,
+   "lat": 9.048102839244617,
+   "servicio": {
+    "categoria": "Vegetación herbácea",
+    "valor_servicio": "10",
+    "rgb": [
+     218,
+     245,
+     124
+    ]
+   },
+   "servicio_desplazado": [
+    "10",
+    "10",
+    "10",
+    "10"
+   ]
+  },
+  {
+   "codigo_asset": 10,
+   "lon": -79.71394011090773,
+   "lat": 9.360901640114426,
+   "servicio": {
+    "categoria": "Vegetación herbácea",
+    "valor_servicio": "10",
+    "rgb": [
+     218,
+     245,
+     124
+    ]
+   },
+   "servicio_desplazado": [
+    "10",
+    "10",
+    "10",
+    "10"
+   ]
+  },
+  {
+   "codigo_asset": 10,
+   "lon": -79.64961940961886,
+   "lat": 9.216840793845101,
+   "servicio": {
+    "categoria": "Vegetación herbácea",
+    "valor_servicio": "10",
+    "rgb": [
+     218,
+     245,
+     124
+    ]
+   },
+   "servicio_desplazado": [
+    "10",
+    "10",
+    "10",
+    "10"
+   ]
+  },
+  {
+   "codigo_asset": 10,
+   "lon": -79.59067966357524,
+   "lat": 9.333577557984583,
+   "servicio": {
+    "categoria": "Vegetación herbácea",
+    "valor_servicio": "10",
+    "rgb": [
+     218,
+     245,
+     124
+    ]
+   },
+   "servicio_desplazado": [
+    "10",
+    "10",
+    "10",
+    "10"
+   ]
+  },
+  {
+   "codigo_asset": 10,
+   "lon": -79.59067388800786,
+   "lat": 9.082380388014473,
+   "servicio": {
+    "categoria": "Vegetación herbácea",
+    "valor_servicio": "10",
+    "rgb": [
+     218,
+     245,
+     124
+    ]
+   },
+   "servicio_desplazado": [
+    "10",
+    "10",
+    "10",
+    "10"
+   ]
+  },
+  {
+   "codigo_asset": 10,
+   "lon": -79.66515586952627,
+   "lat": 9.065162664705186,
+   "servicio": {
+    "categoria": "Vegetación herbácea",
+    "valor_servicio": "10",
+    "rgb": [
+     218,
+     245,
+     124
+    ]
+   },
+   "servicio_desplazado": [
+    "10",
+    "10",
+    "10",
+    "10"
+   ]
+  },
+  {
+   "codigo_asset": 10,
+   "lon": -79.55115753336335,
+   "lat": 9.270033042396266,
+   "servicio": {
+    "categoria": "Vegetación herbácea",
+    "valor_servicio": "10",
+    "rgb": [
+     218,
+     245,
+     124
+    ]
+   },
+   "servicio_desplazado": [
+    "10",
+    "10",
+    "10",
+    "10"
+   ]
+  },
+  {
+   "codigo_asset": 10,
+   "lon": -79.6478209090581,
+   "lat": 9.054247811400453,
+   "servicio": {
+    "categoria": "Vegetación herbácea",
+    "valor_servicio": "10",
+    "rgb": [
+     218,
+     245,
+     124
+    ]
+   },
+   "servicio_desplazado": [
+    "10",
+    "10",
+    "10",
+    "10"
+   ]
+  },
+  {
+   "codigo_asset": 10,
+   "lon": -79.55704016374224,
+   "lat": 9.432861254543472,
+   "servicio": {
+    "categoria": "Vegetación herbácea",
+    "valor_servicio": "10",
+    "rgb": [
+     218,
+     245,
+     124
+    ]
+   },
+   "servicio_desplazado": [
+    "10",
+    "10",
+    "10",
+    "10"
+   ]
+  },
+  {
+   "codigo_asset": 10,
+   "lon": -79.59036375731392,
+   "lat": 9.332898132366415,
+   "servicio": {
+    "categoria": "Vegetación herbácea",
+    "valor_servicio": "10",
+    "rgb": [
+     218,
+     245,
+     124
+    ]
+   },
+   "servicio_desplazado": [
+    "10",
+    "10",
+    "10",
+    "10"
+   ]
+  },
+  {
+   "codigo_asset": 10,
+   "lon": -79.73500979573797,
+   "lat": 9.043210462652969,
+   "servicio": {
+    "categoria": "Vegetación herbácea",
+    "valor_servicio": "10",
+    "rgb": [
+     218,
+     245,
+     124
+    ]
+   },
+   "servicio_desplazado": [
+    "10",
+    "10",
+    "10",
+    "10"
+   ]
+  },
+  {
+   "codigo_asset": 10,
+   "lon": -79.74027589007856,
+   "lat": 9.25302451771015,
+   "servicio": {
+    "categoria": "Vegetación herbácea",
+    "valor_servicio": "10",
+    "rgb": [
+     218,
+     245,
+     124
+    ]
+   },
+   "servicio_desplazado": [
+    "10",
+    "10",
+    "10",
+    "10"
+   ]
+  },
+  {
+   "codigo_asset": 10,
+   "lon": -79.87363846718121,
+   "lat": 9.061930207528052,
+   "servicio": {
+    "categoria": "Vegetación herbácea",
+    "valor_servicio": "10",
+    "rgb": [
+     218,
+     245,
+     124
+    ]
+   },
+   "servicio_desplazado": [
+    "10",
+    "10",
+    "10",
+    "10"
+   ]
+  },
+  {
+   "codigo_asset": 10,
+   "lon": -79.55846966597619,
+   "lat": 9.273724664015177,
+   "servicio": {
+    "categoria": "Vegetación herbácea",
+    "valor_servicio": "10",
+    "rgb": [
+     218,
+     245,
+     124
+    ]
+   },
+   "servicio_desplazado": [
+    "10",
+    "10",
+    "10",
+    "10"
+   ]
+  },
+  {
+   "codigo_asset": 10,
+   "lon": -79.62881807091972,
+   "lat": 9.170961792715435,
+   "servicio": {
+    "categoria": "Vegetación herbácea",
+    "valor_servicio": "10",
+    "rgb": [
+     218,
+     245,
+     124
+    ]
+   },
+   "servicio_desplazado": [
+    "10",
+    "10",
+    "10",
+    "10"
+   ]
+  },
+  {
+   "codigo_asset": 10,
+   "lon": -79.55125114846904,
+   "lat": 9.269400467518551,
+   "servicio": {
+    "categoria": "Vegetación herbácea",
+    "valor_servicio": "10",
+    "rgb": [
+     218,
+     245,
+     124
+    ]
+   },
+   "servicio_desplazado": [
+    "10",
+    "10",
+    "10",
+    "10"
+   ]
+  },
+  {
+   "codigo_asset": 10,
+   "lon": -79.78626660542155,
+   "lat": 9.08538900637103,
+   "servicio": {
+    "categoria": "Vegetación herbácea",
+    "valor_servicio": "10",
+    "rgb": [
+     218,
+     245,
+     124
+    ]
+   },
+   "servicio_desplazado": [
+    "10",
+    "10",
+    "10",
+    "10"
+   ]
+  },
+  {
+   "codigo_asset": 10,
+   "lon": -79.59129804076315,
+   "lat": 9.338282012314796,
+   "servicio": {
+    "categoria": "Vegetación herbácea",
+    "valor_servicio": "10",
+    "rgb": [
+     218,
+     245,
+     124
+    ]
+   },
+   "servicio_desplazado": [
+    "10",
+    "10",
+    "10",
+    "10"
+   ]
+  },
+  {
+   "codigo_asset": 10,
+   "lon": -79.5908063363992,
+   "lat": 9.187589324541406,
+   "servicio": {
+    "categoria": "Vegetación herbácea",
+    "valor_servicio": "10",
+    "rgb": [
+     218,
+     245,
+     124
+    ]
+   },
+   "servicio_desplazado": [
+    "10",
+    "10",
+    "10",
+    "10"
+   ]
+  },
+  {
+   "codigo_asset": 11,
+   "lon": -79.81468799708776,
+   "lat": 9.266752430490797,
+   "servicio": {
+    "categoria": "Vegetación baja inundable",
+    "valor_servicio": "11",
+    "rgb": [
+     0,
+     255,
+     166
+    ]
+   },
+   "servicio_desplazado": [
+    "11",
+    "11",
+    "11",
+    "11"
+   ]
+  },
+  {
+   "codigo_asset": 11,
+   "lon": -79.87045753895971,
+   "lat": 9.233969896575996,
+   "servicio": {
+    "categoria": "Vegetación baja inundable",
+    "valor_servicio": "11",
+    "rgb": [
+     0,
+     255,
+     166
+    ]
+   },
+   "servicio_desplazado": [
+    "11",
+    "11",
+    "11",
+    "11"
+   ]
+  },
+  {
+   "codigo_asset": 11,
+   "lon": -79.86514651607382,
+   "lat": 9.229657604036658,
+   "servicio": {
+    "categoria": "Vegetación baja inundable",
+    "valor_servicio": "11",
+    "rgb": [
+     0,
+     255,
+     166
+    ]
+   },
+   "servicio_desplazado": [
+    "11",
+    "11",
+    "11",
+    "11"
+   ]
+  },
+  {
+   "codigo_asset": 11,
+   "lon": -79.67331001125447,
+   "lat": 9.135951631573333,
+   "servicio": {
+    "categoria": "Vegetación baja inundable",
+    "valor_servicio": "11",
+    "rgb": [
+     0,
+     255,
+     166
+    ]
+   },
+   "servicio_desplazado": [
+    "11",
+    "11",
+    "11",
+    "11"
+   ]
+  },
+  {
+   "codigo_asset": 11,
+   "lon": -79.59860359291727,
+   "lat": 9.01979176111559,
+   "servicio": {
+    "categoria": "Vegetación baja inundable",
+    "valor_servicio": "11",
+    "rgb": [
+     0,
+     255,
+     166
+    ]
+   },
+   "servicio_desplazado": [
+    "11",
+    "11",
+    "11",
+    "11"
+   ]
+  },
+  {
+   "codigo_asset": 11,
+   "lon": -79.8306644774838,
+   "lat": 9.02964659554255,
+   "servicio": {
+    "categoria": "Vegetación baja inundable",
+    "valor_servicio": "11",
+    "rgb": [
+     0,
+     255,
+     166
+    ]
+   },
+   "servicio_desplazado": [
+    "11",
+    "11",
+    "11",
+    "11"
+   ]
+  },
+  {
+   "codigo_asset": 11,
+   "lon": -79.80210520547203,
+   "lat": 9.246001916895887,
+   "servicio": {
+    "categoria": "Vegetación baja inundable",
+    "valor_servicio": "11",
+    "rgb": [
+     0,
+     255,
+     166
+    ]
+   },
+   "servicio_desplazado": [
+    "11",
+    "11",
+    "11",
+    "11"
+   ]
+  },
+  {
+   "codigo_asset": 11,
+   "lon": -79.81592760727841,
+   "lat": 9.029599368621309,
+   "servicio": {
+    "categoria": "Vegetación baja inundable",
+    "valor_servicio": "11",
+    "rgb": [
+     0,
+     255,
+     166
+    ]
+   },
+   "servicio_desplazado": [
+    "11",
+    "11",
+    "11",
+    "11"
+   ]
+  },
+  {
+   "codigo_asset": 11,
+   "lon": -79.7666729473458,
+   "lat": 9.252980628595173,
+   "servicio": {
+    "categoria": "Vegetación baja inundable",
+    "valor_servicio": "11",
+    "rgb": [
+     0,
+     255,
+     166
+    ]
+   },
+   "servicio_desplazado": [
+    "11",
+    "11",
+    "11",
+    "11"
+   ]
+  },
+  {
+   "codigo_asset": 11,
+   "lon": -79.55181134785919,
+   "lat": 9.354399216221001,
+   "servicio": {
+    "categoria": "Vegetación baja inundable",
+    "valor_servicio": "11",
+    "rgb": [
+     0,
+     255,
+     166
+    ]
+   },
+   "servicio_desplazado": [
+    "11",
+    "11",
+    "11",
+    "11"
+   ]
+  },
+  {
+   "codigo_asset": 11,
+   "lon": -79.67698585021738,
+   "lat": 9.163093181755324,
+   "servicio": {
+    "categoria": "Vegetación baja inundable",
+    "valor_servicio": "11",
+    "rgb": [
+     0,
+     255,
+     166
+    ]
+   },
+   "servicio_desplazado": [
+    "11",
+    "11",
+    "11",
+    "11"
+   ]
+  },
+  {
+   "codigo_asset": 11,
+   "lon": -79.86310044083287,
+   "lat": 9.229063326285482,
+   "servicio": {
+    "categoria": "Vegetación baja inundable",
+    "valor_servicio": "11",
+    "rgb": [
+     0,
+     255,
+     166
+    ]
+   },
+   "servicio_desplazado": [
+    "11",
+    "11",
+    "11",
+    "11"
+   ]
+  },
+  {
+   "codigo_asset": 11,
+   "lon": -79.67419685967232,
+   "lat": 9.16674526952763,
+   "servicio": {
+    "categoria": "Vegetación baja inundable",
+    "valor_servicio": "11",
+    "rgb": [
+     0,
+     255,
+     166
+    ]
+   },
+   "servicio_desplazado": [
+    "11",
+    "11",
+    "11",
+    "11"
+   ]
+  },
+  {
+   "codigo_asset": 11,
+   "lon": -79.76870570815228,
+   "lat": 9.257373454191535,
+   "servicio": {
+    "categoria": "Vegetación baja inundable",
+    "valor_servicio": "11",
+    "rgb": [
+     0,
+     255,
+     166
+    ]
+   },
+   "servicio_desplazado": [
+    "11",
+    "11",
+    "11",
+    "11"
+   ]
+  },
+  {
+   "codigo_asset": 11,
+   "lon": -79.77356861743597,
+   "lat": 9.259379581932095,
+   "servicio": {
+    "categoria": "Vegetación baja inundable",
+    "valor_servicio": "11",
+    "rgb": [
+     0,
+     255,
+     166
+    ]
+   },
+   "servicio_desplazado": [
+    "11",
+    "11",
+    "11",
+    "11"
+   ]
+  },
+  {
+   "codigo_asset": 11,
+   "lon": -79.79531876021139,
+   "lat": 9.260900243086128,
+   "servicio": {
+    "categoria": "Vegetación baja inundable",
+    "valor_servicio": "11",
+    "rgb": [
+     0,
+     255,
+     166
+    ]
+   },
+   "servicio_desplazado": [
+    "11",
+    "11",
+    "11",
+    "11"
+   ]
+  },
+  {
+   "codigo_asset": 11,
+   "lon": -79.75312038495477,
+   "lat": 9.275947981714037,
+   "servicio": {
+    "categoria": "Vegetación baja inundable",
+    "valor_servicio": "11",
+    "rgb": [
+     0,
+     255,
+     166
+    ]
+   },
+   "servicio_desplazado": [
+    "11",
+    "11",
+    "11",
+    "11"
+   ]
+  },
+  {
+   "codigo_asset": 11,
+   "lon": -79.77764708477578,
+   "lat": 9.264502808436319,
+   "servicio": {
+    "categoria": "Vegetación baja inundable",
+    "valor_servicio": "11",
+    "rgb": [
+     0,
+     255,
+     166
+    ]
+   },
+   "servicio_desplazado": [
+    "11",
+    "11",
+    "11",
+    "11"
+   ]
+  },
+  {
+   "codigo_asset": 11,
+   "lon": -79.67406069855902,
+   "lat": 9.166654343694878,
+   "servicio": {
+    "categoria": "Vegetación baja inundable",
+    "valor_servicio": "11",
+    "rgb": [
+     0,
+     255,
+     166
+    ]
+   },
+   "servicio_desplazado": [
+    "11",
+    "11",
+    "11",
+    "11"
+   ]
+  },
+  {
+   "codigo_asset": 11,
+   "lon": -79.86537478993898,
+   "lat": 9.22943224249064,
+   "servicio": {
+    "categoria": "Vegetación baja inundable",
+    "valor_servicio": "11",
+    "rgb": [
+     0,
+     255,
+     166
+    ]
+   },
+   "servicio_desplazado": [
+    "11",
+    "11",
+    "11",
+    "11"
+   ]
+  },
+  {
+   "codigo_asset": 11,
+   "lon": -79.8292436672394,
+   "lat": 9.032988077189547,
+   "servicio": {
+    "categoria": "Vegetación baja inundable",
+    "valor_servicio": "11",
+    "rgb": [
+     0,
+     255,
+     166
+    ]
+   },
+   "servicio_desplazado": [
+    "11",
+    "11",
+    "11",
+    "11"
+   ]
+  },
+  {
+   "codigo_asset": 11,
+   "lon": -79.67279277543653,
+   "lat": 9.165022011457555,
+   "servicio": {
+    "categoria": "Vegetación baja inundable",
+    "valor_servicio": "11",
+    "rgb": [
+     0,
+     255,
+     166
+    ]
+   },
+   "servicio_desplazado": [
+    "11",
+    "11",
+    "11",
+    "11"
+   ]
+  },
+  {
+   "codigo_asset": 11,
+   "lon": -79.7741661790702,
+   "lat": 9.297000408936928,
+   "servicio": {
+    "categoria": "Vegetación baja inundable",
+    "valor_servicio": "11",
+    "rgb": [
+     0,
+     255,
+     166
+    ]
+   },
+   "servicio_desplazado": [
+    "11",
+    "11",
+    "11",
+    "11"
+   ]
+  },
+  {
+   "codigo_asset": 11,
+   "lon": -79.76752097432711,
+   "lat": 9.25777631607153,
+   "servicio": {
+    "categoria": "Vegetación baja inundable",
+    "valor_servicio": "11",
+    "rgb": [
+     0,
+     255,
+     166
+    ]
+   },
+   "servicio_desplazado": [
+    "11",
+    "11",
+    "11",
+    "11"
+   ]
+  },
+  {
+   "codigo_asset": 11,
+   "lon": -79.55181116080449,
+   "lat": 9.354444426251417,
+   "servicio": {
+    "categoria": "Vegetación baja inundable",
+    "valor_servicio": "11",
+    "rgb": [
+     0,
+     255,
+     166
+    ]
+   },
+   "servicio_desplazado": [
+    "11",
+    "11",
+    "11",
+    "11"
+   ]
+  },
+  {
+   "codigo_asset": 11,
+   "lon": -79.55199062494896,
+   "lat": 9.355078109784033,
+   "servicio": {
+    "categoria": "Vegetación baja inundable",
+    "valor_servicio": "11",
+    "rgb": [
+     0,
+     255,
+     166
+    ]
+   },
+   "servicio_desplazado": [
+    "11",
+    "11",
+    "11",
+    "11"
+   ]
+  },
+  {
+   "codigo_asset": 11,
+   "lon": -79.75959301768782,
+   "lat": 9.299120369451138,
+   "servicio": {
+    "categoria": "Vegetación baja inundable",
+    "valor_servicio": "11",
+    "rgb": [
+     0,
+     255,
+     166
+    ]
+   },
+   "servicio_desplazado": [
+    "11",
+    "11",
+    "11",
+    "11"
+   ]
+  },
+  {
+   "codigo_asset": 11,
+   "lon": -79.86571416532378,
+   "lat": 9.222922147655604,
+   "servicio": {
+    "categoria": "Vegetación baja inundable",
+    "valor_servicio": "11",
+    "rgb": [
+     0,
+     255,
+     166
+    ]
+   },
+   "servicio_desplazado": [
+    "11",
+    "11",
+    "11",
+    "11"
+   ]
+  },
+  {
+   "codigo_asset": 11,
+   "lon": -79.76303776714444,
+   "lat": 9.277338849999902,
+   "servicio": {
+    "categoria": "Vegetación baja inundable",
+    "valor_servicio": "11",
+    "rgb": [
+     0,
+     255,
+     166
+    ]
+   },
+   "servicio_desplazado": [
+    "11",
+    "11",
+    "11",
+    "11"
+   ]
+  },
+  {
+   "codigo_asset": 11,
+   "lon": -79.67542750863652,
+   "lat": 9.166162000913394,
+   "servicio": {
+    "categoria": "Vegetación baja inundable",
+    "valor_servicio": "11",
+    "rgb": [
+     0,
+     255,
+     166
+    ]
+   },
+   "servicio_desplazado": [
+    "11",
+    "11",
+    "11",
+    "11"
+   ]
+  },
+  {
+   "codigo_asset": 12,
+   "lon": -79.62029421019908,
+   "lat": 9.020642442227736,
+   "servicio": {
+    "categoria": "Afloramiento rocoso y tierra desnuda",
+    "valor_servicio": "12",
+    "rgb": [
+     141,
+     141,
+     141
+    ]
+   },
+   "servicio_desplazado": [
+    "12",
+    "12",
+    "12",
+    "12"
+   ]
+  },
+  {
+   "codigo_asset": 12,
+   "lon": -79.54556185884839,
+   "lat": 9.444749579434099,
+   "servicio": {
+    "categoria": "Afloramiento rocoso y tierra desnuda",
+    "valor_servicio": "12",
+    "rgb": [
+     141,
+     141,
+     141
+    ]
+   },
+   "servicio_desplazado": [
+    "12",
+    "12",
+    "12",
+    "12"
+   ]
+  },
+  {
+   "codigo_asset": 12,
+   "lon": -79.4456009482987,
+   "lat": 9.428408446048271,
+   "servicio": {
+    "categoria": "Afloramiento rocoso y tierra desnuda",
+    "valor_servicio": "12",
+    "rgb": [
+     141,
+     141,
+     141
+    ]
+   },
+   "servicio_desplazado": [
+    "12",
+    "12",
+    "12",
+    "12"
+   ]
+  },
+  {
+   "codigo_asset": 12,
+   "lon": -79.65022317096101,
+   "lat": 9.044309742646444,
+   "servicio": {
+    "categoria": "Afloramiento rocoso y tierra desnuda",
+    "valor_servicio": "12",
+    "rgb": [
+     141,
+     141,
+     141
+    ]
+   },
+   "servicio_desplazado": [
+    "12",
+    "12",
+    "12",
+    "12"
+   ]
+  },
+  {
+   "codigo_asset": 12,
+   "lon": -79.4452367235387,
+   "lat": 9.428406838163138,
+   "servicio": {
+    "categoria": "Afloramiento rocoso y tierra desnuda",
+    "valor_servicio": "12",
+    "rgb": [
+     141,
+     141,
+     141
+    ]
+   },
+   "servicio_desplazado": [
+    "12",
+    "12",
+    "12",
+    "12"
+   ]
+  },
+  {
+   "codigo_asset": 12,
+   "lon": -79.66553394403336,
+   "lat": 9.061320891501458,
+   "servicio": {
+    "categoria": "Afloramiento rocoso y tierra desnuda",
+    "valor_servicio": "12",
+    "rgb": [
+     141,
+     141,
+     141
+    ]
+   },
+   "servicio_desplazado": [
+    "12",
+    "12",
+    "12",
+    "12"
+   ]
+  },
+  {
+   "codigo_asset": 12,
+   "lon": -79.44509872208268,
+   "lat": 9.428722688449785,
+   "servicio": {
+    "categoria": "Afloramiento rocoso y tierra desnuda",
+    "valor_servicio": "12",
+    "rgb": [
+     141,
+     141,
+     141
+    ]
+   },
+   "servicio_desplazado": [
+    "12",
+    "12",
+    "12",
+    "12"
+   ]
+  },
+  {
+   "codigo_asset": 12,
+   "lon": -79.66959251002251,
+   "lat": 9.07087574492169,
+   "servicio": {
+    "categoria": "Afloramiento rocoso y tierra desnuda",
+    "valor_servicio": "12",
+    "rgb": [
+     141,
+     141,
+     141
+    ]
+   },
+   "servicio_desplazado": [
+    "12",
+    "12",
+    "12",
+    "12"
+   ]
+  },
+  {
+   "codigo_asset": 12,
+   "lon": -79.44524159497524,
+   "lat": 9.366109421219102,
+   "servicio": {
+    "categoria": "Afloramiento rocoso y tierra desnuda",
+    "valor_servicio": "12",
+    "rgb": [
+     141,
+     141,
+     141
+    ]
+   },
+   "servicio_desplazado": [
+    "12",
+    "12",
+    "12",
+    "12"
+   ]
+  },
+  {
+   "codigo_asset": 12,
+   "lon": -79.60176431457005,
+   "lat": 8.990234792600301,
+   "servicio": {
+    "categoria": "Afloramiento rocoso y tierra desnuda",
+    "valor_servicio": "12",
+    "rgb": [
+     141,
+     141,
+     141
+    ]
+   },
+   "servicio_desplazado": [
+    "12",
+    "12",
+    "12",
+    "12"
+   ]
+  },
+  {
+   "codigo_asset": 12,
+   "lon": -79.44524139390282,
+   "lat": 9.366154629001569,
+   "servicio": {
+    "categoria": "Afloramiento rocoso y tierra desnuda",
+    "valor_servicio": "12",
+    "rgb": [
+     141,
+     141,
+     141
+    ]
+   },
+   "servicio_desplazado": [
+    "12",
+    "12",
+    "12",
+    "12"
+   ]
+  },
+  {
+   "codigo_asset": 12,
+   "lon": -79.59896633225576,
+   "lat": 8.996463499718855,
+   "servicio": {
+    "categoria": "Afloramiento rocoso y tierra desnuda",
+    "valor_servicio": "12",
+    "rgb": [
+     141,
+     141,
+     141
+    ]
+   },
+   "servicio_desplazado": [
+    "12",
+    "12",
+    "12",
+    "12"
+   ]
+  },
+  {
+   "codigo_asset": 12,
+   "lon": -79.6208085588738,
+   "lat": 9.016936917893391,
+   "servicio": {
+    "categoria": "Afloramiento rocoso y tierra desnuda",
+    "valor_servicio": "12",
+    "rgb": [
+     141,
+     141,
+     141
+    ]
+   },
+   "servicio_desplazado": [
+    "12",
+    "12",
+    "12",
+    "12"
+   ]
+  },
+  {
+   "codigo_asset": 12,
+   "lon": -79.3943414040394,
+   "lat": 9.27836034230838,
+   "servicio": {
+    "categoria": "Afloramiento rocoso y tierra desnuda",
+    "valor_servicio": "12",
+    "rgb": [
+     141,
+     141,
+     141
+    ]
+   },
+   "servicio_desplazado": [
+    "12",
+    "12",
+    "12",
+    "12"
+   ]
+  },
+  {
+   "codigo_asset": 12,
+   "lon": -79.44541883591059,
+   "lat": 9.428407642152747,
+   "servicio": {
+    "categoria": "Afloramiento rocoso y tierra desnuda",
+    "valor_servicio": "12",
+    "rgb": [
+     141,
+     141,
+     141
+    ]
+   },
+   "servicio_desplazado": [
+    "12",
+    "12",
+    "12",
+    "12"
+   ]
+  },
+  {
+   "codigo_asset": 12,
+   "lon": -79.44528791918418,
+   "lat": 9.365928789774182,
+   "servicio": {
+    "categoria": "Afloramiento rocoso y tierra desnuda",
+    "valor_servicio": "12",
+    "rgb": [
+     141,
+     141,
+     141
+    ]
+   },
+   "servicio_desplazado": [
+    "12",
+    "12",
+    "12",
+    "12"
+   ]
+  },
+  {
+   "codigo_asset": 12,
+   "lon": -79.50688818604793,
+   "lat": 9.299463734400446,
+   "servicio": {
+    "categoria": "Afloramiento rocoso y tierra desnuda",
+    "valor_servicio": "12",
+    "rgb": [
+     141,
+     141,
+     141
+    ]
+   },
+   "servicio_desplazado": [
+    "12",
+    "12",
+    "12",
+    "12"
+   ]
+  },
+  {
+   "codigo_asset": 12,
+   "lon": -79.61432903270052,
+   "lat": 9.01062798115607,
+   "servicio": {
+    "categoria": "Afloramiento rocoso y tierra desnuda",
+    "valor_servicio": "12",
+    "rgb": [
+     141,
+     141,
+     141
+    ]
+   },
+   "servicio_desplazado": [
+    "12",
+    "12",
+    "12",
+    "12"
+   ]
+  },
+  {
+   "codigo_asset": 12,
+   "lon": -79.44556103878203,
+   "lat": 9.365929987768357,
+   "servicio": {
+    "categoria": "Afloramiento rocoso y tierra desnuda",
+    "valor_servicio": "12",
+    "rgb": [
+     141,
+     141,
+     141
+    ]
+   },
+   "servicio_desplazado": [
+    "12",
+    "12",
+    "12",
+    "12"
+   ]
+  },
+  {
+   "codigo_asset": 12,
+   "lon": -79.44533343911462,
+   "lat": 9.365928989454481,
+   "servicio": {
+    "categoria": "Afloramiento rocoso y tierra desnuda",
+    "valor_servicio": "12",
+    "rgb": [
+     141,
+     141,
+     141
+    ]
+   },
+   "servicio_desplazado": [
+    "12",
+    "12",
+    "12",
+    "12"
+   ]
+  },
+  {
+   "codigo_asset": 12,
+   "lon": -79.5932677844987,
+   "lat": 8.988303552474907,
+   "servicio": {
+    "categoria": "Afloramiento rocoso y tierra desnuda",
+    "valor_servicio": "12",
+    "rgb": [
+     141,
+     141,
+     141
+    ]
+   },
+   "servicio_desplazado": [
+    "12",
+    "12",
+    "12",
+    "12"
+   ]
+  },
+  {
+   "codigo_asset": 12,
+   "lon": -79.37854781022735,
+   "lat": 9.39695835290482,
+   "servicio": {
+    "categoria": "Afloramiento rocoso y tierra desnuda",
+    "valor_servicio": "12",
+    "rgb": [
+     141,
+     141,
+     141
+    ]
+   },
+   "servicio_desplazado": [
+    "12",
+    "12",
+    "12",
+    "12"
+   ]
+  },
+  {
+   "codigo_asset": 12,
+   "lon": -79.5456975074154,
+   "lat": 9.444976192882871,
+   "servicio": {
+    "categoria": "Afloramiento rocoso y tierra desnuda",
+    "valor_servicio": "12",
+    "rgb": [
+     141,
+     141,
+     141
+    ]
+   },
+   "servicio_desplazado": [
+    "12",
+    "12",
+    "12",
+    "12"
+   ]
+  },
+  {
+   "codigo_asset": 12,
+   "lon": -79.62802418810607,
+   "lat": 9.021078297211128,
+   "servicio": {
+    "categoria": "Afloramiento rocoso y tierra desnuda",
+    "valor_servicio": "12",
+    "rgb": [
+     141,
+     141,
+     141
+    ]
+   },
+   "servicio_desplazado": [
+    "12",
+    "12",
+    "12",
+    "12"
+   ]
+  },
+  {
+   "codigo_asset": 12,
+   "lon": -79.61528699889834,
+   "lat": 9.009862970593831,
+   "servicio": {
+    "categoria": "Afloramiento rocoso y tierra desnuda",
+    "valor_servicio": "12",
+    "rgb": [
+     141,
+     141,
+     141
+    ]
+   },
+   "servicio_desplazado": [
+    "12",
+    "12",
+    "12",
+    "12"
+   ]
+  },
+  {
+   "codigo_asset": 12,
+   "lon": -79.44519587394501,
+   "lat": 9.366154429304688,
+   "servicio": {
+    "categoria": "Afloramiento rocoso y tierra desnuda",
+    "valor_servicio": "12",
+    "rgb": [
+     141,
+     141,
+     141
+    ]
+   },
+   "servicio_desplazado": [
+    "12",
+    "12",
+    "12",
+    "12"
+   ]
+  },
+  {
+   "codigo_asset": 12,
+   "lon": -79.37275874016792,
+   "lat": 9.349735488058087,
+   "servicio": {
+    "categoria": "Afloramiento rocoso y tierra desnuda",
+    "valor_servicio": "12",
+    "rgb": [
+     141,
+     141,
+     141
+    ]
+   },
+   "servicio_desplazado": [
+    "12",
+    "12",
+    "12",
+    "12"
+   ]
+  },
+  {
+   "codigo_asset": 12,
+   "lon": -79.44546979787307,
+   "lat": 9.365974796248175,
+   "servicio": {
+    "categoria": "Afloramiento rocoso y tierra desnuda",
+    "valor_servicio": "12",
+    "rgb": [
+     141,
+     141,
+     141
+    ]
+   },
+   "servicio_desplazado": [
+    "12",
+    "12",
+    "12",
+    "12"
+   ]
+  },
+  {
+   "codigo_asset": 12,
+   "lon": -79.54569788680449,
+   "lat": 9.444885773530116,
+   "servicio": {
+    "categoria": "Afloramiento rocoso y tierra desnuda",
+    "valor_servicio": "12",
+    "rgb": [
+     141,
+     141,
+     141
+    ]
+   },
+   "servicio_desplazado": [
+    "12",
+    "12",
+    "12",
+    "12"
+   ]
+  },
+  {
+   "codigo_asset": 12,
+   "lon": -79.64999609316052,
+   "lat": 9.04421847981981,
+   "servicio": {
+    "categoria": "Afloramiento rocoso y tierra desnuda",
+    "valor_servicio": "12",
+    "rgb": [
+     141,
+     141,
+     141
+    ]
+   },
+   "servicio_desplazado": [
+    "12",
+    "12",
+    "12",
+    "12"
+   ]
+  },
+  {
+   "codigo_asset": 22,
+   "lon": -79.55779753688698,
+   "lat": 9.359894115433159,
+   "servicio": {
+    "categoria": "Maíz",
+    "valor_servicio": "22",
+    "rgb": [
+     187,
+     143,
+     143
+    ]
+   },
+   "servicio_desplazado": [
+    "22",
+    "22",
+    "22",
+    "22"
+   ]
+  },
+  {
+   "codigo_asset": 22,
+   "lon": -79.55820890742388,
+   "lat": 9.359488889949176,
+   "servicio": {
+    "categoria": "Maíz",
+    "valor_servicio": "22",
+    "rgb": [
+     187,
+     143,
+     143
+    ]
+   },
+   "servicio_desplazado": [
+    "22",
+    "22",
+    "22",
+    "22"
+   ]
+  },
+  {
+   "codigo_asset": 22,
+   "lon": -79.55793521961716,
+   "lat": 9.359623409922701,
+   "servicio": {
+    "categoria": "Maíz",
+    "valor_servicio": "22",
+    "rgb": [
+     187,
+     143,
+     143
+    ]
+   },
+   "servicio_desplazado": [
+    "22",
+    "22",
+    "22",
+    "22"
+   ]
+  },
+  {
+   "codigo_asset": 22,
+   "lon": -79.55793428775901,
+   "lat": 9.35984946062063,
+   "servicio": {
+    "categoria": "Maíz",
+    "valor_servicio": "22",
+    "rgb": [
+     187,
+     143,
+     143
+    ]
+   },
+   "servicio_desplazado": [
+    "22",
+    "22",
+    "22",
+    "22"
+   ]
+  },
+  {
+   "codigo_asset": 22,
+   "lon": -79.55807141131221,
+   "lat": 9.359714385465468,
+   "servicio": {
+    "categoria": "Maíz",
+    "valor_servicio": "22",
+    "rgb": [
+     187,
+     143,
+     143
+    ]
+   },
+   "servicio_desplazado": [
+    "22",
+    "22",
+    "22",
+    "22"
+   ]
+  },
+  {
+   "codigo_asset": 22,
+   "lon": -79.55802682161806,
+   "lat": 9.359488149674757,
+   "servicio": {
+    "categoria": "Maíz",
+    "valor_servicio": "22",
+    "rgb": [
+     187,
+     143,
+     143
+    ]
+   },
+   "servicio_desplazado": [
+    "22",
+    "22",
+    "22",
+    "22"
+   ]
+  },
+  {
+   "codigo_asset": 22,
+   "lon": -79.55807159766526,
+   "lat": 9.359669175323036,
+   "servicio": {
+    "categoria": "Maíz",
+    "valor_servicio": "22",
+    "rgb": [
+     187,
+     143,
+     143
+    ]
+   },
+   "servicio_desplazado": [
+    "22",
+    "22",
+    "22",
+    "22"
+   ]
+  },
+  {
+   "codigo_asset": 22,
+   "lon": -79.55784287199808,
+   "lat": 9.359939510685189,
+   "servicio": {
+    "categoria": "Maíz",
+    "valor_servicio": "22",
+    "rgb": [
+     187,
+     143,
+     143
+    ]
+   },
+   "servicio_desplazado": [
+    "22",
+    "22",
+    "22",
+    "22"
+   ]
+  },
+  {
+   "codigo_asset": 22,
+   "lon": -79.55820853475961,
+   "lat": 9.35957931024033,
+   "servicio": {
+    "categoria": "Maíz",
+    "valor_servicio": "22",
+    "rgb": [
+     187,
+     143,
+     143
+    ]
+   },
+   "servicio_desplazado": [
+    "22",
+    "22",
+    "22",
+    "22"
+   ]
+  },
+  {
+   "codigo_asset": 22,
+   "lon": -79.55798074108296,
+   "lat": 9.359623595014469,
+   "servicio": {
+    "categoria": "Maíz",
+    "valor_servicio": "22",
+    "rgb": [
+     187,
+     143,
+     143
+    ]
+   },
+   "servicio_desplazado": [
+    "22",
+    "22",
+    "22",
+    "22"
+   ]
+  },
+  {
+   "codigo_asset": 22,
+   "lon": -79.55784343115671,
+   "lat": 9.359803880272954,
+   "servicio": {
+    "categoria": "Maíz",
+    "valor_servicio": "22",
+    "rgb": [
+     187,
+     143,
+     143
+    ]
+   },
+   "servicio_desplazado": [
+    "22",
+    "22",
+    "22",
+    "22"
+   ]
+  },
+  {
+   "codigo_asset": 22,
+   "lon": -79.55807215671881,
+   "lat": 9.359533544895028,
+   "servicio": {
+    "categoria": "Maíz",
+    "valor_servicio": "22",
+    "rgb": [
+     187,
+     143,
+     143
+    ]
+   },
+   "servicio_desplazado": [
+    "22",
+    "22",
+    "22",
+    "22"
+   ]
+  },
+  {
+   "codigo_asset": 22,
+   "lon": -79.5581624542739,
+   "lat": 9.359714755611773,
+   "servicio": {
+    "categoria": "Maíz",
+    "valor_servicio": "22",
+    "rgb": [
+     187,
+     143,
+     143
+    ]
+   },
+   "servicio_desplazado": [
+    "22",
+    "22",
+    "22",
+    "22"
+   ]
+  },
+  {
+   "codigo_asset": 22,
+   "lon": -79.55793596508677,
+   "lat": 9.359442569362221,
+   "servicio": {
+    "categoria": "Maíz",
+    "valor_servicio": "22",
+    "rgb": [
+     187,
+     143,
+     143
+    ]
+   },
+   "servicio_desplazado": [
+    "22",
+    "22",
+    "22",
+    "22"
+   ]
+  },
+  {
+   "codigo_asset": 22,
+   "lon": -79.55793484687672,
+   "lat": 9.359713830202226,
+   "servicio": {
+    "categoria": "Maíz",
+    "valor_servicio": "22",
+    "rgb": [
+     187,
+     143,
+     143
+    ]
+   },
+   "servicio_desplazado": [
+    "22",
+    "22",
+    "22",
+    "22"
+   ]
+  },
+  {
+   "codigo_asset": 22,
+   "lon": -79.55802644890676,
+   "lat": 9.359578569958632,
+   "servicio": {
+    "categoria": "Maíz",
+    "valor_servicio": "22",
+    "rgb": [
+     187,
+     143,
+     143
+    ]
+   },
+   "servicio_desplazado": [
+    "22",
+    "22",
+    "22",
+    "22"
+   ]
+  },
+  {
+   "codigo_asset": 22,
+   "lon": -79.55798036835428,
+   "lat": 9.359714015295811,
+   "servicio": {
+    "categoria": "Maíz",
+    "valor_servicio": "22",
+    "rgb": [
+     187,
+     143,
+     143
+    ]
+   },
+   "servicio_desplazado": [
+    "22",
+    "22",
+    "22",
+    "22"
+   ]
+  },
+  {
+   "codigo_asset": 22,
+   "lon": -79.55784454944857,
+   "lat": 9.35953261944529,
+   "servicio": {
+    "categoria": "Maíz",
+    "valor_servicio": "22",
+    "rgb": [
+     187,
+     143,
+     143
+    ]
+   },
+   "servicio_desplazado": [
+    "22",
+    "22",
+    "22",
+    "22"
+   ]
+  },
+  {
+   "codigo_asset": 22,
+   "lon": -79.55811749183131,
+   "lat": 9.359578940111158,
+   "servicio": {
+    "categoria": "Maíz",
+    "valor_servicio": "22",
+    "rgb": [
+     187,
+     143,
+     143
+    ]
+   },
+   "servicio_desplazado": [
+    "22",
+    "22",
+    "22",
+    "22"
+   ]
+  },
+  {
+   "codigo_asset": 22,
+   "lon": -79.55811786451909,
+   "lat": 9.359488519823643,
+   "servicio": {
+    "categoria": "Maíz",
+    "valor_servicio": "22",
+    "rgb": [
+     187,
+     143,
+     143
+    ]
+   },
+   "servicio_desplazado": [
+    "22",
+    "22",
+    "22",
+    "22"
+   ]
+  },
+  {
+   "codigo_asset": 22,
+   "lon": -79.5579809274459,
+   "lat": 9.359578384873615,
+   "servicio": {
+    "categoria": "Maíz",
+    "valor_servicio": "22",
+    "rgb": [
+     187,
+     143,
+     143
+    ]
+   },
+   "servicio_desplazado": [
+    "22",
+    "22",
+    "22",
+    "22"
+   ]
+  },
+  {
+   "codigo_asset": 22,
+   "lon": -79.55802719432558,
+   "lat": 9.359397729390404,
+   "servicio": {
+    "categoria": "Maíz",
+    "valor_servicio": "22",
+    "rgb": [
+     187,
+     143,
+     143
+    ]
+   },
+   "servicio_desplazado": [
+    "22",
+    "22",
+    "22",
+    "22"
+   ]
+  },
+  {
+   "codigo_asset": 22,
+   "lon": -79.55784324477143,
+   "lat": 9.359849090410487,
+   "servicio": {
+    "categoria": "Maíz",
+    "valor_servicio": "22",
+    "rgb": [
+     187,
+     143,
+     143
+    ]
+   },
+   "servicio_desplazado": [
+    "22",
+    "22",
+    "22",
+    "22"
+   ]
+  },
+  {
+   "codigo_asset": 22,
+   "lon": -79.55775238818467,
+   "lat": 9.359803510041278,
+   "servicio": {
+    "categoria": "Maíz",
+    "valor_servicio": "22",
+    "rgb": [
+     187,
+     143,
+     143
+    ]
+   },
+   "servicio_desplazado": [
+    "22",
+    "22",
+    "22",
+    "22"
+   ]
+  },
+  {
+   "codigo_asset": 22,
+   "lon": -79.55788839350315,
+   "lat": 9.359939695794997,
+   "servicio": {
+    "categoria": "Maíz",
+    "valor_servicio": "22",
+    "rgb": [
+     187,
+     143,
+     143
+    ]
+   },
+   "servicio_desplazado": [
+    "22",
+    "22",
+    "22",
+    "22"
+   ]
+  },
+  {
+   "codigo_asset": 22,
+   "lon": -79.55789025727356,
+   "lat": 9.359487594407643,
+   "servicio": {
+    "categoria": "Maíz",
+    "valor_servicio": "22",
+    "rgb": [
+     187,
+     143,
+     143
+    ]
+   },
+   "servicio_desplazado": [
+    "22",
+    "22",
+    "22",
+    "22"
+   ]
+  },
+  {
+   "codigo_asset": 22,
+   "lon": -79.55811674644445,
+   "lat": 9.359759780684763,
+   "servicio": {
+    "categoria": "Maíz",
+    "valor_servicio": "22",
+    "rgb": [
+     187,
+     143,
+     143
+    ]
+   },
+   "servicio_desplazado": [
+    "22",
+    "22",
+    "22",
+    "22"
+   ]
+  },
+  {
+   "codigo_asset": 22,
+   "lon": -79.55788969815231,
+   "lat": 9.359623224825098,
+   "servicio": {
+    "categoria": "Maíz",
+    "valor_servicio": "22",
+    "rgb": [
+     187,
+     143,
+     143
+    ]
+   },
+   "servicio_desplazado": [
+    "22",
+    "22",
+    "22",
+    "22"
+   ]
+  },
+  {
+   "codigo_asset": 22,
+   "lon": -79.55802551711207,
+   "lat": 9.35980462066625,
+   "servicio": {
+    "categoria": "Maíz",
+    "valor_servicio": "22",
+    "rgb": [
+     187,
+     143,
+     143
+    ]
+   },
+   "servicio_desplazado": [
+    "22",
+    "22",
+    "22",
+    "22"
+   ]
+  },
+  {
+   "codigo_asset": 22,
+   "lon": -79.55807103860327,
+   "lat": 9.359804805749977,
+   "servicio": {
+    "categoria": "Maíz",
+    "valor_servicio": "22",
+    "rgb": [
+     187,
+     143,
+     143
+    ]
+   },
+   "servicio_desplazado": [
+    "22",
+    "22",
+    "22",
+    "22"
+   ]
+  },
+  {
+   "codigo_asset": 23,
+   "lon": -79.93394589198765,
+   "lat": 8.988631789681559,
+   "servicio": {
+    "categoria": "Piña",
+    "valor_servicio": "23",
+    "rgb": [
+     255,
+     255,
+     168
+    ]
+   },
+   "servicio_desplazado": [
+    "23",
+    "23",
+    "23",
+    "23"
+   ]
+  },
+  {
+   "codigo_asset": 23,
+   "lon": -79.77386233586465,
+   "lat": 8.986868291131236,
+   "servicio": {
+    "categoria": "Piña",
+    "valor_servicio": "23",
+    "rgb": [
+     255,
+     255,
+     168
+    ]
+   },
+   "servicio_desplazado": [
+    "23",
+    "23",
+    "23",
+    "23"
+   ]
+  },
+  {
+   "codigo_asset": 23,
+   "lon": -79.83739123478647,
+   "lat": 9.031205315925508,
+   "servicio": {
+    "categoria": "Piña",
+    "valor_servicio": "23",
+    "rgb": [
+     255,
+     255,
+     168
+    ]
+   },
+   "servicio_desplazado": [
+    "23",
+    "23",
+    "23",
+    "23"
+   ]
+  },
+  {
+   "codigo_asset": 23,
+   "lon": -79.7692219056944,
+   "lat": 8.987350207272348,
+   "servicio": {
+    "categoria": "Piña",
+    "valor_servicio": "23",
+    "rgb": [
+     255,
+     255,
+     168
+    ]
+   },
+   "servicio_desplazado": [
+    "23",
+    "23",
+    "23",
+    "23"
+   ]
+  },
+  {
+   "codigo_asset": 23,
+   "lon": -79.77772539139157,
+   "lat": 8.987649777662098,
+   "servicio": {
+    "categoria": "Piña",
+    "valor_servicio": "23",
+    "rgb": [
+     255,
+     255,
+     168
+    ]
+   },
+   "servicio_desplazado": [
+    "23",
+    "23",
+    "23",
+    "23"
+   ]
+  },
+  {
+   "codigo_asset": 23,
+   "lon": -79.77512797242589,
+   "lat": 8.989178490913464,
+   "servicio": {
+    "categoria": "Piña",
+    "valor_servicio": "23",
+    "rgb": [
+     255,
+     255,
+     168
+    ]
+   },
+   "servicio_desplazado": [
+    "23",
+    "23",
+    "23",
+    "23"
+   ]
+  },
+  {
+   "codigo_asset": 23,
+   "lon": -79.93142403437588,
+   "lat": 9.041981596962339,
+   "servicio": {
+    "categoria": "Piña",
+    "valor_servicio": "23",
+    "rgb": [
+     255,
+     255,
+     168
+    ]
+   },
+   "servicio_desplazado": [
+    "23",
+    "23",
+    "23",
+    "23"
+   ]
+  },
+  {
+   "codigo_asset": 23,
+   "lon": -79.85747677229725,
+   "lat": 9.022767619053896,
+   "servicio": {
+    "categoria": "Piña",
+    "valor_servicio": "23",
+    "rgb": [
+     255,
+     255,
+     168
+    ]
+   },
+   "servicio_desplazado": [
+    "23",
+    "23",
+    "23",
+    "23"
+   ]
+  },
+  {
+   "codigo_asset": 23,
+   "lon": -79.9368340617936,
+   "lat": 9.058501847589365,
+   "servicio": {
+    "categoria": "Piña",
+    "valor_servicio": "23",
+    "rgb": [
+     255,
+     255,
+     168
+    ]
+   },
+   "servicio_desplazado": [
+    "23",
+    "23",
+    "23",
+    "23"
+   ]
+  },
+  {
+   "codigo_asset": 23,
+   "lon": -79.92356309716706,
+   "lat": 9.008452252438031,
+   "servicio": {
+    "categoria": "Piña",
+    "valor_servicio": "23",
+    "rgb": [
+     255,
+     255,
+     168
+    ]
+   },
+   "servicio_desplazado": [
+    "23",
+    "23",
+    "23",
+    "23"
+   ]
+  },
+  {
+   "codigo_asset": 23,
+   "lon": -79.92336190155352,
+   "lat": 8.999588975384214,
+   "servicio": {
+    "categoria": "Piña",
+    "valor_servicio": "23",
+    "rgb": [
+     255,
+     255,
+     168
+    ]
+   },
+   "servicio_desplazado": [
+    "23",
+    "23",
+    "23",
+    "23"
+   ]
+  },
+  {
+   "codigo_asset": 23,
+   "lon": -79.771903127592,
+   "lat": 8.987946946243142,
+   "servicio": {
+    "categoria": "Piña",
+    "valor_servicio": "23",
+    "rgb": [
+     255,
+     255,
+     168
+    ]
+   },
+   "servicio_desplazado": [
+    "23",
+    "23",
+    "23",
+    "23"
+   ]
+  },
+  {
+   "codigo_asset": 23,
+   "lon": -79.83852241431188,
+   "lat": 9.033062772111155,
+   "servicio": {
+    "categoria": "Piña",
+    "valor_servicio": "23",
+    "rgb": [
+     255,
+     255,
+     168
+    ]
+   },
+   "servicio_desplazado": [
+    "23",
+    "23",
+    "23",
+    "23"
+   ]
+  },
+  {
+   "codigo_asset": 23,
+   "lon": -79.93221889330961,
+   "lat": 8.925864162331795,
+   "servicio": {
+    "categoria": "Piña",
+    "valor_servicio": "23",
+    "rgb": [
+     255,
+     255,
+     168
+    ]
+   },
+   "servicio_desplazado": [
+    "23",
+    "23",
+    "23",
+    "23"
+   ]
+  },
+  {
+   "codigo_asset": 23,
+   "lon": -79.87732024449288,
+   "lat": 9.018804461115257,
+   "servicio": {
+    "categoria": "Piña",
+    "valor_servicio": "23",
+    "rgb": [
+     255,
+     255,
+     168
+    ]
+   },
+   "servicio_desplazado": [
+    "23",
+    "23",
+    "23",
+    "23"
+   ]
+  },
+  {
+   "codigo_asset": 23,
+   "lon": -79.83606159034167,
+   "lat": 9.034501902961356,
+   "servicio": {
+    "categoria": "Piña",
+    "valor_servicio": "23",
+    "rgb": [
+     255,
+     255,
+     168
+    ]
+   },
+   "servicio_desplazado": [
+    "23",
+    "23",
+    "23",
+    "23"
+   ]
+  },
+  {
+   "codigo_asset": 23,
+   "lon": -79.86698462337507,
+   "lat": 8.993044293765818,
+   "servicio": {
+    "categoria": "Piña",
+    "valor_servicio": "23",
+    "rgb": [
+     255,
+     255,
+     168
+    ]
+   },
+   "servicio_desplazado": [
+    "23",
+    "23",
+    "23",
+    "23"
+   ]
+  },
+  {
+   "codigo_asset": 23,
+   "lon": -79.93972261320401,
+   "lat": 8.98842235182402,
+   "servicio": {
+    "categoria": "Piña",
+    "valor_servicio": "23",
+    "rgb": [
+     255,
+     255,
+     168
+    ]
+   },
+   "servicio_desplazado": [
+    "23",
+    "23",
+    "23",
+    "23"
+   ]
+  },
+  {
+   "codigo_asset": 23,
+   "lon": -79.77877335807835,
+   "lat": 8.987065445591659,
+   "servicio": {
+    "categoria": "Piña",
+    "valor_servicio": "23",
+    "rgb": [
+     255,
+     255,
+     168
+    ]
+   },
+   "servicio_desplazado": [
+    "23",
+    "23",
+    "23",
+    "23"
+   ]
+  },
+  {
+   "codigo_asset": 23,
+   "lon": -79.88660522685012,
+   "lat": 8.9572015126462,
+   "servicio": {
+    "categoria": "Piña",
+    "valor_servicio": "23",
+    "rgb": [
+     255,
+     255,
+     168
+    ]
+   },
+   "servicio_desplazado": [
+    "23",
+    "23",
+    "23",
+    "23"
+   ]
+  },
+  {
+   "codigo_asset": 23,
+   "lon": -79.9353588333054,
+   "lat": 8.98759585697698,
+   "servicio": {
+    "categoria": "Piña",
+    "valor_servicio": "23",
+    "rgb": [
+     255,
+     255,
+     168
+    ]
+   },
+   "servicio_desplazado": [
+    "23",
+    "23",
+    "23",
+    "23"
+   ]
+  },
+  {
+   "codigo_asset": 23,
+   "lon": -79.93531031547016,
+   "lat": 8.988635731046433,
+   "servicio": {
+    "categoria": "Piña",
+    "valor_servicio": "23",
+    "rgb": [
+     255,
+     255,
+     168
+    ]
+   },
+   "servicio_desplazado": [
+    "23",
+    "23",
+    "23",
+    "23"
+   ]
+  },
+  {
+   "codigo_asset": 23,
+   "lon": -79.77463029494432,
+   "lat": 8.98840817276499,
+   "servicio": {
+    "categoria": "Piña",
+    "valor_servicio": "23",
+    "rgb": [
+     255,
+     255,
+     168
+    ]
+   },
+   "servicio_desplazado": [
+    "23",
+    "23",
+    "23",
+    "23"
+   ]
+  },
+  {
+   "codigo_asset": 23,
+   "lon": -79.83921032987553,
+   "lat": 9.031301505144052,
+   "servicio": {
+    "categoria": "Piña",
+    "valor_servicio": "23",
+    "rgb": [
+     255,
+     255,
+     168
+    ]
+   },
+   "servicio_desplazado": [
+    "23",
+    "23",
+    "23",
+    "23"
+   ]
+  },
+  {
+   "codigo_asset": 23,
+   "lon": -79.77199149454906,
+   "lat": 8.988715904563836,
+   "servicio": {
+    "categoria": "Piña",
+    "valor_servicio": "23",
+    "rgb": [
+     255,
+     255,
+     168
+    ]
+   },
+   "servicio_desplazado": [
+    "23",
+    "23",
+    "23",
+    "23"
+   ]
+  },
+  {
+   "codigo_asset": 23,
+   "lon": -79.89984765138875,
+   "lat": 8.984507294340348,
+   "servicio": {
+    "categoria": "Piña",
+    "valor_servicio": "23",
+    "rgb": [
+     255,
+     255,
+     168
+    ]
+   },
+   "servicio_desplazado": [
+    "23",
+    "23",
+    "23",
+    "23"
+   ]
+  },
+  {
+   "codigo_asset": 23,
+   "lon": -79.94418916507988,
+   "lat": 8.985179459640177,
+   "servicio": {
+    "categoria": "Piña",
+    "valor_servicio": "23",
+    "rgb": [
+     255,
+     255,
+     168
+    ]
+   },
+   "servicio_desplazado": [
+    "23",
+    "23",
+    "23",
+    "23"
+   ]
+  },
+  {
+   "codigo_asset": 23,
+   "lon": -79.7417905890532,
+   "lat": 9.002811622143295,
+   "servicio": {
+    "categoria": "Piña",
+    "valor_servicio": "23",
+    "rgb": [
+     255,
+     255,
+     168
+    ]
+   },
+   "servicio_desplazado": [
+    "23",
+    "23",
+    "23",
+    "23"
+   ]
+  },
+  {
+   "codigo_asset": 23,
+   "lon": -79.94337346822742,
+   "lat": 9.062319089293014,
+   "servicio": {
+    "categoria": "Piña",
+    "valor_servicio": "23",
+    "rgb": [
+     255,
+     255,
+     168
+    ]
+   },
+   "servicio_desplazado": [
+    "23",
+    "23",
+    "23",
+    "23"
+   ]
+  },
+  {
+   "codigo_asset": 23,
+   "lon": -79.93754256480526,
+   "lat": 8.98737606336638,
+   "servicio": {
+    "categoria": "Piña",
+    "valor_servicio": "23",
+    "rgb": [
+     255,
+     255,
+     168
+    ]
+   },
+   "servicio_desplazado": [
+    "23",
+    "23",
+    "23",
+    "23"
+   ]
+  },
+  {
+   "codigo_asset": 26,
+   "lon": -79.74596820400114,
+   "lat": 9.200550380110021,
+   "servicio": {
+    "categoria": "Pasto",
+    "valor_servicio": "26",
+    "rgb": [
+     255,
+     255,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "26",
+    "26",
+    "26",
+    "26"
+   ]
+  },
+  {
+   "codigo_asset": 26,
+   "lon": -79.92728092402331,
+   "lat": 8.966093941556068,
+   "servicio": {
+    "categoria": "Pasto",
+    "valor_servicio": "26",
+    "rgb": [
+     255,
+     255,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "26",
+    "26",
+    "26",
+    "26"
+   ]
+  },
+  {
+   "codigo_asset": 26,
+   "lon": -79.65602610934988,
+   "lat": 8.975606516527057,
+   "servicio": {
+    "categoria": "Pasto",
+    "valor_servicio": "26",
+    "rgb": [
+     255,
+     255,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "26",
+    "26",
+    "26",
+    "26"
+   ]
+  },
+  {
+   "codigo_asset": 26,
+   "lon": -79.96396728891241,
+   "lat": 9.177412792831005,
+   "servicio": {
+    "categoria": "Pasto",
+    "valor_servicio": "26",
+    "rgb": [
+     255,
+     255,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "26",
+    "26",
+    "26",
+    "26"
+   ]
+  },
+  {
+   "codigo_asset": 26,
+   "lon": -79.63105260005644,
+   "lat": 9.181504811960536,
+   "servicio": {
+    "categoria": "Pasto",
+    "valor_servicio": "26",
+    "rgb": [
+     255,
+     255,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "26",
+    "26",
+    "26",
+    "26"
+   ]
+  },
+  {
+   "codigo_asset": 26,
+   "lon": -79.51000943736817,
+   "lat": 9.293237782918657,
+   "servicio": {
+    "categoria": "Pasto",
+    "valor_servicio": "26",
+    "rgb": [
+     255,
+     255,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "26",
+    "26",
+    "26",
+    "26"
+   ]
+  },
+  {
+   "codigo_asset": 26,
+   "lon": -79.62900058279055,
+   "lat": 9.206318750891482,
+   "servicio": {
+    "categoria": "Pasto",
+    "valor_servicio": "26",
+    "rgb": [
+     255,
+     255,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "26",
+    "26",
+    "26",
+    "26"
+   ]
+  },
+  {
+   "codigo_asset": 26,
+   "lon": -79.77855943289094,
+   "lat": 9.037208821189314,
+   "servicio": {
+    "categoria": "Pasto",
+    "valor_servicio": "26",
+    "rgb": [
+     255,
+     255,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "26",
+    "26",
+    "26",
+    "26"
+   ]
+  },
+  {
+   "codigo_asset": 26,
+   "lon": -80.09529309129935,
+   "lat": 8.943119218619218,
+   "servicio": {
+    "categoria": "Pasto",
+    "valor_servicio": "26",
+    "rgb": [
+     255,
+     255,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "26",
+    "26",
+    "26",
+    "26"
+   ]
+  },
+  {
+   "codigo_asset": 26,
+   "lon": -79.96114492612784,
+   "lat": 9.177766436023793,
+   "servicio": {
+    "categoria": "Pasto",
+    "valor_servicio": "26",
+    "rgb": [
+     255,
+     255,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "26",
+    "26",
+    "26",
+    "26"
+   ]
+  },
+  {
+   "codigo_asset": 26,
+   "lon": -79.54432271700392,
+   "lat": 9.283071244629948,
+   "servicio": {
+    "categoria": "Pasto",
+    "valor_servicio": "26",
+    "rgb": [
+     255,
+     255,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "26",
+    "26",
+    "26",
+    "26"
+   ]
+  },
+  {
+   "codigo_asset": 26,
+   "lon": -79.6920349312288,
+   "lat": 9.178565764601021,
+   "servicio": {
+    "categoria": "Pasto",
+    "valor_servicio": "26",
+    "rgb": [
+     255,
+     255,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "26",
+    "26",
+    "26",
+    "26"
+   ]
+  },
+  {
+   "codigo_asset": 26,
+   "lon": -79.66186729473975,
+   "lat": 9.178681394825889,
+   "servicio": {
+    "categoria": "Pasto",
+    "valor_servicio": "26",
+    "rgb": [
+     255,
+     255,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "26",
+    "26",
+    "26",
+    "26"
+   ]
+  },
+  {
+   "codigo_asset": 26,
+   "lon": -79.70263277486784,
+   "lat": 9.19216813817912,
+   "servicio": {
+    "categoria": "Pasto",
+    "valor_servicio": "26",
+    "rgb": [
+     255,
+     255,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "26",
+    "26",
+    "26",
+    "26"
+   ]
+  },
+  {
+   "codigo_asset": 26,
+   "lon": -79.76476735021669,
+   "lat": 9.238234042201308,
+   "servicio": {
+    "categoria": "Pasto",
+    "valor_servicio": "26",
+    "rgb": [
+     255,
+     255,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "26",
+    "26",
+    "26",
+    "26"
+   ]
+  },
+  {
+   "codigo_asset": 26,
+   "lon": -79.64576770388409,
+   "lat": 9.224512506864249,
+   "servicio": {
+    "categoria": "Pasto",
+    "valor_servicio": "26",
+    "rgb": [
+     255,
+     255,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "26",
+    "26",
+    "26",
+    "26"
+   ]
+  },
+  {
+   "codigo_asset": 26,
+   "lon": -79.68085436103621,
+   "lat": 9.273111659119111,
+   "servicio": {
+    "categoria": "Pasto",
+    "valor_servicio": "26",
+    "rgb": [
+     255,
+     255,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "26",
+    "26",
+    "26",
+    "26"
+   ]
+  },
+  {
+   "codigo_asset": 26,
+   "lon": -79.60696021312464,
+   "lat": 9.303033243965658,
+   "servicio": {
+    "categoria": "Pasto",
+    "valor_servicio": "26",
+    "rgb": [
+     255,
+     255,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "26",
+    "26",
+    "26",
+    "26"
+   ]
+  },
+  {
+   "codigo_asset": 26,
+   "lon": -79.53824360705266,
+   "lat": 9.300316919007026,
+   "servicio": {
+    "categoria": "Pasto",
+    "valor_servicio": "26",
+    "rgb": [
+     255,
+     255,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "26",
+    "26",
+    "26",
+    "26"
+   ]
+  },
+  {
+   "codigo_asset": 26,
+   "lon": -79.66361764342045,
+   "lat": 9.19727051096983,
+   "servicio": {
+    "categoria": "Pasto",
+    "valor_servicio": "26",
+    "rgb": [
+     255,
+     255,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "26",
+    "26",
+    "26",
+    "26"
+   ]
+  },
+  {
+   "codigo_asset": 26,
+   "lon": -79.81976973353481,
+   "lat": 9.023010172537873,
+   "servicio": {
+    "categoria": "Pasto",
+    "valor_servicio": "26",
+    "rgb": [
+     255,
+     255,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "26",
+    "26",
+    "26",
+    "26"
+   ]
+  },
+  {
+   "codigo_asset": 26,
+   "lon": -80.07921278120206,
+   "lat": 8.935663537764498,
+   "servicio": {
+    "categoria": "Pasto",
+    "valor_servicio": "26",
+    "rgb": [
+     255,
+     255,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "26",
+    "26",
+    "26",
+    "26"
+   ]
+  },
+  {
+   "codigo_asset": 26,
+   "lon": -79.84124204957934,
+   "lat": 9.050253637719774,
+   "servicio": {
+    "categoria": "Pasto",
+    "valor_servicio": "26",
+    "rgb": [
+     255,
+     255,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "26",
+    "26",
+    "26",
+    "26"
+   ]
+  },
+  {
+   "codigo_asset": 26,
+   "lon": -79.99275309890442,
+   "lat": 8.98879708487651,
+   "servicio": {
+    "categoria": "Pasto",
+    "valor_servicio": "26",
+    "rgb": [
+     255,
+     255,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "26",
+    "26",
+    "26",
+    "26"
+   ]
+  },
+  {
+   "codigo_asset": 26,
+   "lon": -79.75912605970342,
+   "lat": 9.237672019888679,
+   "servicio": {
+    "categoria": "Pasto",
+    "valor_servicio": "26",
+    "rgb": [
+     255,
+     255,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "26",
+    "26",
+    "26",
+    "26"
+   ]
+  },
+  {
+   "codigo_asset": 26,
+   "lon": -79.72248917685208,
+   "lat": 9.212811439028828,
+   "servicio": {
+    "categoria": "Pasto",
+    "valor_servicio": "26",
+    "rgb": [
+     255,
+     255,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "26",
+    "26",
+    "26",
+    "26"
+   ]
+  },
+  {
+   "codigo_asset": 26,
+   "lon": -79.52407496684411,
+   "lat": 9.303604164957259,
+   "servicio": {
+    "categoria": "Pasto",
+    "valor_servicio": "26",
+    "rgb": [
+     255,
+     255,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "26",
+    "26",
+    "26",
+    "26"
+   ]
+  },
+  {
+   "codigo_asset": 26,
+   "lon": -79.5424392190193,
+   "lat": 9.25421906796279,
+   "servicio": {
+    "categoria": "Pasto",
+    "valor_servicio": "26",
+    "rgb": [
+     255,
+     255,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "26",
+    "26",
+    "26",
+    "26"
+   ]
+  },
+  {
+   "codigo_asset": 26,
+   "lon": -79.55161813060204,
+   "lat": 9.3900244968609,
+   "servicio": {
+    "categoria": "Pasto",
+    "valor_servicio": "26",
+    "rgb": [
+     255,
+     255,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "26",
+    "26",
+    "26",
+    "26"
+   ]
+  },
+  {
+   "codigo_asset": 26,
+   "lon": -79.61340585741758,
+   "lat": 9.261191938902002,
+   "servicio": {
+    "categoria": "Pasto",
+    "valor_servicio": "26",
+    "rgb": [
+     255,
+     255,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "26",
+    "26",
+    "26",
+    "26"
+   ]
+  },
+  {
+   "codigo_asset": 27,
+   "lon": -79.5544077081298,
+   "lat": 9.175961771895127,
+   "servicio": {
+    "categoria": "Superficie de agua",
+    "valor_servicio": "27",
+    "rgb": [
+     128,
+     241,
+     230
+    ]
+   },
+   "servicio_desplazado": [
+    "27",
+    "27",
+    "27",
+    "27"
+   ]
+  },
+  {
+   "codigo_asset": 27,
+   "lon": -79.78712310602816,
+   "lat": 9.181881594109651,
+   "servicio": {
+    "categoria": "Superficie de agua",
+    "valor_servicio": "27",
+    "rgb": [
+     128,
+     241,
+     230
+    ]
+   },
+   "servicio_desplazado": [
+    "27",
+    "27",
+    "27",
+    "27"
+   ]
+  },
+  {
+   "codigo_asset": 27,
+   "lon": -79.75503613103825,
+   "lat": 9.274779074382316,
+   "servicio": {
+    "categoria": "Superficie de agua",
+    "valor_servicio": "27",
+    "rgb": [
+     128,
+     241,
+     230
+    ]
+   },
+   "servicio_desplazado": [
+    "27",
+    "27",
+    "27",
+    "27"
+   ]
+  },
+  {
+   "codigo_asset": 27,
+   "lon": -79.8179069489069,
+   "lat": 9.270515965208723,
+   "servicio": {
+    "categoria": "Superficie de agua",
+    "valor_servicio": "27",
+    "rgb": [
+     128,
+     241,
+     230
+    ]
+   },
+   "servicio_desplazado": [
+    "27",
+    "27",
+    "27",
+    "27"
+   ]
+  },
+  {
+   "codigo_asset": 27,
+   "lon": -79.67279828026705,
+   "lat": 9.15127713786079,
+   "servicio": {
+    "categoria": "Superficie de agua",
+    "valor_servicio": "27",
+    "rgb": [
+     128,
+     241,
+     230
+    ]
+   },
+   "servicio_desplazado": [
+    "27",
+    "27",
+    "27",
+    "27"
+   ]
+  },
+  {
+   "codigo_asset": 27,
+   "lon": -79.68337615261461,
+   "lat": 9.120389543852198,
+   "servicio": {
+    "categoria": "Superficie de agua",
+    "valor_servicio": "27",
+    "rgb": [
+     128,
+     241,
+     230
+    ]
+   },
+   "servicio_desplazado": [
+    "27",
+    "27",
+    "27",
+    "27"
+   ]
+  },
+  {
+   "codigo_asset": 27,
+   "lon": -79.655049353941,
+   "lat": 9.272879967088924,
+   "servicio": {
+    "categoria": "Superficie de agua",
+    "valor_servicio": "27",
+    "rgb": [
+     128,
+     241,
+     230
+    ]
+   },
+   "servicio_desplazado": [
+    "27",
+    "27",
+    "27",
+    "27"
+   ]
+  },
+  {
+   "codigo_asset": 27,
+   "lon": -79.8605608528512,
+   "lat": 9.140792774326329,
+   "servicio": {
+    "categoria": "Superficie de agua",
+    "valor_servicio": "27",
+    "rgb": [
+     128,
+     241,
+     230
+    ]
+   },
+   "servicio_desplazado": [
+    "27",
+    "27",
+    "27",
+    "27"
+   ]
+  },
+  {
+   "codigo_asset": 27,
+   "lon": -80.04033855572347,
+   "lat": 8.984628130961868,
+   "servicio": {
+    "categoria": "Superficie de agua",
+    "valor_servicio": "27",
+    "rgb": [
+     128,
+     241,
+     230
+    ]
+   },
+   "servicio_desplazado": [
+    "27",
+    "27",
+    "27",
+    "27"
+   ]
+  },
+  {
+   "codigo_asset": 27,
+   "lon": -79.76899039364514,
+   "lat": 8.98857025283154,
+   "servicio": {
+    "categoria": "Superficie de agua",
+    "valor_servicio": "27",
+    "rgb": [
+     128,
+     241,
+     230
+    ]
+   },
+   "servicio_desplazado": [
+    "27",
+    "27",
+    "27",
+    "27"
+   ]
+  },
+  {
+   "codigo_asset": 27,
+   "lon": -79.592590181525,
+   "lat": 9.333901605627924,
+   "servicio": {
+    "categoria": "Superficie de agua",
+    "valor_servicio": "27",
+    "rgb": [
+     128,
+     241,
+     230
+    ]
+   },
+   "servicio_desplazado": [
+    "27",
+    "27",
+    "27",
+    "27"
+   ]
+  },
+  {
+   "codigo_asset": 27,
+   "lon": -79.74611259807065,
+   "lat": 9.107408555280829,
+   "servicio": {
+    "categoria": "Superficie de agua",
+    "valor_servicio": "27",
+    "rgb": [
+     128,
+     241,
+     230
+    ]
+   },
+   "servicio_desplazado": [
+    "27",
+    "27",
+    "27",
+    "27"
+   ]
+  },
+  {
+   "codigo_asset": 27,
+   "lon": -80.08224190421004,
+   "lat": 9.015122508055953,
+   "servicio": {
+    "categoria": "Superficie de agua",
+    "valor_servicio": "27",
+    "rgb": [
+     128,
+     241,
+     230
+    ]
+   },
+   "servicio_desplazado": [
+    "27",
+    "27",
+    "27",
+    "27"
+   ]
+  },
+  {
+   "codigo_asset": 27,
+   "lon": -79.69247930870937,
+   "lat": 9.106677360098201,
+   "servicio": {
+    "categoria": "Superficie de agua",
+    "valor_servicio": "27",
+    "rgb": [
+     128,
+     241,
+     230
+    ]
+   },
+   "servicio_desplazado": [
+    "27",
+    "27",
+    "27",
+    "27"
+   ]
+  },
+  {
+   "codigo_asset": 27,
+   "lon": -79.78188179134533,
+   "lat": 9.250726642607752,
+   "servicio": {
+    "categoria": "Superficie de agua",
+    "valor_servicio": "27",
+    "rgb": [
+     128,
+     241,
+     230
+    ]
+   },
+   "servicio_desplazado": [
+    "27",
+    "27",
+    "27",
+    "27"
+   ]
+  },
+  {
+   "codigo_asset": 27,
+   "lon": -79.77858857957412,
+   "lat": 9.255463020585212,
+   "servicio": {
+    "categoria": "Superficie de agua",
+    "valor_servicio": "27",
+    "rgb": [
+     128,
+     241,
+     230
+    ]
+   },
+   "servicio_desplazado": [
+    "27",
+    "27",
+    "27",
+    "27"
+   ]
+  },
+  {
+   "codigo_asset": 27,
+   "lon": -79.6524727582732,
+   "lat": 9.184343333669093,
+   "servicio": {
+    "categoria": "Superficie de agua",
+    "valor_servicio": "27",
+    "rgb": [
+     128,
+     241,
+     230
+    ]
+   },
+   "servicio_desplazado": [
+    "27",
+    "27",
+    "27",
+    "27"
+   ]
+  },
+  {
+   "codigo_asset": 27,
+   "lon": -79.80269774056642,
+   "lat": 9.055284313926341,
+   "servicio": {
+    "categoria": "Superficie de agua",
+    "valor_servicio": "27",
+    "rgb": [
+     128,
+     241,
+     230
+    ]
+   },
+   "servicio_desplazado": [
+    "27",
+    "27",
+    "27",
+    "27"
+   ]
+  },
+  {
+   "codigo_asset": 27,
+   "lon": -79.83303844556764,
+   "lat": 9.125422247691779,
+   "servicio": {
+    "categoria": "Superficie de agua",
+    "valor_servicio": "27",
+    "rgb": [
+     128,
+     241,
+     230
+    ]
+   },
+   "servicio_desplazado": [
+    "27",
+    "27",
+    "27",
+    "27"
+   ]
+  },
+  {
+   "codigo_asset": 27,
+   "lon": -79.74800707651428,
+   "lat": 9.112072204082788,
+   "servicio": {
+    "categoria": "Superficie de agua",
+    "valor_servicio": "27",
+    "rgb": [
+     128,
+     241,
+     230
+    ]
+   },
+   "servicio_desplazado": [
+    "27",
+    "27",
+    "27",
+    "27"
+   ]
+  },
+  {
+   "codigo_asset": 27,
+   "lon": -80.0394246889334,
+   "lat": 9.003482235096234,
+   "servicio": {
+    "categoria": "Superficie de agua",
+    "valor_servicio": "27",
+    "rgb": [
+     128,
+     241,
+     230
+    ]
+   },
+   "servicio_desplazado": [
+    "27",
+    "27",
+    "27",
+    "27"
+   ]
+  },
+  {
+   "codigo_asset": 27,
+   "lon": -79.91188775031,
+   "lat": 9.258831468933657,
+   "servicio": {
+    "categoria": "Superficie de agua",
+    "valor_servicio": "27",
+    "rgb": [
+     128,
+     241,
+     230
+    ]
+   },
+   "servicio_desplazado": [
+    "27",
+    "27",
+    "27",
+    "27"
+   ]
+  },
+  {
+   "codigo_asset": 27,
+   "lon": -79.60148520006545,
+   "lat": 9.003707077256813,
+   "servicio": {
+    "categoria": "Superficie de agua",
+    "valor_servicio": "27",
+    "rgb": [
+     128,
+     241,
+     230
+    ]
+   },
+   "servicio_desplazado": [
+    "27",
+    "27",
+    "27",
+    "27"
+   ]
+  },
+  {
+   "codigo_asset": 27,
+   "lon": -79.59810876006345,
+   "lat": 9.006587835340456,
+   "servicio": {
+    "categoria": "Superficie de agua",
+    "valor_servicio": "27",
+    "rgb": [
+     128,
+     241,
+     230
+    ]
+   },
+   "servicio_desplazado": [
+    "27",
+    "27",
+    "27",
+    "27"
+   ]
+  },
+  {
+   "codigo_asset": 27,
+   "lon": -79.65593180257868,
+   "lat": 9.172013039575107,
+   "servicio": {
+    "categoria": "Superficie de agua",
+    "valor_servicio": "27",
+    "rgb": [
+     128,
+     241,
+     230
+    ]
+   },
+   "servicio_desplazado": [
+    "27",
+    "27",
+    "27",
+    "27"
+   ]
+  },
+  {
+   "codigo_asset": 27,
+   "lon": -79.82818529108651,
+   "lat": 9.106868023000926,
+   "servicio": {
+    "categoria": "Superficie de agua",
+    "valor_servicio": "27",
+    "rgb": [
+     128,
+     241,
+     230
+    ]
+   },
+   "servicio_desplazado": [
+    "27",
+    "27",
+    "27",
+    "27"
+   ]
+  },
+  {
+   "codigo_asset": 27,
+   "lon": -79.8235684486968,
+   "lat": 9.071765432914633,
+   "servicio": {
+    "categoria": "Superficie de agua",
+    "valor_servicio": "27",
+    "rgb": [
+     128,
+     241,
+     230
+    ]
+   },
+   "servicio_desplazado": [
+    "27",
+    "27",
+    "27",
+    "27"
+   ]
+  },
+  {
+   "codigo_asset": 27,
+   "lon": -79.55436349207213,
+   "lat": 9.175645116233586,
+   "servicio": {
+    "categoria": "Superficie de agua",
+    "valor_servicio": "27",
+    "rgb": [
+     128,
+     241,
+     230
+    ]
+   },
+   "servicio_desplazado": [
+    "27",
+    "27",
+    "27",
+    "27"
+   ]
+  },
+  {
+   "codigo_asset": 27,
+   "lon": -80.0401563906211,
+   "lat": 8.98471809595665,
+   "servicio": {
+    "categoria": "Superficie de agua",
+    "valor_servicio": "27",
+    "rgb": [
+     128,
+     241,
+     230
+    ]
+   },
+   "servicio_desplazado": [
+    "27",
+    "27",
+    "27",
+    "27"
+   ]
+  },
+  {
+   "codigo_asset": 27,
+   "lon": -79.66161196611561,
+   "lat": 9.366178756509365,
+   "servicio": {
+    "categoria": "Superficie de agua",
+    "valor_servicio": "27",
+    "rgb": [
+     128,
+     241,
+     230
+    ]
+   },
+   "servicio_desplazado": [
+    "27",
+    "27",
+    "27",
+    "27"
+   ]
+  },
+  {
+   "codigo_asset": 28,
+   "lon": -79.4019729975624,
+   "lat": 9.22093510508719,
+   "servicio": {
+    "categoria": "Área poblada",
+    "valor_servicio": "28",
+    "rgb": [
+     255,
+     0,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "28",
+    "28",
+    "28",
+    "28"
+   ]
+  },
+  {
+   "codigo_asset": 28,
+   "lon": -79.68872946326435,
+   "lat": 9.186556609278997,
+   "servicio": {
+    "categoria": "Área poblada",
+    "valor_servicio": "28",
+    "rgb": [
+     255,
+     0,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "28",
+    "28",
+    "28",
+    "28"
+   ]
+  },
+  {
+   "codigo_asset": 28,
+   "lon": -79.54063458783642,
+   "lat": 9.228305911506846,
+   "servicio": {
+    "categoria": "Área poblada",
+    "valor_servicio": "28",
+    "rgb": [
+     255,
+     0,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "28",
+    "28",
+    "28",
+    "28"
+   ]
+  },
+  {
+   "codigo_asset": 28,
+   "lon": -79.78935559242211,
+   "lat": 9.31418875250927,
+   "servicio": {
+    "categoria": "Área poblada",
+    "valor_servicio": "28",
+    "rgb": [
+     255,
+     0,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "28",
+    "28",
+    "28",
+    "28"
+   ]
+  },
+  {
+   "codigo_asset": 28,
+   "lon": -79.56932301050159,
+   "lat": 9.357861086404556,
+   "servicio": {
+    "categoria": "Área poblada",
+    "valor_servicio": "28",
+    "rgb": [
+     255,
+     0,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "28",
+    "28",
+    "28",
+    "28"
+   ]
+  },
+  {
+   "codigo_asset": 28,
+   "lon": -79.96265989907434,
+   "lat": 9.157513142897303,
+   "servicio": {
+    "categoria": "Área poblada",
+    "valor_servicio": "28",
+    "rgb": [
+     255,
+     0,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "28",
+    "28",
+    "28",
+    "28"
+   ]
+  },
+  {
+   "codigo_asset": 28,
+   "lon": -79.6194935601909,
+   "lat": 9.240598638716564,
+   "servicio": {
+    "categoria": "Área poblada",
+    "valor_servicio": "28",
+    "rgb": [
+     255,
+     0,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "28",
+    "28",
+    "28",
+    "28"
+   ]
+  },
+  {
+   "codigo_asset": 28,
+   "lon": -79.61959430379616,
+   "lat": 9.132315204650554,
+   "servicio": {
+    "categoria": "Área poblada",
+    "valor_servicio": "28",
+    "rgb": [
+     255,
+     0,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "28",
+    "28",
+    "28",
+    "28"
+   ]
+  },
+  {
+   "codigo_asset": 28,
+   "lon": -79.81648891464768,
+   "lat": 8.98289284320021,
+   "servicio": {
+    "categoria": "Área poblada",
+    "valor_servicio": "28",
+    "rgb": [
+     255,
+     0,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "28",
+    "28",
+    "28",
+    "28"
+   ]
+  },
+  {
+   "codigo_asset": 28,
+   "lon": -79.68768309129251,
+   "lat": 9.186507594509315,
+   "servicio": {
+    "categoria": "Área poblada",
+    "valor_servicio": "28",
+    "rgb": [
+     255,
+     0,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "28",
+    "28",
+    "28",
+    "28"
+   ]
+  },
+  {
+   "codigo_asset": 28,
+   "lon": -79.58900897283785,
+   "lat": 9.341528162720993,
+   "servicio": {
+    "categoria": "Área poblada",
+    "valor_servicio": "28",
+    "rgb": [
+     255,
+     0,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "28",
+    "28",
+    "28",
+    "28"
+   ]
+  },
+  {
+   "codigo_asset": 28,
+   "lon": -79.87915074668678,
+   "lat": 9.276907630636094,
+   "servicio": {
+    "categoria": "Área poblada",
+    "valor_servicio": "28",
+    "rgb": [
+     255,
+     0,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "28",
+    "28",
+    "28",
+    "28"
+   ]
+  },
+  {
+   "codigo_asset": 28,
+   "lon": -79.81476013588649,
+   "lat": 9.33995650771314,
+   "servicio": {
+    "categoria": "Área poblada",
+    "valor_servicio": "28",
+    "rgb": [
+     255,
+     0,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "28",
+    "28",
+    "28",
+    "28"
+   ]
+  },
+  {
+   "codigo_asset": 28,
+   "lon": -79.61217310518296,
+   "lat": 9.133778931862242,
+   "servicio": {
+    "categoria": "Área poblada",
+    "valor_servicio": "28",
+    "rgb": [
+     255,
+     0,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "28",
+    "28",
+    "28",
+    "28"
+   ]
+  },
+  {
+   "codigo_asset": 28,
+   "lon": -79.70321468344827,
+   "lat": 9.119511336113257,
+   "servicio": {
+    "categoria": "Área poblada",
+    "valor_servicio": "28",
+    "rgb": [
+     255,
+     0,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "28",
+    "28",
+    "28",
+    "28"
+   ]
+  },
+  {
+   "codigo_asset": 28,
+   "lon": -79.8799753510813,
+   "lat": 9.275237202097989,
+   "servicio": {
+    "categoria": "Área poblada",
+    "valor_servicio": "28",
+    "rgb": [
+     255,
+     0,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "28",
+    "28",
+    "28",
+    "28"
+   ]
+  },
+  {
+   "codigo_asset": 28,
+   "lon": -79.88498514635477,
+   "lat": 9.274303300852837,
+   "servicio": {
+    "categoria": "Área poblada",
+    "valor_servicio": "28",
+    "rgb": [
+     255,
+     0,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "28",
+    "28",
+    "28",
+    "28"
+   ]
+  },
+  {
+   "codigo_asset": 28,
+   "lon": -79.5843080263981,
+   "lat": 9.344583841418487,
+   "servicio": {
+    "categoria": "Área poblada",
+    "valor_servicio": "28",
+    "rgb": [
+     255,
+     0,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "28",
+    "28",
+    "28",
+    "28"
+   ]
+  },
+  {
+   "codigo_asset": 28,
+   "lon": -79.62954480546567,
+   "lat": 9.194972458828698,
+   "servicio": {
+    "categoria": "Área poblada",
+    "valor_servicio": "28",
+    "rgb": [
+     255,
+     0,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "28",
+    "28",
+    "28",
+    "28"
+   ]
+  },
+  {
+   "codigo_asset": 28,
+   "lon": -79.70741900261082,
+   "lat": 9.30210018618864,
+   "servicio": {
+    "categoria": "Área poblada",
+    "valor_servicio": "28",
+    "rgb": [
+     255,
+     0,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "28",
+    "28",
+    "28",
+    "28"
+   ]
+  },
+  {
+   "codigo_asset": 28,
+   "lon": -79.90598407440334,
+   "lat": 9.03100917221833,
+   "servicio": {
+    "categoria": "Área poblada",
+    "valor_servicio": "28",
+    "rgb": [
+     255,
+     0,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "28",
+    "28",
+    "28",
+    "28"
+   ]
+  },
+  {
+   "codigo_asset": 28,
+   "lon": -79.60818735501846,
+   "lat": 9.245754384271146,
+   "servicio": {
+    "categoria": "Área poblada",
+    "valor_servicio": "28",
+    "rgb": [
+     255,
+     0,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "28",
+    "28",
+    "28",
+    "28"
+   ]
+  },
+  {
+   "codigo_asset": 28,
+   "lon": -79.80888390862533,
+   "lat": 9.341022029069226,
+   "servicio": {
+    "categoria": "Área poblada",
+    "valor_servicio": "28",
+    "rgb": [
+     255,
+     0,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "28",
+    "28",
+    "28",
+    "28"
+   ]
+  },
+  {
+   "codigo_asset": 28,
+   "lon": -79.81396975826054,
+   "lat": 9.277330486181885,
+   "servicio": {
+    "categoria": "Área poblada",
+    "valor_servicio": "28",
+    "rgb": [
+     255,
+     0,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "28",
+    "28",
+    "28",
+    "28"
+   ]
+  },
+  {
+   "codigo_asset": 28,
+   "lon": -79.70506057669184,
+   "lat": 9.212749190330142,
+   "servicio": {
+    "categoria": "Área poblada",
+    "valor_servicio": "28",
+    "rgb": [
+     255,
+     0,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "28",
+    "28",
+    "28",
+    "28"
+   ]
+  },
+  {
+   "codigo_asset": 28,
+   "lon": -79.81471537656479,
+   "lat": 9.339730281559278,
+   "servicio": {
+    "categoria": "Área poblada",
+    "valor_servicio": "28",
+    "rgb": [
+     255,
+     0,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "28",
+    "28",
+    "28",
+    "28"
+   ]
+  },
+  {
+   "codigo_asset": 28,
+   "lon": -79.6343413183621,
+   "lat": 9.04646636144917,
+   "servicio": {
+    "categoria": "Área poblada",
+    "valor_servicio": "28",
+    "rgb": [
+     255,
+     0,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "28",
+    "28",
+    "28",
+    "28"
+   ]
+  },
+  {
+   "codigo_asset": 28,
+   "lon": -79.71361719711182,
+   "lat": 9.249990974595589,
+   "servicio": {
+    "categoria": "Área poblada",
+    "valor_servicio": "28",
+    "rgb": [
+     255,
+     0,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "28",
+    "28",
+    "28",
+    "28"
+   ]
+  },
+  {
+   "codigo_asset": 28,
+   "lon": -79.62044446167187,
+   "lat": 9.241823026523152,
+   "servicio": {
+    "categoria": "Área poblada",
+    "valor_servicio": "28",
+    "rgb": [
+     255,
+     0,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "28",
+    "28",
+    "28",
+    "28"
+   ]
+  },
+  {
+   "codigo_asset": 28,
+   "lon": -79.96189501648055,
+   "lat": 9.154526565507782,
+   "servicio": {
+    "categoria": "Área poblada",
+    "valor_servicio": "28",
+    "rgb": [
+     255,
+     0,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "28",
+    "28",
+    "28",
+    "28"
+   ]
+  },
+  {
+   "codigo_asset": 29,
+   "lon": -79.73313172303702,
+   "lat": 9.007891212657098,
+   "servicio": {
+    "categoria": "Infraestructura",
+    "valor_servicio": "29",
+    "rgb": [
+     153,
+     0,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "29",
+    "29",
+    "29",
+    "29"
+   ]
+  },
+  {
+   "codigo_asset": 29,
+   "lon": -79.6152076111585,
+   "lat": 9.184292808199682,
+   "servicio": {
+    "categoria": "Infraestructura",
+    "valor_servicio": "29",
+    "rgb": [
+     153,
+     0,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "29",
+    "29",
+    "29",
+    "29"
+   ]
+  },
+  {
+   "codigo_asset": 29,
+   "lon": -79.64515931662592,
+   "lat": 9.011827926099166,
+   "servicio": {
+    "categoria": "Infraestructura",
+    "valor_servicio": "29",
+    "rgb": [
+     153,
+     0,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "29",
+    "29",
+    "29",
+    "29"
+   ]
+  },
+  {
+   "codigo_asset": 29,
+   "lon": -79.78447679015548,
+   "lat": 9.15723035759704,
+   "servicio": {
+    "categoria": "Infraestructura",
+    "valor_servicio": "29",
+    "rgb": [
+     153,
+     0,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "29",
+    "29",
+    "29",
+    "29"
+   ]
+  },
+  {
+   "codigo_asset": 29,
+   "lon": -79.37758682047894,
+   "lat": 9.270102175303252,
+   "servicio": {
+    "categoria": "Infraestructura",
+    "valor_servicio": "29",
+    "rgb": [
+     153,
+     0,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "29",
+    "29",
+    "29",
+    "29"
+   ]
+  },
+  {
+   "codigo_asset": 29,
+   "lon": -79.74606738610554,
+   "lat": 9.028689217177796,
+   "servicio": {
+    "categoria": "Infraestructura",
+    "valor_servicio": "29",
+    "rgb": [
+     153,
+     0,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "29",
+    "29",
+    "29",
+    "29"
+   ]
+  },
+  {
+   "codigo_asset": 29,
+   "lon": -79.74574900693527,
+   "lat": 9.028688129860825,
+   "servicio": {
+    "categoria": "Infraestructura",
+    "valor_servicio": "29",
+    "rgb": [
+     153,
+     0,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "29",
+    "29",
+    "29",
+    "29"
+   ]
+  },
+  {
+   "codigo_asset": 29,
+   "lon": -79.78796784959286,
+   "lat": 9.307401781303685,
+   "servicio": {
+    "categoria": "Infraestructura",
+    "valor_servicio": "29",
+    "rgb": [
+     153,
+     0,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "29",
+    "29",
+    "29",
+    "29"
+   ]
+  },
+  {
+   "codigo_asset": 29,
+   "lon": -79.7829837622422,
+   "lat": 9.154738502076597,
+   "servicio": {
+    "categoria": "Infraestructura",
+    "valor_servicio": "29",
+    "rgb": [
+     153,
+     0,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "29",
+    "29",
+    "29",
+    "29"
+   ]
+  },
+  {
+   "codigo_asset": 29,
+   "lon": -79.37749601608166,
+   "lat": 9.270056556229639,
+   "servicio": {
+    "categoria": "Infraestructura",
+    "valor_servicio": "29",
+    "rgb": [
+     153,
+     0,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "29",
+    "29",
+    "29",
+    "29"
+   ]
+  },
+  {
+   "codigo_asset": 29,
+   "lon": -79.7405793543973,
+   "lat": 9.024239372842214,
+   "servicio": {
+    "categoria": "Infraestructura",
+    "valor_servicio": "29",
+    "rgb": [
+     153,
+     0,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "29",
+    "29",
+    "29",
+    "29"
+   ]
+  },
+  {
+   "codigo_asset": 29,
+   "lon": -79.62999153177519,
+   "lat": 9.232545805621639,
+   "servicio": {
+    "categoria": "Infraestructura",
+    "valor_servicio": "29",
+    "rgb": [
+     153,
+     0,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "29",
+    "29",
+    "29",
+    "29"
+   ]
+  },
+  {
+   "codigo_asset": 29,
+   "lon": -79.62809879083197,
+   "lat": 9.227746059751578,
+   "servicio": {
+    "categoria": "Infraestructura",
+    "valor_servicio": "29",
+    "rgb": [
+     153,
+     0,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "29",
+    "29",
+    "29",
+    "29"
+   ]
+  },
+  {
+   "codigo_asset": 29,
+   "lon": -79.60998752956259,
+   "lat": 9.016127550961654,
+   "servicio": {
+    "categoria": "Infraestructura",
+    "valor_servicio": "29",
+    "rgb": [
+     153,
+     0,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "29",
+    "29",
+    "29",
+    "29"
+   ]
+  },
+  {
+   "codigo_asset": 29,
+   "lon": -79.79884762544452,
+   "lat": 9.320550999663652,
+   "servicio": {
+    "categoria": "Infraestructura",
+    "valor_servicio": "29",
+    "rgb": [
+     153,
+     0,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "29",
+    "29",
+    "29",
+    "29"
+   ]
+  },
+  {
+   "codigo_asset": 29,
+   "lon": -79.6880445887435,
+   "lat": 9.248813235543698,
+   "servicio": {
+    "categoria": "Infraestructura",
+    "valor_servicio": "29",
+    "rgb": [
+     153,
+     0,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "29",
+    "29",
+    "29",
+    "29"
+   ]
+  },
+  {
+   "codigo_asset": 29,
+   "lon": -79.58850845618791,
+   "lat": 8.996016676347704,
+   "servicio": {
+    "categoria": "Infraestructura",
+    "valor_servicio": "29",
+    "rgb": [
+     153,
+     0,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "29",
+    "29",
+    "29",
+    "29"
+   ]
+  },
+  {
+   "codigo_asset": 29,
+   "lon": -79.6220150112208,
+   "lat": 9.129837703152619,
+   "servicio": {
+    "categoria": "Infraestructura",
+    "valor_servicio": "29",
+    "rgb": [
+     153,
+     0,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "29",
+    "29",
+    "29",
+    "29"
+   ]
+  },
+  {
+   "codigo_asset": 29,
+   "lon": -79.62138627027292,
+   "lat": 9.127710324501264,
+   "servicio": {
+    "categoria": "Infraestructura",
+    "valor_servicio": "29",
+    "rgb": [
+     153,
+     0,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "29",
+    "29",
+    "29",
+    "29"
+   ]
+  },
+  {
+   "codigo_asset": 29,
+   "lon": -79.79590471160019,
+   "lat": 9.302590646816952,
+   "servicio": {
+    "categoria": "Infraestructura",
+    "valor_servicio": "29",
+    "rgb": [
+     153,
+     0,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "29",
+    "29",
+    "29",
+    "29"
+   ]
+  },
+  {
+   "codigo_asset": 29,
+   "lon": -79.592908076047,
+   "lat": 8.9990175213934,
+   "servicio": {
+    "categoria": "Infraestructura",
+    "valor_servicio": "29",
+    "rgb": [
+     153,
+     0,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "29",
+    "29",
+    "29",
+    "29"
+   ]
+  },
+  {
+   "codigo_asset": 29,
+   "lon": -79.7425089617151,
+   "lat": 9.123176077911003,
+   "servicio": {
+    "categoria": "Infraestructura",
+    "valor_servicio": "29",
+    "rgb": [
+     153,
+     0,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "29",
+    "29",
+    "29",
+    "29"
+   ]
+  },
+  {
+   "codigo_asset": 29,
+   "lon": -79.79789338972515,
+   "lat": 9.320050413028962,
+   "servicio": {
+    "categoria": "Infraestructura",
+    "valor_servicio": "29",
+    "rgb": [
+     153,
+     0,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "29",
+    "29",
+    "29",
+    "29"
+   ]
+  },
+  {
+   "codigo_asset": 29,
+   "lon": -79.78860527066398,
+   "lat": 9.307358732214649,
+   "servicio": {
+    "categoria": "Infraestructura",
+    "valor_servicio": "29",
+    "rgb": [
+     153,
+     0,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "29",
+    "29",
+    "29",
+    "29"
+   ]
+  },
+  {
+   "codigo_asset": 29,
+   "lon": -79.73308577068204,
+   "lat": 9.008026699019393,
+   "servicio": {
+    "categoria": "Infraestructura",
+    "valor_servicio": "29",
+    "rgb": [
+     153,
+     0,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "29",
+    "29",
+    "29",
+    "29"
+   ]
+  },
+  {
+   "codigo_asset": 29,
+   "lon": -79.69270252841389,
+   "lat": 9.25683304363882,
+   "servicio": {
+    "categoria": "Infraestructura",
+    "valor_servicio": "29",
+    "rgb": [
+     153,
+     0,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "29",
+    "29",
+    "29",
+    "29"
+   ]
+  },
+  {
+   "codigo_asset": 29,
+   "lon": -79.61968809568286,
+   "lat": 9.036509866711882,
+   "servicio": {
+    "categoria": "Infraestructura",
+    "valor_servicio": "29",
+    "rgb": [
+     153,
+     0,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "29",
+    "29",
+    "29",
+    "29"
+   ]
+  },
+  {
+   "codigo_asset": 29,
+   "lon": -79.95974595913408,
+   "lat": 9.204938345474874,
+   "servicio": {
+    "categoria": "Infraestructura",
+    "valor_servicio": "29",
+    "rgb": [
+     153,
+     0,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "29",
+    "29",
+    "29",
+    "29"
+   ]
+  },
+  {
+   "codigo_asset": 29,
+   "lon": -79.62085587378324,
+   "lat": 9.159131051727325,
+   "servicio": {
+    "categoria": "Infraestructura",
+    "valor_servicio": "29",
+    "rgb": [
+     153,
+     0,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "29",
+    "29",
+    "29",
+    "29"
+   ]
+  },
+  {
+   "codigo_asset": 29,
+   "lon": -79.53843585051916,
+   "lat": 9.109527749196978,
+   "servicio": {
+    "categoria": "Infraestructura",
+    "valor_servicio": "29",
+    "rgb": [
+     153,
+     0,
+     0
+    ]
+   },
+   "servicio_desplazado": [
+    "29",
+    "29",
+    "29",
+    "29"
+   ]
+  },
+  {
+   "codigo_asset": 30,
+   "lon": -79.68799044728111,
+   "lat": 9.014831665001974,
+   "servicio": {
+    "categoria": "Explotación minera",
+    "valor_servicio": "30",
+    "rgb": [
+     166,
+     0,
+     204
+    ]
+   },
+   "servicio_desplazado": [
+    "30",
+    "30",
+    "30",
+    "30"
+   ]
+  },
+  {
+   "codigo_asset": 30,
+   "lon": -79.68767355676601,
+   "lat": 9.01442360776507,
+   "servicio": {
+    "categoria": "Explotación minera",
+    "valor_servicio": "30",
+    "rgb": [
+     166,
+     0,
+     204
+    ]
+   },
+   "servicio_desplazado": [
+    "30",
+    "30",
+    "30",
+    "30"
+   ]
+  },
+  {
+   "codigo_asset": 30,
+   "lon": -79.6889720828081,
+   "lat": 9.020079998728647,
+   "servicio": {
+    "categoria": "Explotación minera",
+    "valor_servicio": "30",
+    "rgb": [
+     166,
+     0,
+     204
+    ]
+   },
+   "servicio_desplazado": [
+    "30",
+    "30",
+    "30",
+    "30"
+   ]
+  },
+  {
+   "codigo_asset": 30,
+   "lon": -79.68961549858274,
+   "lat": 9.018228515770677,
+   "servicio": {
+    "categoria": "Explotación minera",
+    "valor_servicio": "30",
+    "rgb": [
+     166,
+     0,
+     204
+    ]
+   },
+   "servicio_desplazado": [
+    "30",
+    "30",
+    "30",
+    "30"
+   ]
+  },
+  {
+   "codigo_asset": 30,
+   "lon": -79.69002335518311,
+   "lat": 9.018636896191579,
+   "servicio": {
+    "categoria": "Explotación minera",
+    "valor_servicio": "30",
+    "rgb": [
+     166,
+     0,
+     204
+    ]
+   },
+   "servicio_desplazado": [
+    "30",
+    "30",
+    "30",
+    "30"
+   ]
+  },
+  {
+   "codigo_asset": 30,
+   "lon": -79.68856993870693,
+   "lat": 9.018089145161415,
+   "servicio": {
+    "categoria": "Explotación minera",
+    "valor_servicio": "30",
+    "rgb": [
+     166,
+     0,
+     204
+    ]
+   },
+   "servicio_desplazado": [
+    "30",
+    "30",
+    "30",
+    "30"
+   ]
+  },
+  {
+   "codigo_asset": 30,
+   "lon": -79.68920845846853,
+   "lat": 9.017594067525073,
+   "servicio": {
+    "categoria": "Explotación minera",
+    "valor_servicio": "30",
+    "rgb": [
+     166,
+     0,
+     204
+    ]
+   },
+   "servicio_desplazado": [
+    "30",
+    "30",
+    "30",
+    "30"
+   ]
+  },
+  {
+   "codigo_asset": 30,
+   "lon": -79.68847424443985,
+   "lat": 9.019400011669584,
+   "servicio": {
+    "categoria": "Explotación minera",
+    "valor_servicio": "30",
+    "rgb": [
+     166,
+     0,
+     204
+    ]
+   },
+   "servicio_desplazado": [
+    "30",
+    "30",
+    "30",
+    "30"
+   ]
+  },
+  {
+   "codigo_asset": 30,
+   "lon": -79.68929811430901,
+   "lat": 9.017956099825499,
+   "servicio": {
+    "categoria": "Explotación minera",
+    "valor_servicio": "30",
+    "rgb": [
+     166,
+     0,
+     204
+    ]
+   },
+   "servicio_desplazado": [
+    "30",
+    "30",
+    "30",
+    "30"
+   ]
+  },
+  {
+   "codigo_asset": 30,
+   "lon": -79.68834204710048,
+   "lat": 9.018223974323577,
+   "servicio": {
+    "categoria": "Explotación minera",
+    "valor_servicio": "30",
+    "rgb": [
+     166,
+     0,
+     204
+    ]
+   },
+   "servicio_desplazado": [
+    "30",
+    "30",
+    "30",
+    "30"
+   ]
+  },
+  {
+   "codigo_asset": 30,
+   "lon": -79.68748951458744,
+   "lat": 9.01501073374084,
+   "servicio": {
+    "categoria": "Explotación minera",
+    "valor_servicio": "30",
+    "rgb": [
+     166,
+     0,
+     204
+    ]
+   },
+   "servicio_desplazado": [
+    "30",
+    "30",
+    "30",
+    "30"
+   ]
+  },
+  {
+   "codigo_asset": 30,
+   "lon": -79.68826153208335,
+   "lat": 9.015329986806297,
+   "servicio": {
+    "categoria": "Explotación minera",
+    "valor_servicio": "30",
+    "rgb": [
+     166,
+     0,
+     204
+    ]
+   },
+   "servicio_desplazado": [
+    "30",
+    "30",
+    "30",
+    "30"
+   ]
+  },
+  {
+   "codigo_asset": 30,
+   "lon": -79.69079554585964,
+   "lat": 9.018910931763896,
+   "servicio": {
+    "categoria": "Explotación minera",
+    "valor_servicio": "30",
+    "rgb": [
+     166,
+     0,
+     204
+    ]
+   },
+   "servicio_desplazado": [
+    "30",
+    "30",
+    "30",
+    "30"
+   ]
+  },
+  {
+   "codigo_asset": 30,
+   "lon": -79.68842843740663,
+   "lat": 9.019490276349552,
+   "servicio": {
+    "categoria": "Explotación minera",
+    "valor_servicio": "30",
+    "rgb": [
+     166,
+     0,
+     204
+    ]
+   },
+   "servicio_desplazado": [
+    "30",
+    "30",
+    "30",
+    "30"
+   ]
+  },
+  {
+   "codigo_asset": 30,
+   "lon": -79.69088911364658,
+   "lat": 9.018187839281431,
+   "servicio": {
+    "categoria": "Explotación minera",
+    "valor_servicio": "30",
+    "rgb": [
+     166,
+     0,
+     204
+    ]
+   },
+   "servicio_desplazado": [
+    "30",
+    "30",
+    "30",
+    "30"
+   ]
+  },
+  {
+   "codigo_asset": 30,
+   "lon": -79.68961256313321,
+   "lat": 9.019042358840185,
+   "servicio": {
+    "categoria": "Explotación minera",
+    "valor_servicio": "30",
+    "rgb": [
+     166,
+     0,
+     204
+    ]
+   },
+   "servicio_desplazado": [
+    "30",
+    "30",
+    "30",
+    "30"
+   ]
+  },
+  {
+   "codigo_asset": 30,
+   "lon": -79.68857760818453,
+   "lat": 9.015964111183008,
+   "servicio": {
+    "categoria": "Explotación minera",
+    "valor_servicio": "30",
+    "rgb": [
+     166,
+     0,
+     204
+    ]
+   },
+   "servicio_desplazado": [
+    "30",
+    "30",
+    "30",
+    "30"
+   ]
+  },
+  {
+   "codigo_asset": 30,
+   "lon": -79.68835216579902,
+   "lat": 9.015420738236097,
+   "servicio": {
+    "categoria": "Explotación minera",
+    "valor_servicio": "30",
+    "rgb": [
+     166,
+     0,
+     204
+    ]
+   },
+   "servicio_desplazado": [
+    "30",
+    "30",
+    "30",
+    "30"
+   ]
+  },
+  {
+   "codigo_asset": 30,
+   "lon": -79.69106956936041,
+   "lat": 9.018595408844773,
+   "servicio": {
+    "categoria": "Explotación minera",
+    "valor_servicio": "30",
+    "rgb": [
+     166,
+     0,
+     204
+    ]
+   },
+   "servicio_desplazado": [
+    "30",
+    "30",
+    "30",
+    "30"
+   ]
+  },
+  {
+   "codigo_asset": 30,
+   "lon": -79.68816926639424,
+   "lat": 9.015691370214077,
+   "servicio": {
+    "categoria": "Explotación minera",
+    "valor_servicio": "30",
+    "rgb": [
+     166,
+     0,
+     204
+    ]
+   },
+   "servicio_desplazado": [
+    "30",
+    "30",
+    "30",
+    "30"
+   ]
+  },
+  {
+   "codigo_asset": 30,
+   "lon": -79.68906793898034,
+   "lat": 9.018723918413825,
+   "servicio": {
+    "categoria": "Explotación minera",
+    "valor_servicio": "30",
+    "rgb": [
+     166,
+     0,
+     204
+    ]
+   },
+   "servicio_desplazado": [
+    "30",
+    "30",
+    "30",
+    "30"
+   ]
+  },
+  {
+   "codigo_asset": 30,
+   "lon": -79.68834025150535,
+   "lat": 9.01872132261596,
+   "servicio": {
+    "categoria": "Explotación minera",
+    "valor_servicio": "30",
+    "rgb": [
+     166,
+     0,
+     204
+    ]
+   },
+   "servicio_desplazado": [
+    "30",
+    "30",
+    "30",
+    "30"
+   ]
+  },
+  {
+   "codigo_asset": 30,
+   "lon": -79.69102408886634,
+   "lat": 9.018595246899473,
+   "servicio": {
+    "categoria": "Explotación minera",
+    "valor_servicio": "30",
+    "rgb": [
+     166,
+     0,
+     204
+    ]
+   },
+   "servicio_desplazado": [
+    "30",
+    "30",
+    "30",
+    "30"
+   ]
+  },
+  {
+   "codigo_asset": 30,
+   "lon": -79.68871323281974,
+   "lat": 9.016190665238035,
+   "servicio": {
+    "categoria": "Explotación minera",
+    "valor_servicio": "30",
+    "rgb": [
+     166,
+     0,
+     204
+    ]
+   },
+   "servicio_desplazado": [
+    "30",
+    "30",
+    "30",
+    "30"
+   ]
+  },
+  {
+   "codigo_asset": 30,
+   "lon": -79.69097697923068,
+   "lat": 9.019047220230231,
+   "servicio": {
+    "categoria": "Explotación minera",
+    "valor_servicio": "30",
+    "rgb": [
+     166,
+     0,
+     204
+    ]
+   },
+   "servicio_desplazado": [
+    "30",
+    "30",
+    "30",
+    "30"
+   ]
+  },
+  {
+   "codigo_asset": 30,
+   "lon": -79.68785368092254,
+   "lat": 9.014921605170166,
+   "servicio": {
+    "categoria": "Explotación minera",
+    "valor_servicio": "30",
+    "rgb": [
+     166,
+     0,
+     204
+    ]
+   },
+   "servicio_desplazado": [
+    "30",
+    "30",
+    "30",
+    "30"
+   ]
+  },
+  {
+   "codigo_asset": 30,
+   "lon": -79.68983768284075,
+   "lat": 9.019676158509677,
+   "servicio": {
+    "categoria": "Explotación minera",
+    "valor_servicio": "30",
+    "rgb": [
+     166,
+     0,
+     204
+    ]
+   },
+   "servicio_desplazado": [
+    "30",
+    "30",
+    "30",
+    "30"
+   ]
+  },
+  {
+   "codigo_asset": 30,
+   "lon": -79.68802172502302,
+   "lat": 9.018765399976388,
+   "servicio": {
+    "categoria": "Explotación minera",
+    "valor_servicio": "30",
+    "rgb": [
+     166,
+     0,
+     204
+    ]
+   },
+   "servicio_desplazado": [
+    "30",
+    "30",
+    "30",
+    "30"
+   ]
+  },
+  {
+   "codigo_asset": 30,
+   "lon": -79.6907032811771,
+   "lat": 9.019272315968921,
+   "servicio": {
+    "categoria": "Explotación minera",
+    "valor_servicio": "30",
+    "rgb": [
+     166,
+     0,
+     204
+    ]
+   },
+   "servicio_desplazado": [
+    "30",
+    "30",
+    "30",
+    "30"
+   ]
+  },
+  {
+   "codigo_asset": 30,
+   "lon": -79.68970580717543,
+   "lat": 9.018409694016311,
+   "servicio": {
+    "categoria": "Explotación minera",
+    "valor_servicio": "30",
+    "rgb": [
+     166,
+     0,
+     204
+    ]
+   },
+   "servicio_desplazado": [
+    "30",
+    "30",
+    "30",
+    "30"
+   ]
+  }
+ ]
+}
