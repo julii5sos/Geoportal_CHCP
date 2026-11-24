@@ -28,6 +28,16 @@
     <tr><td><b>Baja</b></td><td>Puntaje integrado &lt; 0,5.</td><td>Continuar el monitoreo ordinario; no hay evidencia suficiente para priorizar una visita.</td></tr>
   </tbody></table></div>
   <p class="met-nota">Ejemplo: una subcuenca con 4,0 puntos de cambios y 1,2 de aporte del corredor suma 5,2 puntos integrados y queda en <b>Muy alta</b>. Con los mismos 4,0 puntos fuera de corredores quedaría en <b>Alta</b>. La prioridad de visita sirve para planificar el trabajo de campo: no confirma daño ni es un dictamen técnico o legal.</p>
+  <h3 class="met-sub" id="comparar-subcuencas">Cómo comparar subcuencas entre sí</h3>
+  <p class="met-nota">MT-2026.7 usa umbrales absolutos pensados para predios: por ejemplo, 0,18 ha de pérdida Hansen o 0,5 ha de deforestación JRC. En una subcuenca de miles de hectáreas casi siempre se superan, por eso la mayoría de las subcuencas queda en prioridad Alta. Esa prioridad sigue siendo válida para decidir si conviene revisar un área, pero no sirve para ordenar las subcuencas entre sí.</p>
+  <p class="met-nota">Para comparar, el geoportal publica cuatro indicadores <b>en proporción</b> al bosque o al territorio y ordena las subcuencas de mayor a menor intensidad (puesto 1 = mayor):</p>
+  <ul class="met-lista">
+    <li><b>Pérdida reciente de cobertura arbórea</b>: pérdida Hansen 2021–2025 ÷ bosque oficial SINIA 2021 ÷ 5 años, en % del bosque por año. Es el indicador principal de la comparación porque mide el cambio reciente sin depender del tamaño de la subcuenca.</li>
+    <li><b>Salida de árboles</b>: árboles ESRI 2017 que pasan a otra clase en 2024, en % de los árboles de 2017.</li>
+    <li><b>Perturbación acumulada</b>: deforestado y degradado JRC desde 1990, en % del territorio. Mide el legado, no la urgencia.</li>
+    <li><b>Descenso fuerte de vigor</b>: superficie con caída de NDVI de 0,15 o más entre 2020 y 2025, en % del territorio.</li>
+  </ul>
+  <p class="met-nota">El puesto es una posición relativa, no una categoría: no existen umbrales ecológicos calibrados para convertirlo en «alta» o «baja», y no reemplaza MT-2026.7 ni cambia sus fórmulas. Los cuatro indicadores no se suman entre sí porque JRC y Hansen comparten imágenes Landsat. La ficha de cada subcuenca y la Plataforma muestran su puesto en cada indicador; el Panel muestra el orden completo.</p>
 </div></section>
 <section class="sec" id="exactitud"><div class="wrap catalog-page">
   <div class="sec-c"><span class="eyebrow">Evaluación preliminar de exactitud</span><h2>¿Qué tan bien detecta el geoportal la pérdida de bosque?</h2><p>Se interpretaron a ciegas 498 puntos elegidos al azar por estratos del mapa «señal de pérdida 2021–2025 (≥ 2 fuentes)», con medianas anuales sin nubes de Sentinel-2 (2020, 2022 y 2025) y series de NDVI y radar Sentinel-1. Los estimadores son los de Olofsson et al. (2014), con intervalos de confianza del 95 %. 494 puntos fueron válidos; 4 se excluyeron por falta de evidencia.</p></div>

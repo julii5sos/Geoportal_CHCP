@@ -111,6 +111,8 @@
     frases.push(`<b>Corredores.</b> ${pct(t.corredores?.porcentaje, 0)} del territorio está dentro de corredores publicados${t.corredores?.intersecta_mesoamericano ? ', incluido el Corredor Biológico Mesoamericano' : ''}.`);
     if (t.eri?.clase) frases.push(`<b>Resiliencia (ERI, indicativo).</b> Clase ${esc(t.eri.clase)} (${number(t.eri.valor * 100, 0)}/100); el componente más débil es ${esc((t.eri.componente_limitante_etiqueta || '').toLowerCase())}.`);
     frases.push(`<b>Preevaluación.</b> ${number(p.puntaje, 1)} de ${number(p.puntaje_maximo, 1)} puntos (prioridad ${esc(p.prioridad)}); prioridad de visita ${esc(p.prioridad_visita || '—')}. Fuentes con señal de deterioro: ${esc((p.fuentes_deterioro || []).join(', ') || 'ninguna')}.`);
+    const pr = t.id === 'chcp' ? null : puesto(t, 'perdida_reciente_pct_anual');
+    if (pr) frases.push(`<b>Frente a las demás subcuencas.</b> Por pérdida reciente en proporción a su bosque ocupa el puesto ${pr.pos} de ${pr.n}: ${tercio(pr)}. Esta comparación distingue mejor entre subcuencas que la prioridad, que en territorios extensos casi siempre es Alta.`);
     return frases;
   }
   function acciones(t) {
@@ -240,15 +242,27 @@
       <p class="fi-note">Fuente: Almanaque Azul (corredores de conectividad y puntos críticos). Las categorías y la condición son las publicadas por esa fuente; el geoportal no las modifica.</p></section>`;
   }
 
+  /** Puesto de una subcuenca entre las demás para un indicador (1 = mayor intensidad). */
+  function puesto(t, k) {
+    const vals = subs().map((x) => x.indicadores_relativos?.valores?.[k]).filter((v) => v != null);
+    const v = t.indicadores_relativos?.valores?.[k];
+    if (v == null || !vals.length) return null;
+    return { pos: 1 + vals.filter((x) => x > v).length, n: vals.length };
+  }
+  const tercio = (r) => (r.pos <= r.n / 3 ? 'entre las de mayor intensidad' : r.pos > (2 * r.n) / 3 ? 'entre las de menor intensidad' : 'en el grupo intermedio');
   function seccionRelativa(t) {
     const b = t.indicadores_relativos;
     if (!b || !b.valores || t.id === 'chcp') return '';
     const nombres = { perdida_reciente_pct_anual: ['Pérdida reciente de cobertura arbórea', '% del bosque por año', 'Hansen 2021–2025 ÷ bosque oficial 2021 ÷ 5'], salida_arboles_pct: ['Salida de árboles', '% de los árboles de 2017', 'ESRI 2017 → 2024'], perturbacion_acumulada_pct: ['Perturbación acumulada (legado)', '% del territorio', 'JRC deforestado + degradado desde 1990'], descenso_vigor_pct: ['Descenso fuerte de vigor', '% del territorio', 'NDVI 2020 → 2025'] };
-    const filas = Object.entries(nombres).map(([k, [n, u, f]]) => { const v = b.valores[k], r = b.razon_vs_cuenca?.[k], c = b.valores_cuenca?.[k]; return `<tr><td><b>${n}</b><small>${f}</small></td><td>${v == null ? '—' : number(v, 2)} <small>${u}</small></td><td>${c == null ? '—' : number(c, 2)}</td><td>${r == null ? '—' : `<span class="rel-${r > 1.5 ? 'alto' : r < 0.67 ? 'bajo' : 'medio'}">${number(r, r < 1 ? 2 : 1)} ×</span>`}</td></tr>`; }).join('');
-    return `<section class="fi-sec"><h2>${icon('chart', 22)} Intensidad relativa del cambio <span class="exp-tag">experimental</span></h2>
-      <p>La preevaluación MT-2026.7 usa umbrales absolutos pensados para predios (por ejemplo 0,18 ha de pérdida Hansen) y el estado acumulado de JRC; en subcuencas de miles de hectáreas casi siempre se activa (46 de 53 quedan en prioridad Alta). Estos indicadores expresan el cambio <b>en proporción</b> al bosque o al territorio y lo comparan con la cuenca completa, para distinguir una subcuenca extensa con poca pérdida relativa de una pequeña con mucha.</p>
-      <table class="fi-table"><thead><tr><th>Indicador</th><th>Esta subcuenca</th><th>CHCP completa</th><th>Razón frente a la CHCP</th></tr></thead><tbody>${filas}</tbody></table>
-      <p class="fi-note">${esc(b.version)} · indicadores continuos sin umbrales calibrados: no constituyen una prioridad validada ni reemplazan MT-2026.7. Razón &gt; 1 = más intenso que el promedio de la cuenca. No se suman entre sí porque JRC y Hansen comparten imágenes Landsat.</p></section>`;
+    const filas = Object.entries(nombres).map(([k, [n, u, f]]) => { const v = b.valores[k], r = b.razon_vs_cuenca?.[k], c = b.valores_cuenca?.[k], ps = puesto(t, k); return `<tr><td><b>${n}</b><small>${f}</small></td><td>${v == null ? '—' : number(v, 2)} <small>${u}</small></td><td>${ps ? `<b>${ps.pos}</b> de ${ps.n}` : '—'}</td><td>${c == null ? '—' : number(c, 2)}</td><td>${r == null ? '—' : `<span class="rel-${r > 1.5 ? 'alto' : r < 0.67 ? 'bajo' : 'medio'}">${number(r, r < 1 ? 2 : 1)} ×</span>`}</td></tr>`; }).join('');
+    const alta = subs().filter((x) => x.preevaluacion?.prioridad === 'Alta').length, total = subs().length;
+    const pr = puesto(t, 'perdida_reciente_pct_anual');
+    const titular = pr ? `<p class="fi-rel-tit">Por pérdida reciente relativa al bosque, ${esc(t.nombre)} ocupa el <b>puesto ${pr.pos} de ${pr.n}</b> subcuencas: ${tercio(pr)}.</p>` : '';
+    return `<section class="fi-sec" id="fi-relativa"><h2>${icon('chart', 22)} Intensidad del cambio frente a las demás subcuencas <span class="exp-tag">experimental</span></h2>
+      ${titular}
+      <p>La preevaluación MT-2026.7 usa umbrales absolutos pensados para predios (por ejemplo, 0,18 ha de pérdida Hansen); en subcuencas de miles de hectáreas casi siempre se activa (${alta} de ${total} quedan en prioridad Alta). Para comparar subcuencas entre sí, estos indicadores expresan el cambio <b>en proporción</b> al bosque o al territorio y ordenan las ${total} subcuencas de mayor a menor intensidad.</p>
+      <table class="fi-table"><thead><tr><th>Indicador</th><th>Esta subcuenca</th><th>Puesto (1 = mayor)</th><th>CHCP completa</th><th>Frente a la CHCP</th></tr></thead><tbody>${filas}</tbody></table>
+      <p class="fi-note">${esc(b.version)}. El puesto es una posición relativa entre las subcuencas, no una categoría de prioridad: no hay umbrales ecológicos calibrados para convertirlo en «alta» o «baja», y no reemplaza MT-2026.7. Los indicadores no se suman entre sí porque JRC y Hansen comparten imágenes Landsat.</p></section>`;
   }
 
   // ------------------------------------------------------------ render
@@ -266,7 +280,7 @@
         <img class="fi-logo" src="${window.CHCP_STATIC ? 'static' : '/static'}/img/emblema.svg" alt="Geoportal CHCP" width="64" height="64">
         <div class="fi-head-txt"><span class="fi-kicker">Ficha técnica</span><h1>${esc(t.nombre)}</h1>
         <dl class="fi-meta">${t.id === 'chcp' ? '' : `<div><dt>Forma parte de</dt><dd>${esc(t.grupo)}</dd></div>`}<div><dt>Superficie</dt><dd>${hectares(t.area_ha)}</dd></div><div><dt>Datos del</dt><dd>${esc(fechaLarga(st.data.generado))}</dd></div><div><dt>Método</dt><dd>${esc(String(st.data.metodologia || '').split('-').slice(0, 2).join('-'))}</dd></div><div><dt>Proyecto</dt><dd>Clúster Copernicus Centroamérica AFOLU II</dd></div></dl>${window.CHCP.procedencia(st.data, 'B', t)}</div>
-        <div class="fi-score" data-tone="${toneP}"><span>Preevaluación</span><b>${number(p.puntaje, 1)}<small>/ ${number(p.puntaje_maximo, 1)}</small></b><em>${esc(p.prioridad)}</em><small>Visita: ${esc(p.prioridad_visita || '—')}</small></div>
+        <div class="fi-score" data-tone="${toneP}"><span>Preevaluación</span><b>${number(p.puntaje, 1)}<small>/ ${number(p.puntaje_maximo, 1)}</small></b><em>${esc(p.prioridad)}</em><small>Visita: ${esc(p.prioridad_visita || '—')}</small>${((r) => (r ? `<a class="fi-score-rel" href="#fi-relativa">Puesto ${r.pos} de ${r.n} en pérdida reciente</a>` : ''))(t.id === 'chcp' ? null : puesto(t, 'perdida_reciente_pct_anual'))}</div>
       </header>
       <section class="fi-sec"><h2>${icon('info', 22)} En pocas palabras</h2>${diagnostico(t).map((f) => `<p>${f}</p>`).join('')}</section>
       <section class="fi-sec fi-map-sec"><h2>${icon('map', 22)} ${t.id === 'chcp' ? 'Mapa de la cuenca' : 'Mapa de la subcuenca'}</h2><div id="fi-map"></div><p class="fi-pending" id="fi-map-nota" hidden></p>
