@@ -71,7 +71,7 @@ class CalcularPorFuenteTests(unittest.TestCase):
 class PublicacionTests(unittest.TestCase):
     def test_no_se_publican_los_valores_por_punto(self):
         s = (RAIZ / "scripts" / "construir_sitio_estatico.py").read_text(encoding="utf-8")
-        self.assertIn('"fuentes_puntos.csv"', s)
+        self.assertIn('glob("*/resultados*.json")', s)  # solo resultados agregados, nunca valores por punto
         self.assertIn("resultados_fuentes", (RAIZ / "webapp" / "main.py").read_text(encoding="utf-8"))
 
 

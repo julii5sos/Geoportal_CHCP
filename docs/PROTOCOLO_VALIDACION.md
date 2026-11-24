@@ -109,3 +109,12 @@ of Environment*, 148, 42–57.
   corrigió 7. Es una revisión propia, no un control de calidad independiente.
 - Estado: **preliminar**. Falta la revisión de un segundo intérprete en al menos el 10 % de los
   puntos (recorrido «Revisión al azar» de la herramienta) antes de declarar la muestra completa.
+
+## Herramienta de interpretación retirada (2026-11-23)
+
+Terminada la interpretación, la página «Validación de mapas» y sus imágenes se retiraron del sitio. Los
+resultados se publican en Metodología («¿Qué tan bien detecta el geoportal la pérdida de bosque?») y en
+la ficha. La muestra (`muestra.csv`, `estratos.csv`, `diseno.json`) y el cálculo
+(`scripts/evaluar_validacion.py`, `scripts/exactitud_por_fuente.py`) quedan en el repositorio; las
+imágenes de apoyo se pueden regenerar con Actions → «Generar muestra de validación» → «Solo preparar
+las imágenes». Los pasos de interpretación descritos arriba corresponden a esa herramienta.
