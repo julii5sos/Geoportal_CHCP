@@ -182,7 +182,12 @@
     if (capa('coincidencia')) figs.push(png('coincidencia'));
     if (t.id !== 'chcp') figs.push({ id: 'red', tipo: 'red', titulo: 'Parches de bosque y red de conectividad', leyenda: '<div class="fi-legend"><span><i style="background:#1b5e20"></i>Importancia alta</span><span><i style="background:#66bb6a"></i>Media</span><span><i style="background:#c5e1a5"></i>Baja</span><span><i class="dash"></i>Brecha candidata</span></div>',
       lectura: 'Bosque oficial 2021 en parches, según su aporte a la conectividad (dIIC), y las brechas que convendría cerrar.' });
-    if (capa('eri')) figs.push(png('eri'));
+    if (capa('eri')) {
+      const f = png('eri');
+      // Subcuencas sin mapa ERI propio: recorte del mapa ERI de toda la cuenca (mismo modelo, malla más gruesa).
+      if (t.mapas.eri_origen === 'cuenca') f.lectura += ` Este mapa es un recorte del ERI calculado para toda la cuenca (píxel de ${number(t.mapas.eri_tamano_pixel_m || 43, 0)} m): los colores pueden diferir algo del mapa propio de la subcuenca, que se generará más adelante. El valor ERI de la ficha sí se calculó para esta subcuenca.`;
+      figs.push(f);
+    }
     if (capa('riparia')) figs.push(png('riparia'));
     return figs.filter(Boolean);
   }
