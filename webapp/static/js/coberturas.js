@@ -60,11 +60,34 @@
       scheduleTiles();
     }));
   }
+  // Para qué sirve cada producto, en palabras simples (el catálogo guarda la versión técnica).
+  const USO = {
+    '1992_historico': 'Mapa histórico. Sirve de contexto para ver cómo era el bosque en 1992.',
+    '2000_historico': 'Mapa histórico. Sirve de contexto para ver cómo era el bosque en 2000.',
+    '2012_binario': 'Solo distingue bosque de no bosque.',
+    '2012_detallado': 'Separa bosques naturales, plantaciones, rastrojos, cultivos, pastos y zonas construidas.',
+    '2019_general': 'Mapa general con pocas categorías. Sirve para comparar superficies.',
+    '2021_general': 'Es el mapa oficial de bosque que usa el geoportal para medir la fragmentación y la conectividad.',
+    '2021_detallado': 'Separa bosques, plantaciones, vegetación, cultivos, pastos, agua y zonas construidas en 2021.',
+    '2023_general': 'Mapa general más reciente. El geoportal lo compara con el de 2021 en la ficha de cada subcuenca.',
+  };
   function renderProductInfo() {
     const p = product(st.a);
     const mask = st.catalog.forest_masks[st.a];
-    $('#cob-product-info').innerHTML = `<b>${esc(p.tipo === 'TABLE' ? 'Vector' : `Ráster ${p.resolucion_m} m`)}</b>${p.escala_cartografica ? ` · escala ${esc(p.escala_cartografica)}` : ''} · ${esc(p.crs)} · NoData ${p.nodata ?? 'no aplica'}<br>${esc(p.uso_analitico)}<br><span class="cob-mask">Máscara forestal para fragmentación: códigos ${mask.codes.join(', ')}${mask.opcionales ? ` (opcionales: ${mask.codes_with_optional.filter((c) => !mask.codes.includes(c)).join(', ')})` : ''}.</span>`;
+    const nombres = (codes) => codes.map((c) => legendOf(st.a).find((r) => r.codigo === c)?.categoria || `Código ${c}`);
+    const opcionales = mask.opcionales ? mask.codes_with_optional.filter((c) => !mask.codes.includes(c)) : [];
+    const crs = p.crs === 'EPSG:32617' ? 'UTM zona 17 Norte (EPSG:32617)' : p.crs;
+    const filas = [
+      ['Para qué sirve', USO[st.a] || p.uso_analitico],
+      ['Formato', p.tipo === 'TABLE' ? 'Mapa de polígonos (vectorial)' : `Imagen de píxeles de ${number(p.resolucion_m, 0)} m (ráster)`],
+      p.escala_cartografica ? ['Escala', p.escala_cartografica] : null,
+      ['Coordenadas', crs],
+      p.nodata != null ? ['Sin dato', `los píxeles con valor ${p.nodata} no tienen información`] : null,
+      ['Cuenta como bosque', `${nombres(mask.codes).join(', ')}${opcionales.length ? `. Si un análisis lo indica, también: ${nombres(opcionales).join(', ')}` : ''}.`],
+    ].filter(Boolean);
+    $('#cob-product-info').innerHTML = filas.map(([k, v]) => `<div><dt>${esc(k)}</dt><dd>${esc(v)}</dd></div>`).join('');
   }
+
 
   // ------------------------------------------------------------- mapas precalculados (sitio estático)
   // data/coberturas: un PNG de códigos por territorio y producto (255 = sin dato), coloreado

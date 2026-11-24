@@ -59,6 +59,9 @@ jobs:
           if [ -n "${{ github.event.inputs.productos }}" ]; then OPCIONES="$OPCIONES --productos ${{ github.event.inputs.productos }}"; fi
           if [ "${{ github.event.inputs.rehacer }}" = "true" ]; then OPCIONES="$OPCIONES --rehacer"; fi
           python scripts/precalcular_coberturas.py $OPCIONES
+      - name: Comparar el bosque oficial 2021 y 2023 (sin Earth Engine)
+        if: always()
+        run: python scripts/comparar_bosque_2021_2023.py
       - name: Guardar resultados en el repositorio
         if: always()   # se guarda lo avanzado aunque falle o se agote el tiempo
         run: |

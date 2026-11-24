@@ -244,10 +244,13 @@
 .cob-block select { padding:9px 10px; border:1px solid var(--azul-linea); border-radius:8px; background:#fff; font-weight:600; }
 .cob-row { display:flex; justify-content:space-between; align-items:center; gap:8px; }
 .cob-inline { font-weight:500 !important; display:flex; gap:6px; align-items:center; }
-.cob-view { display:flex; flex-direction:column; gap:4px; font-size:12.5px; }
-.cob-view label { font-weight:500; color:var(--ink); }
-.cob-product-info { font-size:12px; color:var(--muted); line-height:1.5; }
-.cob-mask { color:var(--azul); }
+.cob-view { display:flex; flex-direction:column; gap:8px; font-size:13px; }
+.cob-view label { display:flex; align-items:flex-start; gap:8px; font-weight:600; color:var(--ink); cursor:pointer; }
+.cob-view input { margin-top:3px; }
+.cob-view small { display:block; font-weight:400; font-size:12px; color:var(--muted); line-height:1.4; }
+.cob-product-info { display:grid; gap:6px; margin:4px 0 0; padding:10px 12px; background:var(--azul-suave); border-radius:8px; font-size:12.5px; line-height:1.45; }
+.cob-product-info dt { font-weight:700; color:var(--azul-tinta); }
+.cob-product-info dd { margin:0; color:#3f4f47; }
 .link { background:none; border:0; padding:0; color:var(--azul); cursor:pointer; font-size:12px; text-decoration:underline; }
 .cob-legend { list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:3px; }
 .cob-legend li { background:#fff; border:1px solid var(--line); border-radius:8px; padding:6px 8px; }
@@ -1005,3 +1008,16 @@ body.chcp-arrastrando-y, body.chcp-arrastrando-y * { cursor:row-resize !importan
 .fi-line path.guia { fill:none; stroke:#9aa7b0; stroke-width:1; }
 .fi-keys b { font-weight:600; color:var(--muted); }
 .fi-line text { font-size:11px; } .fi-line text.fin { font-size:12px; }
+/* Ficha: bosque oficial 2021 y 2023 */
+.fi-cmp { display:grid; grid-template-columns:minmax(0,1.1fr) minmax(0,1fr); gap:20px; align-items:start; margin:6px 0 8px; }
+.fi-cmp-t th[scope="row"] { background:none; color:var(--ink); font-weight:600; }
+.fi-cmp-t th[scope="row"] small { display:block; font-weight:400; color:var(--muted); font-size:11.5px; }
+.fi-cmp-t td { font-variant-numeric:tabular-nums; white-space:nowrap; }
+.fi-cmp-t td:last-child { font-weight:700; color:var(--azul-tinta); }
+.fi-cmp-maps { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:14px; margin:10px 0 14px; }
+.fi-cmp-maps .fi-mini { height:300px; }
+.fi-cmp h3 { margin-top:0; }
+.fi-cmp-leer p { margin:0 0 8px; font-size:13.5px; line-height:1.55; color:#3f4f47; }
+@media (max-width:980px) { .fi-cmp-maps { grid-template-columns:1fr 1fr; } }
+@media (max-width:860px) { .fi-cmp, .fi-cmp-maps { grid-template-columns:1fr; } }
+@media print { .fi-cmp { grid-template-columns:1fr 1fr; } .fi-cmp-maps { grid-template-columns:repeat(3,1fr); } .fi-cmp-maps .fi-mini { height:200px; } }

@@ -33,6 +33,7 @@
     return `${prep} la actualización de datos con Earth Engine que está en curso (iniciada ${dia} a las ${hora}); los resultados aparecerán al terminar`;
   }
   const serieFile = (ruta) => (window.CHCP_STATIC ? `datos/series/${ruta}` : `/api/v1/series/${ruta}`);
+  const cobFile = (ruta) => (window.CHCP_STATIC ? `datos/coberturas/${ruta}` : `/api/v1/coberturas/${ruta}`);
   const hidroFile = (archivo) => (window.CHCP_STATIC ? `datos/hidrografia/${archivo}` : `/api/v1/hidrografia/${archivo}`);
 
   // Procedencia visible de cada resultado (auditoría D): tipo A, B o C, fecha y versión.
@@ -243,6 +244,6 @@
     h.addEventListener('dblclick', () => { aplicar(null); avisar(); if (llave) { try { localStorage.removeItem(llave); } catch (_) { /* sin almacenamiento */ } } });
   }
 
-  window.CHCP = {$, $$, escapeHtml, number, hectares, api, mapFile, valFile, hidroFile, serieFile, consultarActualizacion, pendiente, procedencia, toast, readPortalState, writePortalState, normalizeSearch, mapaBase, BASES_MAPA, divisor};
+  window.CHCP = {$, $$, escapeHtml, number, hectares, api, mapFile, valFile, hidroFile, serieFile, cobFile, consultarActualizacion, pendiente, procedencia, toast, readPortalState, writePortalState, normalizeSearch, mapaBase, BASES_MAPA, divisor};
 })();
 
