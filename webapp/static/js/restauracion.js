@@ -109,6 +109,25 @@
     })).addTo(map);
     // Los ríos van sobre los parches (se ven dentro del bosque) y bajo brechas y enlaces.
     if (st.capaRios) { st.capaRios.bringToFront(); st.capas.candidatos?.eachLayer?.((g) => g.eachLayer?.((l) => l.bringToFront?.())); st.capas.restaurado?.eachLayer?.((g) => g.eachLayer?.((l) => l.bringToFront?.())); }
+    aplicarVisibilidad();
+  }
+
+  // Capas que el usuario puede mostrar u ocultar desde la leyenda.
+  st.ocultas = new Set();
+  const capaDe = {
+    parches: () => st.capas.parches, contexto: () => st.capas.contexto,
+    candidatos: () => st.capas.candidatos, restaurado: () => st.capas.restaurado,
+    rutas: () => st.rutas.capa, borde: () => st.borde, rios: () => st.capaRios,
+    cbm: () => st.capaCbm, corredores: () => st.capaCorr,
+  };
+  function aplicarVisibilidad() {
+    if (!st.map) return;
+    for (const [k, f] of Object.entries(capaDe)) {
+      const capa = f();
+      if (!capa) continue;
+      if (st.ocultas.has(k)) { if (st.map.hasLayer(capa)) st.map.removeLayer(capa); } else if (!st.map.hasLayer(capa)) capa.addTo(st.map);
+    }
+    $$('#rs-legend [data-capa]').forEach((b) => b.setAttribute('aria-pressed', String(!st.ocultas.has(b.dataset.capa))));
   }
   function clicParche(id) {
     if (st.rutas.activo) { rutasDesde(id); return; }
@@ -493,9 +512,10 @@
       capas.push(L.circleMarker(ll[ll.length - 1], { radius: 6, color: '#fff', weight: 2, fillColor: '#7b1fa2', fillOpacity: 1 }).bindTooltip(`Llega al Corredor Mesoamericano · tramo ${esc(r.tramo.nombre)}`));
     });
     st.rutas.capa = L.layerGroup(capas).addTo(st.map);
+    aplicarVisibilidad();
     if (lineas.length && !u.encuadrado) { st.map.fitBounds(L.latLngBounds(lineas).extend(st.borde.getBounds()), { padding: [24, 24] }); u.encuadrado = true; }
     const filas = u.rutas.map((r, k) => {
-      if (!r.alcanzable) return `<tr><td>${esc(r.tramo.nombre)}</td><td colspan="5">Sin ruta posible dentro de la cuenca.</td></tr>`;
+      if (!r.alcanzable) return `<tr><td>${esc(r.tramo.nombre)}</td><td colspan="5">Sin ruta posible dentro del área evaluada.</td></tr>`;
       if (r.dentro) return `<tr><td>${esc(r.tramo.nombre)}</td><td colspan="5"><b>El parche ya está dentro de este tramo del corredor.</b></td></tr>`;
       const x = r.resumen, km = (v) => (v > 0 ? `${number(v, v >= 1 ? 1 : 2)} km` : '—');
       // Composición de lo que no es bosque: códigos SINIA 2021 detallados o, sin esa capa, la clase del modelo.
@@ -521,7 +541,7 @@
           <li>Resistencias supuestas: ${b.ribera ? `bosque de ribera ${r.bosque_ribera}, ` : ''}bosque ${r.bosque}, bosque degradado ${r.bosque_degradado}${b.detalle ? `, plantación ${r.plantacion}` : ''}, regeneración o rastrojo ${r.regeneracion}${b.ribera ? `, ribera sin bosque ${r.ribera_sin_bosque}` : ''}, otras tierras ${r.otras_tierras}${b.construido ? `, construido ${r.construido}` : ''}, agua ${r.agua}.${b.ribera ? ' La ribera es la franja de 50 m a cada lado de los cauces del IGNTG: la ruta tiende a seguir los ríos con bosque y, donde falta, a restaurar la orilla (la Ley 1 de 1994, art. 23, protege al menos 10 m a cada lado).' : ''}</li>
           <li>Los valores de resistencia son un supuesto del modelo, no una medición ni un dato de una especie concreta. Cambiarlos puede cambiar la ruta.</li>
           <li>La <b>franja morada</b> reúne las celdas por las que pasan rutas casi tan buenas como la mejor. Donde es ancha hay varias opciones; donde se estrecha, el paso es obligado.</li>
-          <li>${b.margen ? `Se evalúa la cuenca y ${number(b.margen / 1000, 0)} km a su alrededor, la misma extensión de los mapas SINIA, para que la ruta pueda salir de la cuenca hacia el tramo más cercano. Fuera de la cuenca no hay banda ribereña del IGNTG.` : 'Solo se evalúa dentro de la cuenca.'} ${b.tramos.filter((t) => !t.n).map((t) => `El tramo ${esc(t.nombre)} queda fuera del área evaluada.`).join(' ')}${b.construido ? '' : ` Las zonas urbanas todavía no se distinguen de otras tierras; se incorporarán ${window.CHCP.pendiente()}.`}</li>
+          <li>${b.margen ? `Se evalúa la cuenca y ${number(b.margen / 1000, 0)} km a su alrededor, para que la ruta pueda salir de la cuenca hacia el tramo más cercano. Donde llegan los mapas SINIA 2021 (unos 15 km) se usan ellos; más allá, la cobertura sale de JRC TMF 2025 y ESRI 2024. Fuera de la cuenca no hay banda ribereña del IGNTG.` : 'Solo se evalúa dentro de la cuenca.'} ${b.tramos.filter((t) => !t.n).map((t) => `El tramo ${esc(t.nombre)} queda fuera del área evaluada.`).join(' ')}${b.construido ? '' : ` Las zonas urbanas todavía no se distinguen de otras tierras; se incorporarán ${window.CHCP.pendiente()}.`}</li>
           <li>Es una ruta hipotética: no es un corredor oficial ni garantiza que la fauna la use. Antes de restaurar hay que verificar en campo, la tenencia de la tierra y el uso actual.</li>
         </ul>
         <p class="rs-note">Tramos del corredor: capa del Almanaque Azul de Panamá.</p>
@@ -533,7 +553,7 @@
 
   // ---------------------------------------------------------------- capas de contexto
   // Cobertura y uso del suelo 2021 (SINIA detallado, colores oficiales) y franja ribereña IGNTG.
-  const contexto = { cobertura: null, ribera: null };
+  const contexto = { cobertura: null, coberturaSub: null, coberturaSubId: null, ribera: null };
   function hexRgb(h) { const n = parseInt(String(h || '#999999').slice(1), 16); return [(n >> 16) & 255, (n >> 8) & 255, n & 255]; }
   function overlayDesde(valores, w, h, limites, colorDe, opacidad) {
     const c = document.createElement('canvas'); c.width = w; c.height = h;
@@ -547,34 +567,78 @@
     const [[s0, o0], [n0, e0]] = limites;
     return L.imageOverlay(c.toDataURL(), [[s0, o0], [n0, e0]], { className: 'rs-franja', interactive: false });
   }
+  /*
+   * Cobertura y uso del suelo 2021. El bosque se pinta con la capa general de SINIA 2021, la misma
+   * colección de la que salen los parches, para que bosque y parches coincidan; fuera del bosque
+   * se muestran los usos del raster detallado (pasto, cultivos, poblados…). Dentro de la subcuenca
+   * se superpone su propio raster, más fino que el de toda la cuenca.
+   */
+  function colorCobertura() {
+    const general = (st.data.capas_mapa || []).find((x) => x.clave === 'sinia_2021');
+    const colGeneral = new Map((general?.leyenda || []).map((x) => [x.valor, hexRgb(x.color)]));
+    const ley = leyendaDetalle(), colDetalle = new Map([...ley].map(([k, x]) => [k, hexRgb(x.color)]));
+    const bosque = colGeneral.get(1) || hexRgb('#237A4B');
+    // s: SINIA general (1 bosque); d: SINIA detallado (255 sin dato)
+    return { general, ley, bosque, color: (s, d) => (s === 1 ? bosque : d != null && d !== 255 ? (colDetalle.get(d) || [150, 150, 150]) : (colGeneral.get(s) || null)) };
+  }
+  function overlayCobertura(sinia, detalle, w, h, limites, color, opacidad) {
+    const c = document.createElement('canvas'); c.width = w; c.height = h;
+    const ctx = c.getContext('2d'), img = ctx.createImageData(w, h);
+    for (let i = 0; i < w * h; i += 1) {
+      const s = sinia[i];
+      if (s === 255 || s === 0) continue;
+      const col = color(s, detalle ? detalle[i] : null);
+      if (!col) continue;
+      img.data[i * 4] = col[0]; img.data[i * 4 + 1] = col[1]; img.data[i * 4 + 2] = col[2]; img.data[i * 4 + 3] = opacidad;
+    }
+    ctx.putImageData(img, 0, 0);
+    const [[s0, o0], [n0, e0]] = limites;
+    return L.imageOverlay(c.toDataURL(), [[s0, o0], [n0, e0]], { className: 'rs-cob', interactive: false, pane: 'rs-cobertura' });
+  }
+  async function coberturaSubcuenca(id, pal) {
+    const m = st.data.territorios[id]?.mapas;
+    if (!m?.valores?.includes('sinia_2021')) return null;
+    const leer = (k) => (m.valores.includes(k) ? bytes(mapFile(id, `${k}.v.png`)).catch(() => null) : Promise.resolve(null));
+    const [s, d] = await Promise.all([leer('sinia_2021'), leer('sinia_2021_detalle')]);
+    if (!s) return null;
+    return overlayCobertura(s.v, d && d.w === s.w && d.h === s.h ? d.v : null, s.w, s.h, m.limites, pal.color, 210);
+  }
   async function alternarCobertura(activo) {
     const caja = $('#rs-cob-leyenda');
-    if (!activo) { if (contexto.cobertura) st.map.removeLayer(contexto.cobertura); caja.innerHTML = ''; return; }
-    caja.innerHTML = '<p class="rs-note">Cargando la cobertura de la cuenca…</p>';
+    const quitar = () => { [contexto.cobertura, contexto.coberturaSub].forEach((x) => x && st.map.hasLayer(x) && st.map.removeLayer(x)); };
+    if (!activo) { quitar(); caja.innerHTML = ''; return; }
+    caja.innerHTML = '<p class="rs-note">Cargando la cobertura…</p>';
     let c;
     try { c = await capasCuenca(); } catch (e) { caja.innerHTML = `<p class="rs-warn">${esc(e.message)}</p>`; return; }
-    if (!c.detalle) {
-      // Mientras llega el ráster detallado, se muestra la versión general de SINIA 2021 (3 clases).
-      const capa = (st.data.capas_mapa || []).find((x) => x.clave === 'sinia_2021');
-      const col = new Map((capa?.leyenda || []).map((x) => [x.valor, hexRgb(x.color)]));
-      if (!contexto.cobertura) contexto.cobertura = overlayDesde(c.sinia, c.w, c.h, c.m.limites, (v) => col.get(v) || null, 175);
-      contexto.cobertura.addTo(st.map);
-      st.capas.parches?.bringToFront?.();
-      const n = new Map(); for (let i = 0; i < c.sinia.length; i += 1) if (col.has(c.sinia[i])) n.set(c.sinia[i], (n.get(c.sinia[i]) || 0) + 1);
-      const pix2 = (c.m.tamano_pixel_m || 40) ** 2 / 10_000;
-      caja.innerHTML = `<ul class="rs-cob-l">${(capa?.leyenda || []).map((x) => `<li><i style="background:${esc(x.color)}"></i>${esc(x.etiqueta)}<small>${hectares((n.get(x.valor) || 0) * pix2, 0)}</small></li>`).join('')}</ul>
-        <p class="rs-note">Cobertura SINIA 2021 (MiAMBIENTE), versión general de 3 clases. El detalle de usos (pasto, cultivos, plantaciones, rastrojo, poblados…) se añadirá ${window.CHCP.pendiente()}.</p>`;
-      return;
+    const pal = colorCobertura();
+    if (!contexto.cobertura) contexto.cobertura = overlayCobertura(c.sinia, c.detalle, c.w, c.h, c.m.limites, pal.color, 150);
+    if (contexto.coberturaSubId !== st.id) {
+      if (contexto.coberturaSub && st.map.hasLayer(contexto.coberturaSub)) st.map.removeLayer(contexto.coberturaSub);
+      contexto.coberturaSub = await coberturaSubcuenca(st.id, pal).catch(() => null);
+      contexto.coberturaSubId = st.id;
     }
-    const ley = leyendaDetalle(), colores = new Map([...ley].map(([k, x]) => [k, hexRgb(x.color)]));
-    if (!contexto.cobertura) contexto.cobertura = overlayDesde(c.detalle, c.w, c.h, c.m.limites, (v) => (v === 255 ? null : colores.get(v) || [150, 150, 150]), 175);
+    if (!$('#rs-cob-chk').checked) return;
     contexto.cobertura.addTo(st.map);
+    contexto.coberturaSub?.addTo(st.map);
+    st.capas.contexto?.bringToFront?.();
     st.capas.parches?.bringToFront?.();
-    const presentes = new Map();
-    for (let i = 0; i < c.detalle.length; i += 1) if (c.detalle[i] !== 255) presentes.set(c.detalle[i], (presentes.get(c.detalle[i]) || 0) + 1);
+    st.capaRios?.bringToFront?.();
+    // Superficies en la cuenca: el bosque, con la capa general; el resto, con los usos detallados.
     const pix2 = (c.m.tamano_pixel_m || 40) ** 2 / 10_000;
-    caja.innerHTML = `<ul class="rs-cob-l">${[...presentes].sort((a, b) => b[1] - a[1]).map(([cod, n]) => `<li><i style="background:${esc(ley.get(cod)?.color || '#999')}"></i>${esc(etiquetaCodigo(cod) || `Código ${cod}`)}<small>${hectares(n * pix2, 0)}</small></li>`).join('')}</ul>
-      <p class="rs-note">Cobertura boscosa y uso del suelo 2021 (SINIA–MiAMBIENTE, raster de 10 m mostrado a ${number(c.m.tamano_pixel_m || 40, 0)} m). Superficies aproximadas en la cuenca.</p>`;
+    let nBosque = 0;
+    const usos = new Map();
+    for (let i = 0; i < c.sinia.length; i += 1) {
+      const s = c.sinia[i];
+      if (s === 1) { nBosque += 1; continue; }
+      if (s === 255 || s === 0) continue;
+      const k = c.detalle && c.detalle[i] !== 255 ? `d${c.detalle[i]}` : `g${s}`;
+      usos.set(k, (usos.get(k) || 0) + 1);
+    }
+    const etiqueta = (k) => (k[0] === 'd' ? (etiquetaCodigo(Number(k.slice(1))) || `Código ${k.slice(1)}`) : ((pal.general?.leyenda || []).find((x) => x.valor === Number(k.slice(1)))?.etiqueta || 'Sin clasificar'));
+    const color = (k) => (k[0] === 'd' ? (pal.ley.get(Number(k.slice(1)))?.color || '#999') : ((pal.general?.leyenda || []).find((x) => x.valor === Number(k.slice(1)))?.color || '#999'));
+    const verde = `rgb(${pal.bosque.join(',')})`;
+    caja.innerHTML = `<ul class="rs-cob-l"><li><i style="background:${verde}"></i><b>Bosques y otras tierras boscosas</b><small>${hectares(nBosque * pix2, 0)}</small></li>${[...usos].sort((a, b) => b[1] - a[1]).map(([k, n]) => `<li><i style="background:${esc(color(k))}"></i>${esc(etiqueta(k))}<small>${hectares(n * pix2, 0)}</small></li>`).join('')}</ul>
+      <p class="rs-note">Cobertura boscosa y uso del suelo 2021 (SINIA–MiAMBIENTE). El bosque es la misma capa de la que salen los parches; fuera del bosque se muestran los usos del mapa detallado. Superficies aproximadas en toda la cuenca, con píxeles de ${number(c.m.tamano_pixel_m || 40, 0)} m; dentro de la subcuenca el mapa se ve con más detalle.</p>`;
   }
   async function alternarRibera(activo) {
     if (!activo) { if (contexto.ribera) st.map.removeLayer(contexto.ribera); $('#rs-rib-nota').textContent = ''; return; }
@@ -616,6 +680,7 @@
     try { st.rios = await (await fetch(mapFile(id, 'rios.json'))).json(); } catch (_) { st.rios = null; }
     if (st.capaRios) st.map.removeLayer(st.capaRios);
     st.capaRios = st.rios ? L.geoJSON(st.rios, { style: { color: '#1f78b4', weight: 2, opacity: 0.9 }, onEachFeature: (f, l) => l.bindTooltip(esc(((f) => [f.properties.nombre || `${f.properties.tipo || 'Cauce'} sin nombre en la cartografía`, f.properties.nombre_alt && `(${f.properties.nombre_alt})`, f.properties.tributario_de && `· afluente del ${f.properties.tributario_de}`].filter(Boolean).join(' '))(f)), { sticky: true }) }).addTo(st.map) : null;
+    aplicarVisibilidad();
     const red = st.geo.red;
     st.umbral = st.umbral || red.umbral_m || st.data.umbral_conectividad_m || 500;
     st.ampliada = red.version >= 2 && Array.isArray(red.nodos) && Array.isArray(red.aristas_ampliadas);
@@ -645,6 +710,7 @@
     if (!opciones.includes(st.umbral)) st.umbral = red.umbral_m || 500;
     $('#rs-umbral-sel').value = String(st.umbral);
     await construirRed(id, true);
+    if ($('#rs-cob-chk').checked) alternarCobertura(true);
   }
 
   /** Red y candidatos para el umbral de análisis elegido. */
@@ -682,37 +748,47 @@
     return;
   }
   st.map = L.map('rs-map', { zoomControl: true });
+  // La cobertura va bajo los parches, los ríos y las rutas (overlayPane tiene zIndex 400).
+  st.map.createPane('rs-cobertura').style.zIndex = 350;
   L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', { attribution: 'Esri World Imagery', maxZoom: 18 }).addTo(st.map);
   const colorCorr = { Alta: '#1b5e20', Mediana: '#9ccc65', 'Media-baja': '#ffb74d' };
-  L.geoJSON(st.territory.corridors, { style: (f) => ({ color: colorCorr[f.properties.categoria_etiqueta] || '#7fae00', weight: 1.2, fillColor: colorCorr[f.properties.categoria_etiqueta] || '#a1d303', fillOpacity: 0.12 }), onEachFeature: (f, l) => l.bindTooltip(`${f.properties.nombre} · conectividad ${f.properties.categoria_etiqueta} (Almanaque Azul)`) }).addTo(st.map);
-  L.geoJSON({ type: 'FeatureCollection', features: tramosMeso() }, { style: { color: '#4a148c', weight: 1.6, fillColor: '#ce93d8', fillOpacity: 0.22 }, interactive: false }).addTo(st.map);
+  st.capaCorr = L.geoJSON(st.territory.corridors, { style: (f) => ({ color: colorCorr[f.properties.categoria_etiqueta] || '#7fae00', weight: 1.2, fillColor: colorCorr[f.properties.categoria_etiqueta] || '#a1d303', fillOpacity: 0.12 }), onEachFeature: (f, l) => l.bindTooltip(`${f.properties.nombre} · conectividad ${f.properties.categoria_etiqueta} (Almanaque Azul)`) }).addTo(st.map);
+  st.capaCbm = L.geoJSON({ type: 'FeatureCollection', features: tramosMeso() }, { style: { color: '#4a148c', weight: 1.6, fillColor: '#ce93d8', fillOpacity: 0.22 }, interactive: false }).addTo(st.map);
   // Leyenda: cada símbolo se dibuja con el mismo estilo que usa el mapa.
   const sim = (contenido, fondo) => `<svg class="rs-sym" viewBox="0 0 34 16" aria-hidden="true">${fondo ? `<rect width="34" height="16" rx="3" fill="${fondo}"/>` : ''}${contenido}</svg>`;
   const caja = (c, borde = '#0b3d17', op = 0.85) => `<rect x="4" y="2" width="26" height="12" rx="2" fill="${c}" fill-opacity="${op}" stroke="${borde}" stroke-width="1"/>`;
-  const item = (simbolo, titulo, nota) => `<li>${simbolo}<span><b>${titulo}</b>${nota ? `<small>${nota}</small>` : ''}</span></li>`;
+  const item = (simbolo, titulo, nota, capa) => `<li>${capa ? `<button type="button" class="rs-lg-btn" data-capa="${capa}" aria-pressed="true" title="Mostrar u ocultar en el mapa">` : ''}${simbolo}<span><b>${titulo}</b>${nota ? `<small>${nota}</small>` : ''}</span>${capa ? '</button>' : ''}</li>`;
   const otrasRedes = `<svg class="rs-sym" viewBox="0 0 34 16" aria-hidden="true">${PALETA.slice(1, 5).map((c, k) => `<rect x="${2 + k * 8}" y="2" width="7" height="12" rx="1.5" fill="${c}" fill-opacity="0.75"/>`).join('')}</svg>`;
   $('#rs-legend').innerHTML = `
-    <div class="rs-lg-grupo"><h3>Bosque 2021</h3><ul>
-      ${item(sim(caja(PALETA[0])), 'Red principal', 'el conjunto de parches conectados más grande')}
-      ${item(otrasRedes, 'Otras redes', 'cada color es una red separada de la principal')}
-      <li data-si="ampliada" hidden>${sim('<rect x="4" y="2" width="26" height="12" rx="2" fill="#1b7837" fill-opacity="0.3" stroke="#455a64" stroke-width="1" stroke-dasharray="3 2"/>')}<span><b>Bosque del margen exterior</b><small>hasta 1 km fuera de la subcuenca</small></span></li>
+    <div class="rs-lg-grupo"><h3>Bosque (SINIA 2021)</h3><ul>
+      ${item(sim(caja(PALETA[0])), 'Red principal', 'el conjunto de parches conectados más grande', 'parches')}
+      ${item(otrasRedes, 'Otras redes', 'cada color es una red separada de la principal', 'parches')}
+      <li data-si="ampliada" hidden><button type="button" class="rs-lg-btn" data-capa="contexto" aria-pressed="true" title="Mostrar u ocultar en el mapa">${sim('<rect x="4" y="2" width="26" height="12" rx="2" fill="#1b7837" fill-opacity="0.3" stroke="#455a64" stroke-width="1" stroke-dasharray="3 2"/>')}<span><b>Bosque del margen exterior</b><small>hasta 1 km fuera de la subcuenca</small></span></button></li>
     </ul></div>
     <div class="rs-lg-grupo" data-modo="restaurar"><h3>Restauración</h3><ul>
-      ${item(sim('<line x1="5" y1="8" x2="29" y2="8" stroke="#e53935" stroke-width="3" stroke-dasharray="5 4"/><circle cx="5" cy="8" r="3.2" fill="#e53935" stroke="#fff"/><circle cx="29" cy="8" r="3.2" fill="#e53935" stroke="#fff"/>'), 'Brecha candidata', 'haga clic para añadirla al escenario')}
-      ${item(sim('<line x1="5" y1="8" x2="29" y2="8" stroke="#78909c" stroke-width="3" stroke-dasharray="1.5 4"/><circle cx="5" cy="8" r="3.2" fill="#78909c" stroke="#fff"/><circle cx="29" cy="8" r="3.2" fill="#78909c" stroke="#fff"/>'), 'Brecha que cruza agua o zona construida', 'excluida de las prioridades')}
-      ${item(sim('<line x1="3" y1="8" x2="31" y2="8" stroke="#7cb342" stroke-width="8" stroke-linecap="round"/><line x1="3" y1="8" x2="31" y2="8" stroke="#fff" stroke-width="1.6" stroke-dasharray="4 3"/>'), 'Enlace propuesto', 'hipotético: aún no es bosque')}
+      ${item(sim('<line x1="5" y1="8" x2="29" y2="8" stroke="#e53935" stroke-width="3" stroke-dasharray="5 4"/><circle cx="5" cy="8" r="3.2" fill="#e53935" stroke="#fff"/><circle cx="29" cy="8" r="3.2" fill="#e53935" stroke="#fff"/>'), 'Brecha candidata', 'haga clic para añadirla al escenario', 'candidatos')}
+      ${item(sim('<line x1="5" y1="8" x2="29" y2="8" stroke="#78909c" stroke-width="3" stroke-dasharray="1.5 4"/><circle cx="5" cy="8" r="3.2" fill="#78909c" stroke="#fff"/><circle cx="29" cy="8" r="3.2" fill="#78909c" stroke="#fff"/>'), 'Brecha que cruza agua o zona construida', 'excluida de las prioridades', 'candidatos')}
+      ${item(sim('<line x1="3" y1="8" x2="31" y2="8" stroke="#7cb342" stroke-width="8" stroke-linecap="round"/><line x1="3" y1="8" x2="31" y2="8" stroke="#fff" stroke-width="1.6" stroke-dasharray="4 3"/>'), 'Enlace propuesto', 'hipotético: aún no es bosque', 'restaurado')}
     </ul></div>
     <div class="rs-lg-grupo" data-modo="rutas" hidden><h3>Rutas al corredor</h3><ul>
-      ${item(sim('<line x1="3" y1="8" x2="31" y2="8" stroke="#fff" stroke-width="6"/><line x1="3" y1="8" x2="31" y2="8" stroke="#7b1fa2" stroke-width="3.5"/>'), 'Ruta de menor costo', 'evita agua y zonas sin bosque')}
-      ${item(sim('<line x1="3" y1="8" x2="31" y2="8" stroke="#fff" stroke-width="5"/><line x1="3" y1="8" x2="31" y2="8" stroke="#7b1fa2" stroke-width="2.6" stroke-dasharray="6 4"/>'), 'Ruta a otro tramo', 'más costosa que la principal')}
-      ${item(sim('<rect x="2" y="3" width="30" height="10" rx="2" fill="#7b1fa2" fill-opacity="0.38"/>'), 'Franja de alternativas', 'rutas casi igual de buenas')}
+      ${item(sim('<line x1="3" y1="8" x2="31" y2="8" stroke="#fff" stroke-width="6"/><line x1="3" y1="8" x2="31" y2="8" stroke="#7b1fa2" stroke-width="3.5"/>'), 'Ruta de menor costo', 'evita agua y zonas sin bosque', 'rutas')}
+      ${item(sim('<line x1="3" y1="8" x2="31" y2="8" stroke="#fff" stroke-width="5"/><line x1="3" y1="8" x2="31" y2="8" stroke="#7b1fa2" stroke-width="2.6" stroke-dasharray="6 4"/>'), 'Ruta a otro tramo', 'una opción por cada tramo del corredor', 'rutas')}
+      ${item(sim('<rect x="2" y="3" width="30" height="10" rx="2" fill="#7b1fa2" fill-opacity="0.38"/>'), 'Franja de alternativas', 'rutas casi igual de buenas', 'rutas')}
     </ul></div>
     <div class="rs-lg-grupo"><h3>Referencia</h3><ul>
-      ${item(sim('<line x1="3" y1="8" x2="31" y2="8" stroke="#fff" stroke-width="3"/>', '#5b6b5e'), 'Límite de la subcuenca', '')}
-      ${item(sim('<path d="M3 11 C10 3, 18 13, 31 5" fill="none" stroke="#1f78b4" stroke-width="2.4"/>'), 'Ríos', 'IGNTG 2022; HydroSHEDS donde falta')}
-      ${item(sim('<rect x="3" y="2" width="28" height="12" rx="2" fill="#ce93d8" fill-opacity="0.45" stroke="#4a148c" stroke-width="1.4"/>'), 'Corredor Biológico Mesoamericano', '')}
-      ${item(sim('<rect x="3" y="2" width="28" height="12" rx="2" fill="#9ccc65" fill-opacity="0.3" stroke="#7fae00" stroke-width="1.2"/>'), 'Otros corredores', 'Almanaque Azul; el tono indica su conectividad')}
+      ${item(sim('<line x1="3" y1="8" x2="31" y2="8" stroke="#fff" stroke-width="3"/>', '#5b6b5e'), 'Límite de la subcuenca', '', 'borde')}
+      ${item(sim('<path d="M3 11 C10 3, 18 13, 31 5" fill="none" stroke="#1f78b4" stroke-width="2.4"/>'), 'Ríos', 'IGNTG 2022; HydroSHEDS donde falta', 'rios')}
+      ${item(sim('<rect x="3" y="2" width="28" height="12" rx="2" fill="#ce93d8" fill-opacity="0.45" stroke="#4a148c" stroke-width="1.4"/>'), 'Corredor Biológico Mesoamericano', '', 'cbm')}
+      ${item(sim('<rect x="3" y="2" width="28" height="12" rx="2" fill="#9ccc65" fill-opacity="0.3" stroke="#7fae00" stroke-width="1.2"/>'), 'Otros corredores', 'Almanaque Azul; el tono indica su conectividad', 'corredores')}
     </ul></div>`;
+  $('#rs-legend').insertAdjacentHTML('afterbegin', '<p class="rs-lg-ayuda">Haga clic en un elemento de la leyenda para mostrarlo u ocultarlo en el mapa.</p>');
+  $('#rs-legend').addEventListener('click', (ev) => {
+    const b = ev.target.closest('[data-capa]');
+    if (!b) return;
+    const k = b.dataset.capa;
+    if (st.ocultas.has(k)) st.ocultas.delete(k); else st.ocultas.add(k);
+    aplicarVisibilidad();
+  });
   const subs = Object.values(st.data.territorios).filter((t) => t && t.id !== 'chcp').sort((a, b) => a.nombre.localeCompare(b.nombre, 'es'));
   // red_disponible indica si existe la red de parches precalculada de la subcuenca.
   const pendiente = (t) => (t.red_disponible === undefined ? (t.version_datos ?? 0) < 0 : !t.red_disponible);

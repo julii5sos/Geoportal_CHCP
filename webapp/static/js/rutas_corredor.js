@@ -7,8 +7,8 @@
    reconstruye desde la celda del parche con menor costo. La franja de alternativas reúne las
    celdas cuya ruta parche → celda → corredor cuesta como máximo (1 + tolerancia) veces la
    ruta óptima (corredor de menor costo, como en Linkage Mapper). La malla cubre la cuenca y
-   15 km a su alrededor (extensión de los assets SINIA); fuera de ella no hay cobertura
-   conocida y no se permite el paso. */
+   25 km a su alrededor: SINIA 2021 donde existe (unos 15 km) y JRC TMF 2025 más allá; fuera
+   de la malla no hay cobertura conocida y no se permite el paso. */
 (function (raiz) {
   // Resistencia relativa por tipo de cobertura (1 = bosque sin perturbación). Supuesto del
   // modelo, documentado en docs/DECISIONES_METODOLOGICAS.md; no proviene de una especie concreta.
