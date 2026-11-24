@@ -71,7 +71,8 @@ def evaluar_carpeta(carpeta: Path) -> dict:
         if final == 0:
             sin_evidencia += 1
             continue
-        if not (fila.get("fecha_imagen") or "").strip():
+        # Con medianas anuales sin nubes no hay una fecha única: la fuente ya documenta los años.
+        if not (fila.get("fecha_imagen") or "").strip() and "mediana anual" not in (fila.get("fuente_imagen") or ""):
             sin_fecha += 1
         if fila["id"] in estrato:
             pares.append((estrato[fila["id"]], final))

@@ -904,3 +904,5 @@ html.app #main-content:has(.pg) { overflow-y:auto; background:#f3f6fa; }
 .va-lb-imgs figure > div { position:relative; aspect-ratio:1; border-radius:8px; overflow:hidden; background:#dfe6ef; }
 .va-lb-imgs figcaption { text-align:center; font-weight:800; color:var(--azul-tinta); margin-top:4px; }
 @media (max-width:900px) { .va-series { grid-template-columns:1fr; } .va-lb-imgs { grid-template-columns:1fr; } .va-lb-imgs > figure { width:min(90vw, 60vh); } }
+
+.va-filtro select { font-weight:700; }
