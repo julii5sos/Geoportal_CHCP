@@ -40,9 +40,10 @@
   function procedencia(datos, tipo = 'B', territorio = null, extra = '') {
     const p = (datos && datos.procesamiento) || {};
     const fecha = String((territorio && territorio.procesado) || p.fecha_procesamiento || (datos && datos.generado) || '').replace('T', ' ').slice(0, 16);
-    const version = territorio && territorio.version_datos != null ? ` · datos v${territorio.version_datos}` : '';
+    const version = territorio && territorio.version_datos != null ? `<span>Datos v${escapeHtml(String(territorio.version_datos))}</span>` : '';
     const parcial = datos && datos.estado_actualizacion && !datos.estado_actualizacion.completa ? '<span class="pr-warn">actualización parcial</span>' : '';
-    return `<div class="procedencia" data-tipo="${tipo}"><b>Tipo ${tipo}</b><span>${escapeHtml(TIPOS_PROCESAMIENTO[tipo])}</span><span>Cálculo: ${escapeHtml(fecha || 'sin fecha')}${escapeHtml(version)}</span><span>${escapeHtml(p.metodologia || (datos && datos.metodologia) || '')} · código ${escapeHtml(String(p.version_codigo || 'no registrado').slice(0, 12))}</span>${extra}${parcial}</div>`;
+    // Cada dato en su propia etiqueta (sin separadores de puntos).
+    return `<div class="procedencia" data-tipo="${tipo}"><b>Tipo ${tipo}</b><span>${escapeHtml(TIPOS_PROCESAMIENTO[tipo])}</span><span>Cálculo: ${escapeHtml(fecha || 'sin fecha')}</span>${version}<span>${escapeHtml(p.metodologia || (datos && datos.metodologia) || '')}</span><span>Código ${escapeHtml(String(p.version_codigo || 'no registrado').slice(0, 12))}</span>${extra}${parcial}</div>`;
   }
 
   async function api(path, options = {}) {
@@ -177,6 +178,71 @@
     return { poner, get clave() { return clave; } };
   }
 
-  window.CHCP = {$, $$, escapeHtml, number, hectares, api, mapFile, valFile, hidroFile, serieFile, consultarActualizacion, pendiente, procedencia, toast, readPortalState, writePortalState, normalizeSearch, mapaBase, BASES_MAPA};
+  // ------------------------------------------------------------ paneles redimensionables
+  /**
+   * Agrega un tirador para cambiar el tamaño de un panel arrastrando su borde (o con las
+   * flechas del teclado; doble clic vuelve al tamaño original). El tamaño se recuerda.
+   *   panel     elemento al que se le añade el tirador (queda en su borde)
+   *   borde     'derecho' | 'izquierdo' (ancho) o 'inferior' (alto)
+   *   aplicar   (px | null) => void: aplica el tamaño (null = el original)
+   *   alCambiar () => void: p. ej., map.invalidateSize()
+   */
+  function divisor({ panel, borde = 'derecho', clave, min = 220, max = 900, aplicar, alCambiar = () => {}, ancla = null }) {
+    if (!panel || !aplicar) return;
+    const vertical = borde === 'inferior';
+    const h = document.createElement('div');
+    h.className = `chcp-divisor chcp-divisor-${borde}`;
+    h.setAttribute('role', 'separator');
+    h.setAttribute('aria-orientation', vertical ? 'horizontal' : 'vertical');
+    h.setAttribute('aria-label', vertical ? 'Cambiar el alto del mapa' : 'Cambiar el ancho del panel');
+    h.title = 'Arrastre para cambiar el tamaño · doble clic: tamaño original';
+    h.tabIndex = 0;
+    // Con «ancla» (p. ej., el contenedor de la página) el tirador no se desplaza al hacer
+    // scroll dentro de un panel con barra propia: se ubica sobre el borde del panel.
+    const padre = ancla || panel;
+    if (getComputedStyle(padre).position === 'static') padre.style.position = 'relative';
+    padre.appendChild(h);
+    const ubicar = () => {
+      if (!ancla) return;
+      const a = ancla.getBoundingClientRect(), r = panel.getBoundingClientRect();
+      h.hidden = r.width < 2 || r.height < 2;  // panel cerrado u oculto
+      h.style.top = `${r.top - a.top}px`; h.style.bottom = 'auto'; h.style.height = `${r.height}px`;
+      h.style.left = `${(borde === 'izquierdo' ? r.left : r.right) - a.left - 6}px`; h.style.right = 'auto';
+    };
+    if (ancla) { ubicar(); new ResizeObserver(ubicar).observe(panel); window.addEventListener('resize', ubicar); }
+    const llave = clave ? `chcp-tam-${clave}` : null;
+    let pendienteRaf = 0;
+    const avisar = () => { if (pendienteRaf) return; pendienteRaf = requestAnimationFrame(() => { pendienteRaf = 0; ubicar(); alCambiar(); }); };
+    const medir = () => { const r = panel.getBoundingClientRect(); return vertical ? r.height : r.width; };
+    const poner = (px, guardar) => {
+      const v = Math.round(Math.max(min, Math.min(max, px)));
+      aplicar(v); h.setAttribute('aria-valuenow', String(v)); avisar();
+      if (guardar && llave) { try { localStorage.setItem(llave, String(v)); } catch (_) { /* sin almacenamiento */ } }
+    };
+    try { const g = llave && Number(localStorage.getItem(llave)); if (g) poner(g, false); } catch (_) { /* sin almacenamiento */ }
+    h.addEventListener('pointerdown', (ev) => {
+      ev.preventDefault();
+      const inicio = vertical ? ev.clientY : ev.clientX, base = medir();
+      h.setPointerCapture(ev.pointerId);
+      document.body.classList.add(vertical ? 'chcp-arrastrando-y' : 'chcp-arrastrando-x');
+      const mover = (e) => { const d = (vertical ? e.clientY : e.clientX) - inicio; poner(borde === 'izquierdo' ? base - d : base + d, false); };
+      const soltar = () => {
+        h.removeEventListener('pointermove', mover); h.removeEventListener('pointerup', soltar); h.removeEventListener('pointercancel', soltar);
+        document.body.classList.remove('chcp-arrastrando-x', 'chcp-arrastrando-y');
+        poner(medir(), true);
+      };
+      h.addEventListener('pointermove', mover); h.addEventListener('pointerup', soltar); h.addEventListener('pointercancel', soltar);
+    });
+    h.addEventListener('keydown', (ev) => {
+      const paso = ev.shiftKey ? 80 : 20;
+      const mas = vertical ? 'ArrowDown' : (borde === 'izquierdo' ? 'ArrowLeft' : 'ArrowRight');
+      const menos = vertical ? 'ArrowUp' : (borde === 'izquierdo' ? 'ArrowRight' : 'ArrowLeft');
+      if (ev.key === mas) { ev.preventDefault(); poner(medir() + paso, true); }
+      if (ev.key === menos) { ev.preventDefault(); poner(medir() - paso, true); }
+    });
+    h.addEventListener('dblclick', () => { aplicar(null); avisar(); if (llave) { try { localStorage.removeItem(llave); } catch (_) { /* sin almacenamiento */ } } });
+  }
+
+  window.CHCP = {$, $$, escapeHtml, number, hectares, api, mapFile, valFile, hidroFile, serieFile, consultarActualizacion, pendiente, procedencia, toast, readPortalState, writePortalState, normalizeSearch, mapaBase, BASES_MAPA, divisor};
 })();
 

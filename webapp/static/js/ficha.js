@@ -17,6 +17,10 @@
   const pct = (v, d = 1) => (v == null ? '—' : `${number(v, d)} %`);
   const subs = () => Object.values(st.data.territorios).filter((t) => t && t.id !== 'chcp');
   const sinia = (t, y) => (t.sinia || []).find((p) => p.year === y);
+  const MESES = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
+  // Color de cada año en la rampa amarillo → rojo de Hansen GFC (2001 → 2025).
+  const colorHansen = (anio) => `#ff${Math.round(255 * Math.max(0, Math.min(24, 2025 - anio)) / 24).toString(16).padStart(2, '0')}00`;
+  const fechaLarga = (iso) => { const m = /^(\d{4})-(\d{2})-(\d{2})/.exec(String(iso || '')); return m ? `${Number(m[3])} de ${MESES[Number(m[2]) - 1]} de ${m[1]}` : '—'; };
 
   // ------------------------------------------------------------ indicadores
   const IND = [
@@ -79,7 +83,10 @@
     const grid = [0, .5, 1].map((f) => `<line x1="${L}" x2="${W - R}" y1="${y(max * f)}" y2="${y(max * f)}" class="g"/><text x="${L - 5}" y="${y(max * f) + 3}" text-anchor="end">${number(max * f, 0)}</text>`).join('');
     // Trazo oscuro fino debajo: los colores oficiales claros (p. ej., regeneración JRC) se ven sobre blanco.
     const ls = keys.map((k) => { const pts = series.map((r, i) => (r[k.k] == null ? '' : `${x(i)},${y(r[k.k])}`)).join(' '); return `<polyline fill="none" stroke="rgba(0,0,0,.35)" stroke-width="3.6" points="${pts}"/><polyline fill="none" stroke="${k.c}" stroke-width="2.2" points="${pts}"/>`; }).join('');
-    return `<svg class="fi-line" viewBox="0 0 ${W} ${H}">${grid}${series.map((r, i) => `<text x="${x(i)}" y="${H - 5}" text-anchor="middle">${r.anio}</text>`).join('')}${ls}</svg><ul class="fi-keys">${keys.map((k) => `<li><i style="background:${k.c};outline:1px solid rgba(0,0,0,.25)"></i>${esc(k.l)}</li>`).join('')}</ul>`;
+    // Valor del último año junto a cada línea, para leer la cifra sin pasar el ratón.
+    const ult = series.length - 1;
+    const etiquetas = keys.map((k) => (series[ult]?.[k.k] == null ? '' : `<text class="fin" x="${x(ult) - 4}" y="${Math.max(T + 10, y(series[ult][k.k]) - 6)}" text-anchor="end">${number(series[ult][k.k], 0)} ha</text>`)).join('');
+    return `<svg class="fi-line" viewBox="0 0 ${W} ${H}">${grid}${etiquetas}${series.map((r, i) => `<text x="${x(i)}" y="${H - 5}" text-anchor="${i === series.length - 1 ? 'end' : i === 0 ? 'start' : 'middle'}">${r.anio}</text>`).join('')}${ls}</svg><ul class="fi-keys">${keys.map((k) => `<li><i style="background:${k.c};outline:1px solid rgba(0,0,0,.25)"></i>${esc(k.l)}</li>`).join('')}</ul>`;
   }
 
   // ------------------------------------------------------------ texto
@@ -128,10 +135,65 @@
     if (capa.tipo === 'continuo') return `<div class="fi-ramp"><i style="background:linear-gradient(90deg,${capa.paleta.join(',')})"></i><span>${capa.leyenda.map((x) => `<em>${esc(x.etiqueta)}</em>`).join('')}</span></div>`;
     return `<div class="fi-legend">${capa.leyenda.map((x) => `<span><i style="background:${x.color}"></i>${esc(x.etiqueta)}</span>`).join('')}</div>`;
   }
+  // Galería de mapas temáticos. Orden de la ficha ejecutiva: coberturas, estado y pérdida del
+  // bosque, dosel, vigor, coincidencias; después los análisis del geoportal (red, ERI, riberas).
+  // Tres tipos de mapa: «png» (precalculado con su leyenda), «valores» (raster de valores sin
+  // pérdida, coloreado aquí con la leyenda oficial de la fuente) y «red» (parches vectoriales).
+  const GEDI_PALETA = ['#ffffcc', '#c2e699', '#78c679', '#31a354', '#006837'];
+  function figurasGaleria(t) {
+    const capa = (k) => (t.mapas?.capas?.includes(k) ? (st.data.capas_mapa || []).find((c) => c.clave === k) : null);
+    const val = (k) => Boolean(t.mapas?.valores?.includes(k));
+    const serie = (k) => st.series?.territorios?.[t.id]?.mapas?.[k] && st.series?.productos?.[k];
+    const png = (k) => { const c = capa(k); return c && { id: k, tipo: 'png', titulo: c.titulo, lectura: c.lectura, leyenda: leyendaCapa(c) }; };
+    const figs = [];
+    const ley = new Map((st.data.leyendas_valores?.sinia_2021_detalle || []).map((x) => [x.codigo, x]));
+    if (val('sinia_2021_detalle') && ley.size) {
+      figs.push({ id: 'sinia_det', tipo: 'valores', titulo: 'Cobertura y uso del suelo · SINIA 2021', archivo: mapFile(t.id, 'sinia_2021_detalle.v.png'), limites: t.mapas.limites,
+        clases: [...ley.values()].map((x) => ({ valor: x.codigo, color: x.color, etiqueta: x.categoria.replace(/^Código \d+ · /, '').replace(/ \(informe oficial; sin verificar en la cuenca\)$/, '') })),
+        lectura: 'Cartografía oficial de MiAMBIENTE (raster de 10 m) con sus colores. Los bosques de esta capa son la base de la fragmentación y la conectividad.' });
+    } else if (capa('sinia_2021')) figs.push(png('sinia_2021'));
+    const esri = st.series?.productos?.esri;
+    if (val('esri_2024') && esri) {
+      figs.push({ id: 'esri_2024', tipo: 'valores', titulo: 'Cobertura y uso del suelo 2024 · ESRI', archivo: mapFile(t.id, 'esri_2024.v.png'), limites: t.mapas.limites,
+        clases: esri.clases, lectura: 'Clasificación automática de Sentinel-2 (10 m) con los colores de ESRI. «Árboles» no es la misma definición de bosque que SINIA o JRC.' });
+    }
+    if (capa('jrc_2025')) figs.push(png('jrc_2025'));
+    if (serie('hansen')) {
+      const p = st.series.productos.hansen;
+      figs.push({ id: 'hansen_todo', tipo: 'valores', titulo: 'Pérdida de cobertura arbórea 2001–2025 · Hansen GFC', archivo: window.CHCP.serieFile(`mapas/${t.id}/hansen.v.png`), limites: st.series.territorios[t.id].mapas.hansen.limites,
+        clases: p.clases, rampa: { colores: [p.clases[0].color, p.clases[p.clases.length - 1].color], etiquetas: ['2001', '2025'] },
+        lectura: 'Año de la pérdida (30 m). Solo la pérdida de 2021–2025 cuenta para la preevaluación. Incluye cosecha de plantaciones; no indica la causa.' });
+    } else if (capa('hansen')) figs.push(png('hansen'));
+    if (capa('esri_cambio')) figs.push(png('esri_cambio'));
+    const codGedi = st.data.codificacion_valores?.gedi;
+    if (val('gedi') && codGedi) {
+      figs.push({ id: 'gedi', tipo: 'valores', titulo: 'Altura del dosel · GEDI', archivo: mapFile(t.id, 'gedi.v.png'), limites: t.mapas.limites,
+        continuo: { minimo: 0, maximo: 30, paleta: GEDI_PALETA, codec: codGedi }, rampa: { colores: GEDI_PALETA, etiquetas: ['0 m', '15 m', '≥ 30 m'] },
+        lectura: 'Altura del dosel estimada con el láser GEDI (NASA). Las zonas sin huellas válidas quedan sin color.' });
+    }
+    if (serie('ndvi')) {
+      const p = st.series.productos.ndvi, anio = Math.max(...p.anios);
+      figs.push({ id: 'ndvi_anio', tipo: 'valores', titulo: `Vigor de la vegetación ${anio} · NDVI Sentinel-2`, archivo: window.CHCP.serieFile(`mapas/${t.id}/ndvi_${anio}.v.png`), limites: st.series.territorios[t.id].mapas.ndvi.limites,
+        clases: p.clases, lectura: 'Mediana anual sin nubes, con la escala de colores NDVI de Copernicus Browser. Describe vigor, no tipo de cobertura.' });
+    }
+    if (capa('ndvi_cambio')) figs.push(png('ndvi_cambio'));
+    if (capa('coincidencia')) figs.push(png('coincidencia'));
+    if (t.id !== 'chcp') figs.push({ id: 'red', tipo: 'red', titulo: 'Parches de bosque y red de conectividad', leyenda: '<div class="fi-legend"><span><i style="background:#1b5e20"></i>Importancia alta</span><span><i style="background:#66bb6a"></i>Media</span><span><i style="background:#c5e1a5"></i>Baja</span><span><i class="dash"></i>Brecha candidata</span></div>',
+      lectura: 'Bosque oficial 2021 en parches, según su aporte a la conectividad (dIIC), y las brechas que convendría cerrar.' });
+    if (capa('eri')) figs.push(png('eri'));
+    if (capa('riparia')) figs.push(png('riparia'));
+    return figs.filter(Boolean);
+  }
+  function leyendaFigura(f) {
+    if (f.leyenda) return f.leyenda;
+    if (f.rampa) return `<div class="fi-ramp"><i style="background:linear-gradient(90deg,${f.rampa.colores.join(',')})"></i><span>${f.rampa.etiquetas.map((x) => `<em>${esc(x)}</em>`).join('')}</span></div>`;
+    return '<div class="fi-legend" data-presentes></div>';  // se llena con las clases presentes al dibujar
+  }
   function seccionGaleria(t) {
-    const capas = (st.data.capas_mapa || []).filter((c) => t.mapas?.capas?.includes(c.clave));
-    if (!capas.length) return `<p class="fi-pending">Los mapas temáticos (SINIA 2021, JRC, Hansen, ESRI, NDVI, ERI, señales coincidentes y franjas riparias) se generan ${window.CHCP.pendiente()}.</p>`;
-    return `<div class="fi-gal">${capas.map((c) => `<figure class="fi-fig"><figcaption>${esc(c.titulo)}</figcaption><div class="fi-mini" data-capa="${c.clave}"></div>${leyendaCapa(c)}<p class="fi-note">${esc(c.lectura)}</p></figure>`).join('')}</div><p class="fi-note">Resolución de los mapas: ${number(t.mapas.tamano_pixel_m, 0)} m por píxel. Los cálculos de superficie usan la resolución nativa de cada fuente.</p>`;
+    const figs = figurasGaleria(t);
+    if (!figs.length) return `<p class="fi-pending">Los mapas temáticos se generan ${window.CHCP.pendiente()}.</p>`;
+    st.figuras = figs;
+    return `<div class="fi-gal">${figs.map((f) => `<figure class="fi-fig" data-fig="${f.id}"><figcaption>${esc(f.titulo)}</figcaption><div class="fi-mini" data-fig="${f.id}"></div>${leyendaFigura(f)}<p class="fi-note">${esc(f.lectura)}</p></figure>`).join('')}</div>${t.mapas?.tamano_pixel_m ? `<p class="fi-note">Resolución de los mapas: ${number(t.mapas.tamano_pixel_m, 0)} m por píxel. Los cálculos de superficie usan la resolución nativa de cada fuente.</p>` : ''}`;
   }
   function seccionNdvi(t) {
     const n = t.ndvi;
@@ -202,8 +264,8 @@
     $('#fi-doc').innerHTML = `
       <header class="fi-head">
         <img class="fi-logo" src="${window.CHCP_STATIC ? 'static' : '/static'}/img/emblema.svg" alt="Geoportal CHCP" width="64" height="64">
-        <div class="fi-head-txt"><span class="fi-kicker">Ficha técnica · ${esc(t.grupo)}</span><h1>${esc(t.nombre)}</h1>
-        <p>${hectares(t.area_ha)} · datos del ${esc(String(st.data.generado || '').slice(0, 10))} · ${esc(st.data.metodologia)} · Clúster Copernicus Centroamérica AFOLU II</p>${window.CHCP.procedencia(st.data, 'B', t)}</div>
+        <div class="fi-head-txt"><span class="fi-kicker">Ficha técnica</span><h1>${esc(t.nombre)}</h1>
+        <dl class="fi-meta">${t.id === 'chcp' ? '' : `<div><dt>Forma parte de</dt><dd>${esc(t.grupo)}</dd></div>`}<div><dt>Superficie</dt><dd>${hectares(t.area_ha)}</dd></div><div><dt>Datos del</dt><dd>${esc(fechaLarga(st.data.generado))}</dd></div><div><dt>Método</dt><dd>${esc(String(st.data.metodologia || '').split('-').slice(0, 2).join('-'))}</dd></div><div><dt>Proyecto</dt><dd>Clúster Copernicus Centroamérica AFOLU II</dd></div></dl>${window.CHCP.procedencia(st.data, 'B', t)}</div>
         <div class="fi-score" data-tone="${toneP}"><span>Preevaluación</span><b>${number(p.puntaje, 1)}<small>/ ${number(p.puntaje_maximo, 1)}</small></b><em>${esc(p.prioridad)}</em><small>Visita: ${esc(p.prioridad_visita || '—')}</small></div>
       </header>
       <section class="fi-sec"><h2>${icon('info', 22)} En pocas palabras</h2>${diagnostico(t).map((f) => `<p>${f}</p>`).join('')}</section>
@@ -212,9 +274,10 @@
       <section class="fi-sec fi-gal-sec"><h2>${icon('layers', 22)} Mapas temáticos</h2><p class="fi-note">Cada mapa muestra una fuente distinta sobre el mismo territorio, con los colores que usa cada fuente. ${t.id === 'chcp' ? 'Los corredores del Almanaque Azul' : 'Ríos y corredores del Almanaque Azul'} se superponen como referencia. El mapa base se cambia con el selector del mapa de arriba.</p>${seccionGaleria(t)}</section>
       <section class="fi-sec" id="fi-indicadores"><h2>${icon('chart', 22)} Indicadores y comparación con las demás subcuencas</h2><p class="fi-note">Verde: mejor que la mayoría de subcuencas; ámbar: intermedio; rojo: entre las más desfavorables. La comparación es relativa a la CHCP, no un umbral normativo.</p><div class="fi-inds">${indicadores}</div></section>
       ${seccionRelativa(t)}
-      <section class="fi-sec fi-two"><div><h2>${icon('forest', 22)} Dinámica del bosque · JRC 2025</h2>${donut(jrc, hectares(t.area_ha, 0))}</div>
-        <div><h2>${icon('trend', 22)} Evolución 2020–2025 (ha)</h2>${serie.length ? line(serie, [{ k: 'jrc_degradacion_ha', l: 'Degradado (JRC)', c: '#649b23' }, { k: 'jrc_regeneracion_ha', l: 'Regeneración (JRC)', c: '#d2fa3c' }, { k: 'jrc_deforestacion_ha', l: 'Deforestado (JRC)', c: '#ff870f' }]) : ''}
-        <h3>Pérdida anual Hansen</h3>${bars(serie.filter((x) => x.hansen_perdida_ha != null).map((x) => ({ l: String(x.anio), v: x.hansen_perdida_ha, c: '#d0442c' })), (v) => hectares(v))}</div></section>
+      <section class="fi-sec fi-two fi-dinamica"><div><h2>${icon('forest', 22)} Estado del bosque en 2025 · JRC</h2>${donut(jrc, hectares(t.area_ha, 0))}
+        <h3>Pérdida de cobertura arbórea por año · Hansen</h3>${bars(serie.filter((x) => x.hansen_perdida_ha != null).map((x) => ({ l: String(x.anio), v: x.hansen_perdida_ha, c: colorHansen(x.anio) })), (v) => hectares(v))}</div>
+        <div><h2>${icon('trend', 22)} Evolución 2020–2025 · JRC (ha)</h2>${serie.length ? line(serie, [{ k: 'jrc_degradacion_ha', l: 'Degradado', c: '#649b23' }, { k: 'jrc_regeneracion_ha', l: 'Regeneración', c: '#d2fa3c' }, { k: 'jrc_deforestacion_ha', l: 'Deforestado', c: '#ff870f' }]) : '<p class="fi-pending">Sin serie anual para este territorio.</p>'}
+        ${serie.length ? '<p class="fi-note">Superficie en cada estado al cierre de cada año. JRC acumula: un píxel deforestado en 2010 sigue contando como deforestado en 2025, por eso las líneas cambian poco. Lo nuevo de cada año se ve mejor en la pérdida anual de Hansen.</p>' : ''}</div></section>
       <section class="fi-sec fi-two"><div><h2>${icon('layers', 22)} Cartografía oficial SINIA</h2>${bars((t.sinia || []).map((s) => ({ l: `Bosque ${s.year}`, v: s.forest_pct, c: '#237A4B' })), (v) => pct(v))}<p class="fi-note">Productos independientes con métodos y escalas distintos: la diferencia entre años no mide pérdida ni ganancia.</p></div>
         <div><h2>${icon('forest', 22)} Árboles y altura del dosel</h2><ul class="fi-list"><li><b>ESRI 2017→2024:</b> ${hectares(t.esri?.esri_salida)} pasaron de árboles a otra clase y ${hectares(t.esri?.esri_ganancia)} de otra clase a árboles; ${hectares(t.esri?.esri_estable)} se mantuvieron con árboles.</li><li><b>Altura media del dosel (GEDI):</b> ${t.gedi_altura_m == null ? 'sin muestras suficientes' : `${number(t.gedi_altura_m, 1)} m`}. ${t.gedi_altura_m == null ? '' : t.gedi_altura_m >= 20 ? 'Dosel alto, típico de bosque maduro.' : t.gedi_altura_m >= 10 ? 'Dosel intermedio: bosque secundario o intervenido.' : 'Dosel bajo: vegetación joven, rastrojo o áreas abiertas.'}</li></ul></div></section>
       ${seccionNdvi(t)}
@@ -251,15 +314,73 @@
     if (conRios && st.rios) L.geoJSON(st.rios, { style: { color: '#1f78b4', weight: 2, opacity: 0.9 }, onEachFeature: (f, l) => l.bindTooltip(esc(((f) => [f.properties.nombre || `${f.properties.tipo || 'Cauce'} sin nombre en la cartografía`, f.properties.nombre_alt && `(${f.properties.nombre_alt})`, f.properties.tributario_de && `· afluente del ${f.properties.tributario_de}`].filter(Boolean).join(' '))(f)), { sticky: true }) }).addTo(map);
     if (puntos) L.geoJSON(st.territory.critical_points, { pointToLayer: (_, ll) => L.circleMarker(ll, { radius: 5, color: '#fff', weight: 1.5, fillColor: '#f04438', fillOpacity: 1 }), onEachFeature: (f, l) => l.bindTooltip(esc(f.properties.notas || 'Punto crítico'), { maxWidth: 280 }) }).addTo(map);
   }
+  /** Tirador en el borde inferior para agrandar o achicar el mapa (se recuerda). */
+  function altoAjustable(div, map, clave) {
+    window.CHCP.divisor({ panel: div, borde: 'inferior', clave, min: 260, max: 1400,
+      aplicar: (h) => { div.style.height = h ? `${h}px` : ''; }, alCambiar: () => map.invalidateSize() });
+  }
+  function cargarImagen(url) {
+    return new Promise((ok, mal) => { const im = new Image(); im.onload = () => ok(im); im.onerror = () => mal(new Error(url)); im.src = url; });
+  }
+  async function valoresDe(url) {
+    const im = await cargarImagen(url);
+    const c = document.createElement('canvas'); c.width = im.naturalWidth; c.height = im.naturalHeight;
+    const ctx = c.getContext('2d', { willReadFrequently: true }); ctx.drawImage(im, 0, 0);
+    const d = ctx.getImageData(0, 0, c.width, c.height).data, v = new Uint8Array(c.width * c.height);
+    for (let i = 0; i < v.length; i += 1) v[i] = d[i * 4];
+    return { v, w: c.width, h: c.height };
+  }
+  const hexRgb = (h) => { const n = parseInt(String(h).slice(1), 16); return [(n >> 16) & 255, (n >> 8) & 255, n & 255]; };
+  /** Colorea un raster de valores (255 = sin dato) y devuelve la imagen y las clases presentes. */
+  function colorearValores(b, f) {
+    const c = document.createElement('canvas'); c.width = b.w; c.height = b.h;
+    const ctx = c.getContext('2d'), img = ctx.createImageData(b.w, b.h), presentes = new Set();
+    let color;
+    if (f.continuo) {
+      const pal = f.continuo.paleta.map(hexRgb), { minimo, maximo, codec } = f.continuo;
+      color = (q) => { const x = Math.max(0, Math.min(1, ((codec.minimo + q * codec.paso) - minimo) / (maximo - minimo))) * (pal.length - 1); const i = Math.min(pal.length - 2, Math.floor(x)), r = x - i; return pal[i].map((a, k) => Math.round(a + (pal[i + 1][k] - a) * r)); };
+    } else {
+      const m = new Map(f.clases.map((x) => [x.valor, hexRgb(x.color)]));
+      color = (q) => { const col = m.get(q); if (col) presentes.add(q); return col; };
+    }
+    for (let i = 0; i < b.v.length; i += 1) {
+      const q = b.v[i];
+      if (q === 255) continue;
+      const col = color(q);
+      if (!col) continue;
+      img.data[i * 4] = col[0]; img.data[i * 4 + 1] = col[1]; img.data[i * 4 + 2] = col[2]; img.data[i * 4 + 3] = 235;
+    }
+    ctx.putImageData(img, 0, 0);
+    return { url: c.toDataURL(), presentes };
+  }
   function drawGallery(t) {
     st.galeria.forEach((m) => m.remove());
     st.galeria = [];
     const feature = featureDe(t);
+    const porId = new Map((st.figuras || []).map((f) => [f.id, f]));
     $$('.fi-mini').forEach((div) => {
+      const f = porId.get(div.dataset.fig);
+      if (!f) return;
       // zoomSnap fino: el territorio llena el recuadro en vez de quedar en el nivel entero anterior.
       const m = L.map(div, { zoomControl: false, attributionControl: false, scrollWheelZoom: false, zoomSnap: 0.1 });
       window.CHCP.mapaBase(m, { defecto: 'gris', control: false });
-      L.imageOverlay(mapFile(t.id, `${div.dataset.capa}.png`), t.mapas.limites, { opacity: 0.9 }).addTo(m);
+      if (f.tipo === 'png') L.imageOverlay(mapFile(t.id, `${f.id}.png`), t.mapas.limites, { opacity: 0.9 }).addTo(m);
+      if (f.tipo === 'valores') {
+        valoresDe(f.archivo).then((b) => {
+          const r = colorearValores(b, f);
+          L.imageOverlay(r.url, f.limites, { opacity: 0.95, className: 'fi-px' }).addTo(m);
+          const caja = div.parentElement.querySelector('[data-presentes]');
+          if (caja) caja.innerHTML = f.clases.filter((x) => r.presentes.has(x.valor)).map((x) => `<span><i style="background:${x.color}"></i>${esc(x.etiqueta)}</span>`).join('');
+        }).catch(() => { div.insertAdjacentHTML('beforeend', '<p class="fi-mini-vacio">Mapa no disponible todavía.</p>'); });
+      }
+      if (f.tipo === 'red') {
+        const color = { Alta: '#1b5e20', Media: '#66bb6a', Baja: '#c5e1a5' };
+        const pintar = (g) => {
+          L.geoJSON(g.parches, { style: (x) => ({ color: '#0b3d17', weight: 0.4, fillColor: color[x.properties.prioridad_conectividad] || '#9ccc65', fillOpacity: 0.9 }), interactive: false }).addTo(m);
+          L.geoJSON(g.brechas, { style: { color: '#e53935', weight: 1.6, dashArray: '4 3' }, interactive: false }).addTo(m);
+        };
+        if (st.geoFicha?.id === t.id) pintar(st.geoFicha.g); else st.esperaGeo = (st.esperaGeo || []).concat([pintar]);
+      }
       // En toda la cuenca la red de ríos es tan densa que se confunde con límites internos: solo el borde exterior.
       referencias(m, false, t.id !== 'chcp');
       const borde = L.geoJSON(feature, { style: { color: '#263238', weight: 1.6, fill: false }, interactive: false }).addTo(m);
@@ -281,9 +402,11 @@
     if (st.map) { st.map.remove(); st.map = null; }
     try { st.rios = t.mapas?.rios ? await (await fetch(mapFile(t.id, 'rios.json'))).json() : null; } catch (_) { st.rios = null; }
     if (!st.rios) st.rios = await riosDeLaCuenca(featureDe(t));
+    st.esperaGeo = []; st.geoFicha = null;
     drawGallery(t);
     const map = L.map('fi-map', { zoomControl: true, preferCanvas: false, zoomSnap: 0.25 });
     st.map = map;
+    altoAjustable(document.getElementById('fi-map'), map, 'fi-map-h');
     window.CHCP.mapaBase(map, { defecto: 'satelite' });
     const feature = featureDe(t);
     const area = L.geoJSON(feature, { style: { color: '#ffffff', weight: 3, fill: false } }).addTo(map);
@@ -296,8 +419,11 @@
       L.geoJSON(g.brechas, { style: { color: '#ff5252', weight: 3, dashArray: '6 5' } }).addTo(map);
       L.geoJSON(g.ruta_corredor, { style: { color: '#ffd54f', weight: 2.5, dashArray: '2 4' } }).addTo(map);
       mapaDiic(t, g);
+      st.geoFicha = { id: t.id, g };
+      (st.esperaGeo || []).forEach((fn) => fn(g)); st.esperaGeo = [];
     } catch (_) {
       // Geometrías aún no calculadas: el mapa muestra límites, ríos y corredores, y se avisa.
+      $$('.fi-mini[data-fig="red"]').forEach((d) => d.insertAdjacentHTML('beforeend', '<p class="fi-mini-vacio">Parches todavía no calculados.</p>'));
       const nota = $('#fi-map-nota');
       if (nota && t.id !== 'chcp') { nota.textContent = `Los parches de bosque y las brechas de ${t.nombre} todavía no están calculados: se generan ${window.CHCP.pendiente()}.`; nota.hidden = false; }
     }
@@ -310,6 +436,7 @@
     if (st.mapaDiic) { st.mapaDiic.remove(); st.mapaDiic = null; }
     const m = L.map(div, { zoomControl: true, scrollWheelZoom: false, zoomSnap: 0.25 });
     st.mapaDiic = m;
+    altoAjustable(div, m, 'fi-diic-h');
     window.CHCP.mapaBase(m, { defecto: 'satelite', control: false });
     const rango = new Map(top.slice(0, 6).map((x, i) => [x.parche_id, i]));
     const destino = (id) => enlaceParche(t.id, id);
@@ -341,7 +468,8 @@
   }
 
   try {
-    [st.data, st.territory] = await Promise.all([api('/api/v1/panel/statistics'), api('/api/v1/territory'), window.CHCP.consultarActualizacion()]);
+    [st.data, st.territory, st.series] = await Promise.all([api('/api/v1/panel/statistics'), api('/api/v1/territory'),
+      fetch(window.CHCP.serieFile('indice.json')).then((r) => (r.ok ? r.json() : null)).catch(() => null), window.CHCP.consultarActualizacion()]);
   } catch (error) {
     $('#fi-doc').innerHTML = `<p class="fi-loading">No se pudieron cargar los datos: ${esc(error.message)}</p>`;
     return;
