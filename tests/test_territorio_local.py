@@ -27,7 +27,7 @@ class TerritorioLocalTests(unittest.TestCase):
         self.assertNotIn("�", "".join(nombres))
         self.assertEqual(
             feature_subcuenca("Río Chagres")["properties"]["fuente"],
-            "GeoJSON local · Subcuencas del Canal de Panamá",
+            "Subcuencas del Canal de Panamá · Instituto Smithsonian de Investigaciones Tropicales (STRI)",
         )
         self.assertEqual(len(coleccion_subcuencas()["features"]), 53)
 

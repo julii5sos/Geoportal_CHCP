@@ -120,9 +120,9 @@
     if (!cap) return;
     if (fase === 'perdida' || fase === 'fin') {
       const acum = ANIOS.filter((x) => x <= anio).reduce((s, x) => s + (haAnio[x] || 0), 0);
-      cap.innerHTML = `<b>${anio}</b><span>${C.number(acum, 0)} ha de cobertura arbórea perdidas desde 2001</span><small>Hansen Global Forest Change (Universidad de Maryland). El destello marca dónde se perdió cada año; lo que queda pintado está a escala.</small>`;
+      cap.innerHTML = `<b>${anio}</b><span>${C.number(acum, 0)} ha de cobertura arbórea perdidas desde 2001</span><small>Fuente: <a href="${window.CHCP_STATIC ? 'metodologia.html' : '/methodology'}#referencias">Hansen et al. (2013)</a>, Global Forest Change 2000–2025 v1.13, Universidad de Maryland. El destello marca dónde se perdió cada año; lo que queda pintado está a escala.</small>`;
     } else {
-      cap.innerHTML = '<b>Cuenca del Canal</b><span>342 000 ha de bosques, ríos y lagos que dan agua al Canal de Panamá</span><small>Acercándose…</small>';
+      cap.innerHTML = '<b>Cuenca del Canal</b><span>342 000 ha de bosques, ríos y lagos que dan agua al Canal de Panamá</span><small>Mapa: Natural Earth. Límites de la cuenca y sus 53 subcuencas.</small>';
     }
   }
 

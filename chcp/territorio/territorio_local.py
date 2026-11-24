@@ -20,7 +20,7 @@ ARCHIVO_AREA_ESTUDIO = DIRECTORIO_TERRITORIO / "area_estudio.geojson"
 ARCHIVO_SUBCUENCAS = DIRECTORIO_TERRITORIO / "subcuencas_canal.geojson"
 
 FUENTE_CUENCA = "GeoJSON local · portal Conectividad Panamá"
-FUENTE_SUBCUENCAS = "GeoJSON local · Subcuencas del Canal de Panamá"
+FUENTE_SUBCUENCAS = "Subcuencas del Canal de Panamá · Instituto Smithsonian de Investigaciones Tropicales (STRI)"
 
 _CORRECCIONES_NOMBRES = {
     "Gat�n": "Gatún",

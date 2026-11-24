@@ -874,3 +874,7 @@ html.app #main-content:has(.pg) { overflow-y:auto; background:#f3f6fa; }
   .in-hero .in-hero-in { grid-template-columns:1fr; padding-block:10px 120px; }
   .in-globo { width:min(100%, 380px); justify-self:center; }
 }
+.met-refs td:first-child { width:28%; vertical-align:top; }
+.met-refs td small { color:var(--muted); font-weight:400; }
+.met-ref { line-height:1.55; padding-left:2.2em !important; text-indent:-1.6em; overflow-wrap:anywhere; }
+.in-globo figcaption a { color:#fff; text-decoration:underline; }
