@@ -1,13 +1,13 @@
 /* =====================================================================
    Conectividad Panamá — hoja de estilos del portal
-   Estética: espacio de datos Copernicus. Azul profundo con corte diagonal
-   y franjas verde/amarilla en las cabeceras, títulos azules sobre blanco,
-   tarjetas gris azulado, botones píldora y chevrones verdes.
+   Paleta «Selva»: verde bosque profundo en cabeceras y bandas, fondos
+   claros verdosos que alternan entre secciones y acentos verde hoja.
+   La cabecera termina en una curva suave, sin franjas.
    Los colores de mapa llegan como variables desde config.py (base.html).
    ===================================================================== */
 :root{
-  --azul:#0a4393; --azul-2:#1d529b; --azul-tinta:#062a5e; --azul-suave:#eef1f7; --azul-linea:#d6deeb; --azul-medio:#6085b9;
-  --verde:#77cc09; --verde-osc:#4f8f00; --amarillo:#fabc20; --rojo:#d0442c;
+  --azul:#14382f; --azul-2:#1f4b3f; --azul-tinta:#0c241e; --azul-suave:#eef5ec; --azul-linea:#d5e4d6; --azul-medio:#5f8f74;
+  --verde:#5fb04a; --verde-osc:#3d8a30; --amarillo:#fabc20; --rojo:#d0442c;
   --bg:#ffffff; --bg-2:#f6f8fb; --ink:#1b2433; --muted:#566176; --faint:#8a94a6; --line:#e1e6ee;
   --sea:#e6ebf3; --land:#ffffff; --land-line:#cdd6e4; --map-ink:#56627a;
   --f:"DM Sans",system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
@@ -296,7 +296,7 @@ html.app,html.app body{height:100%;overflow:hidden}
 .lf-sub{stroke:var(--azul-tinta);stroke-opacity:.7;stroke-width:.8;fill:var(--azul);fill-opacity:0}
 .lf-sub:hover{fill-opacity:.15}
 .lf-hl{stroke:var(--azul-tinta);stroke-width:2.2;fill:none}
-.lf-mask{fill:#eef1f7;fill-opacity:.62;stroke:none}
+.lf-mask{fill:#eef5ec;fill-opacity:.62;stroke:none}
 .bm-oscuro .lf-mask{fill:#0b1d3a}
 .lf-grat{stroke:#b9c4d6;stroke-opacity:.6;stroke-width:.7;stroke-dasharray:2 4;fill:none}
 .lf-cas{stroke:#fff;stroke-opacity:.9;stroke-width:4.5;fill:none}
@@ -414,8 +414,8 @@ html.app,html.app body{height:100%;overflow:hidden}
 .chk input{accent-color:var(--azul);margin:0}
 
 /* modal del análisis */
-.modal{position:fixed;inset:0;z-index:3000;background:rgba(6,42,94,.55);display:grid;place-items:center;padding:16px}
-.dlg{background:#fff;border-radius:10px;width:min(840px,100%);max-height:calc(100% - 20px);display:flex;flex-direction:column;box-shadow:0 24px 60px rgba(6,42,94,.35);overflow:hidden}
+.modal{position:fixed;inset:0;z-index:3000;background:rgba(12,36,30,.55);display:grid;place-items:center;padding:16px}
+.dlg{background:#fff;border-radius:10px;width:min(840px,100%);max-height:calc(100% - 20px);display:flex;flex-direction:column;box-shadow:0 24px 60px rgba(12,36,30,.35);overflow:hidden}
 .dlg-h{display:flex;align-items:center;padding:16px 22px;background:var(--azul);color:#fff}
 .dlg-h h2{font-size:20px;font-weight:500}
 .dlg-b{display:grid;grid-template-columns:200px minmax(0,1fr);min-height:0;flex:1}
