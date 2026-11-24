@@ -195,8 +195,6 @@ def create_app(*, testing: bool = False) -> Flask:
             "index.html",
             active="home",
             subbasin_count=len(nombres_subcuencas()),
-            project_id=resolver_proyecto_gee(),
-            use_map=True,
         )
 
     @app.get("/platform")
