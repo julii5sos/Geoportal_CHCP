@@ -92,3 +92,18 @@ usa para el cálculo, nunca durante la interpretación.
 Referencia: Olofsson, P., Foody, G. M., Herold, M., Stehman, S. V., Woodcock, C. E. y Wulder, M. A.
 (2014). Good practices for estimating area and assessing accuracy of land change. *Remote Sensing
 of Environment*, 148, 42–57.
+
+## Registro de la interpretación (2026-11-23)
+
+- Muestra `senal_perdida`: 498 puntos interpretados a ciegas por un solo intérprete con las
+  medianas anuales sin nubes de Sentinel-2 y las series NDVI / Sentinel-1 de la página de
+  validación. 3 puntos quedaron como «sin evidencia suficiente» y se excluyen.
+- Después, el mismo intérprete revisó todos los puntos que había marcado como «Pérdida» (78)
+  con la vista ampliada y las gráficas en escala fija; cambió 41 clasificaciones (38 de
+  «Pérdida» a «Bosque» o «No bosque»). La selección se hizo por la clase marcada, no por la
+  clase del mapa, de modo que la interpretación siguió siendo ciega.
+- Las 11 respuestas de la columna `clase_referencia_2` (SEN-0001 a SEN-0011) se eliminaron:
+  las registró el mismo intérprete con la casilla de revisión marcada, por lo que no son un
+  control de calidad independiente.
+- Estado: **preliminar**. Falta la revisión de un segundo intérprete en al menos el 10 % de los
+  puntos (recorrido «Revisión al azar» de la herramienta) antes de declarar la muestra completa.

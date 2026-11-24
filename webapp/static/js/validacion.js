@@ -237,7 +237,13 @@
     const qc = r?.control_calidad;
     const qcTxt = qc ? `<p class="rs-note">Control de calidad: ${qc.revisados_segundo_interprete} punto(s) revisados por un segundo intérprete${qc.acuerdo_entre_interpretes_pct == null ? '' : ` (acuerdo ${number(qc.acuerdo_entre_interpretes_pct, 0)} %)`}; ${qc.desacuerdos_pendientes} desacuerdo(s) pendiente(s); ${qc.sin_evidencia_excluidos} punto(s) sin evidencia suficiente excluidos; ${qc.puntos_sin_fecha_de_imagen} sin fecha de imagen registrada.</p>` : '';
     if (r?.resultado && r.completo) $('#va-res').innerHTML = `<p class="va-tag"><span class="t-full">Validación independiente completa</span> Muestra completa, revisada y sin desacuerdos pendientes.</p>${qcTxt}` + renderResultados(r.resultado, d.leyenda);
-    else if (r?.resultado) $('#va-res').innerHTML = `${PENDIENTE}<p class="va-tag"><span class="t-pre">Resultados preliminares</span> ${r.interpretados} de ${r.total_puntos} puntos interpretados. No deben citarse como exactitud del mapa hasta completar la muestra y su control de calidad.</p>${qcTxt}` + renderResultados(r.resultado, d.leyenda);
+    else if (r?.resultado) {
+      const cerrada = qc && r.interpretados + qc.sin_evidencia_excluidos === r.total_puntos && !qc.desacuerdos_pendientes;
+      const aviso = cerrada
+        ? `<p class="va-tag"><span class="t-pre">Resultados preliminares</span> Muestra interpretada completa (${r.interpretados} de ${r.total_puntos} puntos válidos), por un solo intérprete. Falta la revisión independiente de un segundo intérprete en al menos el 10 % de los puntos: cítense como estimación preliminar, indicando esa limitación.</p>`
+        : `${PENDIENTE}<p class="va-tag"><span class="t-pre">Resultados preliminares</span> ${r.interpretados} de ${r.total_puntos} puntos interpretados. No deben citarse como exactitud del mapa hasta completar la muestra y su control de calidad.</p>`;
+      $('#va-res').innerHTML = aviso + qcTxt + renderResultados(r.resultado, d.leyenda);
+    }
     else { $('#va-res').innerHTML = '<div id="va-ej"></div>'; ejemplo($('#va-ej')); }
     renderInterpretacion();
   }
