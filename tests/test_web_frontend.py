@@ -14,10 +14,12 @@ class WebFrontendTests(unittest.TestCase):
 
     def test_home_reproduces_original_identity_and_real_project(self):
         html = self.client.get("/").get_data(as_text=True)
-        self.assertIn("Geoportal de Conectividad Ecológica de la Cuenca Hidrográfica del Canal de Panamá", html)
-        self.assertIn("geoportal-513817", html)
+        self.assertIn("Geoportal de Conectividad Ecológica de la CHCP", html)
         self.assertIn("DM+Sans", html)
-        self.assertIn('id="home-map"', html)
+        # Portada: globo que se acerca a la cuenca; las fuentes y el proyecto GEE están en Metodología.
+        self.assertIn('id="in-globo"', html)
+        self.assertIn("globo.js", html)
+        self.assertNotIn('id="in-datos"', html)
         self.assertIn('id="territory-query"', html)
         self.assertIn('class="skip-link"', html)
         # Portada guiada: preguntas, recorrido y aviso de evaluación preliminar.

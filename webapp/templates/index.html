@@ -1,9 +1,14 @@
 {% extends "base.html" %}
-{% from "_macros.html" import hero %}
+{% from "_macros.html" import hero, hero_cut %}
 {% block title %}Geoportal de Conectividad Ecológica de la CHCP{% endblock %}
 {% block body %}
 <main id="v-inicio">
-  {% call hero('¿Qué le está pasando al bosque de la Cuenca del Canal?', 'Compruebe con datos satelitales si un área ha perdido o degradado su bosque, qué tan fragmentado quedó y dónde convendría restaurar para volver a conectarlo.') %}
+  <section class="hero in-hero" style="--next:#fff">
+    <div class="wrap hero-in in-hero-in">
+      <div class="in-hero-txt">
+        <h1>¿Qué le está pasando al bosque de la Cuenca del Canal?</h1>
+        <p class="lead">Compruebe con datos satelitales si un área ha perdido o degradado su bosque, qué tan fragmentado quedó y dónde convendría restaurar para volver a conectarlo.</p>
+        <div class="acts">
     <div class="territory-search" id="territory-search">
       <label for="territory-query">Empiece por un lugar</label>
       <div class="territory-search-box">
@@ -15,7 +20,16 @@
       <p class="territory-search-status" id="territory-search-status" role="status">La cuenca completa y sus {{ subbasin_count }} subcuencas.</p>
     </div>
     <button class="btn btn-o in-tour-btn" type="button" id="in-tour"><span data-icon="play" aria-hidden="true"></span>Recorrido de 1 minuto</button>
-  {% endcall %}
+        </div>
+      </div>
+      <figure class="in-globo">
+        <canvas id="in-globo" data-tierra="{{ url_for('static', filename='data/globo_tierra.json') }}" role="img" aria-label="Globo terráqueo que se acerca a la Cuenca del Canal de Panamá y muestra, año por año, dónde se perdió cobertura arbórea entre 2001 y 2025 según Hansen Global Forest Change."></canvas>
+        <figcaption id="in-globo-cap" aria-live="polite"></figcaption>
+        <button class="in-globo-rep" id="in-globo-rep" type="button" hidden>Ver de nuevo</button>
+      </figure>
+    </div>
+    {{ hero_cut() }}
+  </section>
 
   <div class="wrap">
     <aside class="in-aviso" id="in-aviso" role="note">
@@ -47,6 +61,7 @@
         <a class="in-q" data-destino="platform" data-geometria="1"><span class="in-ic" data-icon="polygon" aria-hidden="true"></span><b>¿Y si quiero analizar mi propia área?</b>
           <small>Dibuje un polígono o suba un KML y obtenga el mismo análisis para esa área.</small><i>Plataforma</i></a>
       </div>
+      <p class="in-creditos">Con datos de la Comisión Europea (JRC), la Universidad de Maryland, Esri, ESA Copernicus Sentinel, NASA GEDI, MiAMBIENTE e IGNTG. Cómo se usa cada uno, en <a href="{{ url_for('methodology') }}">Metodología</a>.</p>
       <p class="in-confianza">¿Qué tan confiables son estos resultados? Una <b>evaluación preliminar</b> con 498 puntos interpretados sobre imágenes satelitales da una exactitud global del 81 %: lo que el mapa llama bosque lo es en el 95 % de los casos, y las alertas de pérdida son conservadoras, para verificar en campo. <a data-destino="exactitud">Ver resultados →</a> Las superficies siguen siendo estimaciones de mapa.</p>
     </div>
   </section>
@@ -64,26 +79,6 @@
     </div>
   </section>
 
-  <section class="sec in-datos" id="in-datos">
-    <div class="wrap home-grid">
-      <div class="home-copy">
-        <span class="eyebrow">De dónde vienen los datos</span>
-        <p class="in-identidad">Geoportal de Conectividad Ecológica de la Cuenca Hidrográfica del Canal de Panamá · procesado en Google Earth Engine (proyecto <code>{{ project_id }}</code>)</p>
-        <h2>Varias miradas sobre el mismo bosque</h2>
-        <p>Ninguna fuente es perfecta. Por eso se comparan varias, y cada resultado indica de dónde viene y cuándo se calculó.</p>
-        <ul class="in-fuentes">
-          <li><b>JRC TMF</b><span>Estado anual del bosque húmedo: sin perturbar, degradado o deforestado (Landsat, 30 m).</span></li>
-          <li><b>Hansen GFC</b><span>Año en que se perdió la cobertura arbórea (Landsat, 30 m).</span></li>
-          <li><b>ESRI LULC</b><span>Cobertura del suelo año a año (Sentinel-2, 10 m).</span></li>
-          <li><b>Sentinel-2 NDVI</b><span>Vigor de la vegetación: detecta bosques que se debilitan.</span></li>
-          <li><b>GEDI</b><span>Altura del dosel medida con láser desde la Estación Espacial.</span></li>
-          <li><b>SINIA – MiAMBIENTE</b><span>Cartografía oficial de cobertura (1992–2023): base de la fragmentación.</span></li>
-          <li><b>IGNTG y Almanaque Azul</b><span>Ríos oficiales 1:25 000, corredores de conectividad y puntos críticos.</span></li>
-        </ul>
-      </div>
-      <div id="home-map" class="home-map" aria-label="Mapa de la Cuenca Hidrográfica del Canal de Panamá y sus subcuencas"></div>
-    </div>
-  </section>
 
   <section class="sec gris in-es" id="in-es">
     <div class="wrap">
@@ -119,4 +114,4 @@
   </section>
 </main>
 {% endblock %}
-{% block scripts %}<script src="{{ url_for('static', filename='js/home.js') }}"></script>{% endblock %}
+{% block scripts %}<script src="{{ url_for('static', filename='js/home.js') }}"></script><script src="{{ url_for('static', filename='js/globo.js') }}"></script>{% endblock %}

@@ -1,20 +1,11 @@
 (async function () {
   const {api, toast, escapeHtml: esc, writePortalState} = window.CHCP;
-  const element = document.getElementById('home-map');
-  if (!element || !window.L) return;
-  const map = L.map(element, {zoomControl: true, attributionControl: true, preferCanvas: true});
-  L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}', {
-    attribution: 'Esri Light Gray Canvas', maxZoom: 16,
-  }).addTo(map);
+  if (!document.getElementById('v-inicio')) return;
   try {
     const territory = await api('/api/v1/territory');
     window.__chcpTerritory = territory;
     llenarAreas(territory);
-    const basin = L.geoJSON(territory.basin, {style: {color: '#0a4393', weight: 3, fillColor: '#0a4393', fillOpacity: .08}}).addTo(map);
-    L.geoJSON(territory.subbasins, {style: {color: '#77cc09', weight: 1, fillOpacity: 0}, onEachFeature: (feature, layer) => layer.bindTooltip(feature.properties?.nombre || 'Subcuenca')}).addTo(map);
-    map.fitBounds(basin.getBounds(), {padding: [16, 16]});
   } catch (error) {
-    map.setView([9.1, -79.7], 9);
     toast('No se pudo cargar el límite territorial.', 'error');
   }
 
@@ -133,12 +124,12 @@
   // ------------------------------------------------------------ recorrido guiado
   const PASOS = [
     { titulo: 'Bienvenida', texto: '<p>Este geoportal le ayuda a responder una pregunta: <b>¿qué le está pasando al bosque de la Cuenca del Canal?</b></p><p>Combina varias fuentes satelitales con la cartografía oficial para mostrar dónde hay pérdida o degradación, qué tan fragmentado está el bosque y cómo podría reconectarse.</p>' },
+    { sel: '.in-globo', titulo: 'La cuenca en el mapa', texto: 'El globo se acerca a la Cuenca del Canal y muestra, año por año desde 2001, dónde se perdió cobertura arbórea según Hansen. Cada punto es un píxel con pérdida.' },
     { sel: '#territory-search', titulo: '1. Elija un lugar', texto: 'Escriba el nombre de una subcuenca o río, o elija toda la cuenca. Lo que elija se usará en las preguntas de abajo.' },
     { sel: '#in-aviso', titulo: 'Es una evaluación preliminar', texto: 'Los resultados vienen de imágenes satelitales y mapas oficiales. Indican <b>dónde conviene mirar primero</b>; la confirmación siempre requiere verificación en campo.' },
     { sel: '#in-preguntas .in-grid', titulo: '2. Elija una pregunta', texto: 'Cada tarjeta es una pregunta concreta y le lleva directo a la herramienta que la responde, ya con el área elegida. Debajo de cada pregunta verá qué fuentes se usan.' },
     { sel: '.in-q-dest', titulo: '3. Explore escenarios', texto: 'El <b>simulador</b> permite probar dónde restaurar para reconectar el bosque, o trazar rutas hacia el Corredor Biológico Mesoamericano. Son escenarios hipotéticos para comparar opciones.' },
     { sel: '#links', titulo: 'Todo está también en el menú', texto: '<b>Panel</b>: indicadores, fichas y coberturas oficiales. <b>Plataforma</b>: mapa SIG, simulador y verificación de campo. <b>Metodología</b>: cómo se calcula cada cosa.' },
-    { sel: '#in-datos .in-fuentes', titulo: 'De dónde vienen los datos', texto: 'Cada resultado indica su fuente y su fecha. Cuando varias fuentes coinciden, la señal es más confiable.' },
     { titulo: '¡Listo!', texto: '<p>Empiece eligiendo un lugar y una pregunta. Si tiene dudas, las <b>preguntas frecuentes</b> están al final de esta página y cada herramienta tiene su propio botón <b>«Cómo se usa»</b>.</p>' },
   ];
   const iniciarRecorrido = () => window.CHCP_TOUR?.iniciar(PASOS, { clave: 'inicio', textoFin: 'Empezar a explorar' });
