@@ -6,9 +6,9 @@
  "procesamiento": {
   "tipo": "B",
   "descripcion": "Precalculado con Earth Engine (proceso reproducible)",
-  "fecha_procesamiento": "2026-11-24T10:38:04+00:00",
-  "version_codigo": "36d2063d6733",
-  "workflow_run": "45329405262",
+  "fecha_procesamiento": "2026-11-24T12:16:28+00:00",
+  "version_codigo": "8e0041b281cb",
+  "workflow_run": "45391836022",
   "repositorio": "julii5sos/Geoportal_CHCP",
   "metodologia": "MT-2026.7-DIAGNOSTICO-INTEGRADO",
   "version_datos": 4,
@@ -13720,6 +13720,7 @@
      "hansen",
      "esri_cambio",
      "ndvi_cambio",
+     "eri",
      "coincidencia",
      "riparia"
     ],
@@ -13734,10 +13735,10 @@
      "gedi",
      "aux",
      "esri_2024",
-     "sinia_2021_detalle"
+     "sinia_2021_detalle",
+     "eri"
     ],
     "errores": {},
-    "eri_pendiente": true,
     "rios": 5,
     "rios_fuente": "IGNTG 2022 · hidrografía 1:25 000"
    },
@@ -14387,6 +14388,7 @@
      "hansen",
      "esri_cambio",
      "ndvi_cambio",
+     "eri",
      "coincidencia",
      "riparia"
     ],
@@ -14401,10 +14403,10 @@
      "gedi",
      "aux",
      "esri_2024",
-     "sinia_2021_detalle"
+     "sinia_2021_detalle",
+     "eri"
     ],
     "errores": {},
-    "eri_pendiente": true,
     "rios": 13,
     "rios_fuente": "IGNTG 2022 · hidrografía 1:25 000"
    },
@@ -17680,6 +17682,7 @@
      "hansen",
      "esri_cambio",
      "ndvi_cambio",
+     "eri",
      "coincidencia",
      "riparia"
     ],
@@ -17694,10 +17697,10 @@
      "gedi",
      "aux",
      "esri_2024",
-     "sinia_2021_detalle"
+     "sinia_2021_detalle",
+     "eri"
     ],
     "errores": {},
-    "eri_pendiente": true,
     "rios": 12,
     "rios_fuente": "IGNTG 2022 · hidrografía 1:25 000"
    },
@@ -35450,5 +35453,5 @@
   }
  },
  "errores": {},
- "generado": "2026-11-24T11:19:44"
+ "generado": "2026-11-24T13:26:32"
 }
