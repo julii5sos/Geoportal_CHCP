@@ -5,7 +5,7 @@
    "titulo": "Señal de pérdida de bosque 2021–2025 del geoportal (≥ 2 fuentes)",
    "descripcion": "Pérdida = al menos dos de: JRC (bosque sin perturbación en 2020 y deforestado o degradado en 2025), Hansen (pérdida 2021–2025) y ESRI (árboles 2017 → otra clase 2024). Bosque = JRC sin perturbación en 2025 y ninguna fuente. No bosque = el resto. Período de referencia 2021–2025 (ESRI cubre 2017–2024).",
    "total_puntos": 498,
-   "interpretados": 495,
+   "interpretados": 494,
    "estado": "preliminar",
    "completo": false
   }

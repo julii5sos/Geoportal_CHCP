@@ -2,21 +2,21 @@
  "mapa": "senal_perdida",
  "titulo": "Señal de pérdida de bosque 2021–2025 del geoportal (≥ 2 fuentes)",
  "total_puntos": 498,
- "interpretados": 495,
+ "interpretados": 494,
  "por_estrato": {
   "1": 75,
-  "2": 168,
+  "2": 167,
   "3": 252
  },
  "valores_no_reconocidos": [],
  "control_calidad": {
-  "sin_evidencia_excluidos": 3,
+  "sin_evidencia_excluidos": 4,
   "desacuerdos_pendientes": 0,
   "revisados_segundo_interprete": 0,
   "acuerdo_entre_interpretes_pct": null,
   "puntos_sin_fecha_de_imagen": 0
  },
- "actualizado": "2026-11-23T21:17:43",
+ "actualizado": "2026-11-23T21:37:30",
  "resultado": {
   "metodo": "Olofsson et al. (2014), muestreo aleatorio estratificado por clase del mapa",
   "unidad_area": "ha",
@@ -26,42 +26,42 @@
    2,
    3
   ],
-  "n_total": 495,
+  "n_total": 494,
   "area_total": 341029.38,
-  "exactitud_global": 0.8032383295836819,
-  "exactitud_global_ic": 0.036036412769757706,
+  "exactitud_global": 0.8101817109412175,
+  "exactitud_global_ic": 0.03567864159207473,
   "matriz_conteos": [
    [
-    31,
+    30,
     16,
-    28
+    29
    ],
    [
     2,
-    160,
+    159,
     6
    ],
    [
     7,
-    67,
-    178
+    64,
+    181
    ]
   ],
   "matriz_proporciones": [
    [
-    0.0016728982900730334,
+    0.0016189338291029353,
     0.0008634313755215656,
-    0.0015110049071627397
+    0.0015649693681328376
    ],
    [
-    0.004745567250372554,
-    0.37964538002980436,
-    0.014236701751117662
+    0.0047739838207340665,
+    0.37953171374835826,
+    0.0143219514622022
    ],
    [
     0.016592361566554113,
-    0.15881260356558938,
-    0.42192005126380455
+    0.1517015914656376,
+    0.4290310633637563
    ]
   ],
   "proporcion_mapa": [
@@ -70,9 +70,9 @@
    0.597325016395948
   ],
   "proporcion_referencia": [
-   0.023010827106999702,
-   0.5393214149709153,
-   0.43766775792208495
+   0.022985279216391114,
+   0.5320967365895174,
+   0.44491798419409134
   ],
   "por_clase": [
    {
@@ -80,46 +80,46 @@
     "area_mapa": 1380.26,
     "peso": 0.004047334572757339,
     "n": 75,
-    "exactitud_usuario": 0.41333333333333333,
-    "exactitud_usuario_ic": 0.11219620217098339,
-    "exactitud_productor": 0.07270048496275702,
-    "exactitud_productor_ic": 0.047287222292376606,
-    "area_ajustada": 7847.368101587302,
-    "area_ajustada_ic": 4709.094634212597,
-    "error_omision": 0.927299515037243,
-    "error_comision": 0.5866666666666667
+    "exactitud_usuario": 0.4,
+    "exactitud_usuario_ic": 0.11161893011922305,
+    "exactitud_productor": 0.07043350719657351,
+    "exactitud_productor_ic": 0.04612039711406053,
+    "area_ajustada": 7838.6555202927475,
+    "area_ajustada_ic": 4715.422419398501,
+    "error_omision": 0.9295664928034265,
+    "error_comision": 0.6
    },
    {
     "clase": 2,
     "area_mapa": 135943.74,
     "peso": 0.39862764903129455,
-    "n": 168,
-    "exactitud_usuario": 0.9523809523809523,
-    "exactitud_usuario_ic": 0.03229873862324475,
-    "exactitud_productor": 0.7039315879015817,
-    "exactitud_productor_ic": 0.043196586959110994,
-    "area_ajustada": 183924.44776825397,
-    "area_ajustada_ic": 11968.849224197495,
-    "error_omision": 0.2960684120984183,
-    "error_comision": 0.04761904761904767
+    "n": 167,
+    "exactitud_usuario": 0.9520958083832335,
+    "exactitud_usuario_ic": 0.032487862240774386,
+    "exactitud_productor": 0.7132757779740821,
+    "exactitud_productor_ic": 0.04368186962180986,
+    "area_ajustada": 181460.62017914644,
+    "area_ajustada_ic": 11825.80099851559,
+    "error_omision": 0.28672422202591785,
+    "error_comision": 0.04790419161676651
    },
    {
     "clase": 3,
     "area_mapa": 203705.38,
     "peso": 0.597325016395948,
     "n": 252,
-    "exactitud_usuario": 0.7063492063492064,
-    "exactitud_usuario_ic": 0.056342557157752625,
-    "exactitud_productor": 0.9640190387040485,
-    "exactitud_productor_ic": 0.02488661154930046,
-    "area_ajustada": 149257.56413015872,
-    "area_ajustada_ic": 12099.22728709749,
-    "error_omision": 0.03598096129595152,
-    "error_comision": 0.2936507936507936
+    "exactitud_usuario": 0.7182539682539683,
+    "exactitud_usuario_ic": 0.055651792184999445,
+    "exactitud_productor": 0.9642924732316406,
+    "exactitud_productor_ic": 0.024624640711718097,
+    "area_ajustada": 151730.10430056078,
+    "area_ajustada_ic": 11973.074955225626,
+    "error_omision": 0.03570752676835942,
+    "error_comision": 0.28174603174603174
    }
   ]
  },
  "completo": false,
  "estado": "preliminar",
- "advertencia_sin_evidencia": "3 punto(s) excluidos por falta de evidencia; si se concentran en un estrato pueden sesgar sus exactitudes."
+ "advertencia_sin_evidencia": "4 punto(s) excluidos por falta de evidencia; si se concentran en un estrato pueden sesgar sus exactitudes."
 }
