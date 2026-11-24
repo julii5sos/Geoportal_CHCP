@@ -918,3 +918,4 @@ html.app #main-content:has(.pg) { overflow-y:auto; background:#f3f6fa; }
   .in-ini-fotos { height:340px; }
   .in-ini-cred { margin-top:0; text-align:left; }
 }
+.in-ini-fotos img.in-ini-jaguar { object-position:30% 45%; }
