@@ -136,3 +136,21 @@
   document.getElementById('in-tour')?.addEventListener('click', iniciarRecorrido);
   window.CHCP_TOUR?.invitar('inicio', 'Le mostramos en 1 minuto qué puede hacer.', iniciarRecorrido);
 })();
+
+/* Portada: las fotos de fondo de «Para qué sirve este geoportal» se alternan
+   con un fundido. Sin movimiento si el usuario pidió reducirlo, y en pausa
+   cuando la pestaña no está visible. */
+(function () {
+  const fotos = [...document.querySelectorAll('.in-ini-fondo img')];
+  if (fotos.length < 2) return;
+  if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  let i = 0;
+  setInterval(() => {
+    if (document.hidden) return;
+    const vivas = fotos.filter((f) => f.isConnected);
+    if (vivas.length < 2) return;
+    vivas.forEach((f) => f.classList.remove('on'));
+    i = (i + 1) % vivas.length;
+    vivas[i].classList.add('on');
+  }, 7000);
+})();

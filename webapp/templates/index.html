@@ -38,21 +38,20 @@
     </aside>
   </div>
 
-  <section class="sec in-ini" id="in-iniciativa" aria-labelledby="in-ini-t">
-    <div class="wrap in-ini-in">
+  <section class="in-ini" id="in-iniciativa" aria-labelledby="in-ini-t">
+    <div class="in-ini-fondo" aria-hidden="true">
+      <img class="on" src="{{ url_for('static', filename='img/iniciativa/rio.jpg') }}" alt="" width="1920" height="1280" onerror="this.remove()">
+      <img class="in-ini-jaguar" src="{{ url_for('static', filename='img/iniciativa/jaguar.jpg') }}" alt="" width="1920" height="1280" loading="lazy" onerror="this.remove()">
+    </div>
+    <div class="wrap">
       <div class="in-ini-txt">
         <h2 id="in-ini-t">Para qué sirve este geoportal</h2>
         <p>La iniciativa busca desarrollar una herramienta de preevaluación ambiental y análisis geoespacial que permita identificar y justificar áreas prioritarias para la conservación, restauración y reforestación, considerando la cobertura boscosa, la fragmentación del paisaje y la conectividad ecológica.</p>
         <p>Mediante la integración de información satelital e indicadores ambientales, la aplicación facilitará la evaluación del estado de los ecosistemas y su contribución a la conectividad estructural del paisaje, especialmente en relación con los corredores biológicos y los bosques de Mesoamérica.</p>
         <p>Su propósito es proporcionar información técnica que respalde la selección de sitios para proyectos ambientales, facilite la toma de decisiones y oriente los esfuerzos hacia áreas estratégicas para mantener o recuperar la continuidad de los ecosistemas forestales.</p>
       </div>
-      <div class="in-ini-fotos">
-        <figure><img src="{{ url_for('static', filename='img/iniciativa/rio.jpg') }}" alt="Vista aérea de un río que serpentea entre parches de bosque y humedales." onerror="this.remove()" loading="lazy" width="1280" height="853"><figcaption>Un río une parches de bosque: eso es conectividad</figcaption></figure>
-        <figure><img class="in-ini-jaguar" src="{{ url_for('static', filename='img/iniciativa/jaguar.jpg') }}" alt="Jaguar mirando de frente entre la vegetación." onerror="this.remove()" loading="lazy" width="960" height="640"><figcaption>El jaguar necesita bosques conectados</figcaption></figure>
-        <figure><img src="{{ url_for('static', filename='img/iniciativa/isla.jpg') }}" alt="Pequeña isla cubierta de vegetación y palmeras en el mar turquesa de Bocas del Toro." onerror="this.remove()" loading="lazy" width="960" height="638"><figcaption>Isla en Bocas del Toro, Panamá</figcaption></figure>
-      </div>
-      <p class="in-ini-cred">Fotos: <a href="https://pixabay.com/photos/id-2826927/">jarmoluk</a>, <a href="https://pixabay.com/photos/id-3370498/">nickbar</a> y <a href="https://pixabay.com/es/photos/panam%C3%A1-peque%C3%B1a-isla-mar-isla-4195997/">Geralbe</a> en Pixabay (Licencia de contenido de Pixabay).</p>
     </div>
+    <p class="in-ini-cred">Fotos: <a href="https://pixabay.com/photos/id-2826927/">jarmoluk</a> y <a href="https://pixabay.com/photos/id-3370498/">nickbar</a> en Pixabay</p>
   </section>
 
   <section class="sec in-preguntas" id="in-preguntas">
