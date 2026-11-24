@@ -229,16 +229,25 @@ def _rios_territorio(geometria, *, ee_module=None):
     return rios_principales(geometria, ee_module=ee_module or ee), "HydroSHEDS · drenaje ≥ 10 km²"
 
 
-def _mapas_y_riparia(territorio: dict, registro: dict) -> None:
-    """Mapas temáticos PNG, ríos principales y franjas riparias (complementarios)."""
+def _mapas_y_riparia(territorio: dict, registro: dict, sin_eri: bool = False) -> None:
+    """Mapas temáticos PNG, ríos principales y franjas riparias (complementarios).
+
+    Con ``sin_eri`` se omite solo la imagen del mapa ERI (el valor y la clase ERI del territorio
+    se calculan igual). Es la capa más lenta: en noviembre de 2026 tardaba 25–30 min por
+    subcuenca y terminaba con «Connection aborted»; se genera aparte con --solo-mapa-eri."""
     geometria, _ = resolve_area(AreaSelection(**territorio["area"]))
     destino = DIR_MAPAS / territorio["id"]
     from chcp.gee.mapas_ficha import MAX_PIXELES_CUENCA, MAX_PIXELES_LADO
     t0 = time.time()
     paso = lambda nombre: print(f"    {nombre} ({time.time() - t0:.0f} s)", flush=True)  # noqa: E731
     paso("mapas…")
-    registro["mapas"] = generar_mapas(geometria, destino, ee_module=ee,
+    from chcp.gee.mapas_ficha import CAPAS_SOLO_VALOR
+
+    claves = [c["clave"] for c in CAPAS if not (sin_eri and c["clave"] == "eri")] + list(CAPAS_SOLO_VALOR)
+    registro["mapas"] = generar_mapas(geometria, destino, ee_module=ee, capas=claves,
                                       max_pixeles=MAX_PIXELES_CUENCA if territorio["id"] == "chcp" else MAX_PIXELES_LADO)
+    if sin_eri:
+        registro["mapas"]["eri_pendiente"] = True
     paso("ríos…")
     try:
         rios, fuente = _rios_territorio(geometria)
@@ -264,6 +273,26 @@ def _mapas_y_riparia(territorio: dict, registro: dict) -> None:
     except Exception as exc:
         registro["riparia"] = {"error": f"{type(exc).__name__}: {exc}"[:300]}
         print(f"    riparia: {exc}")
+
+
+def _solo_mapa_eri(territorio: dict, registro: dict) -> str:
+    """Genera solo la imagen ERI y la añade a los mapas ya guardados del territorio."""
+    from chcp.gee.mapas_ficha import MAX_PIXELES_CUENCA, MAX_PIXELES_LADO
+
+    geometria, _ = resolve_area(AreaSelection(**territorio["area"]))
+    mapas = registro.setdefault("mapas", {})
+    nuevo = generar_mapas(geometria, DIR_MAPAS / territorio["id"], ee_module=ee, capas=["eri"],
+                          max_pixeles=MAX_PIXELES_CUENCA if territorio["id"] == "chcp" else MAX_PIXELES_LADO)
+    errores = mapas.setdefault("errores", {})
+    if "eri" in nuevo["capas"]:
+        mapas["capas"] = sorted(set(mapas.get("capas") or []) | {"eri"}, key=[c["clave"] for c in CAPAS].index)
+        if "eri" in nuevo["valores"]:
+            mapas["valores"] = list(dict.fromkeys([*(mapas.get("valores") or []), "eri"]))
+        errores.pop("eri", None)
+        mapas.pop("eri_pendiente", None)
+        return "listo"
+    errores["eri"] = nuevo["errores"].get("eri", "sin resultado")
+    return f"ERROR {errores['eri']}"
 
 
 REGISTRO = RAIZ / "data" / "registro_versiones.json"
@@ -358,6 +387,10 @@ def main() -> int:
     parser.add_argument("--sin-mapas", action="store_true", help="Omitir mapas temáticos y análisis ripario")
     parser.add_argument("--max-minutos", type=int, default=45,
                         help="Tiempo máximo por subcuenca (la cuenca completa tiene el doble); 0 = sin límite")
+    parser.add_argument("--sin-mapa-eri", action="store_true",
+                        help="No generar la imagen del mapa ERI (la más lenta); el valor ERI se calcula igual")
+    parser.add_argument("--solo-mapa-eri", action="store_true",
+                        help="Solo generar la imagen ERI de los territorios que no la tienen (máx. 15 min cada uno)")
     parser.add_argument("--solo-entorno", action="store_true",
                         help="Solo (re)generar las capas del entorno de la cuenca (+15 km) para las rutas del simulador")
     parser.add_argument("--solo-mapas", action="store_true",
@@ -382,6 +415,27 @@ def main() -> int:
                 t.setdefault("version_datos", previo.get("version_datos") or 1)
     vigente = lambda t: (not args.rehacer and t.get("version_datos", VERSION_DATOS) == VERSION_DATOS
                          and t.get("metodologia", METODOLOGIA_VERSION) == METODOLOGIA_VERSION)
+
+    if args.solo_mapa_eri:
+        _initialize_ee()
+        ee.data.setDeadline(10 * 60 * 1000)
+        objetivo = [t for t in _territorios() if t["id"] in datos["territorios"]
+                    and "eri" not in ((datos["territorios"][t["id"]].get("mapas") or {}).get("capas") or [])]
+        if args.limite:
+            objetivo = objetivo[: args.limite]
+        print(f"Mapa ERI pendiente en {len(objetivo)} territorios.")
+        for numero, territorio in enumerate(objetivo, 1):
+            inicio = time.time()
+            try:
+                _limite_tiempo(15 * 60)
+                estado = _solo_mapa_eri(territorio, datos["territorios"][territorio["id"]])
+            except (Exception, TiempoAgotado) as exc:
+                estado = f"ERROR {exc}"
+            finally:
+                _limite_tiempo(0)
+            print(f"[{numero}/{len(objetivo)}] {territorio['nombre']}: mapa ERI {estado} · {time.time() - inicio:.0f} s", flush=True)
+            _guardar(datos)
+        return 0
 
     if args.solo_entorno:
         _initialize_ee()
@@ -449,7 +503,7 @@ def main() -> int:
             _guardar_geometrias(territorio["id"], estructura)
             print(f"    indicadores listos ({time.time() - inicio:.0f} s)", flush=True)
             if not args.sin_mapas:
-                _mapas_y_riparia(territorio, datos["territorios"][territorio["id"]])
+                _mapas_y_riparia(territorio, datos["territorios"][territorio["id"]], sin_eri=args.sin_mapa_eri)
             datos["errores"].pop(territorio["id"], None)
             print(f"{etiqueta}: {evaluacion['score']} pts ({evaluacion['priority']}) · {time.time() - inicio:.0f} s")
         except (Exception, TiempoAgotado) as exc:  # se registra y se continúa con el siguiente territorio

@@ -23,7 +23,8 @@ on:
         # completo: continúa donde quedó la ejecución anterior (los territorios de una versión de
         # datos anterior se recalculan solos). rehacer-todo: empieza de cero los 54 territorios.
         # solo-entorno: rehace solo las capas de la cuenca + 15 km que usan las rutas del simulador.
-        options: [completo, rehacer-todo, solo-mapas, sin-mapas, solo-entorno]
+        # solo-mapa-eri: genera la imagen del mapa ERI donde falta (en «completo» se omite por lenta).
+        options: [completo, rehacer-todo, solo-mapas, sin-mapas, solo-entorno, solo-mapa-eri]
         default: completo
 
 permissions:
@@ -66,12 +67,14 @@ jobs:
           GEE_PROJECT_ID: geoportal-513817
           PYTHONUNBUFFERED: "1"   # muestra el avance territorio por territorio mientras corre
         run: |
-          OPCIONES=""
+          # El mapa ERI (solo la imagen) es la capa más lenta y se genera aparte con «solo-mapa-eri».
+          OPCIONES="--sin-mapa-eri"
           if [ "${{ github.event.inputs.modo }}" = "solo-mapas" ]; then OPCIONES="--solo-mapas"; fi
+          if [ "${{ github.event.inputs.modo }}" = "solo-mapa-eri" ]; then OPCIONES="--solo-mapa-eri"; fi
           if [ "${{ github.event.inputs.modo }}" = "sin-mapas" ]; then OPCIONES="--sin-mapas"; fi
           if [ "${{ github.event.inputs.modo }}" = "solo-entorno" ]; then OPCIONES="--solo-entorno"; fi
-          if [ "${{ github.event.inputs.modo }}" = "rehacer-todo" ]; then OPCIONES="--rehacer"; fi
-          if [ "${{ github.event_name }}" = "schedule" ] && [ "$(date -u +%d)" = "01" ]; then OPCIONES="--rehacer"; fi
+          if [ "${{ github.event.inputs.modo }}" = "rehacer-todo" ]; then OPCIONES="--rehacer --sin-mapa-eri"; fi
+          if [ "${{ github.event_name }}" = "schedule" ] && [ "$(date -u +%d)" = "01" ]; then OPCIONES="--rehacer --sin-mapa-eri"; fi
           # Sin --rehacer el cálculo es reanudable: si se agota el tiempo de GitHub (6 h), se guarda
           # lo avanzado y la siguiente ejecución sigue con los territorios pendientes.
           if [ -n "${{ github.event.inputs.limite }}" ]; then
