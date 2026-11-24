@@ -1,0 +1,47 @@
+{
+ "territorio": "s30",
+ "pixel_m": 22.7,
+ "limites": [
+  [
+   9.19586,
+   -79.699068
+  ],
+  [
+   9.379558,
+   -79.592349
+  ]
+ ],
+ "umbral_m": 500.0,
+ "corredores_en_area": true,
+ "cbm_en_area": false,
+ "anios": {
+  "2021": {
+   "bosque_ha": 4514.9,
+   "numero_parches": 237,
+   "parche_mayor_ha": 1554.3,
+   "area_media_parche_ha": 19.29,
+   "parches_menores_1ha": 147,
+   "redes_separadas": 1,
+   "pct_bosque_red_mayor": 100.0,
+   "bosque_corredores_ha": 1277.7,
+   "bosque_cbm_ha": 0.0
+  },
+  "2023": {
+   "bosque_ha": 4433.0,
+   "numero_parches": 174,
+   "parche_mayor_ha": 1202.3,
+   "area_media_parche_ha": 25.0,
+   "parches_menores_1ha": 106,
+   "redes_separadas": 1,
+   "pct_bosque_red_mayor": 100.0,
+   "bosque_corredores_ha": 1246.9,
+   "bosque_cbm_ha": 0.0
+  }
+ },
+ "cambio": {
+  "en_ambos_ha": 3992.7,
+  "solo_2021_ha": 579.3,
+  "solo_2023_ha": 356.5
+ },
+ "metodo": "Mismo raster de códigos para los dos años (código 1, «Bosques y otras tierras boscosas»), parches con 8 vecinos y redes a 500 m. Diagnósticos paralelos: no mide cambio real."
+}

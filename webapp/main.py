@@ -315,6 +315,18 @@ def create_app(*, testing: bool = False) -> Flask:
             return jsonify(error="Capa hidrográfica no preparada."), 404
         return send_file(path, mimetype="image/png" if archivo.endswith(".png") else "application/json", max_age=3600)
 
+    @app.get("/api/v1/coberturas/<path:ruta>")
+    def api_coberturas(ruta: str):
+        # Comparación precalculada del bosque oficial 2021 y 2023 (scripts/comparar_bosque_2021_2023.py).
+        import re as _re
+
+        if not _re.fullmatch(r"comparacion/[a-z0-9]{1,8}\.json|mapas/[a-z0-9]{1,8}/bosque_2021_2023\.v\.png", ruta):
+            return jsonify(error="Solicitud no válida."), 400
+        path = PANEL_STATISTICS_PATH.parent / "coberturas" / ruta
+        if not path.exists():
+            return jsonify(error="Comparación no calculada."), 404
+        return send_file(path, mimetype="image/png" if ruta.endswith(".png") else "application/json", max_age=300)
+
     @app.get("/api/v1/series/<path:ruta>")
     def api_series(ruta: str):
         # Series anuales precalculadas: indice.json, estadisticas/<id>.json, mapas/<id>/<producto>_<año>.v.png

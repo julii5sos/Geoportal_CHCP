@@ -123,7 +123,7 @@
 
   // ------------------------------------------------------------ recorrido guiado
   const PASOS = [
-    { titulo: 'Bienvenida', texto: '<p>Este geoportal le ayuda a responder una pregunta: <b>¿qué le está pasando al bosque de la Cuenca del Canal?</b></p><p>Combina varias fuentes satelitales con la cartografía oficial para mostrar dónde hay pérdida o degradación, qué tan fragmentado está el bosque y cómo podría reconectarse.</p>' },
+    { titulo: 'Bienvenido', texto: '<p>Este geoportal le ayuda a responder una pregunta: <b>¿qué le está pasando al bosque de la Cuenca del Canal?</b></p><p>Combina varias fuentes satelitales con la cartografía oficial para mostrar dónde hay pérdida o degradación, qué tan fragmentado está el bosque y cómo podría reconectarse.</p>' },
     { sel: '.in-globo', titulo: 'La cuenca en el mapa', texto: 'El globo se acerca a la Cuenca del Canal y muestra, año por año desde 2001, dónde se perdió cobertura arbórea según Hansen. Cada punto es un píxel con pérdida.' },
     { sel: '#territory-search', titulo: '1. Elija un lugar', texto: 'Escriba el nombre de una subcuenca o río, o elija toda la cuenca. Lo que elija se usará en las preguntas de abajo.' },
     { sel: '#in-aviso', titulo: 'Es una evaluación preliminar', texto: 'Los resultados vienen de imágenes satelitales y mapas oficiales. Indican <b>dónde conviene mirar primero</b>; la confirmación siempre requiere verificación en campo.' },
