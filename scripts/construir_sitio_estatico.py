@@ -34,6 +34,7 @@ PAGINAS = {
     "/coberturas": "coberturas.html",
     "/methodology": "metodologia.html",
     "/about": "acerca.html",
+    "/tutoriales": "tutoriales.html",
     "/ficha": "ficha.html",
     "/restauracion": "restauracion.html",
     "/campo": "campo.html",
@@ -48,7 +49,7 @@ def reescribir_enlaces(html: str, app_completa: str) -> str:
     # en GitHub Pages el sitio vive en /Geoportal_CHCP/, así que /static/ daría 404.
     html = re.sub(r'(["\'(,\s])/static/', r'\1static/', html)
     destinos = {"": "index.html", "panel": "panel.html", "platform": "plataforma.html", "coberturas": "coberturas.html",
-                "methodology": "metodologia.html", "about": "acerca.html", "ficha": "ficha.html",
+                "methodology": "metodologia.html", "about": "acerca.html", "tutoriales": "tutoriales.html", "ficha": "ficha.html",
                 "restauracion": "restauracion.html", "validacion": "metodologia.html#exactitud", "campo": "campo.html"}
 
     def cambiar(m):

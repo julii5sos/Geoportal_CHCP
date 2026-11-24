@@ -844,3 +844,13 @@ html.app #main-content:has(.pg) { overflow-y:auto; background:#f3f6fa; }
 
 .met-sub { margin:22px 0 6px; font-size:18px; color:var(--azul-tinta); }
 #met-fuentes tr.met-comb td { background:#f3f7fc; }
+.tut-grid { display:grid; grid-template-columns:repeat(3, 1fr); gap:14px; }
+.tut-card { display:flex; flex-direction:column; padding:22px; border:1px solid var(--line); border-top:5px solid var(--azul); background:#fff; border-radius:4px; }
+.tut-card > span { font-size:12px; font-weight:900; text-transform:uppercase; letter-spacing:.04em; color:var(--verde-oscuro); }
+.tut-card h3 { margin:8px 0 10px; color:var(--azul); }
+.tut-card ol { margin:0 0 14px; padding-left:20px; color:#46546a; line-height:1.55; }
+.tut-card li + li { margin-top:6px; }
+.tut-ir { margin-top:auto; font-weight:800; color:var(--azul); text-decoration:none; }
+.tut-ir:hover { text-decoration:underline; }
+@media (max-width:900px) { .tut-grid { grid-template-columns:1fr 1fr; } }
+@media (max-width:640px) { .tut-grid { grid-template-columns:1fr; } }
