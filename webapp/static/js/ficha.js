@@ -451,6 +451,7 @@
     const area = L.geoJSON(feature, { style: { color: '#ffffff', weight: 3, fill: false } }).addTo(map);
     referencias(map, false, t.id !== 'chcp');
     map.fitBounds(area.getBounds(), { padding: [12, 12] });
+    if (t.id === 'chcp') return;  // la cuenca completa no tiene red de parches propia
     try {
       const g = await api(`/api/v1/panel/geometry/${t.id}`);
       const color = { Alta: '#1b5e20', Media: '#66bb6a', Baja: '#c5e1a5' };
