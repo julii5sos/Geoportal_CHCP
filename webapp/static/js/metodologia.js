@@ -25,3 +25,29 @@
     cont.hidden = false;
   }).catch(() => {});
 }());
+
+/* Metodología: cita del geoportal con la fecha y la dirección actuales, y botones «Copiar». */
+(function () {
+  const MESES = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
+  const hoy = new Date();
+  document.querySelectorAll('[data-hoy]').forEach((e) => { e.textContent = `${hoy.getDate()} de ${MESES[hoy.getMonth()]} de ${hoy.getFullYear()}`; });
+  const raiz = window.CHCP_STATIC ? new URL('./', window.location.href).href : `${window.location.origin}/`;
+  document.querySelectorAll('[data-url]').forEach((e) => { e.innerHTML = `<a href="${raiz}">${raiz}</a>`; });
+  const copiar = async (texto) => {
+    try { await navigator.clipboard.writeText(texto); return true; } catch (_) { /* sin portapapeles */ }
+    const t = document.createElement('textarea'); t.value = texto; t.setAttribute('readonly', ''); t.style.position = 'fixed'; t.style.opacity = '0';
+    document.body.appendChild(t); t.select();
+    let ok = false; try { ok = document.execCommand('copy'); } catch (_) { ok = false; }
+    t.remove(); return ok;
+  };
+  document.addEventListener('click', async (ev) => {
+    const b = ev.target.closest('.met-copiar');
+    if (!b) return;
+    const ref = b.dataset.copiar ? document.querySelector(b.dataset.copiar) : b.parentElement.querySelector('.met-ref');
+    if (!ref) return;
+    const ok = await copiar(ref.innerText.replace(/\s+/g, ' ').trim());
+    b.textContent = ok ? 'Copiada' : 'No se pudo copiar';
+    b.classList.toggle('ok', ok);
+    setTimeout(() => { b.textContent = 'Copiar'; b.classList.remove('ok'); }, 1800);
+  });
+}());

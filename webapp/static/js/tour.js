@@ -25,6 +25,7 @@
     if (estado.opciones.clave) guardar(estado.opciones.clave);
     const fin = estado.opciones.alTerminar;
     estado = null;
+    document.dispatchEvent(new Event('chcp-tour-fin'));
     if (fin) fin();
   }
 
@@ -105,24 +106,32 @@
   }
 
   /**
-   * Invitación en la esquina: la primera vez, la tarjeta «¿Primera vez aquí?»; después (o al
-   * pulsar «Ahora no»), una pestaña pequeña «Recorrido guiado» para volver a abrirlo cuando se quiera.
+   * Ventanita fija en la esquina que invita al recorrido. Mientras el usuario no lo haya hecho,
+   * da un pequeño salto cada pocos segundos para llamar la atención (sin movimiento si el sistema
+   * pide reducirlo). La × la reduce a un botón redondo durante la visita.
    */
   function invitar(clave, texto, alAceptar) {
     document.querySelector('.tour-invitacion')?.remove();
     const inv = document.createElement('div');
-    document.body.appendChild(inv);
-    const pestana = () => {
-      inv.className = 'tour-invitacion tour-pestana';
-      inv.innerHTML = '<button type="button" class="tour-pestana-btn" aria-label="Abrir el recorrido guiado"><span aria-hidden="true">?</span>Recorrido guiado</button>';
-      inv.querySelector('button').addEventListener('click', alAceptar);
-    };
-    if (visto(clave)) { pestana(); return; }
     inv.className = 'tour-invitacion';
-    inv.innerHTML = `<b>¿Primera vez aquí?</b><span>${texto}</span><div><button type="button" class="btn btn-p">Ver el recorrido</button><button type="button" class="btn btn-s">Ahora no</button></div>`;
-    const [si, no] = inv.querySelectorAll('button');
-    si.addEventListener('click', () => { guardar(clave); pestana(); alAceptar(); });
-    no.addEventListener('click', () => { guardar(clave); pestana(); });
+    document.body.appendChild(inv);
+    const claveMin = `chcp-tour-min-${clave}`;
+    const minimizada = () => { try { return sessionStorage.getItem(claveMin) === '1'; } catch (_) { return false; } };
+    const abrir = () => { inv.hidden = true; alAceptar(); };
+    const ventana = () => {
+      inv.className = `tour-invitacion tour-ventana${visto(clave) ? '' : ' llama'}`;
+      inv.innerHTML = `<button type="button" class="tour-v-abrir"><span class="tour-v-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5.5v13l10.5-6.5z"/></svg></span><span class="tour-v-txt"><b>Recorrido guiado</b><small>${texto}</small></span></button><button type="button" class="tour-v-min" aria-label="Reducir">&times;</button>`;
+      inv.querySelector('.tour-v-abrir').addEventListener('click', abrir);
+      inv.querySelector('.tour-v-min').addEventListener('click', () => { try { sessionStorage.setItem(claveMin, '1'); } catch (_) { /* sin almacenamiento */ } boton(); });
+    };
+    const boton = () => {
+      inv.className = 'tour-invitacion tour-redondo';
+      inv.innerHTML = '<button type="button" class="tour-r-btn" aria-label="Abrir el recorrido guiado" title="Recorrido guiado">?</button>';
+      inv.querySelector('button').addEventListener('click', abrir);
+    };
+    if (minimizada()) boton(); else ventana();
+    // Al terminar el recorrido la ventanita vuelve, ya quieta.
+    document.addEventListener('chcp-tour-fin', () => { inv.hidden = false; inv.classList.remove('llama'); });
   }
 
   window.CHCP_TOUR = { iniciar, cerrar, visto, marcar: guardar, invitar };

@@ -943,7 +943,7 @@
   iniciarPoligono();
   // El panel de resultados se abre y se cierra con una transición: el mapa se reajusta solo.
   if (typeof ResizeObserver !== 'undefined') new ResizeObserver(() => st.map.invalidateSize()).observe($('#smap'));
-  // Recorrido guiado de la plataforma, con la misma pestaña «¿Primera vez aquí?» del inicio.
+  // Recorrido guiado de la plataforma, con la misma ventanita de invitación del inicio.
   const PASOS_PE = [
     { titulo: 'La Plataforma SIG', texto: '<p>Aquí se responde, con mapas y gráficas, <b>qué le está pasando al bosque</b> de la cuenca, de una subcuenca o de su propia finca.</p><p>Todo sale de datos satelitales precalculados: es una evaluación preliminar.</p>' },
     { sel: '#pe-terr', titulo: '1. ¿Dónde?', texto: 'Elija toda la cuenca o una subcuenca. También puede hacer clic en una subcuenca del mapa.', prueba: 'elija una subcuenca en la lista; el recorrido sigue solo.', accion: { sel: '#pe-terr', evento: 'change' } },
