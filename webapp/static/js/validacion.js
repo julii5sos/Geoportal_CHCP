@@ -3,7 +3,7 @@
 (async function () {
   const { $, $$, escapeHtml: esc, number, valFile } = window.CHCP;
   const V = window.CHCP_VALIDACION;
-  const st = { indice: null, mapa: null, diseno: null, estratos: null, muestra: [], resultados: null, i: 0, map: null, imagenes: null, series: null };
+  const st = { indice: null, mapa: null, diseno: null, estratos: null, muestra: [], resultados: null, i: 0, map: null, imagenes: null, series: null, filtro: 'todos' };
   const G = window.CHCP_GRAF;
   const pct = (v, d = 0) => (v == null ? '—' : `${number(v * 100, d)} %`);
   const ha = (v) => `${number(v, 0)} ha`;
@@ -124,6 +124,23 @@
     document.body.appendChild(caja);
     pintar();
   }
+  /** Recorridos de revisión. Usan solo lo que el intérprete marcó, nunca la clase del mapa:
+   *  la interpretación sigue siendo ciega. «al azar» es un subconjunto fijo de ~10 % de los puntos. */
+  const azar = (id) => { let h = 2166136261; for (const ch of String(id)) { h ^= ch.charCodeAt(0); h = Math.imul(h, 16777619); } return ((h >>> 0) % 10) === 0; };
+  const FILTROS = {
+    todos: { t: 'Todos los puntos', f: () => true },
+    pendientes: { t: 'Sin interpretar', f: (x) => !x[campoClase()] },
+    perdida: { t: 'Los que marqué como Pérdida', f: (x) => String(x[campoClase()]) === '1' },
+    sin_evidencia: { t: 'Los que marqué sin evidencia', f: (x) => String(x[campoClase()]) === '0' },
+    azar: { t: 'Revisión al azar (≈ 10 %)', f: (x) => azar(x.id) },
+  };
+  const enFiltro = () => st.muestra.map((x, j) => (FILTROS[st.filtro].f(x) ? j : -1)).filter((j) => j >= 0);
+  function mover(paso) {
+    const js = enFiltro();
+    if (!js.length) return;
+    const sig = paso > 0 ? js.find((j) => j > st.i) : [...js].reverse().find((j) => j < st.i);
+    st.i = sig ?? (paso > 0 ? js[0] : js[js.length - 1]);
+  }
   function renderInterpretacion() {
     const cont = $('#va-int');
     if (!st.muestra.length) { cont.innerHTML = '<p class="fi-pending">La muestra aún no se ha generado. En GitHub: Actions → «Generar muestra de validación».</p>'; return; }
@@ -132,6 +149,8 @@
     cont.innerHTML = `<div class="va-int">
       <div class="va-int-map">${panelImagenes(p)}<div id="va-map"></div><p class="rs-note"><b>Recuadro amarillo:</b> la celda de ${st.diseno.escala_m} m que se clasifica. <b>Círculo:</b> 150 m alrededor, solo como contexto. Imagen de alta resolución Esri de una sola fecha (desconocida): muestra qué hay, no el cambio. Si quiere ver otras fechas, use <a target="_blank" rel="noopener" href="https://earth.google.com/web/@${p.lat},${p.lon},300a,800d,35y,0h,0t,0r">Google Earth</a> o Google Earth Pro con imágenes históricas (<a href="${valFile(`${st.mapa}/muestra.kml`)}" download>KML</a>).</p></div>
       <div class="va-int-form">
+        <label class="rs-field va-filtro">Recorrer<select id="va-filtro">${Object.entries(FILTROS).map(([k, v]) => `<option value="${k}" ${st.filtro === k ? 'selected' : ''}>${v.t}${k === 'todos' ? '' : ` (${st.muestra.filter(v.f).length})`}</option>`).join('')}</select></label>
+        ${st.filtro !== 'todos' ? `<p class="rs-note">Revise cada punto con las imágenes ampliadas y el infrarrojo; si cambia de opinión, elija la clase correcta (queda guardada). La lista se basa solo en lo que usted marcó, no en el mapa.</p>` : ''}
         <div class="va-prog"><span>Punto <b>${st.i + 1}</b> de ${st.muestra.length} · ${esc(p.id)}</span><i><b style="width:${hechos / st.muestra.length * 100}%"></b></i><small>${hechos} interpretados</small></div>
         <p class="rs-note">${number(p.lat, 5)}, ${number(p.lon, 5)} · el recuadro amarillo es el píxel de ${st.diseno.escala_m} m evaluado.</p>
         <label class="va-rev"><input type="checkbox" id="va-revisor" ${st.revisor ? 'checked' : ''}> Revisión de calidad (segundo intérprete: no ve la clase del primero)</label>
@@ -158,16 +177,21 @@
       p.confianza = $('#va-conf').value; p.notas = $('#va-notas').value;
       p.fecha_imagen = $('#va-fecha-img').value || p.fecha_imagen || '';
       if (st.revisor) p.interprete_2 = $('#va-interprete').value; else p.interprete = $('#va-interprete').value;
-      try { localStorage.setItem('chcp-interprete', p.interprete); } catch (_) { /* */ }
+      try { localStorage.setItem('chcp-interprete', $('#va-interprete').value); } catch (_) { /* */ }
       if (p[campoClase()] && !p.fecha) p.fecha = new Date().toISOString().slice(0, 10);
       if (p[campoClase()] && !p.fuente_imagen) p.fuente_imagen = st.imagenes ? 'Sentinel-2 sin nubes (mediana anual) / Sentinel-1' : 'Esri World Imagery / Google Earth';
       guardarLocal();
     };
-    $$('.va-clases button').forEach((b) => b.addEventListener('click', () => { p[campoClase()] = b.dataset.c; guardar(); if (st.i < st.muestra.length - 1) st.i += 1; renderInterpretacion(); }));
+    $$('.va-clases button').forEach((b) => b.addEventListener('click', () => {
+      const actual = st.i; p[campoClase()] = b.dataset.c; guardar();
+      if (st.filtro === 'todos') { if (st.i < st.muestra.length - 1) st.i += 1; } else { st.i = actual; mover(1); }
+      renderInterpretacion();
+    }));
+    $('#va-filtro').addEventListener('change', (e) => { guardar(); st.filtro = e.target.value; const js = enFiltro(); if (js.length && !js.includes(st.i)) st.i = js[0]; renderInterpretacion(); });
     ['#va-conf', '#va-notas', '#va-interprete', '#va-fecha-img'].forEach((s) => $(s).addEventListener('change', guardar));
     $('#va-revisor').addEventListener('change', (e) => { st.revisor = e.target.checked; renderInterpretacion(); });
-    $('#va-prev').addEventListener('click', () => { guardar(); st.i = Math.max(0, st.i - 1); renderInterpretacion(); });
-    $('#va-next').addEventListener('click', () => { guardar(); st.i = Math.min(st.muestra.length - 1, st.i + 1); renderInterpretacion(); });
+    $('#va-prev').addEventListener('click', () => { guardar(); if (st.filtro === 'todos') st.i = Math.max(0, st.i - 1); else mover(-1); renderInterpretacion(); });
+    $('#va-next').addEventListener('click', () => { guardar(); if (st.filtro === 'todos') st.i = Math.min(st.muestra.length - 1, st.i + 1); else mover(1); renderInterpretacion(); });
     $('#va-sig-pend').addEventListener('click', () => { guardar(); const k = st.muestra.findIndex((x, j) => j > st.i && !x[campoClase()]); st.i = k >= 0 ? k : st.muestra.findIndex((x) => !x[campoClase()]); if (st.i < 0) st.i = 0; renderInterpretacion(); });
     $('#va-desc').addEventListener('click', () => { guardar(); descargar('muestra.csv', csv(), 'text/csv'); });
     $('#va-cont').addEventListener('change', async (e) => {
