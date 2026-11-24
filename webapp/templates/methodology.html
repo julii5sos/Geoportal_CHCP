@@ -12,6 +12,22 @@
     <tr><td><b>NDVI Sentinel-2</b><br><small>10 m · compuestos anuales con máscara de nubes</small></td><td>2020 → 2025</td><td>Mismo corte de 2020 que Hansen y estado más reciente; mide pérdida de vigor, que también puede deberse a cosecha, sequía o nubes.</td><td>Caída ≥ 0,15 desde un NDVI inicial ≥ 0,4, en ≥ 0,12 ha y ≥ 5 % del área, con ≥ 70 % del área con datos válidos.</td><td>0,5</td></tr>
   </tbody></table></div>
   <p class="met-nota"><b>Puntaje</b> = suma de los pesos de las señales activas (máximo 6,5). <b>Prioridad:</b> Alta ≥ 3; Media ≥ 1,5; Preventiva ≥ 0,5; Baja &lt; 0,5. La <b>intensidad relativa del cambio</b> (experimental) usa estos mismos períodos, pero expresa cada fuente en proporción al bosque o al territorio y la compara con la cuenca completa, porque en subcuencas grandes los umbrales absolutos se cumplen casi siempre. Detalle completo en <a href="https://github.com/julii5sos/Geoportal_CHCP/blob/main/METODOLOGIA.md" target="_blank" rel="noopener">METODOLOGIA.md</a>.</p>
+  <h3 class="met-sub" id="prioridad-visita">Qué significa la prioridad de visita</h3>
+  <p class="met-nota">Cada área recibe dos lecturas. La <b>prioridad del cambio</b> (Alta, Media, Preventiva o Baja, junto al puntaje de 0 a 6,5) dice qué tan fuerte es la señal satelital de pérdida o deterioro. La <b>prioridad de visita</b> responde a otra pregunta: <em>¿conviene ir a verificar al campo, y con qué urgencia?</em> Para eso suma al puntaje de cambios un aporte por corredores biológicos:</p>
+  <ul class="met-lista">
+    <li><b>Puntaje integrado</b> = puntaje de cambios (0–6,5) + aporte del corredor (0–1,5).</li>
+    <li><b>Aporte del corredor:</b> crece en proporción a la parte del área que está dentro de corredores publicados y llega a 1 punto cuando esa parte alcanza el 25 %; se suman 0,5 puntos si el área toca el Corredor Biológico Mesoamericano.</li>
+    <li><b>Las señales satelitales mandan:</b> un corredor sin señales de cambio nunca produce una prioridad Alta o Muy alta; como mucho, Preventiva.</li>
+    <li><b>La fragmentación no suma puntos:</b> la red de parches del bosque 2021 indica dónde enfocar la visita, pero no cambia la clase mientras no existan umbrales ecológicos calibrados para la cuenca.</li>
+  </ul>
+  <div class="catalog-table-wrap"><table class="catalog-table met-visita"><thead><tr><th>Prioridad de visita</th><th>Cuándo se asigna</th><th>Qué se recomienda hacer</th></tr></thead><tbody>
+    <tr><td><b>Muy alta</b></td><td>Puntaje de cambios ≥ 3 (prioridad del cambio Alta) <b>y</b> aporte del corredor ≥ 1 punto.</td><td>Programar una visita prioritaria a los sectores con cambios coincidentes que también aportan al corredor.</td></tr>
+    <tr><td><b>Alta</b></td><td>Puntaje integrado ≥ 3.</td><td>Programar la revisión detallada y preparar una visita de campo a los sectores señalados.</td></tr>
+    <tr><td><b>Media</b></td><td>Puntaje integrado ≥ 1,5 y &lt; 3.</td><td>Revisar imágenes recientes y documentación; realizar una visita si las señales se confirman o afectan la continuidad del corredor.</td></tr>
+    <tr><td><b>Preventiva</b></td><td>Puntaje integrado ≥ 0,5 y &lt; 1,5; o área dentro de corredores (aporte ≥ 0,5) sin señales suficientes de cambio.</td><td>Mantener seguimiento periódico y documentar el estado del corredor; no se requiere una visita urgente con la evidencia disponible.</td></tr>
+    <tr><td><b>Baja</b></td><td>Puntaje integrado &lt; 0,5.</td><td>Continuar el monitoreo ordinario; no hay evidencia suficiente para priorizar una visita.</td></tr>
+  </tbody></table></div>
+  <p class="met-nota">Ejemplo: una subcuenca con 4,0 puntos de cambios y 1,2 de aporte del corredor suma 5,2 puntos integrados y queda en <b>Muy alta</b>. Con los mismos 4,0 puntos fuera de corredores quedaría en <b>Alta</b>. La prioridad de visita sirve para planificar el trabajo de campo: no confirma daño ni es un dictamen técnico o legal.</p>
 </div></section>
 <section class="sec" id="exactitud"><div class="wrap catalog-page">
   <div class="sec-c"><span class="eyebrow">Evaluación preliminar de exactitud</span><h2>¿Qué tan bien detecta el geoportal la pérdida de bosque?</h2><p>Se interpretaron a ciegas 498 puntos elegidos al azar por estratos del mapa «señal de pérdida 2021–2025 (≥ 2 fuentes)», con medianas anuales sin nubes de Sentinel-2 (2020, 2022 y 2025) y series de NDVI y radar Sentinel-1. Los estimadores son los de Olofsson et al. (2014), con intervalos de confianza del 95 %. 494 puntos fueron válidos; 4 se excluyeron por falta de evidencia.</p></div>
