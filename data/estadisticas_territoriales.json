@@ -6,9 +6,9 @@
  "procesamiento": {
   "tipo": "B",
   "descripcion": "Precalculado con Earth Engine (proceso reproducible)",
-  "fecha_procesamiento": "2026-11-23T21:50:29+00:00",
-  "version_codigo": "56d48cb06ea5",
-  "workflow_run": "45273652905",
+  "fecha_procesamiento": "2026-11-24T03:40:48+00:00",
+  "version_codigo": "c5587176dbe2",
+  "workflow_run": "45306364777",
   "repositorio": "julii5sos/Geoportal_CHCP",
   "metodologia": "MT-2026.7-DIAGNOSTICO-INTEGRADO",
   "version_datos": 4,
@@ -7364,11 +7364,11 @@
    }
   },
   "s10": {
-   "version_datos": -1,
+   "version_datos": 4,
    "id": "s10",
    "nombre": "Quebrada del Medio",
    "grupo": "Cuenca de Gatún",
-   "area_ha": 2494.9456729173426,
+   "area_ha": 2494.945672917362,
    "preevaluacion": {
     "puntaje": 4.0,
     "puntaje_maximo": 6.5,
@@ -7434,7 +7434,7 @@
     "coincidencia_varias_fuentes": 102.872618,
     "pct_coincidencia_varias_fuentes": 4.123241
    },
-   "procesado": "2026-11-23T23:09:42",
+   "procesado": "2026-11-24T03:41:21",
    "jrc_ha": {
     "tmf_estable": 648.7619480307192,
     "tmf_degradacion": 706.7898685803312,
@@ -7860,6 +7860,180 @@
     "ndvi_inicial": 2020,
     "ndvi_final": 2025,
     "ndvi_final_visual": 2025
+   },
+   "mapas": {
+    "limites": [
+     [
+      9.210565,
+      -79.788418
+     ],
+     [
+      9.278428,
+      -79.705802
+     ]
+    ],
+    "tamano_pixel_m": 10.1,
+    "dimensiones": [
+     900,
+     749
+    ],
+    "capas": [
+     "sinia_2021",
+     "jrc_2025",
+     "hansen",
+     "esri_cambio",
+     "ndvi_cambio",
+     "coincidencia",
+     "riparia"
+    ],
+    "valores": [
+     "sinia_2021",
+     "jrc_2025",
+     "hansen",
+     "esri_cambio",
+     "ndvi_cambio",
+     "coincidencia",
+     "riparia",
+     "gedi",
+     "aux",
+     "esri_2024",
+     "sinia_2021_detalle"
+    ],
+    "errores": {
+     "eri": "ConnectionError: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))"
+    },
+    "rios": 6,
+    "rios_fuente": "IGNTG 2022 · hidrografía 1:25 000"
+   },
+   "sitios": [
+    {
+     "id": "s10-24157396",
+     "lat": 9.2415,
+     "lon": -79.739586,
+     "area_ha": 716.78,
+     "fuentes": 3
+    },
+    {
+     "id": "s10-23207172",
+     "lat": 9.231993,
+     "lon": -79.717243,
+     "area_ha": 5.05,
+     "fuentes": 3
+    },
+    {
+     "id": "s10-25697716",
+     "lat": 9.25693,
+     "lon": -79.771566,
+     "area_ha": 45.47,
+     "fuentes": 2
+    },
+    {
+     "id": "s10-25117598",
+     "lat": 9.251122,
+     "lon": -79.759763,
+     "area_ha": 23.49,
+     "fuentes": 2
+    },
+    {
+     "id": "s10-22107191",
+     "lat": 9.221046,
+     "lon": -79.719066,
+     "area_ha": 16.93,
+     "fuentes": 2
+    },
+    {
+     "id": "s10-22437394",
+     "lat": 9.224292,
+     "lon": -79.739397,
+     "area_ha": 9.04,
+     "fuentes": 2
+    },
+    {
+     "id": "s10-21787245",
+     "lat": 9.217753,
+     "lon": -79.724508,
+     "area_ha": 8.07,
+     "fuentes": 2
+    },
+    {
+     "id": "s10-26587663",
+     "lat": 9.265827,
+     "lon": -79.766268,
+     "area_ha": 7.44,
+     "fuentes": 2
+    },
+    {
+     "id": "s10-22957174",
+     "lat": 9.229511,
+     "lon": -79.717378,
+     "area_ha": 4.87,
+     "fuentes": 2
+    },
+    {
+     "id": "s10-21367225",
+     "lat": 9.213647,
+     "lon": -79.722543,
+     "area_ha": 3.81,
+     "fuentes": 2
+    },
+    {
+     "id": "s10-24387390",
+     "lat": 9.243828,
+     "lon": -79.738987,
+     "area_ha": 3.28,
+     "fuentes": 2
+    },
+    {
+     "id": "s10-27507622",
+     "lat": 9.274991,
+     "lon": -79.762216,
+     "area_ha": 3.1,
+     "fuentes": 2
+    }
+   ],
+   "riparia": {
+    "longitud_cauces_km": 15.3,
+    "franjas": [
+     {
+      "ancho_m": 30,
+      "area_ha": 69.15,
+      "bosque_sinia_ha": 54.92,
+      "bosque_sinia_pct": 79.4,
+      "arboles_esri_pct": 93.6
+     },
+     {
+      "ancho_m": 50,
+      "area_ha": 152.9,
+      "bosque_sinia_ha": 122.2,
+      "bosque_sinia_pct": 79.9,
+      "arboles_esri_pct": 93.4
+     },
+     {
+      "ancho_m": 100,
+      "area_ha": 350.77,
+      "bosque_sinia_ha": 272.34,
+      "bosque_sinia_pct": 77.6,
+      "arboles_esri_pct": 93.5
+     }
+    ],
+    "sin_bosque_por_pendiente": [
+     {
+      "pendiente": "0–15 %",
+      "area_ha": 17.51
+     },
+     {
+      "pendiente": "15–30 %",
+      "area_ha": 8.31
+     },
+     {
+      "pendiente": "≥ 30 %",
+      "area_ha": 4.88
+     }
+    ],
+    "franja_referencia_m": 50,
+    "area_drenaje_minima_km2": 1.0,
+    "nota": "Cauces MERIT Hydro (90 m, drenaje ≥ 1 km²); distancias interpoladas, indicativas. Bosque: SINIA 2021 (oficial) y árboles ESRI 2024 como segunda fuente.",
+    "escala_m": 10
    }
   },
   "s11": {
@@ -9887,11 +10061,11 @@
    }
   },
   "s14": {
-   "version_datos": -1,
+   "version_datos": 4,
    "id": "s14",
    "nombre": "Río Baila Monos",
    "grupo": "Cuenca de Gatún",
-   "area_ha": 2835.0856757680544,
+   "area_ha": 2835.085675768056,
    "preevaluacion": {
     "puntaje": 5.5,
     "puntaje_maximo": 6.5,
@@ -9958,7 +10132,7 @@
     "coincidencia_varias_fuentes": 97.496071,
     "pct_coincidencia_varias_fuentes": 3.438911
    },
-   "procesado": "2026-11-24T01:44:33",
+   "procesado": "2026-11-24T04:13:51",
    "jrc_ha": {
     "tmf_estable": 1539.3096255134424,
     "tmf_degradacion": 366.34239906581007,
@@ -10384,6 +10558,180 @@
     "ndvi_inicial": 2020,
     "ndvi_final": 2025,
     "ndvi_final_visual": 2025
+   },
+   "mapas": {
+    "limites": [
+     [
+      9.018268,
+      -79.766947
+     ],
+     [
+      9.103757,
+      -79.70805
+     ]
+    ],
+    "tamano_pixel_m": 10.6,
+    "dimensiones": [
+     613,
+     901
+    ],
+    "capas": [
+     "sinia_2021",
+     "jrc_2025",
+     "hansen",
+     "esri_cambio",
+     "ndvi_cambio",
+     "coincidencia",
+     "riparia"
+    ],
+    "valores": [
+     "sinia_2021",
+     "jrc_2025",
+     "hansen",
+     "esri_cambio",
+     "ndvi_cambio",
+     "coincidencia",
+     "riparia",
+     "gedi",
+     "aux",
+     "esri_2024",
+     "sinia_2021_detalle"
+    ],
+    "errores": {
+     "eri": "ConnectionError: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))"
+    },
+    "rios": 12,
+    "rios_fuente": "IGNTG 2022 · hidrografía 1:25 000"
+   },
+   "sitios": [
+    {
+     "id": "s14-05847476",
+     "lat": 9.058372,
+     "lon": -79.747573,
+     "area_ha": 270.12,
+     "fuentes": 3
+    },
+    {
+     "id": "s14-03947515",
+     "lat": 9.03935,
+     "lon": -79.75147,
+     "area_ha": 108.19,
+     "fuentes": 3
+    },
+    {
+     "id": "s14-02867380",
+     "lat": 9.028563,
+     "lon": -79.738027,
+     "area_ha": 41.68,
+     "fuentes": 3
+    },
+    {
+     "id": "s14-02717315",
+     "lat": 9.027122,
+     "lon": -79.731474,
+     "area_ha": 20.4,
+     "fuentes": 3
+    },
+    {
+     "id": "s14-04097300",
+     "lat": 9.040924,
+     "lon": -79.730008,
+     "area_ha": 116.8,
+     "fuentes": 2
+    },
+    {
+     "id": "s14-03237470",
+     "lat": 9.032276,
+     "lon": -79.746993,
+     "area_ha": 7.18,
+     "fuentes": 2
+    },
+    {
+     "id": "s14-02277258",
+     "lat": 9.022734,
+     "lon": -79.725773,
+     "area_ha": 6.3,
+     "fuentes": 2
+    },
+    {
+     "id": "s14-03537331",
+     "lat": 9.035265,
+     "lon": -79.733114,
+     "area_ha": 3.46,
+     "fuentes": 2
+    },
+    {
+     "id": "s14-02977450",
+     "lat": 9.029666,
+     "lon": -79.744988,
+     "area_ha": 2.48,
+     "fuentes": 2
+    },
+    {
+     "id": "s14-06957634",
+     "lat": 9.069475,
+     "lon": -79.76339,
+     "area_ha": 2.48,
+     "fuentes": 2
+    },
+    {
+     "id": "s14-04347386",
+     "lat": 9.043398,
+     "lon": -79.738642,
+     "area_ha": 1.86,
+     "fuentes": 2
+    },
+    {
+     "id": "s14-03357395",
+     "lat": 9.033469,
+     "lon": -79.739457,
+     "area_ha": 1.15,
+     "fuentes": 2
+    }
+   ],
+   "riparia": {
+    "longitud_cauces_km": 14.9,
+    "franjas": [
+     {
+      "ancho_m": 30,
+      "area_ha": 69.39,
+      "bosque_sinia_ha": 62.45,
+      "bosque_sinia_pct": 90.0,
+      "arboles_esri_pct": 95.4
+     },
+     {
+      "ancho_m": 50,
+      "area_ha": 149.13,
+      "bosque_sinia_ha": 135.75,
+      "bosque_sinia_pct": 91.0,
+      "arboles_esri_pct": 94.2
+     },
+     {
+      "ancho_m": 100,
+      "area_ha": 338.32,
+      "bosque_sinia_ha": 302.02,
+      "bosque_sinia_pct": 89.3,
+      "arboles_esri_pct": 92.2
+     }
+    ],
+    "sin_bosque_por_pendiente": [
+     {
+      "pendiente": "0–15 %",
+      "area_ha": 10.72
+     },
+     {
+      "pendiente": "15–30 %",
+      "area_ha": 2.59
+     },
+     {
+      "pendiente": "≥ 30 %",
+      "area_ha": 0.07
+     }
+    ],
+    "franja_referencia_m": 50,
+    "area_drenaje_minima_km2": 1.0,
+    "nota": "Cauces MERIT Hydro (90 m, drenaje ≥ 1 km²); distancias interpoladas, indicativas. Bosque: SINIA 2021 (oficial) y árboles ESRI 2024 como segunda fuente.",
+    "escala_m": 10
    }
   },
   "s15": {
@@ -23564,9 +23912,6 @@
    "version_datos": -1
   }
  },
- "errores": {
-  "s10": "TiempoAgotado: más de 45 min en este territorio",
-  "s14": "TiempoAgotado: más de 45 min en este territorio"
- },
- "generado": "2026-11-24T03:26:02"
+ "errores": {},
+ "generado": "2026-11-24T04:37:36"
 }
