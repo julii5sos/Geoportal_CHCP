@@ -276,7 +276,7 @@ def create_app(*, testing: bool = False) -> Flask:
 
     @app.get("/api/v1/validacion/<path:ruta>")
     def api_validacion(ruta: str):
-        if not re.fullmatch(r"(indice\.json|[a-z0-9_]{1,40}/(diseno|resultados)\.json|[a-z0-9_]{1,40}/muestra\.csv|[a-z0-9_]{1,40}/muestra\.kml)", ruta):
+        if not re.fullmatch(r"(indice\.json|[a-z0-9_]{1,40}/(diseno|resultados|resultados_fuentes)\.json|[a-z0-9_]{1,40}/muestra\.csv|[a-z0-9_]{1,40}/muestra\.kml)", ruta):
             return jsonify(error="Solicitud no válida."), 400
         path = PANEL_STATISTICS_PATH.parent / "validacion" / ruta
         if not path.exists():

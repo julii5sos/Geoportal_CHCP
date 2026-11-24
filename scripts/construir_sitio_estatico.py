@@ -90,9 +90,10 @@ def construir(destino: Path, app_completa: str, repo_url: str) -> list[str]:
     if (RAIZ / "data" / "hidrografia").exists():
         shutil.copytree(RAIZ / "data" / "hidrografia", destino / "datos" / "hidrografia")
     if (RAIZ / "data" / "validacion").exists():
-        # estratos.csv (clase del mapa) no se publica en el sitio: la interpretación debe ser ciega.
+        # estratos.csv y fuentes_puntos.csv (clase de cada mapa en los puntos) no se publican en el
+        # sitio: la interpretación debe ser ciega. Solo se publican los resultados agregados.
         shutil.copytree(RAIZ / "data" / "validacion", destino / "datos" / "validacion",
-                        ignore=shutil.ignore_patterns("estratos.csv"))
+                        ignore=shutil.ignore_patterns("estratos.csv", "fuentes_puntos.csv"))
     if (RAIZ / "data" / "mapas").exists():
         shutil.copytree(RAIZ / "data" / "mapas", destino / "datos" / "mapas")
     shutil.copytree(RAIZ / "webapp" / "static", destino / "static",

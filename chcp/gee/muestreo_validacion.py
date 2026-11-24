@@ -131,3 +131,55 @@ def extraer_muestra(imagen, geometria, asignacion: dict[int, int], escala: float
         lon, lat = f["geometry"]["coordinates"]
         puntos.append({"lon": round(lon, 6), "lat": round(lat, 6), "clase_mapa": int(f["properties"]["estrato"])})
     return puntos
+
+
+# Exactitud de cada fuente por separado con la misma muestra (estimadores de Stehman 2014).
+# Cada banda vale 1 donde la fuente señala pérdida 2021–2025 en el píxel de 30 m del punto, con
+# las mismas reglas que la preevaluación MT-2026.7 y que el mapa de estratos.
+FUENTES_PERDIDA = {
+    "jrc": "JRC TMF: sin perturbación en 2020 y deforestado o degradado en 2025",
+    "hansen": "Hansen GFC: pérdida 2021–2025",
+    "esri": "ESRI LULC: árboles en 2017 y otra clase en 2024",
+    "ndvi": "NDVI Sentinel-2: NDVI 2020 ≥ 0,4 y caída ≥ 0,15 hasta 2025",
+}
+
+
+def imagen_fuentes(geometria, ee):
+    from chcp.gee.analisis_complementario import _ndvi
+    from chcp.nucleo.metodologia_indice import UMBRALES_INDICE
+
+    jrc25, _ = _estado_y_mascara_valida_ee("jrc_tmf", 2025, geometria, ee_module=ee)
+    jrc20, _ = _estado_y_mascara_valida_ee("jrc_tmf", 2020, geometria, ee_module=ee)
+    proy = jrc25.projection()
+    jrc = jrc20.eq(1).And(jrc25.eq(2).Or(jrc25.eq(3))).unmask(0)
+    post, _, _ = _hansen(geometria, ee)
+    hansen = post.gt(0).unmask(0).reproject(crs=proy)
+    ini, v_ini = _estado_y_mascara_valida_ee("esri_lulc", PERIODOS_ANALISIS["esri_inicial"], geometria, ee_module=ee)
+    fin, v_fin = _estado_y_mascara_valida_ee("esri_lulc", PERIODOS_ANALISIS["esri_final"], geometria, ee_module=ee)
+    esri = (ini.eq(2).And(fin.neq(2)).And(v_ini).And(v_fin).unmask(0).setDefaultProjection(ini.projection())
+            .reduceResolution(reducer=ee.Reducer.max(), bestEffort=True, maxPixels=1024).reproject(crs=proy).gt(0))
+
+    def ndvi30(anio):  # media de los píxeles de 10 m dentro de la celda de 30 m
+        return (_ndvi(anio, geometria, ee).reduceResolution(reducer=ee.Reducer.mean(), bestEffort=True, maxPixels=64)
+                .reproject(crs="EPSG:32617", scale=30))
+
+    n_ini, n_fin = ndvi30(PERIODOS_ANALISIS["ndvi_inicial"]), ndvi30(PERIODOS_ANALISIS["ndvi_final"])
+    ndvi = (n_ini.gte(UMBRALES_INDICE["ndvi_vigor_inicial_minimo"])
+            .And(n_fin.subtract(n_ini).lte(UMBRALES_INDICE["ndvi_delta_disminucion"])).unmask(0))
+    return ee.Image.cat([jrc.rename("jrc"), hansen.rename("hansen"), esri.rename("esri"), ndvi.rename("ndvi"),
+                         n_ini.unmask(-9).rename("ndvi_inicial"), n_fin.unmask(-9).rename("ndvi_final")])
+
+
+def valores_fuentes(puntos: list[dict[str, Any]], geometria, ee, lote: int = 100) -> list[dict[str, Any]]:
+    """Valor de cada fuente en el píxel de 30 m (EPSG:32617, la malla de la muestra) de cada punto."""
+    imagen = imagen_fuentes(geometria, ee)
+    salida: list[dict[str, Any]] = []
+    for i in range(0, len(puntos), lote):
+        fc = ee.FeatureCollection([ee.Feature(ee.Geometry.Point([float(p["lon"]), float(p["lat"])]), {"id": p["id"]})
+                                   for p in puntos[i:i + lote]])
+        res = imagen.sampleRegions(collection=fc, properties=["id"], scale=30, projection="EPSG:32617",
+                                   geometries=False, tileScale=4).getInfo()
+        for f in res.get("features", []):
+            salida.append(f["properties"])
+        print(f"  {min(i + lote, len(puntos))}/{len(puntos)} puntos", flush=True)
+    return salida

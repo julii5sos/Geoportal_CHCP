@@ -42,6 +42,24 @@ def leer_referencia(valor: str, leyenda: list[dict]) -> int | None:
     return None
 
 
+def referencias_finales(carpeta: Path) -> dict[str, int]:
+    """id → clase de referencia final (excluye «sin evidencia», vacíos y desacuerdos sin resolver)."""
+    leyenda = json.loads((carpeta / "diseno.json").read_text(encoding="utf-8"))["leyenda"]
+    salida = {}
+    with (carpeta / "muestra.csv").open(encoding="utf-8") as f:
+        for fila in csv.DictReader(f):
+            r1 = leer_referencia(fila.get("clase_referencia", ""), leyenda)
+            r2 = leer_referencia(fila.get("clase_referencia_2", ""), leyenda)
+            final = leer_referencia(fila.get("clase_final", ""), leyenda)
+            if final is None:
+                if r1 is not None and r2 is not None and r1 != r2:
+                    continue
+                final = r1
+            if final:
+                salida[fila["id"]] = final
+    return salida
+
+
 def evaluar_carpeta(carpeta: Path) -> dict:
     diseno = json.loads((carpeta / "diseno.json").read_text(encoding="utf-8"))
     leyenda = diseno["leyenda"]
@@ -116,6 +134,9 @@ def main() -> int:
     for carpeta in sorted(p for p in DIR.iterdir() if (p / "diseno.json").exists()):
         try:
             indice.append(evaluar_carpeta(carpeta))
+            if (carpeta / "fuentes_puntos.csv").exists():  # exactitud de cada fuente (Stehman 2014)
+                from exactitud_por_fuente import calcular
+                calcular(carpeta)
             print(f"{carpeta.name}: {indice[-1]['interpretados']}/{indice[-1]['total_puntos']} interpretados")
         except Exception as exc:  # una muestra mal formada no impide publicar el sitio
             print(f"{carpeta.name}: ERROR {exc}")

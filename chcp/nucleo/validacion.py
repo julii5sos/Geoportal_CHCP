@@ -138,3 +138,68 @@ def evaluar(clases: Sequence[Any], areas_mapa: Mapping[Any, float], conteos: Seq
         "proporcion_referencia": p_col,
         "por_clase": filas,
     }
+
+
+def exactitud_binaria_estratificada(registros: Iterable[tuple[Any, int, int]], areas_estrato: Mapping[Any, float],
+                                    z: float = 1.96) -> dict[str, Any]:
+    """Exactitud de un mapa binario (1 = pérdida) cuya clasificación NO coincide con los estratos.
+
+    Estimadores de Stehman (2014) para muestreo aleatorio estratificado: permiten evaluar con la
+    misma muestra otros mapas distintos del que definió los estratos (p. ej. cada fuente por
+    separado). ``registros`` = (estrato, clase del mapa evaluado 0/1, referencia 0/1).
+    Exactitud del usuario y del productor como estimadores de razón; la superficie en las
+    unidades de ``areas_estrato``. Varianzas sin corrección por población finita (conservador).
+    """
+    from math import sqrt
+
+    por_estrato: dict[Any, list[tuple[int, int]]] = {}
+    for h, m, r in registros:
+        por_estrato.setdefault(h, []).append((int(m), int(r)))
+    estratos = [h for h in por_estrato if float(areas_estrato.get(h, 0)) > 0]
+    N = sum(float(areas_estrato[h]) for h in estratos)
+
+    def media(v): return sum(v) / len(v)
+
+    def cov(a, b):
+        n = len(a)
+        if n < 2:
+            return 0.0
+        ma, mb = media(a), media(b)
+        return sum((x - ma) * (y - mb) for x, y in zip(a, b)) / (n - 1)
+
+    def total(f):  # estimación del total (en unidades de área) de la variable f
+        return sum(float(areas_estrato[h]) * media([f(m, r) for m, r in por_estrato[h]]) for h in estratos)
+
+    def var_total(f):
+        return sum(float(areas_estrato[h]) ** 2 * cov(*([[f(m, r) for m, r in por_estrato[h]]] * 2)) / len(por_estrato[h])
+                   for h in estratos)
+
+    def razon(fy, fx):
+        Y, X = total(fy), total(fx)
+        if X <= 0:
+            return None, None
+        R = Y / X
+        v = 0.0
+        for h in estratos:
+            ys = [fy(m, r) for m, r in por_estrato[h]]
+            xs = [fx(m, r) for m, r in por_estrato[h]]
+            Nh, nh = float(areas_estrato[h]), len(ys)
+            v += Nh ** 2 * (cov(ys, ys) + R ** 2 * cov(xs, xs) - 2 * R * cov(xs, ys)) / nh
+        return R, z * sqrt(max(v, 0.0)) / X
+
+    acierto = lambda m, r: int(m == r)  # noqa: E731
+    ambos = lambda m, r: int(m == 1 and r == 1)  # noqa: E731
+    mapa = lambda m, r: m  # noqa: E731
+    ref = lambda m, r: r  # noqa: E731
+    ua, ua_ic = razon(ambos, mapa)
+    pa, pa_ic = razon(ambos, ref)
+    return {
+        "metodo": "Stehman (2014), muestreo aleatorio estratificado con estratos distintos del mapa evaluado",
+        "n": sum(len(v) for v in por_estrato.values()),
+        "alertas_en_muestra": sum(m for v in por_estrato.values() for m, _ in v),
+        "exactitud_global": total(acierto) / N, "exactitud_global_ic": z * sqrt(var_total(acierto)) / N,
+        "exactitud_usuario": ua, "exactitud_usuario_ic": ua_ic,
+        "exactitud_productor": pa, "exactitud_productor_ic": pa_ic,
+        "area_mapa": total(mapa), "area_mapa_ic": z * sqrt(var_total(mapa)),
+        "area_referencia": total(ref), "area_referencia_ic": z * sqrt(var_total(ref)),
+    }
