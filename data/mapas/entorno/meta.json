@@ -1,18 +1,18 @@
 {
  "limites": [
   [
-   8.484231,
-   -80.291793
+   8.388439,
+   -80.388244
   ],
   [
-   9.669509,
-   -79.073697
+   9.765214,
+   -78.976325
   ]
  ],
- "tamano_pixel_m": 55.8,
+ "tamano_pixel_m": 64.7,
  "dimensiones": [
   2400,
-  2365
+  2370
  ],
  "capas": [
   "sinia_2021",
@@ -25,7 +25,7 @@
   "esri_2024"
  ],
  "errores": {},
- "margen_m": 15000,
- "descripcion": "Cuenca del Canal + 15 km (extensión de los assets SINIA)",
- "generado": "2026-11-24T04:48:27"
+ "margen_m": 25000,
+ "descripcion": "Cuenca del Canal + 25 km (SINIA hasta donde llega; JRC y ESRI más allá)",
+ "generado": "2026-11-24T13:37:39"
 }

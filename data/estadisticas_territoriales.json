@@ -6,9 +6,9 @@
  "procesamiento": {
   "tipo": "B",
   "descripcion": "Precalculado con Earth Engine (proceso reproducible)",
-  "fecha_procesamiento": "2026-11-24T12:16:28+00:00",
-  "version_codigo": "8e0041b281cb",
-  "workflow_run": "45391836022",
+  "fecha_procesamiento": "2026-11-24T13:36:38+00:00",
+  "version_codigo": "40f304b161de",
+  "workflow_run": "45394829280",
   "repositorio": "julii5sos/Geoportal_CHCP",
   "metodologia": "MT-2026.7-DIAGNOSTICO-INTEGRADO",
   "version_datos": 4,
@@ -82,32 +82,32 @@
    "leyenda": [
     {
      "valor": 1,
-     "color": "#1d6b35",
+     "color": "#005a00",
      "etiqueta": "Bosque sin perturbación"
     },
     {
      "valor": 2,
-     "color": "#f28e2b",
+     "color": "#649b23",
      "etiqueta": "Bosque degradado"
     },
     {
      "valor": 3,
-     "color": "#fabc20",
+     "color": "#ff870f",
      "etiqueta": "Deforestado"
     },
     {
      "valor": 4,
-     "color": "#a6d96a",
+     "color": "#d2fa3c",
      "etiqueta": "Regeneración"
     },
     {
      "valor": 5,
-     "color": "#5aa9e6",
+     "color": "#008cbe",
      "etiqueta": "Agua"
     },
     {
      "valor": 6,
-     "color": "#d7c2a1",
+     "color": "#ffffff",
      "etiqueta": "Otra cobertura"
     }
    ],
@@ -120,27 +120,27 @@
    "leyenda": [
     {
      "valor": 21,
-     "color": "#fee391",
+     "color": "#ffff00",
      "etiqueta": "2021"
     },
     {
      "valor": 22,
-     "color": "#fec44f",
+     "color": "#ffbf00",
      "etiqueta": "2022"
     },
     {
      "valor": 23,
-     "color": "#fe9929",
+     "color": "#ff8000",
      "etiqueta": "2023"
     },
     {
      "valor": 24,
-     "color": "#ec7014",
+     "color": "#ff4000",
      "etiqueta": "2024"
     },
     {
      "valor": 25,
-     "color": "#cc4c02",
+     "color": "#ff0000",
      "etiqueta": "2025"
     }
    ],
@@ -163,7 +163,7 @@
     },
     {
      "valor": 3,
-     "color": "#a1d99b",
+     "color": "#397d49",
      "etiqueta": "Árboles en ambos años"
     }
    ],
@@ -176,25 +176,25 @@
    "minimo": -0.3,
    "maximo": 0.3,
    "paleta": [
-    "#8c510a",
-    "#d8b365",
-    "#f6e8c3",
-    "#f5f5f5",
-    "#c7eae5",
-    "#5ab4ac",
-    "#01665e"
+    "#a50026",
+    "#f46d43",
+    "#fee08b",
+    "#f7f7f7",
+    "#91bf51",
+    "#306d1c",
+    "#004400"
    ],
    "leyenda": [
     {
-     "color": "#8c510a",
+     "color": "#a50026",
      "etiqueta": "≤ −0.30 (pérdida fuerte de vigor)"
     },
     {
-     "color": "#f5f5f5",
+     "color": "#f7f7f7",
      "etiqueta": "Sin cambio"
     },
     {
-     "color": "#01665e",
+     "color": "#004400",
      "etiqueta": "≥ +0.30 (más vigor)"
     }
    ],
@@ -35453,5 +35453,5 @@
   }
  },
  "errores": {},
- "generado": "2026-11-24T13:26:32"
+ "generado": "2026-11-24T13:37:05"
 }
