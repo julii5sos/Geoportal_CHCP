@@ -906,3 +906,5 @@ html.app #main-content:has(.pg) { overflow-y:auto; background:#f3f6fa; }
 @media (max-width:900px) { .va-series { grid-template-columns:1fr; } .va-lb-imgs { grid-template-columns:1fr; } .va-lb-imgs > figure { width:min(90vw, 60vh); } }
 
 .va-filtro select { font-weight:700; }
+.met-sub { margin:22px 0 6px; font-size:18px; color:var(--azul-tinta); }
+#met-fuentes tr.met-comb td { background:#f3f7fc; }
