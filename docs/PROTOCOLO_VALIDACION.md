@@ -105,5 +105,7 @@ of Environment*, 148, 42–57.
 - Las 11 respuestas de la columna `clase_referencia_2` (SEN-0001 a SEN-0011) se eliminaron:
   las registró el mismo intérprete con la casilla de revisión marcada, por lo que no son un
   control de calidad independiente.
+- Después, el mismo intérprete repasó 47 puntos al azar (recorrido «Revisión al azar») y
+  corrigió 7. Es una revisión propia, no un control de calidad independiente.
 - Estado: **preliminar**. Falta la revisión de un segundo intérprete en al menos el 10 % de los
   puntos (recorrido «Revisión al azar» de la herramienta) antes de declarar la muestra completa.
