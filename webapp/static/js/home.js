@@ -133,6 +133,5 @@
     { titulo: '¡Listo!', texto: '<p>Empiece eligiendo un lugar y una pregunta. Si tiene dudas, las <b>preguntas frecuentes</b> están al final de esta página y cada herramienta tiene su propio botón <b>«Cómo se usa»</b>.</p>' },
   ];
   const iniciarRecorrido = () => window.CHCP_TOUR?.iniciar(PASOS, { clave: 'inicio', textoFin: 'Empezar a explorar' });
-  document.getElementById('in-tour')?.addEventListener('click', iniciarRecorrido);
-  window.CHCP_TOUR?.invitar('inicio', 'Le mostramos en 1 minuto qué puede hacer.', iniciarRecorrido);
+  window.CHCP_TOUR?.invitar('inicio', 'Conozca el geoportal en 1 minuto', iniciarRecorrido);
 })();
