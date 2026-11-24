@@ -200,7 +200,12 @@
     figs.push({ id: 'corredores', tipo: 'corredores', titulo: 'Corredores y puntos críticos · Almanaque Azul',
       leyenda: '<div class="fi-legend"><span><i style="background:#1b5e2059;border:1.5px solid #1b5e20"></i>Conectividad alta</span><span><i style="background:#9ccc6559;border:1.5px solid #9ccc65"></i>Mediana</span><span><i style="background:#ffb74d59;border:1.5px solid #ffb74d"></i>Media-baja</span><span><i style="background:#ce93d866;border:1.5px solid #4a148c"></i>Corredor Biológico Mesoamericano</span><span><i class="pt"></i>Punto crítico</span></div>',
       lectura: 'Corredores de conectividad y puntos críticos publicados en el Almanaque Azul (2024), con el Corredor Biológico Mesoamericano resaltado. Es la referencia que usa la prioridad de visita.' });
-    if (capa('eri')) figs.push(png('eri'));
+    if (capa('eri')) {
+      const f = png('eri');
+      // Subcuencas sin mapa ERI propio: recorte del mapa ERI de toda la cuenca (mismo modelo, malla más gruesa).
+      if (t.mapas.eri_origen === 'cuenca') f.lectura += ` Este mapa es un recorte del ERI calculado para toda la cuenca (píxel de ${number(t.mapas.eri_tamano_pixel_m || 43, 0)} m): los colores pueden diferir algo del mapa propio de la subcuenca, que se generará más adelante. El valor ERI de la ficha sí se calculó para esta subcuenca.`;
+      figs.push(f);
+    }
     if (capa('riparia')) figs.push(png('riparia'));
     return figs.filter(Boolean);
   }
