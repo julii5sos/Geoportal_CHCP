@@ -27,7 +27,7 @@ class TerritorioLocalTests(unittest.TestCase):
         self.assertNotIn("�", "".join(nombres))
         self.assertEqual(
             feature_subcuenca("Río Chagres")["properties"]["fuente"],
-            "Subcuencas del Canal de Panamá · Instituto Smithsonian de Investigaciones Tropicales (STRI)",
+            "Panama Canal Basin Subwatersheds, Proyecto de Monitoreo de la Cuenca del Canal (1998), STRI GIS Data Portal, CC BY-SA 4.0",
         )
         self.assertEqual(len(coleccion_subcuencas()["features"]), 53)
 
