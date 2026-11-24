@@ -234,8 +234,12 @@ def _mapas_y_riparia(territorio: dict, registro: dict) -> None:
     geometria, _ = resolve_area(AreaSelection(**territorio["area"]))
     destino = DIR_MAPAS / territorio["id"]
     from chcp.gee.mapas_ficha import MAX_PIXELES_CUENCA, MAX_PIXELES_LADO
+    t0 = time.time()
+    paso = lambda nombre: print(f"    {nombre} ({time.time() - t0:.0f} s)", flush=True)  # noqa: E731
+    paso("mapas…")
     registro["mapas"] = generar_mapas(geometria, destino, ee_module=ee,
                                       max_pixeles=MAX_PIXELES_CUENCA if territorio["id"] == "chcp" else MAX_PIXELES_LADO)
+    paso("ríos…")
     try:
         rios, fuente = _rios_territorio(geometria)
         (destino / "rios.json").write_text(json.dumps(
@@ -248,11 +252,13 @@ def _mapas_y_riparia(territorio: dict, registro: dict) -> None:
         registro["mapas"]["rios"] = None
         print(f"    ríos: {exc}")
     if territorio["id"] != "chcp":
+        paso("sitios de verificación…")
         try:
             registro["sitios"] = sitios_verificacion(geometria, territorio["id"], ee_module=ee)
         except Exception as exc:
             registro["sitios"] = []
             print(f"    sitios: {exc}")
+    paso("franja riparia…")
     try:
         registro["riparia"] = calcular_riparia(geometria, ee_module=ee, area_ha=registro.get("area_ha"))
     except Exception as exc:
@@ -374,6 +380,7 @@ def main() -> int:
                 territorio, evaluacion, estructura, respuesta.get("corridor_context") or {}, sinia, eri
             )}
             _guardar_geometrias(territorio["id"], estructura)
+            print(f"    indicadores listos ({time.time() - inicio:.0f} s)", flush=True)
             if not args.sin_mapas:
                 _mapas_y_riparia(territorio, datos["territorios"][territorio["id"]])
             datos["errores"].pop(territorio["id"], None)

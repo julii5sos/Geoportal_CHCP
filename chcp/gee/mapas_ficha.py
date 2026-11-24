@@ -342,11 +342,16 @@ def _reintentable(exc: Exception) -> bool:
     return "too large" in texto or "memory limit" in texto or "computation timed out" in texto
 
 
-def descargar_valores(imagen, geometria, malla: dict[str, Any], ee, partes: int = 1):
+MAX_NIVELES_DIVISION = 2  # malla completa → 3×3 bloques → 3×3 sub-bloques; no más
+
+
+def descargar_valores(imagen, geometria, malla: dict[str, Any], ee, partes: int = 1, nivel: int = 0):
     """Matriz float de la capa en la malla (fuera del territorio = SIN_DATO).
 
     Si Earth Engine rechaza la reproyección por tamaño (capas con reproyección
     explícita sobre territorios grandes), se pide por bloques y se ensambla.
+    La división tiene un límite de niveles: antes cada bloque que agotaba el tiempo
+    (5 min en Earth Engine) se volvía a dividir sin fin y un territorio podía tardar horas.
     """
     import numpy as np
 
@@ -358,17 +363,17 @@ def descargar_valores(imagen, geometria, malla: dict[str, Any], ee, partes: int 
         try:
             return ee.data.computePixels({"expression": expresion, "fileFormat": "NUMPY_NDARRAY", "grid": grid})["v"]
         except Exception as exc:  # noqa: BLE001
-            if not _reintentable(exc):
+            if not _reintentable(exc) or nivel >= MAX_NIVELES_DIVISION:
                 raise
-            return descargar_valores(imagen, geometria, malla, ee, partes=3)
+            return descargar_valores(imagen, geometria, malla, ee, partes=3, nivel=nivel + 1)
     salida = np.full((grid["dimensions"]["height"], grid["dimensions"]["width"]), SIN_DATO, dtype="float64")
     for fila, col, sub in submallas(grid, partes):
         try:
             bloque = ee.data.computePixels({"expression": expresion, "fileFormat": "NUMPY_NDARRAY", "grid": sub})["v"]
         except Exception as exc:  # noqa: BLE001
-            if not _reintentable(exc) or partes >= 9:
+            if not _reintentable(exc) or nivel >= MAX_NIVELES_DIVISION:
                 raise
-            bloque = descargar_valores(imagen, geometria, {"grid": sub}, ee, partes=3)
+            bloque = descargar_valores(imagen, geometria, {"grid": sub}, ee, partes=3, nivel=nivel + 1)
         salida[fila:fila + bloque.shape[0], col:col + bloque.shape[1]] = bloque
     return salida
 
@@ -401,8 +406,15 @@ def generar_mapas(geojson: dict[str, Any], destino, *, ee_module, capas: list[st
     # Las solicitudes a Earth Engine son de entrada/salida: se piden varias capas a la vez.
     from concurrent.futures import ThreadPoolExecutor
 
-    with ThreadPoolExecutor(max_workers=HILOS_MAPAS) as grupo:
-        futuros = {clave: grupo.submit(una_capa, clave) for clave in claves}
+    grupo = ThreadPoolExecutor(max_workers=HILOS_MAPAS)
+    futuros = {clave: grupo.submit(una_capa, clave) for clave in claves}
+    try:
+        for futuro in futuros.values():
+            futuro.exception()  # espera a cada capa
+    finally:
+        # Si el territorio se interrumpe por tiempo, las capas pendientes no siguen ocupando
+        # solicitudes de Earth Engine mientras se calcula el territorio siguiente.
+        grupo.shutdown(wait=False, cancel_futures=True)
     for clave, futuro in futuros.items():
         exc = futuro.exception()
         if exc is None:
