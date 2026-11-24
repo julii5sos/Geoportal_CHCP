@@ -518,26 +518,44 @@
     const forma = masParches && medioMenor ? 'más dividido: hay más parches y, en promedio, más pequeños'
       : !masParches && !medioMenor && b.numero_parches !== a.numero_parches ? 'menos dividido: hay menos parches y, en promedio, más grandes'
         : 'con una fragmentación parecida';
-    sec.innerHTML = `<h2>${icon('network', 22)} Bosque oficial 2021 y 2023: ¿qué cambia entre los dos mapas?</h2>
+    const GENERAL = [
+      { valor: 1, color: '#237A4B', etiqueta: 'Bosques y otras tierras boscosas' },
+      { valor: 2, color: '#D8C49C', etiqueta: 'Otras tierras' },
+      { valor: 3, color: '#388FC4', etiqueta: 'Agua' },
+    ];
+    const leyenda = (clases) => `<div class="fi-legend">${clases.map((x) => `<span><i style="background:${x.color}"></i>${esc(x.etiqueta)}</span>`).join('')}</div>`;
+    const mapas = [
+      { id: '2021', titulo: 'Mapa oficial 2021', archivo: `mapas/${t.id}/2021_general.v.png`, clases: GENERAL, nota: `${ha(a.bosque_ha)} de bosque en ${number(a.numero_parches, 0)} parches.` },
+      { id: '2023', titulo: 'Mapa oficial 2023', archivo: `mapas/${t.id}/2023_general.v.png`, clases: GENERAL, nota: `${ha(b.bosque_ha)} de bosque en ${number(b.numero_parches, 0)} parches.` },
+      { id: 'dif', titulo: 'Dónde difieren', archivo: `mapas/${t.id}/bosque_2021_2023.v.png`, clases: CLASES_2021_2023, nota: c.cambio ? `${ha(c.cambio.en_ambos_ha)} coinciden, ${ha(c.cambio.solo_2021_ha)} solo en 2021 y ${ha(c.cambio.solo_2023_ha)} solo en 2023.` : '' },
+    ];
+    sec.innerHTML = `<h2>${icon('network', 22)} Bosque oficial 2021 y 2023: qué cambia entre los dos mapas</h2>
       <p>${t.id === 'chcp' ? 'En toda la cuenca' : `En ${esc(t.nombre)}`}, ${cantidad}. En 2023 el bosque aparece ${forma}.${c.cambio ? ` Unas ${ha(c.cambio.solo_2021_ha)} que eran bosque en el mapa 2021 no lo son en el de 2023, y otras ${ha(c.cambio.solo_2023_ha)} aparecen como bosque solo en 2023.` : ''}</p>
+      <div class="fi-cmp-maps">${mapas.map((m) => `<figure class="fi-fig"><figcaption>${m.titulo}</figcaption><div class="fi-mini" data-cmp="${m.id}"></div>${leyenda(m.clases)}<p class="fi-note">${m.nota}</p></figure>`).join('')}</div>
       <div class="fi-cmp">
-        <div><table class="fi-table fi-cmp-t"><thead><tr><th>Indicador</th><th>2021</th><th>2023</th><th>Diferencia</th></tr></thead><tbody>${filas}</tbody></table></div>
-        <figure class="fi-cmp-map"><div class="fi-mini" id="fi-cmp-map"></div><div class="fi-legend">${CLASES_2021_2023.map((x) => `<span><i style="background:${x.color}"></i>${x.etiqueta}</span>`).join('')}</div></figure>
+        <div><h3>Los dos mapas en cifras</h3><table class="fi-table fi-cmp-t"><thead><tr><th>Indicador</th><th>2021</th><th>2023</th><th>Diferencia</th></tr></thead><tbody>${filas}</tbody></table></div>
+        <div class="fi-cmp-leer"><h3>Cómo leerlo</h3>
+          <p>Los dos mapas son de MiAMBIENTE y usan la misma categoría, «Bosques y otras tierras boscosas», pero se hicieron con métodos distintos: el de 2021 es un mapa vectorial 1:25.000 y el de 2023 un ráster de 10 m hecho con imágenes Sentinel-2.</p>
+          <p>Por eso la diferencia mezcla cambios reales con diferencias de método y no mide pérdida ni ganancia de bosque. Sirve para ver si el bosque oficial se ve más o menos dividido y dónde no coinciden los mapas. Para medir cambio están JRC, Hansen y ESRI, más arriba.</p>
+          <p>Más parches y más pequeños indican un bosque más dividido. Menos redes separadas indican que los parches quedan a 500 m o menos unos de otros, la distancia que usa la red de conectividad.</p>
+        </div>
       </div>
-      <p class="fi-note"><b>Cómo leerlo.</b> Los dos mapas de MiAMBIENTE usan la misma categoría («Bosques y otras tierras boscosas») pero se hicieron con métodos distintos: el de 2021 es un mapa vectorial 1:25.000 y el de 2023 un ráster de 10 m hecho con imágenes Sentinel-2. Por eso la diferencia mezcla cambios reales con diferencias de método, y no mide pérdida ni ganancia de bosque. Para medir cambio están JRC, Hansen y ESRI, más arriba.</p>
-      <p class="fi-note">Los dos años se midieron igual, sobre un mapa de ${number(c.pixel_m, 0)} m por píxel; por eso los parches no coinciden exactamente con la sección de fragmentación, que usa el mapa vectorial original de 2021. Las superficies de bosque son las de cada mapa oficial; las demás son aproximadas.</p>`;
+      <p class="fi-note">Los dos años se midieron igual, sobre un mapa de ${number(c.pixel_m, 0)} m por píxel; por eso los parches no coinciden exactamente con la sección de fragmentación, que usa el mapa vectorial original de 2021. Las superficies de bosque son las de cada mapa oficial; las demás son aproximadas. Los colores de los mapas 2021 y 2023 son los del geoportal, porque MiAMBIENTE no publica simbología para estos productos.</p>`;
     sec.hidden = false;
-    const div = document.getElementById('fi-cmp-map');
-    const m = L.map(div, { zoomControl: false, attributionControl: false, scrollWheelZoom: false, zoomSnap: 0.1 });
-    window.CHCP.mapaBase(m, { defecto: 'gris', control: false });
-    const borde = L.geoJSON(featureDe(t), { style: { color: '#263238', weight: 1.6, fill: false }, interactive: false }).addTo(m);
-    m.fitBounds(borde.getBounds(), { padding: [4, 4] });
-    st.galeria.push(m);
-    valoresDe(window.CHCP.cobFile(`mapas/${t.id}/bosque_2021_2023.v.png`)).then((v) => {
-      const r = colorearValores(v, { clases: CLASES_2021_2023 });
-      L.imageOverlay(r.url, c.limites, { opacity: 0.95, className: 'fi-px' }).addTo(m);
-      borde.bringToFront();
-    }).catch(() => div.insertAdjacentHTML('beforeend', '<p class="fi-mini-vacio">Mapa no disponible todavía.</p>'));
+    const feature = featureDe(t);
+    mapas.forEach((mp) => {
+      const div = sec.querySelector(`[data-cmp="${mp.id}"]`);
+      const m = L.map(div, { zoomControl: false, attributionControl: false, scrollWheelZoom: false, zoomSnap: 0.1 });
+      window.CHCP.mapaBase(m, { defecto: 'gris', control: false });
+      const borde = L.geoJSON(feature, { style: { color: '#263238', weight: 1.6, fill: false }, interactive: false }).addTo(m);
+      m.fitBounds(borde.getBounds(), { padding: [4, 4] });
+      st.galeria.push(m);
+      valoresDe(window.CHCP.cobFile(mp.archivo)).then((v) => {
+        const r = colorearValores(v, { clases: mp.clases });
+        L.imageOverlay(r.url, c.limites, { opacity: 0.95, className: 'fi-px' }).addTo(m);
+        borde.bringToFront();
+      }).catch(() => div.insertAdjacentHTML('beforeend', '<p class="fi-mini-vacio">Mapa no disponible todavía.</p>'));
+    });
   }
   /** Mapa de los parches con mayor aporte a la conectividad (dIIC); clic → Plataforma acercada al parche. */
   function mapaDiic(t, g) {
