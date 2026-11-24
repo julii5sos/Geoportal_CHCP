@@ -160,6 +160,30 @@ class BloquesTests(unittest.TestCase):
         self.assertTrue((v == 2).all())
         self.assertFalse(mf._reintentable(Exception("Image.select: band not found")))
 
+    def test_la_division_por_bloques_tiene_limite(self):
+        import numpy as np
+        import chcp.gee.mapas_ficha as mf
+
+        class Img:
+            def toFloat(self): return self
+            def clip(self, g): return self
+            def unmask(self, v, mismo_contorno=True): return self
+            def rename(self, n): return self
+
+        llamadas = []
+
+        class Datos:
+            def computePixels(self, req):
+                llamadas.append(1)
+                raise Exception("Computation timed out.")
+
+        class EE:
+            data = Datos()
+        with self.assertRaises(Exception):
+            mf.descargar_valores(Img(), None, mf.malla_mercator(CUADRADO), EE)
+        # 1 malla completa + 1 bloque + 1 sub-bloque: falla rápido en lugar de dividir sin fin
+        self.assertLessEqual(len(llamadas), 3)
+
 
 class GenerarMapasTests(unittest.TestCase):
     def test_genera_todas_las_capas_en_paralelo_y_aisla_errores(self):
