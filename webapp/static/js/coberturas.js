@@ -13,11 +13,16 @@
     leyenda_oficial_sin_correspondencia: ['Sin verificar', 'warn'],
     no_identificado: ['No identificado', 'bad'],
     discrepante_con_servicio: ['Discrepancia', 'bad'],
-    documentada_informe_oficial: ['Documentada en el informe oficial (sin verificar en la cuenca)', 'doc'],
+    documentada_informe_oficial: ['Solo en el informe', 'doc'],  // detalle en el title: documentada en el informe oficial, sin verificar en la cuenca
   };
   const st = { catalog: null, territory: null, a: '2021_general', b: '2019_general', compare: false, view: 'original', active: {}, stats: null, layers: {} };
 
   const map = L.map('cob-map', { zoomControl: true, preferCanvas: true });
+  { const raiz = document.getElementById('v-coberturas'), inval = () => map.invalidateSize();
+    window.CHCP.divisor({ panel: document.querySelector('.cob-side'), ancla: raiz, borde: 'derecho', clave: 'cob-side', min: 280, max: 640,
+      aplicar: (w) => (w ? raiz.style.setProperty('--cob-side-w', `${w}px`) : raiz.style.removeProperty('--cob-side-w')), alCambiar: inval });
+    window.CHCP.divisor({ panel: document.querySelector('.cob-results'), ancla: raiz, borde: 'izquierdo', clave: 'cob-res', min: 320, max: 900,
+      aplicar: (w) => (w ? raiz.style.setProperty('--cob-res-w', `${w}px`) : raiz.style.removeProperty('--cob-res-w')), alCambiar: inval }); }
   map.createPane('paneA').style.zIndex = 410;
   map.createPane('paneB').style.zIndex = 420;
   map.createPane('paneRef').style.zIndex = 450;

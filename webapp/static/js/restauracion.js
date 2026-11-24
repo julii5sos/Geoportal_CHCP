@@ -750,6 +750,12 @@
   st.map = L.map('rs-map', { zoomControl: true });
   // La cobertura va bajo los parches, los ríos y las rutas (overlayPane tiene zIndex 400).
   st.map.createPane('rs-cobertura').style.zIndex = 350;
+  { const raiz = document.getElementById('v-restauracion');
+    window.CHCP.divisor({ panel: document.querySelector('.rs-side'), ancla: raiz, borde: 'derecho', clave: 'rs-side', min: 300, max: 700,
+      aplicar: (w) => (w ? raiz.style.setProperty('--rs-side-w', `${w}px`) : raiz.style.removeProperty('--rs-side-w')), alCambiar: () => st.map.invalidateSize() });
+    const mapa = document.getElementById('rs-map');
+    window.CHCP.divisor({ panel: mapa, borde: 'inferior', clave: 'rs-map-h', min: 280, max: 1400,
+      aplicar: (h) => { mapa.style.height = h ? `${h}px` : ''; }, alCambiar: () => st.map.invalidateSize() }); }
   window.CHCP.mapaBase(st.map, { defecto: 'satelite' });
   const colorCorr = { Alta: '#1b5e20', Mediana: '#9ccc65', 'Media-baja': '#ffb74d' };
   st.capaCorr = L.geoJSON(st.territory.corridors, { style: (f) => ({ color: colorCorr[f.properties.categoria_etiqueta] || '#7fae00', weight: 1.2, fillColor: colorCorr[f.properties.categoria_etiqueta] || '#a1d303', fillOpacity: 0.12 }), onEachFeature: (f, l) => l.bindTooltip(`${f.properties.nombre} · conectividad ${f.properties.categoria_etiqueta} (Almanaque Azul)`) }).addTo(st.map);

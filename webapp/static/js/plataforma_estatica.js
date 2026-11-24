@@ -913,6 +913,12 @@
       fetch(serieFile('indice.json')).then((r) => (r.ok ? r.json() : null)).catch(() => null), window.CHCP.consultarActualizacion()]);
   } catch (error) { $('#pe-temas').innerHTML = `<p class="fi-pending">No se pudieron cargar los datos: ${esc(error.message)}</p>`; return; }
   st.map = L.map('smap', { zoomControl: true });
+  // Paneles de ancho ajustable: arrastre el borde entre el panel y el mapa.
+  { const raiz = document.getElementById('v-plataforma'), inval = () => st.map.invalidateSize();
+    window.CHCP.divisor({ panel: document.getElementById('left-panel'), ancla: raiz, borde: 'derecho', clave: 'pe-side', min: 240, max: 560,
+      aplicar: (w) => (w ? raiz.style.setProperty('--pe-side-w', `${w}px`) : raiz.style.removeProperty('--pe-side-w')), alCambiar: inval });
+    window.CHCP.divisor({ panel: document.getElementById('pe-res'), ancla: raiz, borde: 'izquierdo', clave: 'pe-res', min: 300, max: 900,
+      aplicar: (w) => (w ? raiz.style.setProperty('--pe-res-w', `${w}px`) : raiz.style.removeProperty('--pe-res-w')), alCambiar: inval }); }
   // Orden de dibujo: mapas (350) < velo fuera de la subcuenca (380) < vectores (400).
   st.map.createPane('rasters').style.zIndex = 350;
   st.map.createPane('mascara').style.zIndex = 380;
