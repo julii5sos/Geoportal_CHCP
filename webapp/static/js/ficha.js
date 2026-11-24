@@ -12,6 +12,8 @@
   const rip50 = (t) => (t.riparia?.franjas || []).find((f) => f.ancho_m === 50);
   const rip30 = (t) => (t.riparia?.franjas || []).find((f) => f.ancho_m === 30);
   const icon = window.CHCP_ICON || (() => '');
+  /** Encuadra el mapa en el territorio y recuerda cómo hacerlo, para reajustarlo al tamaño de la página al imprimir. */
+  const encuadre = (m, limites, borde) => { m._chcpAjuste = () => m.fitBounds(limites, { padding: [borde, borde] }); m._chcpAjuste(); };
   const st = { data: null, territory: null, map: null, galeria: [], rios: null };
   const brechas = (e) => (e ? (e.brechas_potenciales ?? e.metricas_red?.numero_brechas_potenciales ?? 0) : 0);
   const pct = (v, d = 1) => (v == null ? '—' : `${number(v, d)} %`);
@@ -343,7 +345,8 @@
         <dt>Parche</dt><dd>Área continua de bosque.</dd><dt>Borde</dt><dd>Límite entre bosque y otra cobertura; el bosque cercano al borde recibe más perturbaciones.</dd>
         <dt>Bosque interior (núcleo)</dt><dd>Bosque a más de cierta distancia de cualquier borde.</dd><dt>Red / componente</dt><dd>Grupo de parches suficientemente cercanos para considerarse conectados.</dd>
         <dt>IIC / dIIC</dt><dd>Índice de conectividad del paisaje y cuánto aporta cada parche a ella.</dd><dt>NDVI</dt><dd>Índice de vigor de la vegetación calculado con imágenes Sentinel-2.</dd><dt>ERI</dt><dd>Índice indicativo de resiliencia ecológica (0–100).</dd><dt>Franja riparia</dt><dd>Faja de terreno a cada lado de un río o quebrada.</dd><dt>Almanaque Azul</dt><dd>Atlas que publica los corredores de conectividad y puntos críticos usados como referencia.</dd><dt>Conectividad estructural</dt><dd>Basada en la disposición del bosque; no demuestra que la fauna se desplace.</dd></dl></section>
-      <footer class="fi-foot">Geoportal CHCP · Datos: JRC TMF, Hansen GFC, ESRI LULC, Copernicus Sentinel-2, GEDI, SINIA–MiAMBIENTE, Almanaque Azul · Procesado en Google Earth Engine (proyecto ${esc(st.data.proyecto)}) · Preevaluación indicativa: no predice deforestación ni certifica cumplimiento.</footer>`;
+      <footer class="fi-foot"><p>Datos: JRC TMF, Hansen GFC, ESRI LULC, Copernicus Sentinel-2, GEDI, SINIA–MiAMBIENTE y Almanaque Azul. Procesado en Google Earth Engine (proyecto ${esc(st.data.proyecto)}).</p><p>Preevaluación indicativa: no predice deforestación ni certifica cumplimiento.</p></footer>`;
+    sinPuntos(document.getElementById('fi-doc'));
     drawMap(t);
     if (location.hash && /^#fi-/.test(location.hash)) requestAnimationFrame(() => document.querySelector(location.hash)?.scrollIntoView({ block: 'start' }));
   }
@@ -396,9 +399,13 @@
   function drawGallery(t) {
     st.galeria.forEach((m) => m.remove());
     st.galeria = [];
+    dibujarMinis(t, document.getElementById('fi-doc'), st.galeria);
+  }
+  /** Dibuja los mapas pequeños (.fi-mini[data-fig]) de `raiz` y los agrega a `lista`. */
+  function dibujarMinis(t, raiz, lista) {
     const feature = featureDe(t);
     const porId = new Map((st.figuras || []).map((f) => [f.id, f]));
-    $$('.fi-mini').forEach((div) => {
+    $$('.fi-mini[data-fig]', raiz).forEach((div) => {
       const f = porId.get(div.dataset.fig);
       if (!f) return;
       // zoomSnap fino: el territorio llena el recuadro en vez de quedar en el nivel entero anterior.
@@ -429,8 +436,8 @@
       // Los ríos solo van en el mapa principal de la ficha; aquí taparían la capa de la fuente.
       referencias(m, false, false);
       const borde = L.geoJSON(feature, { style: { color: '#263238', weight: 1.6, fill: false }, interactive: false }).addTo(m);
-      m.fitBounds(borde.getBounds(), { padding: [4, 4] });
-      st.galeria.push(m);
+      encuadre(m, borde.getBounds(), 4);
+      lista.push(m);
     });
   }
   // Red del IGNTG de toda la cuenca, filtrada por la extensión del territorio (para los que aún
@@ -457,7 +464,7 @@
     const feature = featureDe(t);
     const area = L.geoJSON(feature, { style: { color: '#ffffff', weight: 3, fill: false } }).addTo(map);
     referencias(map, false, t.id !== 'chcp');
-    map.fitBounds(area.getBounds(), { padding: [12, 12] });
+    encuadre(map, area.getBounds(), 12);
     if (t.id === 'chcp') return;  // la cuenca completa no tiene red de parches propia
     try {
       const g = await api(`/api/v1/panel/geometry/${t.id}`);
@@ -548,7 +555,7 @@
       const m = L.map(div, { zoomControl: false, attributionControl: false, scrollWheelZoom: false, zoomSnap: 0.1 });
       window.CHCP.mapaBase(m, { defecto: 'gris', control: false });
       const borde = L.geoJSON(feature, { style: { color: '#263238', weight: 1.6, fill: false }, interactive: false }).addTo(m);
-      m.fitBounds(borde.getBounds(), { padding: [4, 4] });
+      encuadre(m, borde.getBounds(), 4);
       st.galeria.push(m);
       valoresDe(window.CHCP.cobFile(mp.archivo)).then((v) => {
         const r = colorearValores(v, { clases: mp.clases });
@@ -583,14 +590,143 @@
         l.on('dblclick', () => { location.href = destino(id); });
       },
     }).addTo(m);
-    m.fitBounds(borde.getBounds(), { padding: [10, 10] });
+    encuadre(m, borde.getBounds(), 10);
+  }
+  // ------------------------------------------------------------ PDF: resumen y ficha completa
+  // El PDF se arma con el cuadro de impresión del navegador. Antes de abrirlo, la página toma el
+  // ancho de una hoja A4 y los mapas se reencuadran y terminan de cargar, para que el PDF se vea
+  // igual que la ficha en pantalla. El nombre del archivo sale del título del documento.
+  const sinAcentos = (x) => String(x).normalize('NFD').replace(/[̀-ͯ]/g, '');
+  const nombreArchivo = (t, tipo) => `${tipo === 'resumen' ? 'Ficha_resumen' : 'Ficha_tecnica'}_${sinAcentos(t.nombre).replace(/[^A-Za-z0-9]+/g, '_').replace(/^_|_$/g, '')}_Geoportal_CHCP`;
+  /** «Título · Fuente» pasa a título con la fuente en letra pequeña, sin el punto separador. */
+  function sinPuntos(raiz) {
+    $$('h2, h3, figcaption', raiz).forEach((h) => {
+      if (!h.innerHTML.includes(' · ')) return;
+      h.innerHTML = h.innerHTML.replace(/ · ([^<]*)(<span class="exp-tag"|$)/, ' <small class="fi-fuente">$1</small>$2');
+    });
+  }
+  const RESUMEN_MAPAS = [['sinia_det', 'sinia_2021'], ['jrc_2025'], ['hansen_todo', 'hansen'], ['coincidencia'], ['red', 'ndvi_cambio'], ['corredores']];
+  function construirResumen(t) {
+    const caja = document.getElementById('fi-resumen');
+    const p = t.preevaluacion, m = t.estructura_2021?.metricas_clase, mp = t.estructura_2021?.metricas_paisaje, s21 = sinia(t, 2021);
+    const toneP = { Alta: 'bad', Media: 'mid', Preventiva: 'mid', Baja: 'good' }[p.prioridad] || 'na';
+    const porId = new Map((st.figuras || []).map((f) => [f.id, f]));
+    const mapas = RESUMEN_MAPAS.map((ids) => ids.map((i) => porId.get(i)).find(Boolean)).filter(Boolean);
+    const claves = ['Estado del bosque', 'Cambios recientes', 'Fragmentación', 'Conectividad estructural', 'Corredores', 'Frente a las demás subcuencas'];
+    const frases = diagnostico(t).filter((f) => claves.some((k) => f.startsWith(`<b>${k}.`)));
+    const pr = t.id === 'chcp' ? null : puesto(t, 'perdida_reciente_pct_anual');
+    const kpi = [
+      ['Bosque oficial 2021', pct(s21?.forest_pct, 0), 'del territorio'],
+      ['Pérdida arbórea desde 2021', hectares(t.hansen_post_2020_ha, 0), 'Hansen GFC'],
+      ['Deforestado a 2025', hectares(t.jrc_ha?.tmf_deforestacion, 0), 'JRC TMF'],
+      ['Degradado a 2025', hectares(t.jrc_ha?.tmf_degradacion, 0), 'JRC TMF'],
+      m ? ['Parches de bosque', number(m.numero_parches, 0), 'bosque oficial 2021'] : null,
+      mp?.porcentaje_bosque_nucleo != null ? ['Bosque interior', pct(mp.porcentaje_bosque_nucleo, 0), 'a más de 100 m de un borde'] : null,
+    ].filter(Boolean);
+    const acc = acciones(t).slice(0, 3);
+    const enLinea = `${location.origin}${location.pathname}?id=${encodeURIComponent(t.id)}`;
+    const meta = `<dl class="fi-meta">${t.id === 'chcp' ? '' : `<div><dt>Forma parte de</dt><dd>${esc(t.grupo)}</dd></div>`}<div><dt>Superficie</dt><dd>${hectares(t.area_ha)}</dd></div><div><dt>Datos del</dt><dd>${esc(fechaLarga(st.data.generado))}</dd></div><div><dt>Método</dt><dd>${esc(String(st.data.metodologia || '').split('-').slice(0, 2).join('-'))}</dd></div></dl>`;
+    caja.innerHTML = `
+      <section class="fi-res-page">
+        <header class="fi-head">
+          <img class="fi-logo" src="${window.CHCP_STATIC ? 'static' : '/static'}/img/emblema.svg" alt="" width="56" height="56">
+          <div class="fi-head-txt"><span class="fi-kicker">Ficha resumen</span><h1>${esc(t.nombre)}</h1>${meta}</div>
+          <div class="fi-score" data-tone="${toneP}"><span>Preevaluación</span><b>${number(p.puntaje, 1)}<small>/ ${number(p.puntaje_maximo, 1)}</small></b><em>${esc(p.prioridad)}</em><small>Visita: ${esc(p.prioridad_visita || '—')}</small>${pr ? `<small class="fi-res-puesto">Puesto ${pr.pos} de ${pr.n} en pérdida reciente</small>` : ''}</div>
+        </header>
+        <div class="fi-res-kpi">${kpi.map(([k, v, n]) => `<div><span>${k}</span><b>${v}</b><small>${n}</small></div>`).join('')}</div>
+        <div class="fi-res-cuerpo">
+          <div class="fi-res-texto"><h2>En pocas palabras</h2>${frases.map((f) => `<p>${f}</p>`).join('')}</div>
+          <figure class="fi-res-mapa"><div class="fi-mini" id="fi-res-principal"></div>
+            <div class="fi-legend"><span><i style="background:#1b5e20"></i>Parche clave</span><span><i style="background:#66bb6a"></i>Importancia media</span><span><i style="background:#c5e1a5"></i>Importancia baja</span><span><i class="dash"></i>Brecha candidata</span></div>
+            <figcaption>${t.id === 'chcp' ? 'La cuenca' : 'La subcuenca'} sobre imagen satelital, con los parches de bosque oficial 2021 según su importancia para la conectividad.</figcaption></figure>
+        </div>
+      </section>
+      <section class="fi-res-page">
+        <h2>Mapas principales</h2>
+        <div class="fi-res-gal">${mapas.map((f) => `<figure class="fi-fig"><figcaption>${esc(f.titulo)}</figcaption><div class="fi-mini" data-fig="${f.id}"></div>${leyendaFigura(f)}</figure>`).join('')}</div>
+        <h2>Qué conviene hacer</h2>
+        <div class="fi-res-acc">${acc.map((a) => `<div><b>${esc(a.t)}</b><p>${esc(a.why)}</p><p><em>Qué hacer:</em> ${esc(a.how)}</p></div>`).join('')}</div>
+        <footer class="fi-res-pie"><p>Resultados indicativos calculados con imágenes satelitales y cartografía oficial (${esc(String(st.data.metodologia || ''))}). Orientan la revisión técnica y la visita de campo; no reemplazan la verificación en terreno.</p>
+          <p>Fuentes: MiAMBIENTE (cobertura oficial 2021), JRC TMF, Hansen GFC, ESRI LULC, Sentinel-2, GEDI, IGNTG y Almanaque Azul. Ficha completa en línea: ${esc(enLinea)}</p></footer>
+      </section>`;
+    sinPuntos(caja);
+    caja.hidden = false;
+    // Mapas del resumen
+    (st.resumen || []).forEach((x) => x.remove());
+    st.resumen = [];
+    dibujarMinis(t, caja, st.resumen);
+    const div = document.getElementById('fi-res-principal');
+    const map = L.map(div, { zoomControl: false, attributionControl: false, scrollWheelZoom: false, zoomSnap: 0.1 });
+    window.CHCP.mapaBase(map, { defecto: 'satelite', control: false });
+    const borde = L.geoJSON(featureDe(t), { style: { color: '#ffffff', weight: 2.5, fill: false }, interactive: false }).addTo(map);
+    encuadre(map, borde.getBounds(), 6);
+    const color = { Alta: '#1b5e20', Media: '#66bb6a', Baja: '#c5e1a5' };
+    const pintar = (g) => {
+      L.geoJSON(g.parches, { style: (f) => ({ color: '#0b3d17', weight: 0.5, fillColor: color[f.properties.prioridad_conectividad] || '#9ccc65', fillOpacity: 0.85 }), interactive: false }).addTo(map);
+      L.geoJSON(g.brechas, { style: { color: '#ff5252', weight: 2, dashArray: '5 4' }, interactive: false }).addTo(map);
+    };
+    if (st.geoFicha?.id === t.id) pintar(st.geoFicha.g); else st.esperaGeo = (st.esperaGeo || []).concat([pintar]);
+    st.resumen.push(map);
+  }
+  /** Espera a que los mapas terminen de cargar teselas e imágenes (como máximo `ms`). */
+  function esperarMapas(mapas, ms = 8000) {
+    const pendientes = [];
+    mapas.forEach((m) => m.eachLayer((l) => {
+      if (l instanceof L.TileLayer && l.isLoading && l.isLoading()) pendientes.push(new Promise((ok) => l.once('load', ok)));
+      if (l instanceof L.ImageOverlay && l._image && !l._image.complete) pendientes.push(new Promise((ok) => { l._image.addEventListener('load', ok, { once: true }); l._image.addEventListener('error', ok, { once: true }); }));
+    }));
+    return Promise.race([Promise.all(pendientes), new Promise((ok) => setTimeout(ok, ms))]);
+  }
+  const todosLosMapas = () => [st.map, st.mapaDiic, ...(st.galeria || []), ...(st.resumen || [])].filter(Boolean);
+  function reencuadrar(mapas) { mapas.forEach((m) => { m.invalidateSize(false); if (m._chcpAjuste) m._chcpAjuste(); }); }
+  const cuadro = () => new Promise((ok) => requestAnimationFrame(() => requestAnimationFrame(ok)));
+  let tituloPantalla = null;
+  function modoImpresion(tipo) {
+    if (tituloPantalla === null) tituloPantalla = document.title;
+    document.documentElement.classList.add('fi-pdf', `fi-pdf-${tipo}`);
+    if (st.actual) document.title = nombreArchivo(st.actual, tipo);
+  }
+  function salirImpresion() {
+    document.documentElement.classList.remove('fi-pdf', 'fi-pdf-resumen', 'fi-pdf-completa');
+    if (tituloPantalla !== null) { document.title = tituloPantalla; tituloPantalla = null; }
+    const caja = document.getElementById('fi-resumen');
+    if (caja) caja.hidden = true;
+    requestAnimationFrame(() => reencuadrar(todosLosMapas()));
+  }
+  async function descargar(tipo) {
+    if (!st.actual) return;
+    modoImpresion(tipo);
+    if (tipo === 'resumen') construirResumen(st.actual);
+    await cuadro();
+    const mapas = tipo === 'resumen' ? st.resumen : todosLosMapas();
+    reencuadrar(mapas);
+    window.CHCP.toast?.('Preparando el PDF…');
+    await esperarMapas(mapas);
+    await cuadro();
+    window.print();
+  }
+  function prepararDescarga() {
+    const btn = $('#fi-print'), menu = $('#fi-descarga-m');
+    const abrir = (si) => { menu.hidden = !si; btn.setAttribute('aria-expanded', String(si)); };
+    btn.addEventListener('click', (e) => { e.stopPropagation(); abrir(menu.hidden); });
+    document.addEventListener('click', (e) => { if (!menu.hidden && !menu.contains(e.target)) abrir(false); });
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') abrir(false); });
+    $$('[data-pdf]', menu).forEach((b) => b.addEventListener('click', () => { abrir(false); descargar(b.dataset.pdf); }));
+    // Ctrl+P sin pasar por el menú: se imprime la ficha completa con el mismo formato.
+    window.addEventListener('beforeprint', () => {
+      if (document.documentElement.classList.contains('fi-pdf')) return;
+      modoImpresion('completa');
+      reencuadrar(todosLosMapas());
+    });
+    window.addEventListener('afterprint', salirImpresion);
   }
   function select(id) {
     const t = st.data.territorios[id];
     if (!t) return;
+    st.actual = t;
     $('#fi-select').value = id;
     history.replaceState(null, '', `${location.pathname}?id=${encodeURIComponent(id)}${/^#fi-/.test(location.hash) ? location.hash : ''}`);
-    document.title = `Ficha técnica · ${t.nombre} · Geoportal CHCP`;
+    document.title = `Ficha técnica de ${t.nombre}, Geoportal CHCP`;
     const sim = $('#fi-sim');
     if (sim) { sim.hidden = id === 'chcp'; sim.href = `${sim.getAttribute('href').split('?')[0]}?id=${encodeURIComponent(id)}`; }
     render(t);
@@ -606,13 +742,13 @@
   const list = Object.values(st.data.territorios).filter(Boolean).sort((a, b) => (a.id === 'chcp' ? -1 : b.id === 'chcp' ? 1 : a.nombre.localeCompare(b.nombre, 'es')));
   $('#fi-select').innerHTML = list.map((t) => `<option value="${t.id}">${esc(t.nombre)}</option>`).join('');
   $('#fi-select').addEventListener('change', (e) => select(e.target.value));
-  $('#fi-print').addEventListener('click', () => window.print());
+  prepararDescarga();
   const id = new URLSearchParams(location.search).get('id');
   select(st.data.territorios[id] ? id : (list.find((t) => t.id !== 'chcp') || list[0]).id);
 
   // ---------------------------------------------------------------- recorrido guiado
   const PASOS_FICHA = [
-    { titulo: 'La ficha técnica', texto: '<p>Resume en una página lo que dicen los datos satelitales sobre una subcuenca: si ha perdido bosque, cómo está el que queda y qué tan conectado está. Se puede descargar en PDF.</p>' },
+    { titulo: 'La ficha técnica', texto: '<p>Resume en una página lo que dicen los datos satelitales sobre una subcuenca: si ha perdido bosque, cómo está el que queda y qué tan conectado está. Se puede descargar en PDF de dos formas: un resumen de 2 páginas o la ficha completa.</p>' },
     { sel: '.fi-score', titulo: 'La preevaluación', texto: 'Puntaje de 0 a 6,5 que suma señales de deterioro de varias fuentes según reglas transparentes. «Alta» significa <b>prioridad para verificar en campo</b>, no daño confirmado.' },
     { sel: '#fi-map', titulo: 'El mapa', texto: 'Parches de bosque oficial 2021 por importancia para la conectividad, brechas que convendría cerrar y ríos del IGNTG. Los corredores del Almanaque Azul están en su propio mapa, en «Mapas temáticos».' },
     { sel: '.fi-gal-sec', titulo: 'Mapas temáticos', texto: 'Cada mapa muestra una fuente distinta sobre el mismo territorio: cobertura oficial, estado del bosque (JRC), pérdida (Hansen), cambio (ESRI), vigor (NDVI) y dónde coinciden las señales.' },
