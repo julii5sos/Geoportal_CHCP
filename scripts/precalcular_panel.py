@@ -315,9 +315,11 @@ def _registrar(datos: dict, inicio: str, procesados: int) -> None:
 
 
 # Entorno de la cuenca para las rutas al Corredor Mesoamericano del simulador: la cuenca más
-# 15 km (la extensión de los assets SINIA). Sin él, una ruta no puede salir de la cuenca y se
-# desvía hacia un tramo interior más lejano aunque haya otro tramo justo fuera del límite.
-MARGEN_ENTORNO_M = 15_000
+# 25 km. Sin él, una ruta no puede salir de la cuenca y se desvía hacia un tramo interior más
+# lejano aunque haya otro tramo justo fuera del límite. Los assets SINIA llegan a unos 15 km;
+# más allá la clase sale de JRC TMF 2025 y ESRI 2024 (rutas_corredor.js, «Sin SINIA general»).
+# 25 km alcanzan el tramo oeste del corredor, a 15,8 km de la cuenca (6 320 ha dentro).
+MARGEN_ENTORNO_M = 25_000
 CAPAS_ENTORNO = ["sinia_2021", "sinia_2021_detalle", "jrc_2025", "esri_2024"]
 
 
@@ -333,7 +335,7 @@ def _geometria_entorno() -> dict:
     a_geo = Transformer.from_crs(32617, 4326, always_xy=True).transform
     cuenca = transform(a_utm, shape(geometria_cuenca())).buffer(0)
     entorno = cuenca.buffer(MARGEN_ENTORNO_M).simplify(200)
-    return {"type": "Feature", "properties": {"nombre": "Cuenca del Canal + 15 km"},
+    return {"type": "Feature", "properties": {"nombre": "Cuenca del Canal + 25 km"},
             "geometry": mapping(transform(a_geo, entorno))}
 
 
@@ -354,13 +356,13 @@ def _mapas_entorno(forzar: bool = False, max_minutos: int = 30) -> None:
     if not forzar and not _falta_entorno():
         return
     inicio = time.time()
-    print("Entorno de la cuenca (+15 km) para las rutas del simulador: calculando…", flush=True)
+    print(f"Entorno de la cuenca (+{MARGEN_ENTORNO_M // 1000} km) para las rutas del simulador: calculando…", flush=True)
     try:
         if max_minutos:
             _limite_tiempo(max_minutos * 60)
         datos = generar_mapas(_geometria_entorno(), destino, ee_module=ee, capas=CAPAS_ENTORNO,
                               max_pixeles=MAX_PIXELES_CUENCA)
-        datos.update({"margen_m": MARGEN_ENTORNO_M, "descripcion": "Cuenca del Canal + 15 km (extensión de los assets SINIA)",
+        datos.update({"margen_m": MARGEN_ENTORNO_M, "descripcion": "Cuenca del Canal + 25 km (SINIA hasta donde llega; JRC y ESRI más allá)",
                       "generado": datetime.now().isoformat(timespec="seconds")})
         if "sinia_2021" in datos["valores"]:
             meta.write_text(json.dumps(datos, ensure_ascii=False, indent=1), encoding="utf-8")
@@ -392,7 +394,7 @@ def main() -> int:
     parser.add_argument("--solo-mapa-eri", action="store_true",
                         help="Solo generar la imagen ERI de los territorios que no la tienen (máx. 15 min cada uno)")
     parser.add_argument("--solo-entorno", action="store_true",
-                        help="Solo (re)generar las capas del entorno de la cuenca (+15 km) para las rutas del simulador")
+                        help="Solo (re)generar las capas del entorno de la cuenca (+25 km) para las rutas del simulador")
     parser.add_argument("--solo-mapas", action="store_true",
                         help="Solo (re)generar mapas y análisis ripario de los territorios ya calculados")
     args = parser.parse_args()
