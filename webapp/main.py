@@ -11,7 +11,7 @@ import uuid
 from pathlib import Path
 from urllib.parse import urlsplit
 
-from flask import Flask, g, jsonify, render_template, request, send_file
+from flask import Flask, g, jsonify, redirect, render_template, request, send_file, url_for
 from pydantic import ValidationError
 from werkzeug.middleware.proxy_fix import ProxyFix
 
@@ -272,11 +272,12 @@ def create_app(*, testing: bool = False) -> Flask:
 
     @app.get("/validacion")
     def validacion():
-        return render_template("validacion.html", active="validacion", project_id=resolver_proyecto_gee(), use_map=True, app_page=True)
+        # La herramienta de interpretación se retiró; los resultados están en Metodología.
+        return redirect(url_for("methodology") + "#exactitud")
 
     @app.get("/api/v1/validacion/<path:ruta>")
     def api_validacion(ruta: str):
-        if not re.fullmatch(r"(indice\.json|[a-z0-9_]{1,40}/(diseno|resultados|resultados_fuentes)\.json|[a-z0-9_]{1,40}/muestra\.csv|[a-z0-9_]{1,40}/muestra\.kml)", ruta):
+        if not re.fullmatch(r"(indice\.json|[a-z0-9_]{1,40}/(diseno|resultados|resultados_fuentes)\.json)", ruta):
             return jsonify(error="Solicitud no válida."), 400
         path = PANEL_STATISTICS_PATH.parent / "validacion" / ruta
         if not path.exists():

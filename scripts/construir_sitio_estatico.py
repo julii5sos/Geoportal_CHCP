@@ -36,7 +36,6 @@ PAGINAS = {
     "/about": "acerca.html",
     "/ficha": "ficha.html",
     "/restauracion": "restauracion.html",
-    "/validacion": "validacion.html",
     "/campo": "campo.html",
 }
 
@@ -50,7 +49,7 @@ def reescribir_enlaces(html: str, app_completa: str) -> str:
     html = re.sub(r'(["\'(,\s])/static/', r'\1static/', html)
     destinos = {"": "index.html", "panel": "panel.html", "platform": "plataforma.html", "coberturas": "coberturas.html",
                 "methodology": "metodologia.html", "about": "acerca.html", "ficha": "ficha.html",
-                "restauracion": "restauracion.html", "validacion": "validacion.html", "campo": "campo.html"}
+                "restauracion": "restauracion.html", "validacion": "metodologia.html#exactitud", "campo": "campo.html"}
 
     def cambiar(m):
         ruta, ancla = m.group(1), m.group(2) or ""
@@ -90,10 +89,19 @@ def construir(destino: Path, app_completa: str, repo_url: str) -> list[str]:
     if (RAIZ / "data" / "hidrografia").exists():
         shutil.copytree(RAIZ / "data" / "hidrografia", destino / "datos" / "hidrografia")
     if (RAIZ / "data" / "validacion").exists():
-        # estratos.csv y fuentes_puntos.csv (clase de cada mapa en los puntos) no se publican en el
-        # sitio: la interpretación debe ser ciega. Solo se publican los resultados agregados.
-        shutil.copytree(RAIZ / "data" / "validacion", destino / "datos" / "validacion",
-                        ignore=shutil.ignore_patterns("estratos.csv", "fuentes_puntos.csv"))
+        # Solo los resultados agregados de la evaluación de exactitud: la muestra, las imágenes y
+        # los valores por punto quedan en el repositorio, no en el sitio.
+        origen = RAIZ / "data" / "validacion"
+        for archivo in [origen / "indice.json", *origen.glob("*/resultados*.json"), *origen.glob("*/diseno.json")]:
+            if archivo.exists():
+                copia = destino / "datos" / "validacion" / archivo.relative_to(origen)
+                copia.parent.mkdir(parents=True, exist_ok=True)
+                shutil.copy2(archivo, copia)
+    # La antigua página de validación lleva a los resultados en Metodología.
+    (destino / "validacion.html").write_text(
+        '<!doctype html><meta charset="utf-8"><meta http-equiv="refresh" content="0; url=metodologia.html#exactitud">'
+        '<link rel="canonical" href="metodologia.html#exactitud"><a href="metodologia.html#exactitud">Exactitud de los mapas</a>',
+        encoding="utf-8")
     if (RAIZ / "data" / "mapas").exists():
         shutil.copytree(RAIZ / "data" / "mapas", destino / "datos" / "mapas")
     shutil.copytree(RAIZ / "webapp" / "static", destino / "static",

@@ -15,11 +15,11 @@ class SitioEstaticoTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             destino = Path(tmp) / "sitio"
             mod.construir(destino, "https://ejemplo.hf.space", "https://github.com/julii5sos/Geoportal_CHCP")
-            for archivo in ("index.html", "panel.html", "plataforma.html", "monitoreo.html", "static/js/plataforma_estatica.js", "coberturas.html", "metodologia.html", "acerca.html", "ficha.html", "restauracion.html", "validacion.html", "campo.html", ".nojekyll", "static/js/monitoreo.js", "static/js/ficha.js", "static/js/restauracion.js", "static/js/red_conectividad.js", "static/js/validacion.js", "static/js/campo.js", "static/vendor/leaflet.js",
+            for archivo in ("index.html", "panel.html", "plataforma.html", "monitoreo.html", "static/js/plataforma_estatica.js", "coberturas.html", "metodologia.html", "acerca.html", "ficha.html", "restauracion.html", "validacion.html", "campo.html", ".nojekyll", "static/js/monitoreo.js", "static/js/ficha.js", "static/js/restauracion.js", "static/js/red_conectividad.js", "static/js/campo.js", "static/vendor/leaflet.js",
                             "datos/territorio.json", "datos/estadisticas_territoriales.json", "datos/sinia_catalogo.json"):
                 self.assertTrue((destino / archivo).exists(), archivo)
             import re
-            for pagina in ("index.html", "panel.html", "plataforma.html", "coberturas.html", "metodologia.html", "acerca.html", "ficha.html", "restauracion.html", "validacion.html", "campo.html"):
+            for pagina in ("index.html", "panel.html", "plataforma.html", "coberturas.html", "metodologia.html", "acerca.html", "ficha.html", "restauracion.html", "campo.html"):
                 html = (destino / pagina).read_text(encoding="utf-8")
                 self.assertNotIn('"/static/', html)
                 self.assertIn("window.CHCP_STATIC", html)
@@ -93,3 +93,22 @@ class FichaRutaTests(unittest.TestCase):
         self.assertEqual(cliente.get("/api/v1/panel/maps/s5/config.py").status_code, 400)
         # Un archivo válido que no existe (los datos reales pueden ya incluir eri.png).
         self.assertEqual(cliente.get("/api/v1/panel/maps/s5/capa_inexistente.png").status_code, 404)
+
+
+class ValidacionRetiradaTests(unittest.TestCase):
+    def test_sin_herramienta_de_validacion_y_con_resultados(self):
+        import importlib.util
+        import tempfile
+        raiz = Path(__file__).resolve().parents[1]
+        spec = importlib.util.spec_from_file_location("ces", raiz / "scripts" / "construir_sitio_estatico.py")
+        mod = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(mod)
+        with tempfile.TemporaryDirectory() as tmp:
+            destino = Path(tmp) / "sitio"
+            mod.construir(destino, "", "https://github.com/julii5sos/Geoportal_CHCP")
+            self.assertIn("metodologia.html#exactitud", (destino / "validacion.html").read_text(encoding="utf-8"))
+            self.assertFalse((destino / "static/js/validacion.js").exists())
+            self.assertFalse((destino / "datos/validacion/senal_perdida/muestra.csv").exists())
+            self.assertFalse((destino / "datos/validacion/senal_perdida/imagenes").exists())
+            self.assertTrue((destino / "datos/validacion/senal_perdida/resultados.json").exists())
+            self.assertNotIn("Validación de mapas", (destino / "index.html").read_text(encoding="utf-8"))

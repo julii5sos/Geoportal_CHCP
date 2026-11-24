@@ -6,7 +6,7 @@ El geoportal muestra superficies de mapa (píxeles clasificados por JRC, Hansen,
 - la **exactitud global**, de **usuario** (1 − comisión) y de **productor** (1 − omisión), con intervalo de confianza del 95 %;
 - la **superficie ajustada por error** de cada clase, con su intervalo de confianza.
 
-Código: `chcp/nucleo/validacion.py` (Python) y `webapp/static/js/validacion_estimadores.js` (navegador). Ambos reproducen el ejemplo publicado del artículo (`tests/test_validacion.py`): deforestación 21 158 ± 6 158 ha, exactitud global 0,947 ± 0,018.
+Código: `chcp/nucleo/validacion.py` (Olofsson 2014 y, para evaluar otros mapas con la misma muestra, Stehman 2014). Reproduce el ejemplo publicado del artículo (`tests/test_validacion.py`): deforestación 21 158 ± 6 158 ha, exactitud global 0,947 ± 0,018.
 
 ## 1. Diseño de muestreo
 

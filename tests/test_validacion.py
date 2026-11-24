@@ -50,17 +50,6 @@ class OlofssonTests(unittest.TestCase):
         m = matriz_conteos([("a", "a"), ("a", "b"), ("b", "b"), ("x", "a")], ["a", "b"])
         self.assertEqual(m, [[1, 1], [0, 1]])
 
-    @unittest.skipUnless(shutil.which("node"), "node no disponible")
-    def test_version_navegador_igual(self):
-        script = (f"const V = require({json.dumps(str(RAIZ / 'webapp/static/js/validacion_estimadores.js'))});"
-                  f"console.log(JSON.stringify(V.evaluar({json.dumps(CLASES)}, {json.dumps(AREAS)}, {json.dumps(CONTEOS)})));")
-        js = json.loads(subprocess.run(["node", "-e", script], capture_output=True, text=True, check=True).stdout)
-        self.assertAlmostEqual(js["exactitud_global"], self.r["exactitud_global"], places=12)
-        self.assertAlmostEqual(js["exactitud_global_ic"], self.r["exactitud_global_ic"], places=12)
-        for a, b in zip(js["por_clase"], self.r["por_clase"]):
-            for k in ("exactitud_usuario", "exactitud_usuario_ic", "exactitud_productor", "exactitud_productor_ic", "area_ajustada", "area_ajustada_ic"):
-                self.assertAlmostEqual(a[k], b[k], places=6, msg=k)
-
 
 class EvaluarCarpetaTests(unittest.TestCase):
     def test_evalua_muestra_interpretada(self):

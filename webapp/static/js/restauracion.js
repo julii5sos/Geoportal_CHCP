@@ -190,7 +190,7 @@
   }
   function textoValidacion() {
     const v = st.validacion, oficial = '';
-    if (!v) return `Su exactitud en la cuenca no se ha evaluado: la evaluación preliminar con imágenes satelitales se hizo sobre la señal de pérdida del geoportal, no sobre esta cobertura (página «Validación de mapas»).${oficial}`;
+    if (!v) return `Su exactitud en la cuenca no se ha evaluado: la evaluación preliminar con imágenes satelitales se hizo sobre la señal de pérdida del geoportal, no sobre esta cobertura (ver Metodología).${oficial}`;
     if (v.estado === 'completa') return `Validación independiente completa (${v.interpretados} puntos).${oficial}`;
     return `Validación independiente ${v.estado === 'preliminar' ? 'preliminar' : 'sin interpretar'} (${v.interpretados} de ${v.total_puntos} puntos): su exactitud en la cuenca todavía no está evaluada.${oficial}`;
   }

@@ -107,7 +107,7 @@
     const nombre = id === 'chcp' ? '' : sel.options[sel.selectedIndex].text;
     const S = Boolean(window.CHCP_STATIC);
     const ruta = { ficha: S ? 'ficha.html' : '/ficha', restauracion: S ? 'restauracion.html' : '/restauracion', panel: S ? 'panel.html' : '/panel',
-      coberturas: S ? 'coberturas.html' : '/coberturas', platform: S ? 'plataforma.html' : '/platform', validacion: S ? 'validacion.html' : '/validacion' };
+      coberturas: S ? 'coberturas.html' : '/coberturas', platform: S ? 'plataforma.html' : '/platform', exactitud: S ? 'metodologia.html#exactitud' : '/methodology#exactitud' };
     document.querySelectorAll('[data-destino]').forEach((a) => {
       const d = a.dataset.destino;
       let href = ruta[d];
@@ -137,7 +137,7 @@
     { sel: '#in-aviso', titulo: 'Es una evaluación preliminar', texto: 'Los resultados vienen de imágenes satelitales y mapas oficiales. Indican <b>dónde conviene mirar primero</b>; la confirmación siempre requiere verificación en campo.' },
     { sel: '#in-preguntas .in-grid', titulo: '2. Elija una pregunta', texto: 'Cada tarjeta es una pregunta concreta y le lleva directo a la herramienta que la responde, ya con el área elegida. Debajo de cada pregunta verá qué fuentes se usan.' },
     { sel: '.in-q-dest', titulo: '3. Explore escenarios', texto: 'El <b>simulador</b> permite probar dónde restaurar para reconectar el bosque, o trazar rutas hacia el Corredor Biológico Mesoamericano. Son escenarios hipotéticos para comparar opciones.' },
-    { sel: '#links', titulo: 'Todo está también en el menú', texto: '<b>Panel</b>: indicadores, fichas y coberturas oficiales. <b>Plataforma</b>: mapa SIG, simulador, validación y verificación de campo. <b>Metodología</b>: cómo se calcula cada cosa.' },
+    { sel: '#links', titulo: 'Todo está también en el menú', texto: '<b>Panel</b>: indicadores, fichas y coberturas oficiales. <b>Plataforma</b>: mapa SIG, simulador y verificación de campo. <b>Metodología</b>: cómo se calcula cada cosa.' },
     { sel: '#in-datos .in-fuentes', titulo: 'De dónde vienen los datos', texto: 'Cada resultado indica su fuente y su fecha. Cuando varias fuentes coinciden, la señal es más confiable.' },
     { titulo: '¡Listo!', texto: '<p>Empiece eligiendo un lugar y una pregunta. Si tiene dudas, las <b>preguntas frecuentes</b> están al final de esta página y cada herramienta tiene su propio botón <b>«Cómo se usa»</b>.</p>' },
   ];
