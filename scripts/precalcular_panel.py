@@ -290,6 +290,8 @@ def _solo_mapa_eri(territorio: dict, registro: dict) -> str:
             mapas["valores"] = list(dict.fromkeys([*(mapas.get("valores") or []), "eri"]))
         errores.pop("eri", None)
         mapas.pop("eri_pendiente", None)
+        mapas.pop("eri_origen", None)  # ya no es el recorte del mapa de la cuenca
+        mapas.pop("eri_tamano_pixel_m", None)
         return "listo"
     errores["eri"] = nuevo["errores"].get("eri", "sin resultado")
     return f"ERROR {errores['eri']}"
@@ -443,7 +445,8 @@ def main() -> int:
         _initialize_ee()
         ee.data.setDeadline(10 * 60 * 1000)
         objetivo = [t for t in _territorios() if t["id"] in datos["territorios"]
-                    and "eri" not in ((datos["territorios"][t["id"]].get("mapas") or {}).get("capas") or [])]
+                    and ("eri" not in ((datos["territorios"][t["id"]].get("mapas") or {}).get("capas") or [])
+                         or (datos["territorios"][t["id"]].get("mapas") or {}).get("eri_origen") == "cuenca")]
         if args.limite:
             objetivo = objetivo[: args.limite]
         print(f"Mapa ERI pendiente en {len(objetivo)} territorios.")

@@ -7883,6 +7883,7 @@
      "hansen",
      "esri_cambio",
      "ndvi_cambio",
+     "eri",
      "coincidencia",
      "riparia"
     ],
@@ -7897,13 +7898,14 @@
      "gedi",
      "aux",
      "esri_2024",
-     "sinia_2021_detalle"
+     "sinia_2021_detalle",
+     "eri"
     ],
-    "errores": {
-     "eri": "ConnectionError: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))"
-    },
+    "errores": {},
     "rios": 6,
-    "rios_fuente": "IGNTG 2022 · hidrografía 1:25 000"
+    "rios_fuente": "IGNTG 2022 · hidrografía 1:25 000",
+    "eri_origen": "cuenca",
+    "eri_tamano_pixel_m": 42.6
    },
    "sitios": [
     {
@@ -10581,6 +10583,7 @@
      "hansen",
      "esri_cambio",
      "ndvi_cambio",
+     "eri",
      "coincidencia",
      "riparia"
     ],
@@ -10595,13 +10598,14 @@
      "gedi",
      "aux",
      "esri_2024",
-     "sinia_2021_detalle"
+     "sinia_2021_detalle",
+     "eri"
     ],
-    "errores": {
-     "eri": "ConnectionError: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))"
-    },
+    "errores": {},
     "rios": 12,
-    "rios_fuente": "IGNTG 2022 · hidrografía 1:25 000"
+    "rios_fuente": "IGNTG 2022 · hidrografía 1:25 000",
+    "eri_origen": "cuenca",
+    "eri_tamano_pixel_m": 42.6
    },
    "sitios": [
     {
@@ -16332,6 +16336,7 @@
      "hansen",
      "esri_cambio",
      "ndvi_cambio",
+     "eri",
      "coincidencia",
      "riparia"
     ],
@@ -16346,12 +16351,14 @@
      "gedi",
      "aux",
      "esri_2024",
-     "sinia_2021_detalle"
+     "sinia_2021_detalle",
+     "eri"
     ],
     "errores": {},
-    "eri_pendiente": true,
     "rios": 11,
-    "rios_fuente": "IGNTG 2022 · hidrografía 1:25 000"
+    "rios_fuente": "IGNTG 2022 · hidrografía 1:25 000",
+    "eri_origen": "cuenca",
+    "eri_tamano_pixel_m": 42.6
    },
    "sitios": [
     {
@@ -19521,6 +19528,7 @@
      "hansen",
      "esri_cambio",
      "ndvi_cambio",
+     "eri",
      "coincidencia",
      "riparia"
     ],
@@ -19535,12 +19543,14 @@
      "gedi",
      "aux",
      "esri_2024",
-     "sinia_2021_detalle"
+     "sinia_2021_detalle",
+     "eri"
     ],
     "errores": {},
-    "eri_pendiente": true,
     "rios": 6,
-    "rios_fuente": "IGNTG 2022 · hidrografía 1:25 000"
+    "rios_fuente": "IGNTG 2022 · hidrografía 1:25 000",
+    "eri_origen": "cuenca",
+    "eri_tamano_pixel_m": 42.6
    },
    "sitios": [
     {
@@ -20181,6 +20191,7 @@
      "hansen",
      "esri_cambio",
      "ndvi_cambio",
+     "eri",
      "coincidencia",
      "riparia"
     ],
@@ -20195,12 +20206,14 @@
      "gedi",
      "aux",
      "esri_2024",
-     "sinia_2021_detalle"
+     "sinia_2021_detalle",
+     "eri"
     ],
     "errores": {},
-    "eri_pendiente": true,
     "rios": 4,
-    "rios_fuente": "IGNTG 2022 · hidrografía 1:25 000"
+    "rios_fuente": "IGNTG 2022 · hidrografía 1:25 000",
+    "eri_origen": "cuenca",
+    "eri_tamano_pixel_m": 42.6
    },
    "sitios": [
     {
@@ -22206,6 +22219,7 @@
      "hansen",
      "esri_cambio",
      "ndvi_cambio",
+     "eri",
      "coincidencia",
      "riparia"
     ],
@@ -22220,12 +22234,14 @@
      "gedi",
      "aux",
      "esri_2024",
-     "sinia_2021_detalle"
+     "sinia_2021_detalle",
+     "eri"
     ],
     "errores": {},
-    "eri_pendiente": true,
     "rios": 1,
-    "rios_fuente": "IGNTG 2022 · hidrografía 1:25 000"
+    "rios_fuente": "IGNTG 2022 · hidrografía 1:25 000",
+    "eri_origen": "cuenca",
+    "eri_tamano_pixel_m": 42.6
    },
    "sitios": [
     {
@@ -22883,6 +22899,7 @@
      "hansen",
      "esri_cambio",
      "ndvi_cambio",
+     "eri",
      "coincidencia",
      "riparia"
     ],
@@ -22897,12 +22914,14 @@
      "gedi",
      "aux",
      "esri_2024",
-     "sinia_2021_detalle"
+     "sinia_2021_detalle",
+     "eri"
     ],
     "errores": {},
-    "eri_pendiente": true,
     "rios": 13,
-    "rios_fuente": "IGNTG 2022 · hidrografía 1:25 000"
+    "rios_fuente": "IGNTG 2022 · hidrografía 1:25 000",
+    "eri_origen": "cuenca",
+    "eri_tamano_pixel_m": 42.6
    },
    "sitios": [
     {
@@ -23542,6 +23561,7 @@
      "hansen",
      "esri_cambio",
      "ndvi_cambio",
+     "eri",
      "coincidencia",
      "riparia"
     ],
@@ -23556,12 +23576,14 @@
      "gedi",
      "aux",
      "esri_2024",
-     "sinia_2021_detalle"
+     "sinia_2021_detalle",
+     "eri"
     ],
     "errores": {},
-    "eri_pendiente": true,
     "rios": 29,
-    "rios_fuente": "IGNTG 2022 · hidrografía 1:25 000"
+    "rios_fuente": "IGNTG 2022 · hidrografía 1:25 000",
+    "eri_origen": "cuenca",
+    "eri_tamano_pixel_m": 42.6
    },
    "sitios": [
     {
@@ -24209,6 +24231,7 @@
      "hansen",
      "esri_cambio",
      "ndvi_cambio",
+     "eri",
      "coincidencia",
      "riparia"
     ],
@@ -24223,12 +24246,14 @@
      "gedi",
      "aux",
      "esri_2024",
-     "sinia_2021_detalle"
+     "sinia_2021_detalle",
+     "eri"
     ],
     "errores": {},
-    "eri_pendiente": true,
     "rios": 1,
-    "rios_fuente": "IGNTG 2022 · hidrografía 1:25 000"
+    "rios_fuente": "IGNTG 2022 · hidrografía 1:25 000",
+    "eri_origen": "cuenca",
+    "eri_tamano_pixel_m": 42.6
    },
    "sitios": [
     {
@@ -24876,6 +24901,7 @@
      "hansen",
      "esri_cambio",
      "ndvi_cambio",
+     "eri",
      "coincidencia",
      "riparia"
     ],
@@ -24890,12 +24916,14 @@
      "gedi",
      "aux",
      "esri_2024",
-     "sinia_2021_detalle"
+     "sinia_2021_detalle",
+     "eri"
     ],
     "errores": {},
-    "eri_pendiente": true,
     "rios": 2,
-    "rios_fuente": "IGNTG 2022 · hidrografía 1:25 000"
+    "rios_fuente": "IGNTG 2022 · hidrografía 1:25 000",
+    "eri_origen": "cuenca",
+    "eri_tamano_pixel_m": 42.6
    },
    "sitios": [
     {
@@ -25517,6 +25545,7 @@
      "hansen",
      "esri_cambio",
      "ndvi_cambio",
+     "eri",
      "coincidencia",
      "riparia"
     ],
@@ -25531,12 +25560,14 @@
      "gedi",
      "aux",
      "esri_2024",
-     "sinia_2021_detalle"
+     "sinia_2021_detalle",
+     "eri"
     ],
     "errores": {},
-    "eri_pendiente": true,
     "rios": 15,
-    "rios_fuente": "IGNTG 2022 · hidrografía 1:25 000"
+    "rios_fuente": "IGNTG 2022 · hidrografía 1:25 000",
+    "eri_origen": "cuenca",
+    "eri_tamano_pixel_m": 42.6
    },
    "sitios": [
     {
@@ -26190,6 +26221,7 @@
      "hansen",
      "esri_cambio",
      "ndvi_cambio",
+     "eri",
      "coincidencia",
      "riparia"
     ],
@@ -26204,12 +26236,14 @@
      "gedi",
      "aux",
      "esri_2024",
-     "sinia_2021_detalle"
+     "sinia_2021_detalle",
+     "eri"
     ],
     "errores": {},
-    "eri_pendiente": true,
     "rios": 3,
-    "rios_fuente": "HydroSHEDS · drenaje ≥ 10 km²"
+    "rios_fuente": "HydroSHEDS · drenaje ≥ 10 km²",
+    "eri_origen": "cuenca",
+    "eri_tamano_pixel_m": 42.6
    },
    "sitios": [
     {
@@ -26862,6 +26896,7 @@
      "hansen",
      "esri_cambio",
      "ndvi_cambio",
+     "eri",
      "coincidencia",
      "riparia"
     ],
@@ -26876,12 +26911,14 @@
      "gedi",
      "aux",
      "esri_2024",
-     "sinia_2021_detalle"
+     "sinia_2021_detalle",
+     "eri"
     ],
     "errores": {},
-    "eri_pendiente": true,
     "rios": 4,
-    "rios_fuente": "IGNTG 2022 · hidrografía 1:25 000"
+    "rios_fuente": "IGNTG 2022 · hidrografía 1:25 000",
+    "eri_origen": "cuenca",
+    "eri_tamano_pixel_m": 42.6
    },
    "sitios": [
     {
@@ -27535,6 +27572,7 @@
      "hansen",
      "esri_cambio",
      "ndvi_cambio",
+     "eri",
      "coincidencia",
      "riparia"
     ],
@@ -27549,12 +27587,14 @@
      "gedi",
      "aux",
      "esri_2024",
-     "sinia_2021_detalle"
+     "sinia_2021_detalle",
+     "eri"
     ],
     "errores": {},
-    "eri_pendiente": true,
     "rios": 18,
-    "rios_fuente": "IGNTG 2022 · hidrografía 1:25 000"
+    "rios_fuente": "IGNTG 2022 · hidrografía 1:25 000",
+    "eri_origen": "cuenca",
+    "eri_tamano_pixel_m": 42.6
    },
    "sitios": [
     {
@@ -28201,6 +28241,7 @@
      "hansen",
      "esri_cambio",
      "ndvi_cambio",
+     "eri",
      "coincidencia",
      "riparia"
     ],
@@ -28215,12 +28256,14 @@
      "gedi",
      "aux",
      "esri_2024",
-     "sinia_2021_detalle"
+     "sinia_2021_detalle",
+     "eri"
     ],
     "errores": {},
-    "eri_pendiente": true,
     "rios": 5,
-    "rios_fuente": "IGNTG 2022 · hidrografía 1:25 000"
+    "rios_fuente": "IGNTG 2022 · hidrografía 1:25 000",
+    "eri_origen": "cuenca",
+    "eri_tamano_pixel_m": 42.6
    },
    "sitios": [
     {
@@ -28874,6 +28917,7 @@
      "hansen",
      "esri_cambio",
      "ndvi_cambio",
+     "eri",
      "coincidencia",
      "riparia"
     ],
@@ -28888,12 +28932,14 @@
      "gedi",
      "aux",
      "esri_2024",
-     "sinia_2021_detalle"
+     "sinia_2021_detalle",
+     "eri"
     ],
     "errores": {},
-    "eri_pendiente": true,
     "rios": 8,
-    "rios_fuente": "IGNTG 2022 · hidrografía 1:25 000"
+    "rios_fuente": "IGNTG 2022 · hidrografía 1:25 000",
+    "eri_origen": "cuenca",
+    "eri_tamano_pixel_m": 42.6
    },
    "sitios": [
     {
@@ -29459,6 +29505,7 @@
      "hansen",
      "esri_cambio",
      "ndvi_cambio",
+     "eri",
      "coincidencia",
      "riparia"
     ],
@@ -29473,12 +29520,14 @@
      "gedi",
      "aux",
      "esri_2024",
-     "sinia_2021_detalle"
+     "sinia_2021_detalle",
+     "eri"
     ],
     "errores": {},
-    "eri_pendiente": true,
     "rios": 2,
-    "rios_fuente": "IGNTG 2022 · hidrografía 1:25 000"
+    "rios_fuente": "IGNTG 2022 · hidrografía 1:25 000",
+    "eri_origen": "cuenca",
+    "eri_tamano_pixel_m": 42.6
    },
    "sitios": [
     {
@@ -30089,6 +30138,7 @@
      "hansen",
      "esri_cambio",
      "ndvi_cambio",
+     "eri",
      "coincidencia",
      "riparia"
     ],
@@ -30103,12 +30153,14 @@
      "gedi",
      "aux",
      "esri_2024",
-     "sinia_2021_detalle"
+     "sinia_2021_detalle",
+     "eri"
     ],
     "errores": {},
-    "eri_pendiente": true,
     "rios": 66,
-    "rios_fuente": "IGNTG 2022 · hidrografía 1:25 000"
+    "rios_fuente": "IGNTG 2022 · hidrografía 1:25 000",
+    "eri_origen": "cuenca",
+    "eri_tamano_pixel_m": 42.6
    },
    "sitios": [
     {
@@ -30756,6 +30808,7 @@
      "hansen",
      "esri_cambio",
      "ndvi_cambio",
+     "eri",
      "coincidencia",
      "riparia"
     ],
@@ -30770,12 +30823,14 @@
      "gedi",
      "aux",
      "esri_2024",
-     "sinia_2021_detalle"
+     "sinia_2021_detalle",
+     "eri"
     ],
     "errores": {},
-    "eri_pendiente": true,
     "rios": 14,
-    "rios_fuente": "IGNTG 2022 · hidrografía 1:25 000"
+    "rios_fuente": "IGNTG 2022 · hidrografía 1:25 000",
+    "eri_origen": "cuenca",
+    "eri_tamano_pixel_m": 42.6
    },
    "sitios": [
     {
@@ -31410,6 +31465,7 @@
      "hansen",
      "esri_cambio",
      "ndvi_cambio",
+     "eri",
      "coincidencia",
      "riparia"
     ],
@@ -31424,12 +31480,14 @@
      "gedi",
      "aux",
      "esri_2024",
-     "sinia_2021_detalle"
+     "sinia_2021_detalle",
+     "eri"
     ],
     "errores": {},
-    "eri_pendiente": true,
     "rios": 38,
-    "rios_fuente": "IGNTG 2022 · hidrografía 1:25 000"
+    "rios_fuente": "IGNTG 2022 · hidrografía 1:25 000",
+    "eri_origen": "cuenca",
+    "eri_tamano_pixel_m": 42.6
    },
    "sitios": [
     {
@@ -32087,6 +32145,7 @@
      "hansen",
      "esri_cambio",
      "ndvi_cambio",
+     "eri",
      "coincidencia",
      "riparia"
     ],
@@ -32101,12 +32160,14 @@
      "gedi",
      "aux",
      "esri_2024",
-     "sinia_2021_detalle"
+     "sinia_2021_detalle",
+     "eri"
     ],
     "errores": {},
-    "eri_pendiente": true,
     "rios": 3,
-    "rios_fuente": "IGNTG 2022 · hidrografía 1:25 000"
+    "rios_fuente": "IGNTG 2022 · hidrografía 1:25 000",
+    "eri_origen": "cuenca",
+    "eri_tamano_pixel_m": 42.6
    },
    "sitios": [
     {
@@ -32754,6 +32815,7 @@
      "hansen",
      "esri_cambio",
      "ndvi_cambio",
+     "eri",
      "coincidencia",
      "riparia"
     ],
@@ -32768,12 +32830,14 @@
      "gedi",
      "aux",
      "esri_2024",
-     "sinia_2021_detalle"
+     "sinia_2021_detalle",
+     "eri"
     ],
     "errores": {},
-    "eri_pendiente": true,
     "rios": 14,
-    "rios_fuente": "IGNTG 2022 · hidrografía 1:25 000"
+    "rios_fuente": "IGNTG 2022 · hidrografía 1:25 000",
+    "eri_origen": "cuenca",
+    "eri_tamano_pixel_m": 42.6
    },
    "sitios": [
     {
@@ -33427,6 +33491,7 @@
      "hansen",
      "esri_cambio",
      "ndvi_cambio",
+     "eri",
      "coincidencia",
      "riparia"
     ],
@@ -33441,12 +33506,14 @@
      "gedi",
      "aux",
      "esri_2024",
-     "sinia_2021_detalle"
+     "sinia_2021_detalle",
+     "eri"
     ],
     "errores": {},
-    "eri_pendiente": true,
     "rios": 46,
-    "rios_fuente": "IGNTG 2022 · hidrografía 1:25 000"
+    "rios_fuente": "IGNTG 2022 · hidrografía 1:25 000",
+    "eri_origen": "cuenca",
+    "eri_tamano_pixel_m": 42.6
    },
    "sitios": [
     {
@@ -34105,6 +34172,7 @@
      "hansen",
      "esri_cambio",
      "ndvi_cambio",
+     "eri",
      "coincidencia",
      "riparia"
     ],
@@ -34119,12 +34187,14 @@
      "gedi",
      "aux",
      "esri_2024",
-     "sinia_2021_detalle"
+     "sinia_2021_detalle",
+     "eri"
     ],
     "errores": {},
-    "eri_pendiente": true,
     "rios": 31,
-    "rios_fuente": "IGNTG 2022 · hidrografía 1:25 000"
+    "rios_fuente": "IGNTG 2022 · hidrografía 1:25 000",
+    "eri_origen": "cuenca",
+    "eri_tamano_pixel_m": 42.6
    },
    "sitios": [
     {
@@ -34793,6 +34863,7 @@
      "hansen",
      "esri_cambio",
      "ndvi_cambio",
+     "eri",
      "coincidencia",
      "riparia"
     ],
@@ -34807,12 +34878,14 @@
      "gedi",
      "aux",
      "esri_2024",
-     "sinia_2021_detalle"
+     "sinia_2021_detalle",
+     "eri"
     ],
     "errores": {},
-    "eri_pendiente": true,
     "rios": 99,
-    "rios_fuente": "IGNTG 2022 · hidrografía 1:25 000"
+    "rios_fuente": "IGNTG 2022 · hidrografía 1:25 000",
+    "eri_origen": "cuenca",
+    "eri_tamano_pixel_m": 42.6
    },
    "sitios": [
     {
@@ -35384,6 +35457,7 @@
      "hansen",
      "esri_cambio",
      "ndvi_cambio",
+     "eri",
      "coincidencia",
      "riparia"
     ],
@@ -35398,12 +35472,14 @@
      "gedi",
      "aux",
      "esri_2024",
-     "sinia_2021_detalle"
+     "sinia_2021_detalle",
+     "eri"
     ],
     "errores": {},
-    "eri_pendiente": true,
     "rios": 1,
-    "rios_fuente": "IGNTG 2022 · hidrografía 1:25 000"
+    "rios_fuente": "IGNTG 2022 · hidrografía 1:25 000",
+    "eri_origen": "cuenca",
+    "eri_tamano_pixel_m": 42.6
    },
    "sitios": [],
    "riparia": {
