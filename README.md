@@ -139,6 +139,7 @@ docs/          Metodología, decisiones, auditoría, diccionario SINIA y reprodu
 
 | Documento | Contenido |
 |---|---|
+| [docs/GUIA_COLABORACION.md](docs/GUIA_COLABORACION.md) | Cómo colaborar: ramas, reglas que no se cambian, MT-2026.7, nuevos análisis y cuota de Earth Engine |
 | [METODOLOGIA.md](METODOLOGIA.md) | Índice MT-2026.7: fuentes, períodos, umbrales y pesos |
 | [docs/DECISIONES_METODOLOGICAS.md](docs/DECISIONES_METODOLOGICAS.md) | Por qué se hizo cada elección (simulador, rutas, polígonos, ribera) |
 | [docs/auditoria/MATRIZ_HALLAZGOS.md](docs/auditoria/MATRIZ_HALLAZGOS.md) | Hallazgos de la auditoría, correcciones y estado |
