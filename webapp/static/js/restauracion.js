@@ -125,7 +125,9 @@
     for (const [k, f] of Object.entries(capaDe)) {
       const capa = f();
       if (!capa) continue;
-      if (st.ocultas.has(k)) { if (st.map.hasLayer(capa)) st.map.removeLayer(capa); } else if (!st.map.hasLayer(capa)) capa.addTo(st.map);
+      // Las brechas candidatas son del modo «Restaurar brechas»: en «Rutas» se ocultan junto con su leyenda.
+      const oculta = st.ocultas.has(k) || (k === 'candidatos' && st.rutas.activo);
+      if (oculta) { if (st.map.hasLayer(capa)) st.map.removeLayer(capa); } else if (!st.map.hasLayer(capa)) capa.addTo(st.map);
     }
     $$('#rs-legend [data-capa]').forEach((b) => b.setAttribute('aria-pressed', String(!st.ocultas.has(b.dataset.capa))));
   }
