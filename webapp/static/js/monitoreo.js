@@ -71,9 +71,9 @@
   }
   const sinia = (u, year) => (u.sinia || []).find((p) => p.year === year);
   const jrcRows = (u) => [
-    { label: 'Bosque estable', value: u.jrc_ha.tmf_estable, color: '#1d6b35' },
-    { label: 'Degradación', value: u.jrc_ha.tmf_degradacion, color: '#f28e2b' },
-    { label: 'Deforestación', value: u.jrc_ha.tmf_deforestacion, color: '#fabc20' },
+    { label: 'Bosque estable', value: u.jrc_ha.tmf_estable, color: '#005a00' },
+    { label: 'Degradación', value: u.jrc_ha.tmf_degradacion, color: '#649b23' },
+    { label: 'Deforestación', value: u.jrc_ha.tmf_deforestacion, color: '#ff870f' },
     { label: 'Regeneración', value: u.jrc_ha.tmf_recuperacion, color: '#a6d96a' },
     { label: 'Agua', value: u.jrc_ha.tmf_agua, color: '#5aa9e6' },
     { label: 'Otra cobertura', value: u.jrc_ha.tmf_otra_cobertura, color: '#d7c2a1' },
@@ -87,7 +87,7 @@
   // ---------------------------------------------------------------- mapa
   const map = L.map('mon-map', { zoomControl: true, preferCanvas: true });
   L.control.scale({ imperial: false, position: 'bottomright' }).addTo(map);
-  L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}', { attribution: 'Esri Light Gray Canvas', maxZoom: 16 }).addTo(map);
+  window.CHCP.mapaBase(map, { defecto: 'gris' });
   map.setView([9.15, -79.75], 9);
   let subLayer = null, basinLayer = null, corridorLayer = null;
 
@@ -158,9 +158,9 @@
   function viewCambio(u) {
     const series = u.serie_anual || [];
     let html = wg('serie', 'Evolución anual 2020–2025 (ha)', series.length ? line(series, [
-      { key: 'jrc_degradacion_ha', label: 'Degradación JRC', color: '#f28e2b' },
-      { key: 'jrc_regeneracion_ha', label: 'Regeneración JRC', color: '#3d8b37' },
-      { key: 'jrc_deforestacion_ha', label: 'Deforestación JRC', color: '#2f7ee0' },
+      { key: 'jrc_degradacion_ha', label: 'Degradación JRC', color: '#649b23' },
+      { key: 'jrc_regeneracion_ha', label: 'Regeneración JRC', color: '#d2fa3c' },
+      { key: 'jrc_deforestacion_ha', label: 'Deforestación JRC', color: '#ff870f' },
     ]) : '<p class="s">Sin serie anual.</p>', 'Superficie en cada clase JRC TMF al cierre de cada año. Son estados acumulados, no eventos nuevos de ese año.');
     const hansen = series.filter((r) => r.hansen_perdida_ha != null);
     html += wg('hansen', 'Pérdida de cobertura arbórea · Hansen GFC', `${bars(hansen.map((r) => ({ label: String(r.anio), value: r.hansen_perdida_ha, color: '#d0442c' })), (v) => hectares(v))}<p class="s">Total posterior al 31/12/2020: <b>${hectares(u.hansen_post_2020_ha)}</b>.</p>`, 'Pérdida ocurrida en cada año según Hansen Global Forest Change v1.13.');

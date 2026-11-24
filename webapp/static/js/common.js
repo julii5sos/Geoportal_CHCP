@@ -129,6 +129,54 @@
     if (document.body) avisar(); else document.addEventListener('DOMContentLoaded', avisar);
   }
 
-  window.CHCP = {$, $$, escapeHtml, number, hectares, api, mapFile, valFile, hidroFile, serieFile, consultarActualizacion, pendiente, procedencia, toast, readPortalState, writePortalState, normalizeSearch};
+  // ------------------------------------------------------------ mapa base elegible
+  // Mapas base de Esri (los mismos de la Plataforma). La elección se recuerda entre páginas.
+  const BASES_MAPA = {
+    satelite: { nombre: 'Satélite', url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', atrib: 'Esri World Imagery' },
+    gris: { nombre: 'Gris claro', url: 'https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}', atrib: 'Esri Light Gray Canvas' },
+    topo: { nombre: 'Topográfico', url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}', atrib: 'Esri World Topographic Map' },
+    calles: { nombre: 'Calles', url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', atrib: 'Esri World Street Map' },
+  };
+  function baseGuardada(defecto) {
+    try { const k = localStorage.getItem('chcp-mapa-base'); return BASES_MAPA[k] ? k : defecto; } catch (_) { return defecto; }
+  }
+  function capaBase(clave) {
+    const b = BASES_MAPA[clave] || BASES_MAPA.satelite;
+    return L.tileLayer(b.url, { attribution: b.atrib, maxZoom: 18, crossOrigin: true });
+  }
+  /**
+   * Pone el mapa base en `map` y un selector (arriba a la derecha) para cambiarlo. Todos los
+   * mapas de la página con selector cambian juntos; la elección se guarda para otras páginas.
+   * Opciones: { defecto: 'satelite', control: true }.
+   */
+  function mapaBase(map, opciones = {}) {
+    let clave = baseGuardada(opciones.defecto || 'satelite');
+    let capa = capaBase(clave).addTo(map);
+    capa.bringToBack();
+    const poner = (k) => {
+      if (!BASES_MAPA[k] || k === clave) return;
+      map.removeLayer(capa); clave = k; capa = capaBase(k).addTo(map); capa.bringToBack();
+      if (sel) sel.value = k;
+    };
+    let sel = null;
+    if (opciones.control !== false) {
+      const Control = L.Control.extend({ options: { position: 'topright' }, onAdd() {
+        const div = L.DomUtil.create('div', 'chcp-base');
+        div.innerHTML = `<label><span>Mapa base</span><select aria-label="Mapa base">${Object.entries(BASES_MAPA).map(([k, b]) => `<option value="${k}">${b.nombre}</option>`).join('')}</select></label>`;
+        sel = div.querySelector('select'); sel.value = clave;
+        L.DomEvent.disableClickPropagation(div); L.DomEvent.disableScrollPropagation(div);
+        sel.addEventListener('change', () => {
+          try { localStorage.setItem('chcp-mapa-base', sel.value); } catch (_) { /* sin almacenamiento */ }
+          document.dispatchEvent(new CustomEvent('chcp-mapa-base', { detail: sel.value }));
+        });
+        return div;
+      } });
+      new Control().addTo(map);
+    }
+    document.addEventListener('chcp-mapa-base', (e) => poner(e.detail));
+    return { poner, get clave() { return clave; } };
+  }
+
+  window.CHCP = {$, $$, escapeHtml, number, hectares, api, mapFile, valFile, hidroFile, serieFile, consultarActualizacion, pendiente, procedencia, toast, readPortalState, writePortalState, normalizeSearch, mapaBase, BASES_MAPA};
 })();
 

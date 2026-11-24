@@ -15,6 +15,7 @@ from __future__ import annotations
 
 import io
 import math
+from pathlib import Path
 from typing import Any, Callable
 
 from chcp.gee.analisis_complementario import _ndvi
@@ -38,6 +39,8 @@ RIOS_ASSET = "WWF/HydroSHEDS/v1/FreeFlowingRivers"
 # Leyendas: única fuente para los PNG y para la ficha (se copian al JSON).
 # ---------------------------------------------------------------------------
 _ERI_COLORES = [c["color"] for c in CLASES_ERI]
+# JRC TMF AnnualChange: colores oficiales (Vancutsem et al., 2021; guía de usuario TMF).
+COLORES_JRC_TMF = {1: "#005a00", 2: "#649b23", 3: "#ff870f", 4: "#d2fa3c", 5: "#008cbe", 6: "#ffffff"}
 
 CAPAS: list[dict[str, Any]] = [
     {"clave": "sinia_2021", "titulo": "Cobertura oficial SINIA 2021", "tipo": "categorias",
@@ -46,31 +49,36 @@ CAPAS: list[dict[str, Any]] = [
                  {"valor": 3, "color": COLORES_SINIA[3], "etiqueta": "Cuerpos de agua"}],
      "lectura": "Cartografía oficial de MiAMBIENTE (vector 2021 rasterizado). Es la base de la fragmentación y la conectividad."},
     {"clave": "jrc_2025", "titulo": "Estado del bosque húmedo · JRC TMF 2025", "tipo": "categorias",
-     "leyenda": [{"valor": 1, "color": "#1d6b35", "etiqueta": "Bosque sin perturbación"},
-                 {"valor": 2, "color": "#f28e2b", "etiqueta": "Bosque degradado"},
-                 {"valor": 3, "color": "#fabc20", "etiqueta": "Deforestado"},
-                 {"valor": 4, "color": "#a6d96a", "etiqueta": "Regeneración"},
-                 {"valor": 5, "color": "#5aa9e6", "etiqueta": "Agua"},
-                 {"valor": 6, "color": "#d7c2a1", "etiqueta": "Otra cobertura"}],
+     # Colores oficiales de JRC TMF (AnnualChange), los mismos de su visor y su guía de usuario.
+     "leyenda": [{"valor": 1, "color": COLORES_JRC_TMF[1], "etiqueta": "Bosque sin perturbación"},
+                 {"valor": 2, "color": COLORES_JRC_TMF[2], "etiqueta": "Bosque degradado"},
+                 {"valor": 3, "color": COLORES_JRC_TMF[3], "etiqueta": "Deforestado"},
+                 {"valor": 4, "color": COLORES_JRC_TMF[4], "etiqueta": "Regeneración"},
+                 {"valor": 5, "color": COLORES_JRC_TMF[5], "etiqueta": "Agua"},
+                 {"valor": 6, "color": COLORES_JRC_TMF[6], "etiqueta": "Otra cobertura"}],
      "lectura": "Clases acumuladas desde 1990 a diciembre de 2025 (Landsat, 30 m)."},
     {"clave": "hansen", "titulo": "Pérdida de cobertura arbórea por año · Hansen GFC", "tipo": "categorias",
-     "leyenda": [{"valor": 21, "color": "#fee391", "etiqueta": "2021"},
-                 {"valor": 22, "color": "#fec44f", "etiqueta": "2022"},
-                 {"valor": 23, "color": "#fe9929", "etiqueta": "2023"},
-                 {"valor": 24, "color": "#ec7014", "etiqueta": "2024"},
-                 {"valor": 25, "color": "#cc4c02", "etiqueta": "2025"}],
+     # Rampa amarillo → rojo de Hansen GFC (palette ['yellow', 'red'] del catálogo de Earth Engine),
+     # estirada a 2021–2025 para que los cinco años se distingan.
+     "leyenda": [{"valor": 21, "color": "#ffff00", "etiqueta": "2021"},
+                 {"valor": 22, "color": "#ffbf00", "etiqueta": "2022"},
+                 {"valor": 23, "color": "#ff8000", "etiqueta": "2023"},
+                 {"valor": 24, "color": "#ff4000", "etiqueta": "2024"},
+                 {"valor": 25, "color": "#ff0000", "etiqueta": "2025"}],
      "lectura": "Año de la pérdida detectada (30 m). Incluye cosecha de plantaciones; no indica la causa."},
     {"clave": "esri_cambio", "titulo": "Cambio de árboles 2017 → 2024 · ESRI", "tipo": "categorias",
      "leyenda": [{"valor": 1, "color": "#d7301f", "etiqueta": "Árboles en 2017, otra clase en 2024"},
                  {"valor": 2, "color": "#2b8cbe", "etiqueta": "Otra clase en 2017, árboles en 2024"},
-                 {"valor": 3, "color": "#a1d99b", "etiqueta": "Árboles en ambos años"}],
+                 {"valor": 3, "color": "#397d49", "etiqueta": "Árboles en ambos años"}],  # clase Trees de ESRI
      "lectura": "Clasificación automática Sentinel-2 (10 m); los bordes y mosaicos agrícolas tienen más error."},
     {"clave": "ndvi_cambio", "titulo": "Cambio del NDVI 2020 → 2025 · Sentinel-2", "tipo": "continuo",
      "minimo": -0.3, "maximo": 0.3,
-     "paleta": ["#8c510a", "#d8b365", "#f6e8c3", "#f5f5f5", "#c7eae5", "#5ab4ac", "#01665e"],
-     "leyenda": [{"color": "#8c510a", "etiqueta": "≤ −0.30 (pérdida fuerte de vigor)"},
-                 {"color": "#f5f5f5", "etiqueta": "Sin cambio"},
-                 {"color": "#01665e", "etiqueta": "≥ +0.30 (más vigor)"}],
+     # Rojo = menos vigor, verde = más vigor; el extremo verde es el de la escala NDVI de
+     # Sentinel Hub / Copernicus Browser. El cambio de NDVI no tiene una paleta oficial propia.
+     "paleta": ["#a50026", "#f46d43", "#fee08b", "#f7f7f7", "#91bf51", "#306d1c", "#004400"],
+     "leyenda": [{"color": "#a50026", "etiqueta": "≤ −0.30 (pérdida fuerte de vigor)"},
+                 {"color": "#f7f7f7", "etiqueta": "Sin cambio"},
+                 {"color": "#004400", "etiqueta": "≥ +0.30 (más vigor)"}],
      "lectura": "Diferencia de la mediana anual sin nubes. Un descenso puede deberse a cosecha, sequía o nubes residuales; no es pérdida de bosque por sí solo."},
     {"clave": "eri", "titulo": "Resiliencia ecológica indicativa (ERI)", "tipo": "continuo",
      "minimo": 0.0, "maximo": 1.0, "paleta": _ERI_COLORES,
@@ -298,6 +306,25 @@ def decodificar(q, codec: dict[str, Any]):
     q = np.asarray(q, dtype="float64")
     v = codec["minimo"] + q * codec["paso"] if codec["tipo"] == "continuo" else q.copy()
     return np.where(q == SIN_VALOR, np.nan, v)
+
+
+def recolorear(destino, clave: str) -> bool:
+    """Vuelve a pintar ``<clave>.png`` a partir de ``<clave>.v.png`` con la leyenda vigente.
+
+    No usa Earth Engine: los valores ya están guardados sin pérdida. Sirve para cambiar la
+    paleta de una capa (p. ej., adoptar los colores oficiales de la fuente) sin recalcular.
+    """
+    import numpy as np
+    from PIL import Image
+
+    destino = Path(destino)
+    origen = destino / f"{clave}.v.png"
+    if clave not in CAPAS_POR_CLAVE or not origen.exists():
+        return False
+    q = np.array(Image.open(origen).convert("L"))
+    valores = decodificar(q, CODIFICACION_VALORES[clave])
+    (destino / f"{clave}.png").write_bytes(png(colorear(valores, CAPAS_POR_CLAVE[clave])))
+    return True
 
 
 def png_gris(q) -> bytes:

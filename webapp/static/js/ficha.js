@@ -6,8 +6,8 @@
   const { $, $$, escapeHtml: esc, number, hectares, api, mapFile } = window.CHCP;
   const RED = window.CHCP_RED;
   const COLOR_CORREDOR = { Alta: '#1b5e20', Mediana: '#9ccc65', 'Media-baja': '#ffb74d' };
-  const BASE_GRIS = 'https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}';
-  const BASE_SAT = 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}';
+  // Plataforma acercada a un parche de bosque (?parche=N).
+  const enlaceParche = (id, parche) => `${window.CHCP_STATIC ? 'plataforma.html' : '/plataforma'}?id=${encodeURIComponent(id)}&tema=frag&parche=${parche}`;
   const featureDe = (t) => (t.id === 'chcp' ? st.territory.basin : st.territory.subbasins.features.find((f) => f.properties.id === t.id));
   const rip50 = (t) => (t.riparia?.franjas || []).find((f) => f.ancho_m === 50);
   const rip30 = (t) => (t.riparia?.franjas || []).find((f) => f.ancho_m === 30);
@@ -77,8 +77,9 @@
     const vals = series.flatMap((r) => keys.map((k) => r[k.k]).filter((v) => v != null)); const max = Math.max(1, ...vals);
     const x = (i) => L + i * (W - L - R) / Math.max(1, series.length - 1), y = (v) => T + (1 - v / max) * (H - T - B);
     const grid = [0, .5, 1].map((f) => `<line x1="${L}" x2="${W - R}" y1="${y(max * f)}" y2="${y(max * f)}" class="g"/><text x="${L - 5}" y="${y(max * f) + 3}" text-anchor="end">${number(max * f, 0)}</text>`).join('');
-    const ls = keys.map((k) => `<polyline fill="none" stroke="${k.c}" stroke-width="2.2" points="${series.map((r, i) => (r[k.k] == null ? '' : `${x(i)},${y(r[k.k])}`)).join(' ')}"/>`).join('');
-    return `<svg class="fi-line" viewBox="0 0 ${W} ${H}">${grid}${series.map((r, i) => `<text x="${x(i)}" y="${H - 5}" text-anchor="middle">${r.anio}</text>`).join('')}${ls}</svg><ul class="fi-keys">${keys.map((k) => `<li><i style="background:${k.c}"></i>${esc(k.l)}</li>`).join('')}</ul>`;
+    // Trazo oscuro fino debajo: los colores oficiales claros (p. ej., regeneración JRC) se ven sobre blanco.
+    const ls = keys.map((k) => { const pts = series.map((r, i) => (r[k.k] == null ? '' : `${x(i)},${y(r[k.k])}`)).join(' '); return `<polyline fill="none" stroke="rgba(0,0,0,.35)" stroke-width="3.6" points="${pts}"/><polyline fill="none" stroke="${k.c}" stroke-width="2.2" points="${pts}"/>`; }).join('');
+    return `<svg class="fi-line" viewBox="0 0 ${W} ${H}">${grid}${series.map((r, i) => `<text x="${x(i)}" y="${H - 5}" text-anchor="middle">${r.anio}</text>`).join('')}${ls}</svg><ul class="fi-keys">${keys.map((k) => `<li><i style="background:${k.c};outline:1px solid rgba(0,0,0,.25)"></i>${esc(k.l)}</li>`).join('')}</ul>`;
   }
 
   // ------------------------------------------------------------ texto
@@ -193,7 +194,8 @@
     const p = t.preevaluacion, e = t.estructura_2021, mp = e?.metricas_paisaje, serie = t.serie_anual || [];
     const toneP = { Alta: 'bad', Media: 'mid', Preventiva: 'mid', Baja: 'good' }[p.prioridad] || 'na';
     const indicadores = IND.map((ind) => { const v = ind.get(t), r = rank(ind, t); return `<div class="fi-ind" data-tone="${tone(r)}"><span>${esc(ind.label)}</span><b>${fmt(ind, v)}</b><small>${r ? `Más favorable que el ${number(r.good, 0)} % de las ${r.n} subcuencas` : (window.CHCP.pendiente().includes('en curso') ? 'Se está calculando' : 'Se calculará en la próxima actualización')}</small><p>${esc(ind.lee)}</p></div>`; }).join('');
-    const jrc = [{ l: 'Bosque estable', v: t.jrc_ha.tmf_estable, c: '#1d6b35' }, { l: 'Degradado', v: t.jrc_ha.tmf_degradacion, c: '#f28e2b' }, { l: 'Deforestado', v: t.jrc_ha.tmf_deforestacion, c: '#fabc20' }, { l: 'Regeneración', v: t.jrc_ha.tmf_recuperacion, c: '#a6d96a' }, { l: 'Agua', v: t.jrc_ha.tmf_agua, c: '#5aa9e6' }, { l: 'Otra cobertura', v: t.jrc_ha.tmf_otra_cobertura, c: '#d7c2a1' }];
+    // Colores oficiales de JRC TMF; «Otra cobertura» es blanca en JRC y aquí va en gris muy claro para verse sobre fondo blanco.
+    const jrc = [{ l: 'Bosque estable', v: t.jrc_ha.tmf_estable, c: '#005a00' }, { l: 'Degradado', v: t.jrc_ha.tmf_degradacion, c: '#649b23' }, { l: 'Deforestado', v: t.jrc_ha.tmf_deforestacion, c: '#ff870f' }, { l: 'Regeneración', v: t.jrc_ha.tmf_recuperacion, c: '#d2fa3c' }, { l: 'Agua', v: t.jrc_ha.tmf_agua, c: '#008cbe' }, { l: 'Otra cobertura', v: t.jrc_ha.tmf_otra_cobertura, c: '#ececec' }];
     const nucleoTabla = mp && !mp.error ? `<table class="fi-table"><thead><tr><th>Profundidad de borde</th><th>Bosque interior</th><th>% del bosque</th><th>Parches sin interior</th></tr></thead><tbody>${mp.area_nucleo.por_profundidad.map((x) => `<tr><td>${number(x.profundidad_m, 0)} m</td><td>${hectares(x.area_nucleo_ha)}</td><td>${pct(x.porcentaje_bosque_nucleo)}</td><td>${number(x.parches_sin_nucleo, 0)}</td></tr>`).join('')}</tbody></table><p class="fi-note">Sensibilidad: el bosque interior depende de la profundidad de borde elegida; 100 m es una referencia de análisis, no un valor comprobado para una especie.</p>` : `<p class="fi-note">Área núcleo, distancia entre parches, cohesión e IIC se incorporan ${window.CHCP.pendiente()}.</p>`;
     const diic = (mp?.diic_principales || []).slice(0, 6);
     const acc = acciones(t);
@@ -205,13 +207,13 @@
         <div class="fi-score" data-tone="${toneP}"><span>Preevaluación</span><b>${number(p.puntaje, 1)}<small>/ ${number(p.puntaje_maximo, 1)}</small></b><em>${esc(p.prioridad)}</em><small>Visita: ${esc(p.prioridad_visita || '—')}</small></div>
       </header>
       <section class="fi-sec"><h2>${icon('info', 22)} En pocas palabras</h2>${diagnostico(t).map((f) => `<p>${f}</p>`).join('')}</section>
-      <section class="fi-sec fi-map-sec"><h2>${icon('map', 22)} Mapa de la subcuenca</h2><div id="fi-map"></div><p class="fi-pending" id="fi-map-nota" hidden></p>
-        <div class="fi-legend"><span><i style="background:#1b5e20"></i>Parche clave (conectividad alta)</span><span><i style="background:#66bb6a"></i>Parche de importancia media</span><span><i style="background:#c5e1a5"></i>Parche de importancia baja</span><span><i class="dash"></i>Brecha candidata a reconexión</span><span><i style="background:#1f78b4;height:3px"></i>Ríos (${esc(t.mapas?.rios_fuente || 'IGNTG 2022 · hidrografía 1:25 000')})</span><span><i style="background:#1b5e2033;border:1.5px solid #1b5e20"></i>Corredor Almanaque Azul · conectividad alta</span><span><i style="background:#9ccc6533;border:1.5px solid #9ccc65"></i>· mediana</span><span><i style="background:#ffb74d33;border:1.5px solid #ffb74d"></i>· media-baja</span><span><i class="pt"></i>Punto crítico (Almanaque Azul)</span></div></section>
-      <section class="fi-sec fi-gal-sec"><h2>${icon('layers', 22)} Mapas temáticos</h2><p class="fi-note">Cada mapa muestra una fuente distinta sobre el mismo territorio. Ríos y corredores del Almanaque Azul se superponen como referencia.</p>${seccionGaleria(t)}</section>
+      <section class="fi-sec fi-map-sec"><h2>${icon('map', 22)} ${t.id === 'chcp' ? 'Mapa de la cuenca' : 'Mapa de la subcuenca'}</h2><div id="fi-map"></div><p class="fi-pending" id="fi-map-nota" hidden></p>
+        <div class="fi-legend"><span><i style="background:#1b5e20"></i>Parche clave (conectividad alta)</span><span><i style="background:#66bb6a"></i>Parche de importancia media</span><span><i style="background:#c5e1a5"></i>Parche de importancia baja</span><span><i class="dash"></i>Brecha candidata a reconexión</span>${t.id === 'chcp' ? '' : `<span><i style="background:#1f78b4;height:3px"></i>Ríos (${esc(t.mapas?.rios_fuente || 'IGNTG 2022 · hidrografía 1:25 000')})</span>`}<span><i style="background:#1b5e2033;border:1.5px solid #1b5e20"></i>Corredor Almanaque Azul · conectividad alta</span><span><i style="background:#9ccc6533;border:1.5px solid #9ccc65"></i>· mediana</span><span><i style="background:#ffb74d33;border:1.5px solid #ffb74d"></i>· media-baja</span><span><i class="pt"></i>Punto crítico (Almanaque Azul)</span></div></section>
+      <section class="fi-sec fi-gal-sec"><h2>${icon('layers', 22)} Mapas temáticos</h2><p class="fi-note">Cada mapa muestra una fuente distinta sobre el mismo territorio, con los colores que usa cada fuente. ${t.id === 'chcp' ? 'Los corredores del Almanaque Azul' : 'Ríos y corredores del Almanaque Azul'} se superponen como referencia. El mapa base se cambia con el selector del mapa de arriba.</p>${seccionGaleria(t)}</section>
       <section class="fi-sec" id="fi-indicadores"><h2>${icon('chart', 22)} Indicadores y comparación con las demás subcuencas</h2><p class="fi-note">Verde: mejor que la mayoría de subcuencas; ámbar: intermedio; rojo: entre las más desfavorables. La comparación es relativa a la CHCP, no un umbral normativo.</p><div class="fi-inds">${indicadores}</div></section>
       ${seccionRelativa(t)}
       <section class="fi-sec fi-two"><div><h2>${icon('forest', 22)} Dinámica del bosque · JRC 2025</h2>${donut(jrc, hectares(t.area_ha, 0))}</div>
-        <div><h2>${icon('trend', 22)} Evolución 2020–2025 (ha)</h2>${serie.length ? line(serie, [{ k: 'jrc_degradacion_ha', l: 'Degradado (JRC)', c: '#f28e2b' }, { k: 'jrc_regeneracion_ha', l: 'Regeneración (JRC)', c: '#3d8b37' }, { k: 'jrc_deforestacion_ha', l: 'Deforestado (JRC)', c: '#2f7ee0' }]) : ''}
+        <div><h2>${icon('trend', 22)} Evolución 2020–2025 (ha)</h2>${serie.length ? line(serie, [{ k: 'jrc_degradacion_ha', l: 'Degradado (JRC)', c: '#649b23' }, { k: 'jrc_regeneracion_ha', l: 'Regeneración (JRC)', c: '#d2fa3c' }, { k: 'jrc_deforestacion_ha', l: 'Deforestado (JRC)', c: '#ff870f' }]) : ''}
         <h3>Pérdida anual Hansen</h3>${bars(serie.filter((x) => x.hansen_perdida_ha != null).map((x) => ({ l: String(x.anio), v: x.hansen_perdida_ha, c: '#d0442c' })), (v) => hectares(v))}</div></section>
       <section class="fi-sec fi-two"><div><h2>${icon('layers', 22)} Cartografía oficial SINIA</h2>${bars((t.sinia || []).map((s) => ({ l: `Bosque ${s.year}`, v: s.forest_pct, c: '#237A4B' })), (v) => pct(v))}<p class="fi-note">Productos independientes con métodos y escalas distintos: la diferencia entre años no mide pérdida ni ganancia.</p></div>
         <div><h2>${icon('forest', 22)} Árboles y altura del dosel</h2><ul class="fi-list"><li><b>ESRI 2017→2024:</b> ${hectares(t.esri?.esri_salida)} pasaron de árboles a otra clase y ${hectares(t.esri?.esri_ganancia)} de otra clase a árboles; ${hectares(t.esri?.esri_estable)} se mantuvieron con árboles.</li><li><b>Altura media del dosel (GEDI):</b> ${t.gedi_altura_m == null ? 'sin muestras suficientes' : `${number(t.gedi_altura_m, 1)} m`}. ${t.gedi_altura_m == null ? '' : t.gedi_altura_m >= 20 ? 'Dosel alto, típico de bosque maduro.' : t.gedi_altura_m >= 10 ? 'Dosel intermedio: bosque secundario o intervenido.' : 'Dosel bajo: vegetación joven, rastrojo o áreas abiertas.'}</li></ul></div></section>
@@ -220,7 +222,8 @@
       <section class="fi-sec" id="fi-estructura"><h2>${icon('network', 22)} Fragmentación y conectividad · bosque oficial 2021</h2>
         ${e ? `<div class="fi-kv"><div><span>Parches</span><b>${number(e.metricas_clase.numero_parches, 0)}</b></div><div><span>Bosque</span><b>${hectares(e.metricas_clase.area_total_bosque_ha)}</b></div><div><span>Redes separadas</span><b>${number(e.metricas_red.numero_componentes, 0)}</b></div><div><span>Conexiones</span><b>${number(e.metricas_red.numero_aristas, 0)}</b></div><div><span>Aislados</span><b>${number(e.metricas_red.numero_parches_aislados, 0)}</b></div><div><span>Cohesión</span><b>${mp?.cohesion == null ? '—' : number(mp.cohesion, 1)}</b></div><div><span>IIC</span><b>${mp?.iic == null ? '—' : number(mp.iic, 4)}</b></div><div><span>Distancia entre parches</span><b>${mp?.enn_medio_m == null ? '—' : `${number(mp.enn_medio_m, 0)} m`}</b></div></div>
         <h3>Bosque interior (área núcleo)</h3>${nucleoTabla}
-        ${diic.length ? `<h3>Parches más importantes para la red (dIIC)</h3><table class="fi-table"><thead><tr><th>Parche</th><th>Superficie</th><th>Aporte a la conectividad</th><th>Función</th></tr></thead><tbody>${diic.map((x) => `<tr><td>#${x.parche_id}</td><td>${hectares(x.area_ha)}</td><td>${pct(x.diic_pct)}</td><td>${x.es_puente ? 'Puente entre grupos' : 'Gran hábitat'}</td></tr>`).join('')}</tbody></table><p class="fi-note">dIIC: cuánto bajaría el índice integral de conectividad si se perdiera el parche (Pascual-Hortal y Saura, 2006). Distancia umbral ${number(mp.umbral_m, 0)} m.</p>` : ''}` : '<p>Sin estructura calculada.</p>'}</section>
+        ${diic.length ? `<h3>Parches más importantes para la red (dIIC)</h3><table class="fi-table" id="fi-diic-tabla"><thead><tr><th>Parche</th><th>Superficie</th><th>Aporte a la conectividad</th><th>Función</th></tr></thead><tbody>${diic.map((x) => `<tr><td><a href="${enlaceParche(t.id, x.parche_id)}" title="Ver el parche en la Plataforma">#${x.parche_id}</a></td><td>${hectares(x.area_ha)}</td><td>${pct(x.diic_pct)}</td><td>${x.es_puente ? 'Puente entre grupos' : 'Gran hábitat'}</td></tr>`).join('')}</tbody></table><p class="fi-note">dIIC: cuánto bajaría el índice integral de conectividad si se perdiera el parche (Pascual-Hortal y Saura, 2006). Distancia umbral ${number(mp.umbral_m, 0)} m.</p>
+        <h3>Dónde están estos parches</h3><div id="fi-diic-map" class="fi-diic-map"></div><p class="fi-note no-print">Los parches resaltados son los de la tabla. Haga clic en uno (o en su número en la tabla) para abrirlo en la Plataforma y acercarse.</p>` : ''}` : '<p>Sin estructura calculada.</p>'}</section>
       ${seccionRiparia(t)}
       ${seccionAlmanaque(t)}
       <section class="fi-sec"><h2>${icon('leaf', 22)} Líneas de acción sugeridas</h2><div class="fi-actions">${acc.map((a) => `<div class="fi-action">${icon(a.i, 24)}<div><b>${esc(a.t)}</b><p><em>Por qué:</em> ${esc(a.why)}</p><p><em>Qué hacer:</em> ${esc(a.how)}</p>${a.sim && t.id !== 'chcp' ? `<p class="no-print"><a href="${window.CHCP_STATIC ? 'restauracion.html' : '/restauracion'}?id=${encodeURIComponent(t.id)}">Simular la restauración en esta subcuenca →</a></p>` : ''}</div></div>`).join('')}</div>${(t.sitios || []).length ? `<h3>Sitios priorizados para verificación de campo</h3><table class="fi-table"><thead><tr><th>Sitio</th><th>Coordenadas</th><th>Superficie con señal</th><th>Fuentes que coinciden</th></tr></thead><tbody>${t.sitios.slice(0, 6).map((x) => `<tr><td>${esc(x.id)}</td><td>${number(x.lat, 5)}, ${number(x.lon, 5)}</td><td>${hectares(x.area_ha)}</td><td>${x.fuentes}</td></tr>`).join('')}</tbody></table><p class="no-print"><a href="${window.CHCP_STATIC ? 'campo.html' : '/campo'}?id=${encodeURIComponent(t.id)}">Ver estado y registrar visitas →</a></p>` : ''}
@@ -243,9 +246,9 @@
     drawMap(t);
     if (location.hash && /^#fi-/.test(location.hash)) requestAnimationFrame(() => document.querySelector(location.hash)?.scrollIntoView({ block: 'start' }));
   }
-  function referencias(map, puntos) {
+  function referencias(map, puntos, conRios = true) {
     L.geoJSON(st.territory.corridors, { style: (f) => { const c = COLOR_CORREDOR[f.properties.categoria_etiqueta] || '#7fae00'; return { color: c, weight: 1.5, fillColor: c, fillOpacity: 0.14 }; }, onEachFeature: (f, l) => l.bindTooltip(`${f.properties.nombre} · conectividad ${f.properties.categoria_etiqueta} (Almanaque Azul)`) }).addTo(map);
-    if (st.rios) L.geoJSON(st.rios, { style: { color: '#1f78b4', weight: 2, opacity: 0.9 }, onEachFeature: (f, l) => l.bindTooltip(esc(((f) => [f.properties.nombre || `${f.properties.tipo || 'Cauce'} sin nombre en la cartografía`, f.properties.nombre_alt && `(${f.properties.nombre_alt})`, f.properties.tributario_de && `· afluente del ${f.properties.tributario_de}`].filter(Boolean).join(' '))(f)), { sticky: true }) }).addTo(map);
+    if (conRios && st.rios) L.geoJSON(st.rios, { style: { color: '#1f78b4', weight: 2, opacity: 0.9 }, onEachFeature: (f, l) => l.bindTooltip(esc(((f) => [f.properties.nombre || `${f.properties.tipo || 'Cauce'} sin nombre en la cartografía`, f.properties.nombre_alt && `(${f.properties.nombre_alt})`, f.properties.tributario_de && `· afluente del ${f.properties.tributario_de}`].filter(Boolean).join(' '))(f)), { sticky: true }) }).addTo(map);
     if (puntos) L.geoJSON(st.territory.critical_points, { pointToLayer: (_, ll) => L.circleMarker(ll, { radius: 5, color: '#fff', weight: 1.5, fillColor: '#f04438', fillOpacity: 1 }), onEachFeature: (f, l) => l.bindTooltip(esc(f.properties.notas || 'Punto crítico'), { maxWidth: 280 }) }).addTo(map);
   }
   function drawGallery(t) {
@@ -253,12 +256,14 @@
     st.galeria = [];
     const feature = featureDe(t);
     $$('.fi-mini').forEach((div) => {
-      const m = L.map(div, { zoomControl: false, attributionControl: false, scrollWheelZoom: false });
-      L.tileLayer(BASE_GRIS, { maxZoom: 16 }).addTo(m);
+      // zoomSnap fino: el territorio llena el recuadro en vez de quedar en el nivel entero anterior.
+      const m = L.map(div, { zoomControl: false, attributionControl: false, scrollWheelZoom: false, zoomSnap: 0.1 });
+      window.CHCP.mapaBase(m, { defecto: 'gris', control: false });
       L.imageOverlay(mapFile(t.id, `${div.dataset.capa}.png`), t.mapas.limites, { opacity: 0.9 }).addTo(m);
-      referencias(m, false);
+      // En toda la cuenca la red de ríos es tan densa que se confunde con límites internos: solo el borde exterior.
+      referencias(m, false, t.id !== 'chcp');
       const borde = L.geoJSON(feature, { style: { color: '#263238', weight: 1.6, fill: false }, interactive: false }).addTo(m);
-      m.fitBounds(borde.getBounds(), { padding: [6, 6] });
+      m.fitBounds(borde.getBounds(), { padding: [4, 4] });
       st.galeria.push(m);
     });
   }
@@ -277,24 +282,52 @@
     try { st.rios = t.mapas?.rios ? await (await fetch(mapFile(t.id, 'rios.json'))).json() : null; } catch (_) { st.rios = null; }
     if (!st.rios) st.rios = await riosDeLaCuenca(featureDe(t));
     drawGallery(t);
-    const map = L.map('fi-map', { zoomControl: true, preferCanvas: false });
+    const map = L.map('fi-map', { zoomControl: true, preferCanvas: false, zoomSnap: 0.25 });
     st.map = map;
-    L.tileLayer(BASE_SAT, { attribution: 'Esri World Imagery', maxZoom: 17, crossOrigin: true }).addTo(map);
+    window.CHCP.mapaBase(map, { defecto: 'satelite' });
     const feature = featureDe(t);
     const area = L.geoJSON(feature, { style: { color: '#ffffff', weight: 3, fill: false } }).addTo(map);
-    referencias(map, true);
-    map.fitBounds(area.getBounds(), { padding: [16, 16] });
+    referencias(map, true, t.id !== 'chcp');
+    map.fitBounds(area.getBounds(), { padding: [12, 12] });
     try {
       const g = await api(`/api/v1/panel/geometry/${t.id}`);
       const color = { Alta: '#1b5e20', Media: '#66bb6a', Baja: '#c5e1a5' };
       L.geoJSON(g.parches, { style: (f) => ({ color: '#0b3d17', weight: 0.6, fillColor: color[f.properties.prioridad_conectividad] || '#9ccc65', fillOpacity: 0.85 }), onEachFeature: (f, l) => l.bindTooltip(`Parche #${f.properties.patch_id} · ${hectares(f.properties.area_ha)} · importancia ${f.properties.prioridad_conectividad || '—'}`) }).addTo(map);
       L.geoJSON(g.brechas, { style: { color: '#ff5252', weight: 3, dashArray: '6 5' } }).addTo(map);
       L.geoJSON(g.ruta_corredor, { style: { color: '#ffd54f', weight: 2.5, dashArray: '2 4' } }).addTo(map);
+      mapaDiic(t, g);
     } catch (_) {
       // Geometrías aún no calculadas: el mapa muestra límites, ríos y corredores, y se avisa.
       const nota = $('#fi-map-nota');
       if (nota && t.id !== 'chcp') { nota.textContent = `Los parches de bosque y las brechas de ${t.nombre} todavía no están calculados: se generan ${window.CHCP.pendiente()}.`; nota.hidden = false; }
     }
+  }
+  /** Mapa de los parches con mayor aporte a la conectividad (dIIC); clic → Plataforma acercada al parche. */
+  function mapaDiic(t, g) {
+    const div = document.getElementById('fi-diic-map');
+    const top = t.estructura_2021?.metricas_paisaje?.diic_principales || [];
+    if (!div || !top.length || !g?.parches?.features?.length) return;
+    if (st.mapaDiic) { st.mapaDiic.remove(); st.mapaDiic = null; }
+    const m = L.map(div, { zoomControl: true, scrollWheelZoom: false, zoomSnap: 0.25 });
+    st.mapaDiic = m;
+    window.CHCP.mapaBase(m, { defecto: 'satelite', control: false });
+    const rango = new Map(top.slice(0, 6).map((x, i) => [x.parche_id, i]));
+    const destino = (id) => enlaceParche(t.id, id);
+    const borde = L.geoJSON(featureDe(t), { style: { color: '#ffffff', weight: 2.5, fill: false }, interactive: false }).addTo(m);
+    L.geoJSON(g.parches, {
+      style: (f) => (rango.has(f.properties.patch_id)
+        ? { color: '#ffeb3b', weight: 1.2, fillColor: '#1b5e20', fillOpacity: 0.9 }
+        : { color: '#c5e1a5', weight: 0.5, fillColor: '#c5e1a5', fillOpacity: 0.45 }),
+      onEachFeature: (f, l) => {
+        const id = f.properties.patch_id;
+        if (!rango.has(id)) { l.bindTooltip(`Parche #${id} · ${hectares(f.properties.area_ha)}`); return; }
+        const x = top[rango.get(id)];
+        l.bindTooltip(`#${id}`, { permanent: true, direction: 'center', className: 'fi-diic-et' });
+        l.bindPopup(`<b>Parche #${id}</b><br>${hectares(x.area_ha)} · aporte ${pct(x.diic_pct)}<br>${x.es_puente ? 'Puente entre grupos' : 'Gran hábitat'}<br><a href="${destino(id)}">Verlo de cerca en la Plataforma →</a>`);
+        l.on('dblclick', () => { location.href = destino(id); });
+      },
+    }).addTo(m);
+    m.fitBounds(borde.getBounds(), { padding: [10, 10] });
   }
   function select(id) {
     const t = st.data.territorios[id];

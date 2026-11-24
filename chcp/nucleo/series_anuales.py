@@ -29,12 +29,13 @@ PRODUCTOS: dict[str, dict[str, Any]] = {
         "fuente": "JRC Tropical Moist Forest v1_2025 (Landsat)",
         "tipo": "categorias",
         "clases": [
-            {"valor": 1, "etiqueta": "Bosque sin perturbación", "color": "#1d6b35"},
-            {"valor": 2, "etiqueta": "Bosque degradado", "color": "#f28e2b"},
-            {"valor": 3, "etiqueta": "Deforestado", "color": "#fabc20"},
-            {"valor": 4, "etiqueta": "Regeneración", "color": "#a6d96a"},
-            {"valor": 5, "etiqueta": "Agua", "color": "#5aa9e6"},
-            {"valor": 6, "etiqueta": "Otra cobertura", "color": "#d7c2a1"},
+            # Colores oficiales de JRC TMF (AnnualChange).
+            {"valor": 1, "etiqueta": "Bosque sin perturbación", "color": "#005a00"},
+            {"valor": 2, "etiqueta": "Bosque degradado", "color": "#649b23"},
+            {"valor": 3, "etiqueta": "Deforestado", "color": "#ff870f"},
+            {"valor": 4, "etiqueta": "Regeneración", "color": "#d2fa3c"},
+            {"valor": 5, "etiqueta": "Agua", "color": "#008cbe"},
+            {"valor": 6, "etiqueta": "Otra cobertura", "color": "#ffffff"},
         ],
         "lectura": "Estado de cada año (banda de diciembre). «Degradado» y «deforestado» acumulan las perturbaciones desde 1990.",
         "periodo_indice": f"Estado {PERIODOS_ANALISIS['jrc_diagnostico']}",
@@ -46,11 +47,9 @@ PRODUCTOS: dict[str, dict[str, Any]] = {
         "resolucion_m": 30,
         "fuente": "Hansen/UMD/Google/USGS/NASA Global Forest Change 2025",
         "tipo": "anual",  # un solo mapa: el valor del píxel es el año de la pérdida (1–25)
-        "clases": [{"valor": a - 2000, "etiqueta": str(a), "color": c} for a, c in zip(
-            range(2001, 2026),
-            ["#ffffcc", "#fff6b5", "#ffed9f", "#ffe48a", "#fed976", "#fecc68", "#febf5a", "#feb24c",
-             "#fea446", "#fd9640", "#fd8a3b", "#fd7d36", "#fc6d33", "#f95e2f", "#f34e2c", "#ec3e28",
-             "#e31a1c", "#d7141f", "#ca0e22", "#bd0026", "#a60026", "#940026", "#800026", "#6b0024", "#55001e"])],
+        # Rampa amarillo → rojo de Hansen GFC (palette ['yellow', 'red'], catálogo de Earth Engine).
+        "clases": [{"valor": a - 2000, "etiqueta": str(a), "color": f"#ff{round(255 * (2025 - a) / 24):02x}00"}
+                   for a in range(2001, 2026)],
         "lectura": "Año en que se perdió la cobertura arbórea (≥ 30 % en 2000). Incluye cosecha de plantaciones; no indica la causa.",
         "periodo_indice": "Pérdida 2021–2025 (posterior al 31/12/2020)",
     },
@@ -82,11 +81,12 @@ PRODUCTOS: dict[str, dict[str, Any]] = {
         "fuente": "Copernicus Sentinel-2 SR Harmonized, mediana anual con máscara de nubes (SCL)",
         "tipo": "categorias",
         "clases": [
-            {"valor": 1, "etiqueta": "Sin vegetación activa (< 0)", "color": "#8c510a"},
-            {"valor": 2, "etiqueta": "Suelo o cobertura muy escasa (0–0,2)", "color": "#d8b365"},
-            {"valor": 3, "etiqueta": "Vegetación escasa (0,2–0,4)", "color": "#f6e8c3"},
-            {"valor": 4, "etiqueta": "Vegetación moderada (0,4–0,6)", "color": "#80cdc1"},
-            {"valor": 5, "etiqueta": "Vegetación densa (≥ 0,6)", "color": "#01665e"},
+            # Escala NDVI de Sentinel Hub / Copernicus Browser, agrupada en los intervalos del geoportal.
+            {"valor": 1, "etiqueta": "Sin vegetación activa (< 0)", "color": "#eaeaea"},
+            {"valor": 2, "etiqueta": "Suelo o cobertura muy escasa (0–0,2)", "color": "#ccc682"},
+            {"valor": 3, "etiqueta": "Vegetación escasa (0,2–0,4)", "color": "#70a33f"},
+            {"valor": 4, "etiqueta": "Vegetación moderada (0,4–0,6)", "color": "#306d1c"},
+            {"valor": 5, "etiqueta": "Vegetación densa (≥ 0,6)", "color": "#004400"},
         ],
         "lectura": "Vigor espectral, no tipo de cobertura. Un descenso puede deberse a cosecha, sequía o nubes residuales.",
         "periodo_indice": f"{PERIODOS_ANALISIS['ndvi_inicial']} → {PERIODOS_ANALISIS['ndvi_final']}",

@@ -22,7 +22,7 @@
   map.createPane('paneB').style.zIndex = 420;
   map.createPane('paneRef').style.zIndex = 450;
   L.control.scale({ imperial: false, position: 'bottomright' }).addTo(map);
-  L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}', { attribution: 'Esri Light Gray Canvas', maxZoom: 16 }).addTo(map);
+  window.CHCP.mapaBase(map, { defecto: 'gris' });
   map.setView([9.15, -79.75], 9);
   let basinLayer = null, areaLayer = null;
 
