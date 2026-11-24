@@ -923,3 +923,17 @@ html.app #main-content:has(.pg) { overflow-y:auto; background:#f3f6fa; }
 .rs-lg-btn:focus-visible { outline:2px solid var(--azul, #14382f); outline-offset:1px; }
 .rs-lg-btn[aria-pressed="false"] { opacity:.42; }
 .rs-lg-btn[aria-pressed="false"] b { text-decoration:line-through; }
+/* Selector de mapa base (common.js · mapaBase) */
+.chcp-base { background:#fff; border-radius:8px; box-shadow:0 1px 4px rgba(0,0,0,.25); padding:4px 6px; font-size:12px; }
+.chcp-base label { display:flex; align-items:center; gap:6px; margin:0; }
+.chcp-base span { color:var(--muted); font-weight:600; }
+.chcp-base select { font:inherit; border:1px solid var(--line); border-radius:6px; padding:2px 4px; background:#fff; }
+@media print { .chcp-base { display:none; } }
+/* Ficha: mapa de los parches con mayor aporte (dIIC) */
+.fi-diic-map { height:380px; border-radius:10px; overflow:hidden; border:1px solid var(--line); margin-top:6px; }
+.leaflet-tooltip.fi-diic-et { background:#1b5e20; color:#fff; border:1.5px solid #ffeb3b; border-radius:999px; padding:1px 7px; font-weight:700; font-size:12px; box-shadow:none; }
+.leaflet-tooltip.fi-diic-et::before { display:none; }
+@media print { .fi-diic-map { height:300px; break-inside:avoid; } }
+/* Muestras de color de leyenda: borde fino para que los colores claros (p. ej., «Otra cobertura»
+   blanca de JRC TMF) se vean sobre fondo blanco. */
+.fi-fig .fi-legend i { box-shadow:inset 0 0 0 1px rgba(0,0,0,.25); }

@@ -373,6 +373,26 @@ def _mapas_entorno(forzar: bool = False, max_minutos: int = 30) -> None:
         _limite_tiempo(0)
 
 
+def _recolorear_si_cambio(previo: dict, datos: dict) -> None:
+    """Si cambió la leyenda de alguna capa (colores), repinta sus PNG desde los valores guardados.
+
+    No requiere Earth Engine. Así, adoptar los colores oficiales de una fuente no obliga a
+    recalcular los 54 territorios: basta con la siguiente ejecución de cualquier modo.
+    """
+    from chcp.gee.mapas_ficha import recolorear
+
+    antes = {c.get("clave"): c for c in previo.get("capas_mapa") or []}
+    cambiadas = [c["clave"] for c in CAPAS if antes.get(c["clave"]) != c]
+    if not cambiadas:
+        return
+    n = 0
+    for ident in datos["territorios"]:
+        for clave in cambiadas:
+            n += recolorear(DIR_MAPAS / ident, clave)
+    print(f"Colores actualizados en {', '.join(cambiadas)}: {n} mapas repintados.", flush=True)
+    _guardar(datos)
+
+
 def _guardar(datos: dict) -> None:
     datos["generado"] = datetime.now().isoformat(timespec="seconds")
     temporal = SALIDA.with_suffix(".tmp")
@@ -415,6 +435,7 @@ def main() -> int:
         if previo.get("version_datos") != VERSION_DATOS:
             for t in datos["territorios"].values():
                 t.setdefault("version_datos", previo.get("version_datos") or 1)
+        _recolorear_si_cambio(previo, datos)
     vigente = lambda t: (not args.rehacer and t.get("version_datos", VERSION_DATOS) == VERSION_DATOS
                          and t.get("metodologia", METODOLOGIA_VERSION) == METODOLOGIA_VERSION)
 

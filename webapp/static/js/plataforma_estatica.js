@@ -436,7 +436,7 @@
     if (poli && R0) return aviso + card(SECCIONES_P.cambio(R0));
     if (T.prod === 'jrc') {
       const j = x.jrc_ha || {}, serie = x.serie_anual || [];
-      const filas = [['Bosque sin perturbación', j.tmf_estable, '#1d6b35'], ['Bosque degradado', j.tmf_degradacion, '#f28e2b'], ['Deforestado', j.tmf_deforestacion, '#fabc20'], ['Regeneración', j.tmf_recuperacion, '#a6d96a'], ['Agua', j.tmf_agua, '#5aa9e6'], ['Otra cobertura', j.tmf_otra_cobertura, '#d7c2a1']].map(([etiqueta, valor, color]) => ({ etiqueta, valor: valor || 0, color }));
+      const filas = [['Bosque sin perturbación', j.tmf_estable, '#005a00'], ['Bosque degradado', j.tmf_degradacion, '#649b23'], ['Deforestado', j.tmf_deforestacion, '#ff870f'], ['Regeneración', j.tmf_recuperacion, '#d2fa3c'], ['Agua', j.tmf_agua, '#008cbe'], ['Otra cobertura', j.tmf_otra_cobertura, '#ececec']].map(([etiqueta, valor, color]) => ({ etiqueta, valor: valor || 0, color }));
       return aviso + card(`${ttl('Estado del bosque · 2025')}${G.barrasClases(filas)}`) + (serie.length ? card(`${ttl('Degradado y deforestado por año', 'Clases acumuladas desde 1990.')}${G.serieApilada({ anios: serie.map((r) => r.anio), series: [{ etiqueta: 'Deforestado', color: '#fabc20', valores: serie.map((r) => r.jrc_deforestacion_ha || 0) }, { etiqueta: 'Degradado', color: '#f28e2b', valores: serie.map((r) => r.jrc_degradacion_ha || 0) }] })}<div class="g-ley"><span><i style="background:#fabc20"></i>Deforestado</span><span><i style="background:#f28e2b"></i>Degradado</span></div>`) : '');
     }
     if (T.prod === 'hansen') {
@@ -489,7 +489,7 @@
     const resp = respuesta(activas.length
       ? `<b>Hay señales: ${activas.length} de 5 fuentes</b> superan su umbral de pérdida o deterioro (${listaY(activas)}). Prioridad <b>${esc(String(p.prioridad).toLowerCase())}</b> para verificar en campo.`
       : '<b>Sin señales:</b> ninguna de las cinco fuentes supera su umbral de pérdida o deterioro en este período.');
-    const JRC_C = [['Sin perturbación', '#1d6b35'], ['Degradado', '#f28e2b'], ['Deforestado', '#fabc20'], ['Regeneración', '#a6d96a'], ['Agua', '#5aa9e6'], ['Otra cobertura', '#d7c2a1']];
+    const JRC_C = [['Sin perturbación', '#005a00'], ['Degradado', '#649b23'], ['Deforestado', '#ff870f'], ['Regeneración', '#d2fa3c'], ['Agua', '#008cbe'], ['Otra cobertura', '#ececec']];  // colores oficiales JRC TMF
     const estado = (k) => (p.senales[k] ? `<span class="pc-estado on"><i class="pc-dot"></i>Señal activa · +${number(p.aportes?.[k] ?? 0, 1)}</span>` : '<span class="pc-estado">Sin señal · +0</span>');
     const fuente = (k, nombre, periodo, umbral, cuerpo, tema) => `<article class="pc-fuente-c ${p.senales[k] ? 'on' : ''}"><header><b>${nombre}</b><small>${periodo}</small>${estado(k)}</header>${cuerpo}<p class="pc-umbral">Se activa con: ${umbral}</p>${tema ? `<button type="button" class="rs-link" data-ir-tema="${tema}">Ver la serie en el mapa</button>` : ''}</article>`;
     const jrcFilas = JRC_C.map(([n, c], i) => ({ etiqueta: n, color: c, valor: d.jrc[i] }));
@@ -952,5 +952,17 @@
   if (params.has('geometria')) $('.side-tabs [data-s="poligono"]').click();
   if (params.get('tema') && TEMA[params.get('tema')]) st.tema = params.get('tema');
   renderTemas();
+  if (params.get('parche') && !params.get('tema')) st.tema = 'frag';
+  if (params.get('parche') && TEMA.frag) renderTemas();
   await seleccionar(params.get('id') || location.hash.slice(1) || 'chcp');
+  // ?parche=N (desde la ficha): acerca el mapa a ese parche de bosque y lo resalta.
+  const nParche = Number(params.get('parche'));
+  if (nParche && st.geo?.parches?.features) {
+    const f = st.geo.parches.features.find((x) => x.properties.patch_id === nParche);
+    if (f) {
+      const resalte = L.geoJSON(f, { style: { color: '#ffeb3b', weight: 4, fill: false }, interactive: false }).addTo(st.map);
+      st.map.fitBounds(resalte.getBounds(), { padding: [60, 60], maxZoom: 16 });
+      resalte.bindTooltip(`Parche #${nParche} · ${hectares(f.properties.area_ha)}`, { permanent: true, direction: 'top' }).openTooltip();
+    }
+  }
 })();

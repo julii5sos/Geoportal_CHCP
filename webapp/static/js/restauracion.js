@@ -750,7 +750,7 @@
   st.map = L.map('rs-map', { zoomControl: true });
   // La cobertura va bajo los parches, los ríos y las rutas (overlayPane tiene zIndex 400).
   st.map.createPane('rs-cobertura').style.zIndex = 350;
-  L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', { attribution: 'Esri World Imagery', maxZoom: 18 }).addTo(st.map);
+  window.CHCP.mapaBase(st.map, { defecto: 'satelite' });
   const colorCorr = { Alta: '#1b5e20', Mediana: '#9ccc65', 'Media-baja': '#ffb74d' };
   st.capaCorr = L.geoJSON(st.territory.corridors, { style: (f) => ({ color: colorCorr[f.properties.categoria_etiqueta] || '#7fae00', weight: 1.2, fillColor: colorCorr[f.properties.categoria_etiqueta] || '#a1d303', fillOpacity: 0.12 }), onEachFeature: (f, l) => l.bindTooltip(`${f.properties.nombre} · conectividad ${f.properties.categoria_etiqueta} (Almanaque Azul)`) }).addTo(st.map);
   st.capaCbm = L.geoJSON({ type: 'FeatureCollection', features: tramosMeso() }, { style: { color: '#4a148c', weight: 1.6, fillColor: '#ce93d8', fillOpacity: 0.22 }, interactive: false }).addTo(st.map);

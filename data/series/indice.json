@@ -4316,32 +4316,32 @@
     {
      "valor": 1,
      "etiqueta": "Bosque sin perturbación",
-     "color": "#1d6b35"
+     "color": "#005a00"
     },
     {
      "valor": 2,
      "etiqueta": "Bosque degradado",
-     "color": "#f28e2b"
+     "color": "#649b23"
     },
     {
      "valor": 3,
      "etiqueta": "Deforestado",
-     "color": "#fabc20"
+     "color": "#ff870f"
     },
     {
      "valor": 4,
      "etiqueta": "Regeneración",
-     "color": "#a6d96a"
+     "color": "#d2fa3c"
     },
     {
      "valor": 5,
      "etiqueta": "Agua",
-     "color": "#5aa9e6"
+     "color": "#008cbe"
     },
     {
      "valor": 6,
      "etiqueta": "Otra cobertura",
-     "color": "#d7c2a1"
+     "color": "#ffffff"
     }
    ],
    "lectura": "Estado de cada año (banda de diciembre). «Degradado» y «deforestado» acumulan las perturbaciones desde 1990.",
@@ -4384,127 +4384,127 @@
     {
      "valor": 1,
      "etiqueta": "2001",
-     "color": "#ffffcc"
+     "color": "#ffff00"
     },
     {
      "valor": 2,
      "etiqueta": "2002",
-     "color": "#fff6b5"
+     "color": "#fff400"
     },
     {
      "valor": 3,
      "etiqueta": "2003",
-     "color": "#ffed9f"
+     "color": "#ffea00"
     },
     {
      "valor": 4,
      "etiqueta": "2004",
-     "color": "#ffe48a"
+     "color": "#ffdf00"
     },
     {
      "valor": 5,
      "etiqueta": "2005",
-     "color": "#fed976"
+     "color": "#ffd400"
     },
     {
      "valor": 6,
      "etiqueta": "2006",
-     "color": "#fecc68"
+     "color": "#ffca00"
     },
     {
      "valor": 7,
      "etiqueta": "2007",
-     "color": "#febf5a"
+     "color": "#ffbf00"
     },
     {
      "valor": 8,
      "etiqueta": "2008",
-     "color": "#feb24c"
+     "color": "#ffb500"
     },
     {
      "valor": 9,
      "etiqueta": "2009",
-     "color": "#fea446"
+     "color": "#ffaa00"
     },
     {
      "valor": 10,
      "etiqueta": "2010",
-     "color": "#fd9640"
+     "color": "#ff9f00"
     },
     {
      "valor": 11,
      "etiqueta": "2011",
-     "color": "#fd8a3b"
+     "color": "#ff9500"
     },
     {
      "valor": 12,
      "etiqueta": "2012",
-     "color": "#fd7d36"
+     "color": "#ff8a00"
     },
     {
      "valor": 13,
      "etiqueta": "2013",
-     "color": "#fc6d33"
+     "color": "#ff8000"
     },
     {
      "valor": 14,
      "etiqueta": "2014",
-     "color": "#f95e2f"
+     "color": "#ff7500"
     },
     {
      "valor": 15,
      "etiqueta": "2015",
-     "color": "#f34e2c"
+     "color": "#ff6a00"
     },
     {
      "valor": 16,
      "etiqueta": "2016",
-     "color": "#ec3e28"
+     "color": "#ff6000"
     },
     {
      "valor": 17,
      "etiqueta": "2017",
-     "color": "#e31a1c"
+     "color": "#ff5500"
     },
     {
      "valor": 18,
      "etiqueta": "2018",
-     "color": "#d7141f"
+     "color": "#ff4a00"
     },
     {
      "valor": 19,
      "etiqueta": "2019",
-     "color": "#ca0e22"
+     "color": "#ff4000"
     },
     {
      "valor": 20,
      "etiqueta": "2020",
-     "color": "#bd0026"
+     "color": "#ff3500"
     },
     {
      "valor": 21,
      "etiqueta": "2021",
-     "color": "#a60026"
+     "color": "#ff2a00"
     },
     {
      "valor": 22,
      "etiqueta": "2022",
-     "color": "#940026"
+     "color": "#ff2000"
     },
     {
      "valor": 23,
      "etiqueta": "2023",
-     "color": "#800026"
+     "color": "#ff1500"
     },
     {
      "valor": 24,
      "etiqueta": "2024",
-     "color": "#6b0024"
+     "color": "#ff0b00"
     },
     {
      "valor": 25,
      "etiqueta": "2025",
-     "color": "#55001e"
+     "color": "#ff0000"
     }
    ],
    "lectura": "Año en que se perdió la cobertura arbórea (≥ 30 % en 2000). Incluye cosecha de plantaciones; no indica la causa.",
@@ -4593,27 +4593,27 @@
     {
      "valor": 1,
      "etiqueta": "Sin vegetación activa (< 0)",
-     "color": "#8c510a"
+     "color": "#eaeaea"
     },
     {
      "valor": 2,
      "etiqueta": "Suelo o cobertura muy escasa (0–0,2)",
-     "color": "#d8b365"
+     "color": "#ccc682"
     },
     {
      "valor": 3,
      "etiqueta": "Vegetación escasa (0,2–0,4)",
-     "color": "#f6e8c3"
+     "color": "#70a33f"
     },
     {
      "valor": 4,
      "etiqueta": "Vegetación moderada (0,4–0,6)",
-     "color": "#80cdc1"
+     "color": "#306d1c"
     },
     {
      "valor": 5,
      "etiqueta": "Vegetación densa (≥ 0,6)",
-     "color": "#01665e"
+     "color": "#004400"
     }
    ],
    "lectura": "Vigor espectral, no tipo de cobertura. Un descenso puede deberse a cosecha, sequía o nubes residuales.",

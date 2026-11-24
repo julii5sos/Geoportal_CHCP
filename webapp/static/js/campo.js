@@ -79,7 +79,7 @@
     [st.data, st.territory] = await Promise.all([api('/api/v1/panel/statistics'), api('/api/v1/territory')]);
   } catch (error) { $('#cp-aviso').textContent = `No se pudieron cargar los datos: ${error.message}`; return; }
   st.map = L.map('cp-map');
-  L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', { attribution: 'Esri World Imagery', maxZoom: 18 }).addTo(st.map);
+  window.CHCP.mapaBase(st.map, { defecto: 'satelite' });
   const sub = L.geoJSON(st.territory.subbasins, { style: { color: '#ffffff', weight: 1, fill: false, opacity: 0.7 }, interactive: false }).addTo(st.map);
   st.map.fitBounds(sub.getBounds());
   const terr = Object.values(st.data.territorios).filter((t) => t && t.id !== 'chcp').sort((a, b) => a.nombre.localeCompare(b.nombre, 'es'));
