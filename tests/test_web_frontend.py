@@ -140,7 +140,7 @@ class WebFrontendTests(unittest.TestCase):
         copied = (ROOT / "webapp" / "static" / "css" / "portal.css").read_text(encoding="utf-8")
         self.assertIn("Conectividad Panamá — hoja de estilos del portal", copied)
         self.assertIn("grid-template-columns:340px minmax(0,1fr) auto", copied)
-        self.assertIn("--azul:#0a4393", copied)
+        self.assertIn("--azul:#14382f", copied)  # paleta Selva
         extension = (ROOT / "webapp" / "static" / "css" / "webapp.css").read_text(encoding="utf-8")
         self.assertIn("#v-plataforma", extension)
         self.assertIn(".result-tabs", extension)

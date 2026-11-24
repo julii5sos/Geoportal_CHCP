@@ -107,7 +107,7 @@
 .dl-btn b { font-size:15px; }
 .dl-btn small { font-size:12px; opacity:.85; }
 .dl-btn.dl-primary { background:var(--azul); color:#fff; }
-.dl-btn:hover { box-shadow:0 4px 14px rgba(10,67,147,.2); }
+.dl-btn:hover { box-shadow:0 4px 14px rgba(20,56,47,.2); }
 
 @media (max-width: 1300px) {
   .change-grid { grid-template-columns:1fr 1fr; }
@@ -136,7 +136,7 @@
 /* Panel de monitoreo (modelo del portal de referencia) */
 #v-monitoreo { display:grid; grid-template-columns:minmax(0,640px) minmax(0,1fr); height:calc(100vh - 70px); }
 .mon { overflow-y:auto; background:var(--bg-2); border-right:1px solid var(--line); }
-.mon-top { background:linear-gradient(135deg,var(--azul) 0%,#0b3a80 100%); color:#fff; padding:18px 28px 0; position:sticky; top:0; z-index:5; }
+.mon-top { background:linear-gradient(135deg,var(--azul) 0%,#0f2e27 100%); color:#fff; padding:18px 28px 0; position:sticky; top:0; z-index:5; }
 .mon-crumbs { display:flex; gap:8px; align-items:center; font-size:12.5px; opacity:.9; min-height:18px; }
 .mon-crumbs button { background:none; border:0; color:#cfe6ff; padding:0; cursor:pointer; text-decoration:underline; font-size:12.5px; }
 .mon-top h1 { font-size:30px; font-weight:700; margin:8px 0 14px; letter-spacing:-.01em; }
@@ -234,7 +234,7 @@
 #v-coberturas { display:grid; grid-template-columns:360px minmax(0,1fr) 460px; height:calc(100vh - 70px); }
 .cob-side, .cob-results { overflow-y:auto; background:var(--bg-2); }
 .cob-side { border-right:1px solid var(--line); display:flex; flex-direction:column; }
-.cob-head { background:linear-gradient(135deg,var(--azul),#0b3a80); color:#fff; padding:18px 20px; }
+.cob-head { background:linear-gradient(135deg,var(--azul),#0f2e27); color:#fff; padding:18px 20px; }
 .cob-head .eyebrow { color:#bfe08a; }
 .cob-head h1 { font-size:22px; margin:4px 0 6px; }
 .cob-head p { font-size:12.5px; opacity:.9; }
@@ -266,7 +266,7 @@
 #cob-map { position:absolute; inset:0; }
 .cob-swipe { position:absolute; inset:0; z-index:500; pointer-events:none; }
 .cob-swipe input { position:absolute; left:0; right:0; bottom:46px; width:60%; margin:0 20%; pointer-events:auto; }
-.cob-swipe-line { position:absolute; top:0; bottom:0; width:3px; background:#fff; box-shadow:0 0 0 1px rgba(10,67,147,.6); transform:translateX(-1px); }
+.cob-swipe-line { position:absolute; top:0; bottom:0; width:3px; background:#fff; box-shadow:0 0 0 1px rgba(20,56,47,.6); transform:translateX(-1px); }
 .cob-tags { position:absolute; top:12px; left:60px; right:12px; z-index:600; display:flex; justify-content:space-between; pointer-events:none; }
 .cob-tag { background:#fff; border-radius:999px; padding:6px 12px; font-size:12.5px; font-weight:700; color:var(--azul-tinta); box-shadow:var(--shadow); }
 .cob-tag.loading::after { content:" · cargando…"; font-weight:400; color:var(--muted); }
@@ -517,15 +517,15 @@ html.app #main-content:has(.pg) { overflow-y:auto; background:#f3f6fa; }
 .rs-niveles span { display:inline-block; min-width:74px; text-align:center; font-size:11px; font-weight:700; border-radius:999px; padding:1px 6px; margin-right:6px; color:#fff; }
 .rs-niveles .ok { background:#2e7d32; } .rs-niveles .mid { background:#f28e2b; } .rs-niveles .no { background:#90a4ae; }
 /* Procedencia del resultado (tipo A/B/C) */
-.procedencia { display:flex; flex-wrap:wrap; align-items:center; gap:4px 10px; font-size:11.5px; color:#455a64; background:#f4f7fb; border:1px solid var(--line); border-left:4px solid #0a4393; border-radius:8px; padding:6px 10px; margin:8px 0; }
-.procedencia b { color:#fff; background:#0a4393; border-radius:999px; padding:1px 8px; font-size:11px; }
+.procedencia { display:flex; flex-wrap:wrap; align-items:center; gap:4px 10px; font-size:11.5px; color:#455a64; background:#f4f7fb; border:1px solid var(--line); border-left:4px solid #14382f; border-radius:8px; padding:6px 10px; margin:8px 0; }
+.procedencia b { color:#fff; background:#14382f; border-radius:999px; padding:1px 8px; font-size:11px; }
 .procedencia[data-tipo=A] { border-left-color:#2e7d32; } .procedencia[data-tipo=A] b { background:#2e7d32; }
 .procedencia[data-tipo=C] { border-left-color:#f28e2b; } .procedencia[data-tipo=C] b { background:#f28e2b; }
 .procedencia .pr-warn { color:#b35c00; font-weight:700; }
 .exp-tag { font-size:11px; font-weight:700; color:#fff; background:#7e57c2; border-radius:999px; padding:2px 9px; vertical-align:middle; }
 .rel-alto { color:#c62828; font-weight:700; } .rel-medio { color:#8a6d00; font-weight:700; } .rel-bajo { color:#2e7d32; font-weight:700; }
 /* Logo del geoportal */
-.logo-badge { flex:none; width:54px; height:54px; display:inline-flex; align-items:center; justify-content:center; color:#fff; --logo-nodo:#8fd14f; --logo-fondo:var(--azul); }
+.logo-badge { flex:none; width:54px; height:54px; display:inline-flex; align-items:center; justify-content:center; color:#fff; --logo-nodo:#9bd36d; --logo-fondo:var(--azul); }
 .logo-badge svg { width:100%; height:100%; display:block; overflow:visible; }
 
 .foot .logo-badge { width:46px; height:46px; } 
@@ -682,7 +682,7 @@ html.app #main-content:has(.pg) { overflow-y:auto; background:#f3f6fa; }
 
 /* Aviso al abrir el sitio como archivo (file://) */
 #chcp-file-aviso { position:sticky; top:0; z-index:5000; display:grid; gap:4px; padding:14px 20px; background:#fff4d6; border-bottom:2px solid #e0a800; color:#3a2c00; font-size:14px; line-height:1.45; }
-#chcp-file-aviso a { color:#0a4393; font-weight:700; }
+#chcp-file-aviso a { color:#14382f; font-weight:700; }
 .foot .foot-links a { color:#fff; font-weight:700; text-decoration:underline; }
 
 /* Plataforma SIG: el mapa manda. Resultados en un panel más estrecho que se oculta con la flecha
@@ -692,7 +692,7 @@ html.app #main-content:has(.pg) { overflow-y:auto; background:#f3f6fa; }
 #v-plataforma.pe .res.closed { width:0; overflow:hidden; box-shadow:none; }
 #v-plataforma.pe .res-h { min-height:0; padding:12px 54px 12px 18px; }
 #v-plataforma.pe .res-h h2 { font-size:clamp(19px, 1.4vw, 23px); }
-#v-plataforma.pe .res-tab { top:50%; right:0; transform:translateY(-50%); border-radius:10px 0 0 10px; padding:14px 10px; writing-mode:vertical-rl; transform-origin:center; font-weight:700; box-shadow:-4px 0 14px rgba(6,42,94,.18); }
+#v-plataforma.pe .res-tab { top:50%; right:0; transform:translateY(-50%); border-radius:10px 0 0 10px; padding:14px 10px; writing-mode:vertical-rl; transform-origin:center; font-weight:700; box-shadow:-4px 0 14px rgba(12,36,30,.18); }
 @media (max-width:1080px) {
   #v-plataforma.pe .res { width:auto; }
   #v-plataforma.pe .res.closed { display:none; }
@@ -720,7 +720,7 @@ html.app #main-content:has(.pg) { overflow-y:auto; background:#f3f6fa; }
 .mis b { display:block; color:var(--azul-tinta); } .mis span { color:#5b6675; }
 .mis .mis-x { font-size:18px; color:#7a8699; padding:0 12px; }
 
-.pe-anios { position:absolute; left:50%; bottom:16px; transform:translateX(-50%); z-index:800; display:flex; align-items:center; gap:10px; background:#fff; border-radius:999px; padding:8px 16px 8px 8px; box-shadow:0 6px 20px rgba(6,42,94,.22); width:min(560px, calc(100% - 140px)); font-size:12.5px; }
+.pe-anios { position:absolute; left:50%; bottom:16px; transform:translateX(-50%); z-index:800; display:flex; align-items:center; gap:10px; background:#fff; border-radius:999px; padding:8px 16px 8px 8px; box-shadow:0 6px 20px rgba(12,36,30,.22); width:min(560px, calc(100% - 140px)); font-size:12.5px; }
 .pe-anios input[type=range] { flex:1; accent-color:var(--azul); }
 .pe-anios output { font-weight:800; color:var(--azul-tinta); font-size:15px; min-width:40px; text-align:right; }
 .pe-anios-ext { color:#6b7686; font-size:11.5px; }
@@ -798,7 +798,7 @@ html.app #main-content:has(.pg) { overflow-y:auto; background:#f3f6fa; }
 .g-hit { fill:transparent; }
 .g-col { cursor:pointer; outline:none; }
 .g-col:hover path, .g-col:hover rect:not(.g-hit), .g-col:focus path { filter:brightness(1.08); }
-.g-col:hover .g-hit, .g-col:focus .g-hit { fill:rgba(10,67,147,.06); }
+.g-col:hover .g-hit, .g-col:focus .g-hit { fill:rgba(20,56,47,.06); }
 .g-atenuada path, .g-atenuada rect:not(.g-hit) { opacity:.45; }
 .g-ley { display:flex; flex-wrap:wrap; gap:4px 12px; margin:8px 0 2px; font-size:11.5px; color:#3b4758; }
 .g-ley span { display:flex; align-items:center; gap:5px; } .g-ley i { width:10px; height:10px; border-radius:2px; }
@@ -816,7 +816,7 @@ html.app #main-content:has(.pg) { overflow-y:auto; background:#f3f6fa; }
 .g-tabla summary { cursor:pointer; color:var(--azul); font-weight:700; }
 .g-tabla-c { max-height:240px; overflow:auto; margin-top:6px; }
 .g-vacio { color:#6b7686; font-size:12.5px; }
-#g-tip { position:fixed; z-index:5000; pointer-events:none; background:#fff; border:1px solid #d5dde8; border-radius:8px; padding:7px 10px; font-size:12px; line-height:1.5; color:#3b4758; box-shadow:0 6px 18px rgba(6,42,94,.18); max-width:280px; }
+#g-tip { position:fixed; z-index:5000; pointer-events:none; background:#fff; border:1px solid #d5dde8; border-radius:8px; padding:7px 10px; font-size:12px; line-height:1.5; color:#3b4758; box-shadow:0 6px 18px rgba(12,36,30,.18); max-width:280px; }
 #g-tip b { color:#111b2b; font-size:13px; }
 .g-tk { display:inline-block; width:10px; height:3px; border-radius:2px; margin-right:5px; vertical-align:middle; }
 .wz-tipos { display:grid; gap:8px; }
@@ -878,3 +878,43 @@ html.app #main-content:has(.pg) { overflow-y:auto; background:#f3f6fa; }
 .met-refs td small { color:var(--muted); font-weight:400; }
 .met-ref { line-height:1.55; padding-left:2.2em !important; text-indent:-1.6em; overflow-wrap:anywhere; }
 .in-globo figcaption a { color:#fff; text-decoration:underline; }
+
+/* ---------- portada: fondos por sección (paleta Selva) ---------- */
+#v-inicio { --claro-1:#f3f8f1; --claro-2:#e8f1e4; --banda:#0f2e27; --banda-rgb:15,46,39; --hoja:#7cc35a; background:var(--claro-1); }
+#v-inicio .in-preguntas { background:var(--claro-1); }
+#v-inicio .in-es { background:var(--claro-2); }
+#v-inicio .in-faq { background:#fff; }
+/* Banda oscura «Cómo funciona» con la red de ríos de la cuenca (IGNTG) */
+#v-inicio .in-pasos { position:relative; isolation:isolate; overflow:hidden; background:var(--banda); color:#dfeae4; }
+#v-inicio .in-pasos > .wrap { position:relative; z-index:1; }
+#v-inicio .in-pasos::before { content:""; position:absolute; z-index:0; left:-220px; top:-140px; width:1000px; height:980px; background:url(../img/rios.svg) no-repeat center/contain; pointer-events:none; }
+#v-inicio .in-pasos::after { content:""; position:absolute; inset:0; z-index:0; background:radial-gradient(ellipse at 75% 60%, rgba(var(--banda-rgb),.92) 20%, rgba(var(--banda-rgb),.35) 75%); pointer-events:none; }
+#v-inicio .in-pasos .eyebrow { color:#9bd36d; }
+#v-inicio .in-pasos h2 { color:#fff; }
+#v-inicio .in-pasos .in-flujo li { background:rgba(var(--banda-rgb),.88); backdrop-filter:blur(2px); border-color:rgba(255,255,255,.14); }
+#v-inicio .in-pasos .in-flujo h3 { color:#fff; }
+#v-inicio .in-pasos .in-flujo p { color:#c9dbd2; }
+#v-inicio .in-pasos .in-flujo li > b { background:var(--hoja); color:#0c241e; }
+#v-inicio .in-pasos .btn-p { background:var(--hoja); border-color:var(--hoja); color:#0c241e; }
+#v-inicio .in-pasos .btn-s { background:transparent; border-color:rgba(255,255,255,.6); color:#fff; }
+#v-inicio .in-pasos a:focus-visible { outline:2px solid #fff; outline-offset:3px; }
+
+/* ---------- portada: la iniciativa (texto + tres fotos) ---------- */
+.in-ini { margin-top:36px; background:var(--banda, #0f2e27); color:#e6efe9; }
+.in-ini-in { display:grid; grid-template-columns:minmax(0, 1fr) minmax(0, 1.05fr); gap:48px; align-items:center; }
+.in-ini h2 { color:#fff; font-size:clamp(24px, 2.6vw, 32px); font-weight:500; letter-spacing:-.01em; margin-bottom:16px; }
+.in-ini-txt p { font-size:15.5px; line-height:1.7; max-width:60ch; color:#d3e2d9; }
+.in-ini-txt p + p { margin-top:12px; }
+.in-ini-txt p:first-of-type { font-size:17px; color:#fff; }
+.in-ini-fotos { display:grid; grid-template-columns:1.25fr 1fr; grid-template-rows:1fr 1fr; gap:10px; height:440px; margin:0; }
+.in-ini-fotos figure { margin:0; position:relative; overflow:hidden; border-radius:10px; background:#1a473c; }
+.in-ini-fotos figure:first-child { grid-row:1 / 3; }
+.in-ini-fotos img { width:100%; height:100%; object-fit:cover; display:block; }
+.in-ini-fotos figcaption { position:absolute; left:0; right:0; bottom:0; padding:22px 12px 8px; font-size:12px; color:#fff; background:linear-gradient(180deg, rgba(0,0,0,0), rgba(0,0,0,.55)); }
+.in-ini-cred { grid-column:1 / -1; font-size:11.5px; color:#9fb8aa; text-align:right; margin-top:-30px; }
+.in-ini-cred a { color:inherit; }
+@media (max-width:900px) {
+  .in-ini-in { grid-template-columns:1fr; gap:28px; }
+  .in-ini-fotos { height:340px; }
+  .in-ini-cred { margin-top:0; text-align:left; }
+}

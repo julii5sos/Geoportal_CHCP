@@ -3,7 +3,7 @@
 {% block title %}Geoportal de Conectividad Ecológica de la CHCP{% endblock %}
 {% block body %}
 <main id="v-inicio">
-  <section class="hero in-hero" style="--next:#fff">
+  <section class="hero in-hero" style="--next:#f3f8f1">
     <div class="wrap hero-in in-hero-in">
       <div class="in-hero-txt">
         <h1>¿Qué le está pasando al bosque de la Cuenca del Canal?</h1>
@@ -37,6 +37,23 @@
       <span>Todo lo que verá se calcula con imágenes satelitales y cartografía oficial. Sirve para saber <em>dónde mirar primero</em>: no reemplaza la visita de campo ni es un dictamen técnico o legal.</span>
     </aside>
   </div>
+
+  <section class="sec in-ini" id="in-iniciativa" aria-labelledby="in-ini-t">
+    <div class="wrap in-ini-in">
+      <div class="in-ini-txt">
+        <h2 id="in-ini-t">Para qué sirve este geoportal</h2>
+        <p>La iniciativa busca desarrollar una herramienta de preevaluación ambiental y análisis geoespacial que permita identificar y justificar áreas prioritarias para la conservación, restauración y reforestación, considerando la cobertura boscosa, la fragmentación del paisaje y la conectividad ecológica.</p>
+        <p>Mediante la integración de información satelital e indicadores ambientales, la aplicación facilitará la evaluación del estado de los ecosistemas y su contribución a la conectividad estructural del paisaje, especialmente en relación con los corredores biológicos y los bosques de Mesoamérica.</p>
+        <p>Su propósito es proporcionar información técnica que respalde la selección de sitios para proyectos ambientales, facilite la toma de decisiones y oriente los esfuerzos hacia áreas estratégicas para mantener o recuperar la continuidad de los ecosistemas forestales.</p>
+      </div>
+      <div class="in-ini-fotos">
+        <figure><img src="{{ url_for('static', filename='img/iniciativa/paisaje.jpg') }}" alt="Colinas cubiertas de bosque tropical bajo un cielo nublado en Panamá." onerror="this.remove()" loading="lazy" width="1280" height="853"><figcaption>Bosque tropical en colinas de Panamá</figcaption></figure>
+        <figure><img src="{{ url_for('static', filename='img/iniciativa/ciudad.jpg') }}" alt="Edificios de la Ciudad de Panamá detrás de vegetación tropical." onerror="this.remove()" loading="lazy" width="1280" height="853"><figcaption>Ciudad de Panamá y vegetación tropical</figcaption></figure>
+        <figure><img src="{{ url_for('static', filename='img/iniciativa/isla.jpg') }}" alt="Pequeña isla con palmeras en aguas turquesa de Bocas del Toro." onerror="this.remove()" loading="lazy" width="1280" height="850"><figcaption>Isla en Bocas del Toro</figcaption></figure>
+      </div>
+      <p class="in-ini-cred">Fotos: Pixabay (<a href="https://pixabay.com/es/photos/panam%C3%A1-paisaje-cielo-nubes-sierras-80761/">paisaje</a>; <a href="https://pixabay.com/es/photos/panam%C3%A1-ciudad-oc%C3%A9ano-naturaleza-4198941/">monicaiglesias</a>; <a href="https://pixabay.com/es/photos/panam%C3%A1-peque%C3%B1a-isla-mar-isla-4195997/">Geralbe</a>), Licencia de contenido de Pixabay.</p>
+    </div>
+  </section>
 
   <section class="sec in-preguntas" id="in-preguntas">
     <div class="wrap">
