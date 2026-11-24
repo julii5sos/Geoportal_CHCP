@@ -283,32 +283,55 @@
   const tramosMeso = () => (st.territory.corridors?.features || []).filter((f) => f.properties.es_mesoamericano || /mesoamericano/i.test(f.properties.nombre || ''));
   const nombreTramo = (f) => String(f.properties.nombre || '').replace(/^Corredor biol[oó]gico mesoamericano\s*/i, '').replace(/^./, (c) => c.toUpperCase()) || 'Tramo';
 
-  let capasPromesa = null;
   /**
-   * Capas de toda la cuenca (malla de los mapas precalculados): SINIA 2021 general y detallado,
-   * JRC 2025, ESRI 2024 y la banda ribereña del IGNTG remuestreada a la misma malla.
-   * `clase` es la clasificación completa que usan los cruces, la composición y las rutas.
+   * Lee y combina las capas de cobertura de una malla precalculada (EPSG:3857): SINIA 2021
+   * general y detallado, JRC 2025, ESRI 2024 y la banda ribereña del IGNTG remuestreada a la
+   * misma malla. `clase` es la clasificación completa que usan los cruces, la composición y las rutas.
    */
+  async function leerCapas(id, m) {
+    const leer = (c) => (m.valores.includes(c) ? bytes(mapFile(id, `${c}.v.png`)).catch(() => null) : Promise.resolve(null));
+    const hidro = Promise.all([
+      fetch(window.CHCP.hidroFile('riparia_igntg.json')).then((r) => (r.ok ? r.json() : null)),
+      bytes(window.CHCP.hidroFile('riparia_igntg.v.png')),
+    ]).catch(() => [null, null]);
+    const [sinia, jrc, esri, detalle, [metaRib, rib]] = await Promise.all([...['sinia_2021', 'jrc_2025', 'esri_2024', 'sinia_2021_detalle'].map(leer), hidro]);
+    if (!sinia) throw new Error('No se pudo leer la cobertura SINIA 2021.');
+    const w = sinia.w, h = sinia.h, ok = (x) => (x && x.w === w && x.h === h ? x.v : null);
+    // La banda ribereña del IGNTG solo existe dentro de la cuenca; fuera queda sin ribera.
+    const ribera = metaRib && rib ? RC.remuestrear(rib.v, metaRib.limites, rib.w, rib.h, m.limites, w, h) : null;
+    const capas = { sinia: sinia.v, jrc: ok(jrc), esri: ok(esri), detalle: ok(detalle), ribera };
+    const { clase } = RC.superficie(capas, w * h);
+    return { m, w, h, ...capas, clase, metaRib, ribOriginal: rib };
+  }
+
+  let capasPromesa = null;
+  /** Capas de la cuenca (malla de los mapas precalculados de la CHCP). */
   function capasCuenca() {
     if (capasPromesa) return capasPromesa;
     capasPromesa = (async () => {
       const m = st.data.territorios.chcp?.mapas;
       if (!m?.valores?.includes('sinia_2021')) throw new Error('La cuenca todavía no tiene los mapas de cobertura precalculados.');
-      const leer = (c) => (m.valores.includes(c) ? bytes(mapFile('chcp', `${c}.v.png`)).catch(() => null) : Promise.resolve(null));
-      const hidro = Promise.all([
-        fetch(window.CHCP.hidroFile('riparia_igntg.json')).then((r) => (r.ok ? r.json() : null)),
-        bytes(window.CHCP.hidroFile('riparia_igntg.v.png')),
-      ]).catch(() => [null, null]);
-      const [sinia, jrc, esri, detalle, [metaRib, rib]] = await Promise.all([...['sinia_2021', 'jrc_2025', 'esri_2024', 'sinia_2021_detalle'].map(leer), hidro]);
-      if (!sinia) throw new Error('No se pudo leer la cobertura SINIA 2021 de la cuenca.');
-      const w = sinia.w, h = sinia.h, ok = (x) => (x && x.w === w && x.h === h ? x.v : null);
-      const ribera = metaRib && rib ? RC.remuestrear(rib.v, metaRib.limites, rib.w, rib.h, m.limites, w, h) : null;
-      const capas = { sinia: sinia.v, jrc: ok(jrc), esri: ok(esri), detalle: ok(detalle), ribera };
-      const { clase } = RC.superficie(capas, w * h);
-      return { m, w, h, ...capas, clase, metaRib, ribOriginal: rib };
+      return leerCapas('chcp', m);
     })();
     capasPromesa.catch(() => { capasPromesa = null; });
     return capasPromesa;
+  }
+
+  let entornoPromesa = null;
+  /**
+   * Capas de la cuenca más su entorno (15 km alrededor, la extensión de los assets SINIA), para
+   * que una ruta pueda salir de la cuenca y llegar al tramo del Corredor Mesoamericano más
+   * cercano. Si el entorno todavía no está precalculado, se usan las capas de la cuenca.
+   */
+  function capasEntorno() {
+    if (entornoPromesa) return entornoPromesa;
+    entornoPromesa = (async () => {
+      const m = await fetch(mapFile('entorno', 'meta.json')).then((r) => (r.ok ? r.json() : null)).catch(() => null);
+      if (!m?.valores?.includes('sinia_2021')) return { ...(await capasCuenca()), margen_m: 0 };
+      try { return { ...(await leerCapas('entorno', m)), margen_m: m.margen_m || 0 }; } catch { return { ...(await capasCuenca()), margen_m: 0 }; }
+    })();
+    entornoPromesa.catch(() => { entornoPromesa = null; });
+    return entornoPromesa;
   }
 
   // ---- composición: qué cobertura ocupa lo que corta un corredor
@@ -368,7 +391,7 @@
 
   async function baseRutas() {
     if (st.rutas.base) return st.rutas.base;
-    const { m, w: w0, h: h0, clase: claseCompleta, detalle, esri, ribera } = await capasCuenca();
+    const { m, w: w0, h: h0, clase: claseCompleta, detalle, esri, ribera, margen_m: margen } = await capasEntorno();
     const f = Math.max(1, Math.ceil(Math.max(w0, h0) / MAX_LADO_RUTAS));
     const red = RC.reducirClases(claseCompleta, w0, h0, f), w = red.w, h = red.h, clase = red.v;
     const res = RC.resistencias(clase);
@@ -385,7 +408,7 @@
       let n = 0; for (let i = 0; i < celdas.length; i += 1) n += celdas[i] && Number.isFinite(res[i]) ? 1 : 0;
       return { nombre: nombreTramo(feat), celdas, n, ...(n ? RC.costoAcumulado(res, w, h, celdas, paso) : {}) };
     });
-    st.rutas.base = { w, h, f, paso, clase, res, codigos, aPixel, aLonLat, tramos, construido: Boolean(esri || detalle), detalle: Boolean(detalle), ribera: Boolean(ribera) };
+    st.rutas.base = { w, h, f, paso, clase, res, codigos, aPixel, aLonLat, tramos, margen, construido: Boolean(esri || detalle), detalle: Boolean(detalle), ribera: Boolean(ribera) };
     return st.rutas.base;
   }
 
@@ -489,16 +512,16 @@
     $('#rs-rutas').innerHTML = `
       <div class="rs-res-head"><h2>Rutas del parche #${u.id} al Corredor Biológico Mesoamericano</h2><button class="btn btn-s" type="button" id="rs-rutas-cerrar">Quitar rutas</button></div>
       ${window.CHCP.procedencia(st.data, 'C', st.data.territorios.chcp, '<span>Rutas de menor costo calculadas en su navegador</span>')}
-      ${sinTramos ? '<p class="rs-warn">Ningún tramo del Corredor Mesoamericano cae dentro de la cuenca.</p>' : `
+      ${sinTramos ? `<p class="rs-warn">Ningún tramo del Corredor Mesoamericano cae dentro de la cuenca${b.margen ? ` ni a menos de ${number(b.margen / 1000, 0)} km de ella` : ''}.</p>` : `
       <table class="fi-table rs-table rs-rutas-t"><thead><tr><th>Tramo de destino</th><th>Longitud</th><th>Por bosque</th><th>Fuera del bosque<small>a restaurar</small></th><th>Sobre agua</th><th>Zona construida</th></tr></thead><tbody>${filas}</tbody></table>
       <label class="rs-field rs-tol">Franja de alternativas<select id="rs-tol">${[0.05, 0.1, 0.2].map((t) => `<option value="${t}"${t === st.rutas.tolerancia ? ' selected' : ''}>hasta ${t * 100} % más costosas que la mejor ruta</option>`).join('')}</select></label>`}
       <details class="rs-supuestos"><summary>Cómo se calculan y qué no dicen</summary>
         <ul>
-          <li>Ruta de <b>menor costo</b> sobre la cobertura de toda la cuenca (SINIA 2021 general${b.detalle ? ' y detallada' : ''}, JRC 2025${b.ribera ? ', red hidrográfica del IGNTG' : ''}${b.construido && !b.detalle ? ', zonas construidas de ESRI 2024' : ''}), con celdas de unos ${number(b.paso, 0)} m.</li>
+          <li>Ruta de <b>menor costo</b> sobre la cobertura de toda la cuenca${b.margen ? ` y de ${number(b.margen / 1000, 0)} km a su alrededor` : ''} (SINIA 2021 general${b.detalle ? ' y detallada' : ''}, JRC 2025${b.ribera ? ', red hidrográfica del IGNTG' : ''}${b.construido && !b.detalle ? ', zonas construidas de ESRI 2024' : ''}), con celdas de unos ${number(b.paso, 0)} m.</li>
           <li>Resistencias supuestas: ${b.ribera ? `bosque de ribera ${r.bosque_ribera}, ` : ''}bosque ${r.bosque}, bosque degradado ${r.bosque_degradado}${b.detalle ? `, plantación ${r.plantacion}` : ''}, regeneración o rastrojo ${r.regeneracion}${b.ribera ? `, ribera sin bosque ${r.ribera_sin_bosque}` : ''}, otras tierras ${r.otras_tierras}${b.construido ? `, construido ${r.construido}` : ''}, agua ${r.agua}.${b.ribera ? ' La ribera es la franja de 50 m a cada lado de los cauces del IGNTG: la ruta tiende a seguir los ríos con bosque y, donde falta, a restaurar la orilla (la Ley 1 de 1994, art. 23, protege al menos 10 m a cada lado).' : ''}</li>
           <li>Los valores de resistencia son un supuesto del modelo, no una medición ni un dato de una especie concreta. Cambiarlos puede cambiar la ruta.</li>
           <li>La <b>franja morada</b> reúne las celdas por las que pasan rutas casi tan buenas como la mejor. Donde es ancha hay varias opciones; donde se estrecha, el paso es obligado.</li>
-          <li>Solo se evalúa dentro de la cuenca. ${b.tramos.filter((t) => !t.n).map((t) => `El tramo ${esc(t.nombre)} queda fuera de ella.`).join(' ')}${b.construido ? '' : ` Las zonas urbanas todavía no se distinguen de otras tierras; se incorporarán ${window.CHCP.pendiente()}.`}</li>
+          <li>${b.margen ? `Se evalúa la cuenca y ${number(b.margen / 1000, 0)} km a su alrededor, la misma extensión de los mapas SINIA, para que la ruta pueda salir de la cuenca hacia el tramo más cercano. Fuera de la cuenca no hay banda ribereña del IGNTG.` : 'Solo se evalúa dentro de la cuenca.'} ${b.tramos.filter((t) => !t.n).map((t) => `El tramo ${esc(t.nombre)} queda fuera del área evaluada.`).join(' ')}${b.construido ? '' : ` Las zonas urbanas todavía no se distinguen de otras tierras; se incorporarán ${window.CHCP.pendiente()}.`}</li>
           <li>Es una ruta hipotética: no es un corredor oficial ni garantiza que la fauna la use. Antes de restaurar hay que verificar en campo, la tenencia de la tierra y el uso actual.</li>
         </ul>
         <p class="rs-note">Tramos del corredor: capa del Almanaque Azul de Panamá.</p>
@@ -596,6 +619,7 @@
     const red = st.geo.red;
     st.umbral = st.umbral || red.umbral_m || st.data.umbral_conectividad_m || 500;
     st.ampliada = red.version >= 2 && Array.isArray(red.nodos) && Array.isArray(red.aristas_ampliadas);
+    if (typeof leyendaVisible === 'function') leyendaVisible();
     if (st.ampliada) {
       // Parches completos (aunque crucen la divisoria) y bosque del margen exterior.
       st.areas = new Map(red.nodos.map(([id, ha]) => [id, ha]));
@@ -671,23 +695,23 @@
     <div class="rs-lg-grupo"><h3>Bosque 2021</h3><ul>
       ${item(sim(caja(PALETA[0])), 'Red principal', 'el conjunto de parches conectados más grande')}
       ${item(otrasRedes, 'Otras redes', 'cada color es una red separada de la principal')}
-      ${item(sim('<rect x="4" y="2" width="26" height="12" rx="2" fill="#1b7837" fill-opacity="0.3" stroke="#455a64" stroke-width="1" stroke-dasharray="3 2"/>'), 'Bosque del margen exterior', 'hasta 1 km fuera de la subcuenca')}
+      <li data-si="ampliada" hidden>${sim('<rect x="4" y="2" width="26" height="12" rx="2" fill="#1b7837" fill-opacity="0.3" stroke="#455a64" stroke-width="1" stroke-dasharray="3 2"/>')}<span><b>Bosque del margen exterior</b><small>hasta 1 km fuera de la subcuenca</small></span></li>
     </ul></div>
-    <div class="rs-lg-grupo"><h3>Restauración</h3><ul>
+    <div class="rs-lg-grupo" data-modo="restaurar"><h3>Restauración</h3><ul>
       ${item(sim('<line x1="5" y1="8" x2="29" y2="8" stroke="#e53935" stroke-width="3" stroke-dasharray="5 4"/><circle cx="5" cy="8" r="3.2" fill="#e53935" stroke="#fff"/><circle cx="29" cy="8" r="3.2" fill="#e53935" stroke="#fff"/>'), 'Brecha candidata', 'haga clic para añadirla al escenario')}
       ${item(sim('<line x1="5" y1="8" x2="29" y2="8" stroke="#78909c" stroke-width="3" stroke-dasharray="1.5 4"/><circle cx="5" cy="8" r="3.2" fill="#78909c" stroke="#fff"/><circle cx="29" cy="8" r="3.2" fill="#78909c" stroke="#fff"/>'), 'Brecha que cruza agua o zona construida', 'excluida de las prioridades')}
       ${item(sim('<line x1="3" y1="8" x2="31" y2="8" stroke="#7cb342" stroke-width="8" stroke-linecap="round"/><line x1="3" y1="8" x2="31" y2="8" stroke="#fff" stroke-width="1.6" stroke-dasharray="4 3"/>'), 'Enlace propuesto', 'hipotético: aún no es bosque')}
     </ul></div>
-    <div class="rs-lg-grupo"><h3>Rutas al corredor</h3><ul>
+    <div class="rs-lg-grupo" data-modo="rutas" hidden><h3>Rutas al corredor</h3><ul>
       ${item(sim('<line x1="3" y1="8" x2="31" y2="8" stroke="#fff" stroke-width="6"/><line x1="3" y1="8" x2="31" y2="8" stroke="#7b1fa2" stroke-width="3.5"/>'), 'Ruta de menor costo', 'evita agua y zonas sin bosque')}
       ${item(sim('<line x1="3" y1="8" x2="31" y2="8" stroke="#fff" stroke-width="5"/><line x1="3" y1="8" x2="31" y2="8" stroke="#7b1fa2" stroke-width="2.6" stroke-dasharray="6 4"/>'), 'Ruta a otro tramo', 'más costosa que la principal')}
       ${item(sim('<rect x="2" y="3" width="30" height="10" rx="2" fill="#7b1fa2" fill-opacity="0.38"/>'), 'Franja de alternativas', 'rutas casi igual de buenas')}
     </ul></div>
     <div class="rs-lg-grupo"><h3>Referencia</h3><ul>
       ${item(sim('<line x1="3" y1="8" x2="31" y2="8" stroke="#fff" stroke-width="3"/>', '#5b6b5e'), 'Límite de la subcuenca', '')}
-      ${item(sim('<path d="M3 11 C10 3, 18 13, 31 5" fill="none" stroke="#1f78b4" stroke-width="2.4"/>'), 'Ríos', 'IGNTG 2022 (1:25 000); HydroSHEDS donde el IGNTG no tiene cauces')}
-      ${item(sim('<rect x="3" y="2" width="28" height="12" rx="2" fill="#ce93d8" fill-opacity="0.45" stroke="#4a148c" stroke-width="1.4"/>'), 'Corredor Biológico Mesoamericano', 'tramos dentro y cerca de la cuenca')}
-      ${item(`<svg class="rs-sym" viewBox="0 0 34 16" aria-hidden="true">${['Alta', 'Mediana', 'Media-baja'].map((k, n) => `<rect x="${2 + n * 11}" y="2" width="9" height="12" rx="1.5" fill="${colorCorr[k]}" fill-opacity="0.3" stroke="${colorCorr[k]}" stroke-width="1.2"/>`).join('')}</svg>`, 'Corredores (Almanaque Azul)', 'conectividad alta · mediana · media-baja')}
+      ${item(sim('<path d="M3 11 C10 3, 18 13, 31 5" fill="none" stroke="#1f78b4" stroke-width="2.4"/>'), 'Ríos', 'IGNTG 2022; HydroSHEDS donde falta')}
+      ${item(sim('<rect x="3" y="2" width="28" height="12" rx="2" fill="#ce93d8" fill-opacity="0.45" stroke="#4a148c" stroke-width="1.4"/>'), 'Corredor Biológico Mesoamericano', '')}
+      ${item(sim('<rect x="3" y="2" width="28" height="12" rx="2" fill="#9ccc65" fill-opacity="0.3" stroke="#7fae00" stroke-width="1.2"/>'), 'Otros corredores', 'Almanaque Azul; el tono indica su conectividad')}
     </ul></div>`;
   const subs = Object.values(st.data.territorios).filter((t) => t && t.id !== 'chcp').sort((a, b) => a.nombre.localeCompare(b.nombre, 'es'));
   // red_disponible indica si existe la red de parches precalculada de la subcuenca.
@@ -705,6 +729,11 @@
     $$('#rs-scen button').forEach((x) => x.setAttribute('aria-selected', String(x === b)));
     if (st.areas) actualizar();
   }));
+  /** La leyenda muestra solo lo que se ve en el modo actual, para no saturar al usuario. */
+  function leyendaVisible() {
+    $$('#rs-legend [data-modo]').forEach((g) => { g.hidden = g.dataset.modo !== (st.rutas.activo ? 'rutas' : 'restaurar'); });
+    $$('#rs-legend [data-si="ampliada"]').forEach((x) => { x.hidden = !st.ampliada; });
+  }
   // Dos modos excluyentes: restaurar brechas (clic en líneas o «Unir dos parches») y rutas al corredor.
   function modo(rutas) {
     st.rutas.activo = rutas;
@@ -712,6 +741,7 @@
     $('#rs-modo-rest').classList.toggle('on', !rutas); $('#rs-modo-rest').setAttribute('aria-checked', String(!rutas));
     if (rutas) { st.unir = null; $('#rs-unir').classList.remove('on'); }
     $('#rs-hint').textContent = rutas ? 'Haga clic en un parche del mapa para ver sus rutas al Corredor Mesoamericano.' : '';
+    leyendaVisible();
     if (st.areas) dibujar();
   }
   $('#rs-rutas-btn').addEventListener('click', () => modo(true));

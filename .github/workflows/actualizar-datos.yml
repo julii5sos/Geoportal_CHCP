@@ -22,7 +22,8 @@ on:
         type: choice
         # completo: continúa donde quedó la ejecución anterior (los territorios de una versión de
         # datos anterior se recalculan solos). rehacer-todo: empieza de cero los 54 territorios.
-        options: [completo, rehacer-todo, solo-mapas, sin-mapas]
+        # solo-entorno: rehace solo las capas de la cuenca + 15 km que usan las rutas del simulador.
+        options: [completo, rehacer-todo, solo-mapas, sin-mapas, solo-entorno]
         default: completo
 
 permissions:
@@ -68,6 +69,7 @@ jobs:
           OPCIONES=""
           if [ "${{ github.event.inputs.modo }}" = "solo-mapas" ]; then OPCIONES="--solo-mapas"; fi
           if [ "${{ github.event.inputs.modo }}" = "sin-mapas" ]; then OPCIONES="--sin-mapas"; fi
+          if [ "${{ github.event.inputs.modo }}" = "solo-entorno" ]; then OPCIONES="--solo-entorno"; fi
           if [ "${{ github.event.inputs.modo }}" = "rehacer-todo" ]; then OPCIONES="--rehacer"; fi
           if [ "${{ github.event_name }}" = "schedule" ] && [ "$(date -u +%d)" = "01" ]; then OPCIONES="--rehacer"; fi
           # Sin --rehacer el cálculo es reanudable: si se agota el tiempo de GitHub (6 h), se guarda
