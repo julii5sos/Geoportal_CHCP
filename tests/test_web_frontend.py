@@ -24,7 +24,8 @@ class WebFrontendTests(unittest.TestCase):
         self.assertIn('class="skip-link"', html)
         # Portada guiada: preguntas, recorrido y aviso de evaluación preliminar.
         self.assertIn("¿Qué quiere saber?", html)
-        self.assertIn('id="in-tour"', html)
+        self.assertNotIn('id="in-tour"', html)  # el recorrido se abre desde la ventanita fija
+        self.assertIn("tour.js", html)
         self.assertIn("Evaluación preliminar.", html)
         self.assertIn("Qué es y qué no es esta herramienta", html)
         self.assertIn("tour.js", html)
