@@ -354,6 +354,10 @@ def create_app(*, testing: bool = False) -> Flask:
     def about():
         return render_template("about.html", active="about")
 
+    @app.get("/tutoriales")
+    def tutoriales():
+        return render_template("tutoriales.html", active="tutoriales")
+
     @app.get("/api/v1/health")
     def health():
         return jsonify(
