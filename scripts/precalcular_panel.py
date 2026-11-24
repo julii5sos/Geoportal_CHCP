@@ -285,6 +285,63 @@ def _registrar(datos: dict, inicio: str, procesados: int) -> None:
     REGISTRO.write_text(json.dumps(registro[-200:], ensure_ascii=False, indent=1), encoding="utf-8")
 
 
+# Entorno de la cuenca para las rutas al Corredor Mesoamericano del simulador: la cuenca más
+# 15 km (la extensión de los assets SINIA). Sin él, una ruta no puede salir de la cuenca y se
+# desvía hacia un tramo interior más lejano aunque haya otro tramo justo fuera del límite.
+MARGEN_ENTORNO_M = 15_000
+CAPAS_ENTORNO = ["sinia_2021", "sinia_2021_detalle", "jrc_2025", "esri_2024"]
+
+
+def _geometria_entorno() -> dict:
+    """Cuenca + MARGEN_ENTORNO_M, con el buffer hecho en UTM 17N (metros) y devuelta en EPSG:4326."""
+    from pyproj import Transformer
+    from shapely.geometry import mapping, shape
+    from shapely.ops import transform
+
+    from chcp.territorio.territorio_local import geometria_cuenca
+
+    a_utm = Transformer.from_crs(4326, 32617, always_xy=True).transform
+    a_geo = Transformer.from_crs(32617, 4326, always_xy=True).transform
+    cuenca = transform(a_utm, shape(geometria_cuenca())).buffer(0)
+    entorno = cuenca.buffer(MARGEN_ENTORNO_M).simplify(200)
+    return {"type": "Feature", "properties": {"nombre": "Cuenca del Canal + 15 km"},
+            "geometry": mapping(transform(a_geo, entorno))}
+
+
+def _falta_entorno() -> bool:
+    meta = DIR_MAPAS / "entorno" / "meta.json"
+    if not meta.exists():
+        return True
+    previo = json.loads(meta.read_text(encoding="utf-8"))
+    return previo.get("margen_m") != MARGEN_ENTORNO_M or not set(CAPAS_ENTORNO) <= set(previo.get("valores") or [])
+
+
+def _mapas_entorno(forzar: bool = False, max_minutos: int = 30) -> None:
+    """Genera (una sola vez) las capas de cobertura del entorno en data/mapas/entorno/."""
+    from chcp.gee.mapas_ficha import MAX_PIXELES_CUENCA
+
+    destino = DIR_MAPAS / "entorno"
+    meta = destino / "meta.json"
+    if not forzar and not _falta_entorno():
+        return
+    inicio = time.time()
+    print("Entorno de la cuenca (+15 km) para las rutas del simulador: calculando…", flush=True)
+    try:
+        if max_minutos:
+            _limite_tiempo(max_minutos * 60)
+        datos = generar_mapas(_geometria_entorno(), destino, ee_module=ee, capas=CAPAS_ENTORNO,
+                              max_pixeles=MAX_PIXELES_CUENCA)
+        datos.update({"margen_m": MARGEN_ENTORNO_M, "descripcion": "Cuenca del Canal + 15 km (extensión de los assets SINIA)",
+                      "generado": datetime.now().isoformat(timespec="seconds")})
+        if "sinia_2021" in datos["valores"]:
+            meta.write_text(json.dumps(datos, ensure_ascii=False, indent=1), encoding="utf-8")
+        print(f"Entorno listo: {', '.join(datos['valores']) or 'sin capas'} · {time.time() - inicio:.0f} s", flush=True)
+    except (Exception, TiempoAgotado) as exc:  # complementario: no bloquea los territorios
+        print(f"Entorno: ERROR {exc}", flush=True)
+    finally:
+        _limite_tiempo(0)
+
+
 def _guardar(datos: dict) -> None:
     datos["generado"] = datetime.now().isoformat(timespec="seconds")
     temporal = SALIDA.with_suffix(".tmp")
@@ -301,6 +358,8 @@ def main() -> int:
     parser.add_argument("--sin-mapas", action="store_true", help="Omitir mapas temáticos y análisis ripario")
     parser.add_argument("--max-minutos", type=int, default=45,
                         help="Tiempo máximo por subcuenca (la cuenca completa tiene el doble); 0 = sin límite")
+    parser.add_argument("--solo-entorno", action="store_true",
+                        help="Solo (re)generar las capas del entorno de la cuenca (+15 km) para las rutas del simulador")
     parser.add_argument("--solo-mapas", action="store_true",
                         help="Solo (re)generar mapas y análisis ripario de los territorios ya calculados")
     args = parser.parse_args()
@@ -323,6 +382,11 @@ def main() -> int:
                 t.setdefault("version_datos", previo.get("version_datos") or 1)
     vigente = lambda t: (not args.rehacer and t.get("version_datos", VERSION_DATOS) == VERSION_DATOS
                          and t.get("metodologia", METODOLOGIA_VERSION) == METODOLOGIA_VERSION)
+
+    if args.solo_entorno:
+        _initialize_ee()
+        _mapas_entorno(forzar=True)
+        return 0
 
     if args.solo_mapas:
         _initialize_ee()
@@ -348,9 +412,12 @@ def main() -> int:
     if args.limite:
         pendientes = pendientes[: args.limite]
     print(f"{len(datos['territorios'])} territorios ya calculados; {len(pendientes)} pendientes.")
-    if pendientes:
+    entorno = not args.sin_mapas and _falta_entorno()
+    if pendientes or entorno:
         _initialize_ee()
         ee.data.setDeadline(10 * 60 * 1000)  # ninguna consulta individual espera más de 10 min
+    if entorno:
+        _mapas_entorno()  # una sola vez, antes de los territorios
 
     for numero, territorio in enumerate(pendientes, 1):
         inicio = time.time()
