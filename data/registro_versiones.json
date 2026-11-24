@@ -1,0 +1,16 @@
+[
+ {
+  "inicio": "2026-11-24T10:38:04",
+  "fin": "2026-11-24T11:19:44",
+  "version_codigo": "36d2063d6733",
+  "workflow_run": "45329405262",
+  "metodologia": "MT-2026.7-DIAGNOSTICO-INTEGRADO",
+  "version_datos": 4,
+  "territorios_procesados": 27,
+  "errores": [],
+  "estado": "completa",
+  "por_version": {
+   "4": 54
+  }
+ }
+]

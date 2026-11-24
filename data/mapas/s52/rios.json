@@ -1,0 +1,1 @@
+{"type":"FeatureCollection","fuente":"IGNTG 2022 · hidrografía 1:25 000","features":[{"type":"Feature","properties":{"nombre":null,"nombre_alt":null,"tipo":"Río","tributario_de":null,"red":"secundaria","longitud_km":1.923},"geometry":{"type":"LineString","coordinates":[[-79.59042,8.99941],[-79.59115,8.99941],[-79.5919,8.9998],[-79.59311,9.00023],[-79.59331,9.00044]]}}]}
