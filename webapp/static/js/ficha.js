@@ -182,6 +182,9 @@
     if (capa('coincidencia')) figs.push(png('coincidencia'));
     if (t.id !== 'chcp') figs.push({ id: 'red', tipo: 'red', titulo: 'Parches de bosque y red de conectividad', leyenda: '<div class="fi-legend"><span><i style="background:#1b5e20"></i>Importancia alta</span><span><i style="background:#66bb6a"></i>Media</span><span><i style="background:#c5e1a5"></i>Baja</span><span><i class="dash"></i>Brecha candidata</span></div>',
       lectura: 'Bosque oficial 2021 en parches, según su aporte a la conectividad (dIIC), y las brechas que convendría cerrar.' });
+    figs.push({ id: 'corredores', tipo: 'corredores', titulo: 'Corredores y puntos críticos · Almanaque Azul',
+      leyenda: '<div class="fi-legend"><span><i style="background:#1b5e2059;border:1.5px solid #1b5e20"></i>Conectividad alta</span><span><i style="background:#9ccc6559;border:1.5px solid #9ccc65"></i>Mediana</span><span><i style="background:#ffb74d59;border:1.5px solid #ffb74d"></i>Media-baja</span><span><i style="background:#ce93d866;border:1.5px solid #4a148c"></i>Corredor Biológico Mesoamericano</span><span><i class="pt"></i>Punto crítico</span></div>',
+      lectura: 'Corredores de conectividad y puntos críticos publicados en el Almanaque Azul (2024), con el Corredor Biológico Mesoamericano resaltado. Es la referencia que usa la prioridad de visita.' });
     if (capa('eri')) figs.push(png('eri'));
     if (capa('riparia')) figs.push(png('riparia'));
     return figs.filter(Boolean);
@@ -284,8 +287,8 @@
       </header>
       <section class="fi-sec"><h2>${icon('info', 22)} En pocas palabras</h2>${diagnostico(t).map((f) => `<p>${f}</p>`).join('')}</section>
       <section class="fi-sec fi-map-sec"><h2>${icon('map', 22)} ${t.id === 'chcp' ? 'Mapa de la cuenca' : 'Mapa de la subcuenca'}</h2><div id="fi-map"></div><p class="fi-pending" id="fi-map-nota" hidden></p>
-        <div class="fi-legend"><span><i style="background:#1b5e20"></i>Parche clave (conectividad alta)</span><span><i style="background:#66bb6a"></i>Parche de importancia media</span><span><i style="background:#c5e1a5"></i>Parche de importancia baja</span><span><i class="dash"></i>Brecha candidata a reconexión</span>${t.id === 'chcp' ? '' : `<span><i style="background:#1f78b4;height:3px"></i>Ríos (${esc(t.mapas?.rios_fuente || 'IGNTG 2022 · hidrografía 1:25 000')})</span>`}<span><i style="background:#1b5e2033;border:1.5px solid #1b5e20"></i>Corredor Almanaque Azul · conectividad alta</span><span><i style="background:#9ccc6533;border:1.5px solid #9ccc65"></i>· mediana</span><span><i style="background:#ffb74d33;border:1.5px solid #ffb74d"></i>· media-baja</span><span><i class="pt"></i>Punto crítico (Almanaque Azul)</span></div></section>
-      <section class="fi-sec fi-gal-sec"><h2>${icon('layers', 22)} Mapas temáticos</h2><p class="fi-note">Cada mapa muestra una fuente distinta sobre el mismo territorio, con los colores que usa cada fuente. ${t.id === 'chcp' ? 'Los corredores del Almanaque Azul' : 'Ríos y corredores del Almanaque Azul'} se superponen como referencia. El mapa base se cambia con el selector del mapa de arriba.</p>${seccionGaleria(t)}</section>
+        <div class="fi-legend"><span><i style="background:#1b5e20"></i>Parche clave (conectividad alta)</span><span><i style="background:#66bb6a"></i>Parche de importancia media</span><span><i style="background:#c5e1a5"></i>Parche de importancia baja</span><span><i class="dash"></i>Brecha candidata a reconexión</span>${t.id === 'chcp' ? '' : `<span><i style="background:#1f78b4;height:3px"></i>Ríos (${esc(t.mapas?.rios_fuente || 'IGNTG 2022 · hidrografía 1:25 000')})</span>`}</div></section>
+      <section class="fi-sec fi-gal-sec"><h2>${icon('layers', 22)} Mapas temáticos</h2><p class="fi-note">Cada mapa muestra una fuente distinta sobre el mismo territorio, con los colores que usa cada fuente. ${t.id === 'chcp' ? '' : 'Los ríos se superponen como referencia. '}Los corredores del Almanaque Azul tienen su propio mapa. El mapa base se cambia con el selector del mapa de arriba.</p>${seccionGaleria(t)}</section>
       <section class="fi-sec" id="fi-indicadores"><h2>${icon('chart', 22)} Indicadores y comparación con las demás subcuencas</h2><p class="fi-note">Verde: mejor que la mayoría de subcuencas; ámbar: intermedio; rojo: entre las más desfavorables. La comparación es relativa a la CHCP, no un umbral normativo.</p><div class="fi-inds">${indicadores}</div></section>
       ${seccionRelativa(t)}
       <section class="fi-sec fi-two fi-dinamica"><div><h2>${icon('forest', 22)} Estado del bosque en 2025 · JRC</h2>${donut(jrc, hectares(t.area_ha, 0))}
@@ -323,8 +326,10 @@
     drawMap(t);
     if (location.hash && /^#fi-/.test(location.hash)) requestAnimationFrame(() => document.querySelector(location.hash)?.scrollIntoView({ block: 'start' }));
   }
-  function referencias(map, puntos, conRios = true) {
-    L.geoJSON(st.territory.corridors, { style: (f) => { const c = COLOR_CORREDOR[f.properties.categoria_etiqueta] || '#7fae00'; return { color: c, weight: 1.5, fillColor: c, fillOpacity: 0.14 }; }, onEachFeature: (f, l) => l.bindTooltip(`${f.properties.nombre} · conectividad ${f.properties.categoria_etiqueta} (Almanaque Azul)`) }).addTo(map);
+  // Los corredores del Almanaque Azul tienen su propio mapa en la galería; en los demás mapas no se
+  // superponen para no tapar la capa de cada fuente.
+  function referencias(map, puntos, conRios = true, conCorredores = false) {
+    if (conCorredores) L.geoJSON(st.territory.corridors, { style: (f) => { const c = COLOR_CORREDOR[f.properties.categoria_etiqueta] || '#7fae00'; return { color: c, weight: 1.5, fillColor: c, fillOpacity: 0.14 }; }, onEachFeature: (f, l) => l.bindTooltip(`${f.properties.nombre} · conectividad ${f.properties.categoria_etiqueta} (Almanaque Azul)`) }).addTo(map);
     if (conRios && st.rios) L.geoJSON(st.rios, { style: { color: '#1f78b4', weight: 2, opacity: 0.9 }, onEachFeature: (f, l) => l.bindTooltip(esc(((f) => [f.properties.nombre || `${f.properties.tipo || 'Cauce'} sin nombre en la cartografía`, f.properties.nombre_alt && `(${f.properties.nombre_alt})`, f.properties.tributario_de && `· afluente del ${f.properties.tributario_de}`].filter(Boolean).join(' '))(f)), { sticky: true }) }).addTo(map);
     if (puntos) L.geoJSON(st.territory.critical_points, { pointToLayer: (_, ll) => L.circleMarker(ll, { radius: 5, color: '#fff', weight: 1.5, fillColor: '#f04438', fillOpacity: 1 }), onEachFeature: (f, l) => l.bindTooltip(esc(f.properties.notas || 'Punto crítico'), { maxWidth: 280 }) }).addTo(map);
   }
@@ -395,8 +400,12 @@
         };
         if (st.geoFicha?.id === t.id) pintar(st.geoFicha.g); else st.esperaGeo = (st.esperaGeo || []).concat([pintar]);
       }
+      if (f.tipo === 'corredores') {
+        L.geoJSON(st.territory.corridors, { style: (x) => { const c = COLOR_CORREDOR[x.properties.categoria_etiqueta] || '#7fae00'; const meso = x.properties.es_mesoamericano || /mesoamericano/i.test(x.properties.nombre || ''); return meso ? { color: '#4a148c', weight: 1.6, fillColor: '#ce93d8', fillOpacity: 0.4 } : { color: c, weight: 1.4, fillColor: c, fillOpacity: 0.35 }; }, interactive: false }).addTo(m);
+        L.geoJSON(st.territory.critical_points, { pointToLayer: (_, ll) => L.circleMarker(ll, { radius: 4, color: '#fff', weight: 1.2, fillColor: '#f04438', fillOpacity: 1 }), interactive: false }).addTo(m);
+      }
       // En toda la cuenca la red de ríos es tan densa que se confunde con límites internos: solo el borde exterior.
-      referencias(m, false, t.id !== 'chcp');
+      referencias(m, false, t.id !== 'chcp' && f.tipo !== 'corredores');
       const borde = L.geoJSON(feature, { style: { color: '#263238', weight: 1.6, fill: false }, interactive: false }).addTo(m);
       m.fitBounds(borde.getBounds(), { padding: [4, 4] });
       st.galeria.push(m);
@@ -424,7 +433,7 @@
     window.CHCP.mapaBase(map, { defecto: 'satelite' });
     const feature = featureDe(t);
     const area = L.geoJSON(feature, { style: { color: '#ffffff', weight: 3, fill: false } }).addTo(map);
-    referencias(map, true, t.id !== 'chcp');
+    referencias(map, false, t.id !== 'chcp');
     map.fitBounds(area.getBounds(), { padding: [12, 12] });
     try {
       const g = await api(`/api/v1/panel/geometry/${t.id}`);
@@ -499,7 +508,7 @@
   const PASOS_FICHA = [
     { titulo: 'La ficha técnica', texto: '<p>Resume en una página lo que dicen los datos satelitales sobre una subcuenca: si ha perdido bosque, cómo está el que queda y qué tan conectado está. Se puede descargar en PDF.</p>' },
     { sel: '.fi-score', titulo: 'La preevaluación', texto: 'Puntaje de 0 a 6,5 que suma señales de deterioro de varias fuentes según reglas transparentes. «Alta» significa <b>prioridad para verificar en campo</b>, no daño confirmado.' },
-    { sel: '#fi-map', titulo: 'El mapa', texto: 'Parches de bosque oficial 2021 por importancia para la conectividad, brechas que convendría cerrar, ríos del IGNTG y corredores del Almanaque Azul.' },
+    { sel: '#fi-map', titulo: 'El mapa', texto: 'Parches de bosque oficial 2021 por importancia para la conectividad, brechas que convendría cerrar y ríos del IGNTG. Los corredores del Almanaque Azul están en su propio mapa, en «Mapas temáticos».' },
     { sel: '.fi-gal-sec', titulo: 'Mapas temáticos', texto: 'Cada mapa muestra una fuente distinta sobre el mismo territorio: cobertura oficial, estado del bosque (JRC), pérdida (Hansen), cambio (ESRI), vigor (NDVI) y dónde coinciden las señales.' },
     { sel: '#fi-indicadores', titulo: 'Comparación con las demás subcuencas', texto: 'Cada indicador dice si esta subcuenca está mejor o peor que las otras. Verde = más favorable; rojo = de las más afectadas.' },
     { sel: '#fi-estructura', titulo: 'Fragmentación', texto: 'Cuántos parches hay, cuánto bosque interior queda (lejos del borde) y qué parches sostienen la red.' },
