@@ -1,16 +1,38 @@
 {% extends "base.html" %}
 {% from "_macros.html" import hero %}
 {% block title %}Acerca · Geoportal de Conectividad Ecológica de la CHCP{% endblock %}
-{% block body %}<main>{% call hero('Acerca del geoportal', 'Una herramienta de preevaluación para convertir un área de interés en evidencia inicial reproducible.', small=True) %}<a class="btn btn-w" href="{{ url_for('platform') }}">Explorar datos</a>{% endcall %}
-<section class="sec"><div class="wrap about-lead"><div><span class="eyebrow">Propósito</span><h2>Apoyar preguntas territoriales sin presentar indicios como hechos comprobados</h2><p>El Geoportal de Conectividad Ecológica de la CHCP integra fuentes oficiales y satelitales para orientar revisiones posteriores. Su resultado es indicativo: ayuda a justificar dónde mirar y qué evidencia consultar, pero no constituye un diagnóstico definitivo.</p></div><aside><b>Dirigido a</b><ul><li>Equipos técnicos y ambientales</li><li>Gestores de cuenca y territorio</li><li>Investigadores y estudiantes</li><li>Usuarios con poca experiencia geoespacial</li></ul></aside></div></section>
-<section class="sec gris"><div class="wrap"><div class="sec-c"><span class="eyebrow">Lecturas complementarias</span><h2>Qué calcula cada módulo</h2></div><div class="about-module-grid">
-  <article><span>01</span><h3>Preevaluación territorial</h3><p>Combina cinco señales documentadas y propone una prioridad inicial de visita. Las contribuciones permanecen visibles por fuente.</p></article>
-  <article><span>02</span><h3>Fragmentación</h3><p>Delimita parches en la cobertura seleccionada y resume superficie, número, tamaño medio, densidad y borde.</p></article>
-  <article><span>03</span><h3>Conectividad estructural</h3><p>Construye una red por distancia entre parches y describe componentes, aislamiento, brechas y rutas potenciales.</p></article>
-  <article><span>04</span><h3>Análisis integral</h3><p>Presenta las lecturas anteriores juntas, sin mezclar sus fórmulas ni convertirlas en un único valor opaco.</p></article>
-  <article><span>05</span><h3>Comparación temporal</h3><p>Recalcula años equivalentes dentro de JRC o ESRI. No fusiona productos con metodologías distintas.</p></article>
-  <article><span>06</span><h3>ERI complementario</h3><p>Mantiene sus pesos originales y se interpreta de forma independiente del índice territorial y de la red temporal.</p></article>
-</div></div></section>
-<section class="sec"><div class="wrap interpretation-layout"><div><span class="eyebrow">Cómo interpretar</span><h2>Un resultado siempre necesita contexto</h2><dl class="interpretation-list"><dt>Con señal</dt><dd>La métrica alcanzó el umbral documentado para esa fuente; no prueba por sí sola la causa.</dd><dt>Sin señal</dt><dd>La fuente tuvo datos válidos, pero no alcanzó el umbral definido.</dd><dt>Sin datos</dt><dd>La fuente no tuvo cobertura válida suficiente; no debe leerse como ausencia de cambio.</dd><dt>Ruta potencial</dt><dd>Relación geométrica entre parches; no demuestra conectividad funcional ni desplazamiento de fauna.</dd></dl></div><div class="scope-card"><h2>Qué no hace</h2><ul><li>No confirma deforestación ilegal ni degradación real por sí solo.</li><li>No diferencia bosque maduro, secundario o manglar cuando la fuente no lo permite.</li><li>No verifica éxito de restauración.</li><li>No sustituye trabajo de campo, una evaluación ambiental oficial ni acredita cumplimiento normativo.</li></ul><a class="btn btn-s" href="{{ url_for('methodology') }}">Ver fuentes y limitaciones</a></div></div></section>
+{% block body %}<main>{% call hero('Acerca del geoportal', 'De dónde viene, qué puede hacer, qué no puede hacer y cómo leer sus resultados.', small=True) %}<a class="btn btn-w" href="{{ url_for('platform') }}">Explorar datos</a>{% endcall %}
+<section class="sec"><div class="wrap about-lead"><div><span class="eyebrow">De dónde sale</span><h2>Una pregunta sobre el bosque de la Cuenca del Canal</h2>
+  <p>La Cuenca Hidrográfica del Canal de Panamá abastece de agua al Canal y a buena parte de la población del país, y su bosque ayuda a proteger esa agua y los suelos. Además, la cuenca está en el paso del Corredor Biológico Mesoamericano por el istmo. La pregunta de partida fue sencilla: <b>¿qué le está pasando a ese bosque, dónde se está perdiendo y cómo se podría volver a conectar?</b></p>
+  <p>Para responderla había que juntar información dispersa: la cartografía oficial de MiAMBIENTE, varias series satelitales que miden la pérdida de bosque de formas distintas y los corredores biológicos publicados en el Almanaque Azul. Cada fuente tiene su método, su resolución y sus años, y ninguna basta sola. El geoportal las reúne sobre el mismo territorio, sin mezclar sus fórmulas, para que cualquier persona pueda ver qué dice cada una y dónde coinciden.</p>
+  <p>Se desarrolló en el marco del <b>Clúster Copernicus Centroamérica AFOLU II</b>, a partir de trabajos técnicos con Fundación Natura, y usa datos abiertos procesados en Google Earth Engine.</p></div>
+  <aside><b>Dirigido a</b><ul><li>Equipos técnicos y ambientales</li><li>Gestores de cuenca y territorio</li><li>Investigadores y estudiantes</li><li>Personas sin experiencia en sistemas de información geográfica</li></ul></aside></div></section>
+<section class="sec gris"><div class="wrap"><div class="sec-c"><span class="eyebrow">Cómo se fue armando</span><h2>De un visor de alertas a un geoportal de conectividad</h2></div><ol class="about-etapas">
+  <li><b>Preevaluación del cambio.</b> Empezó como un visor que revisaba cinco fuentes satelitales (JRC, Hansen, ESRI, GEDI y NDVI) y sumaba sus señales de pérdida en un puntaje transparente, para decidir dónde mirar primero.</li>
+  <li><b>Fragmentación y conectividad.</b> Después se agregó el bosque oficial 2021 de MiAMBIENTE dividido en parches, la red de conectividad entre ellos, el bosque interior, los corredores del Almanaque Azul, las franjas junto a los ríos y un índice de resiliencia ecológica.</li>
+  <li><b>De los datos a las decisiones.</b> Por último se integró todo en este geoportal: respuestas escritas a preguntas concretas, una ficha técnica descargable por subcuenca, el análisis de un área propia, un simulador de restauración y el registro de visitas de campo.</li>
+</ol></div></section>
+<section class="sec"><div class="wrap about-sino">
+  <div class="about-si"><span class="eyebrow">Lo que sí puede hacer</span><h2>Qué puede hacer con el geoportal</h2><ul>
+    <li><b>Responder preguntas</b> sobre una subcuenca o toda la cuenca: si ha perdido bosque, si coinciden las fuentes, si el bosque está sano, qué tan fragmentado está.</li>
+    <li><b>Ver cómo cambió el bosque año a año</b> con JRC (1990–2025), Hansen (2001–2025), ESRI (2017–2025) y NDVI de Sentinel-2 (2017–2025).</li>
+    <li><b>Consultar la cartografía oficial</b> de MiAMBIENTE de 1992 a 2023.</li>
+    <li><b>Descargar una ficha técnica</b> de cada subcuenca o de la cuenca, con mapas, respuestas, conclusión y qué conviene hacer.</li>
+    <li><b>Analizar su propia área</b> dibujándola o subiendo un KML o GeoJSON, y obtener su ficha.</li>
+    <li><b>Probar dónde restaurar</b> para reconectar el bosque y ver rutas hacia el Corredor Biológico Mesoamericano.</li>
+    <li><b>Registrar visitas de campo</b> que confirman o descartan las alertas.</li>
+    <li><b>Descargar los datos</b> y el límite de cada territorio para abrirlos en QGIS, y usar el geoportal sin internet.</li>
+  </ul></div>
+  <div class="scope-card"><span class="eyebrow">Lo que no puede hacer</span><h2>Qué no hace</h2><ul>
+    <li>No confirma deforestación ni degradación por sí solo, ni dice su causa: una pérdida puede ser tala, cosecha de una plantación o un evento natural.</li>
+    <li>No dice si un cambio es legal o ilegal, ni acredita cumplimiento normativo.</li>
+    <li>No predice dónde se perderá bosque en el futuro.</li>
+    <li>No demuestra que la fauna se mueva entre parches: la conectividad es estructural, según cómo está dispuesto el bosque.</li>
+    <li>No mide con precisión áreas muy pequeñas: los mapas tienen píxeles de 10 a 30 m y en una finca pequeña el resultado es aproximado.</li>
+    <li>No calcula datos nuevos en el momento: los resultados se calculan antes en Earth Engine y se actualizan cuando se vuelve a procesar.</li>
+    <li>No verifica el éxito de una restauración ni sustituye el trabajo de campo o una evaluación ambiental oficial.</li>
+  </ul><a class="btn btn-s" href="{{ url_for('methodology') }}">Ver fuentes y limitaciones</a></div>
+</div></section>
+<section class="sec gris"><div class="wrap interpretation-layout"><div><span class="eyebrow">Cómo interpretar</span><h2>Un resultado siempre necesita contexto</h2><dl class="interpretation-list"><dt>Con señal</dt><dd>La métrica alcanzó el umbral documentado para esa fuente; no prueba por sí sola la causa.</dd><dt>Sin señal</dt><dd>La fuente tuvo datos válidos, pero no alcanzó el umbral definido.</dd><dt>Sin datos</dt><dd>La fuente no tuvo cobertura válida suficiente; no debe leerse como ausencia de cambio.</dd><dt>Prioridad alta</dt><dd>Indica dónde conviene verificar primero. En subcuencas casi siempre sale alta porque son áreas de miles de hectáreas; para compararlas se usa el puesto en pérdida reciente.</dd><dt>Ruta potencial</dt><dd>Relación geométrica entre parches; no demuestra conectividad funcional ni desplazamiento de fauna.</dd></dl></div>
+  <div class="about-prox"><span class="eyebrow">Próximas actualizaciones</span><h2>Lo que viene</h2><ul><li>Videos cortos de las tareas principales.</li><li>Versión en inglés.</li><li>Análisis por rangos de años elegidos por el usuario.</li></ul><p>El código y la metodología son abiertos y se pueden revisar en GitHub.</p></div></div></section>
 </main>{% endblock %}
-
