@@ -551,7 +551,7 @@
     const feature = featureDe(t);
     const porId = new Map((figuras || []).map((f) => [f.id, f]));
     $$(selector, raiz).forEach((div) => {
-      const f = porId.get(div.dataset.fig || div.dataset.rfig);
+      const f = porId.get(div.dataset.fig || div.dataset.rfig || div.dataset.rb);
       if (!f) return;
       // zoomSnap fino: el territorio llena el recuadro en vez de quedar en el nivel entero anterior.
       const m = L.map(div, { zoomControl: false, attributionControl: false, scrollWheelZoom: false, zoomSnap: 0.1 });
@@ -880,6 +880,149 @@
     ].filter((x) => x[1]);
     return `<table class="fi-rp-tabla"><thead><tr><th>Indicador</th><th>Valor</th><th>Fuente</th></tr></thead><tbody>${filas.map(([a, b, c]) => `<tr><th scope="row">${a}</th><td>${b}</td><td>${c}</td></tr>`).join('')}</tbody></table>`;
   }
+  // Preguntas que responde la ficha, con la estructura de Global Forest Watch: la pregunta, una
+  // frase que la responde con las cifras, una tabla o gráfico, la advertencia principal, los
+  // parámetros usados y un mapa. Se arman solo las que tienen datos para el territorio.
+  const limpiarNombre = (x) => String(x || '').replace(/\s*·\s*/g, ' ').replace(/\s+/g, ' ').trim();
+  const aviso = (txt) => `<div class="fi-resp-aviso">${icon('warning', 16)}<p>${txt}</p></div>`;
+  /** Mapa pequeño con fondo gris, límite y encuadre, para los mapas propios de las respuestas. */
+  function mapaRespuesta(div, t) {
+    const m = L.map(div, { zoomControl: false, attributionControl: false, scrollWheelZoom: false, zoomSnap: 0.1 });
+    window.CHCP.mapaBase(m, { defecto: 'gris', control: false });
+    const borde = L.geoJSON(featureDe(t), { style: { color: '#263238', weight: 1.6, fill: false }, interactive: false }).addTo(m);
+    m._borde = borde;
+    encuadre(m, borde.getBounds(), 6);
+    if (t.poligono) velo(m, t, 0.75);
+    return m;
+  }
+  function sitiosDe(t) {
+    if (!t.poligono) return t.sitios || [];
+    const g = t.poligono.feature.geometry;
+    return t.poligono.ids.flatMap((id) => st.data.territorios[id]?.sitios || []).filter((x) => RED?.puntoEnPoligono([x.lon, x.lat], g))
+      .sort((a, b) => b.fuentes - a.fuentes || b.area_ha - a.area_ha);
+  }
+  async function bloquesRespuesta(t) {
+    const B = [], suj = sujeto(t), Suj = Sujeto(t);
+    const p = t.preevaluacion;
+    // 1. Dónde verificar en campo
+    const sitios = sitiosDe(t).slice(0, 5);
+    if (sitios.length) {
+      const tres = sitios.filter((x) => x.fuentes >= 3).length;
+      B.push({
+        html: `<h2>¿Dónde conviene verificar en campo?</h2>
+          <p>La prioridad de visita de ${suj} es <b>${esc((p.prioridad_visita || '—').toLowerCase())}</b>. Estos son los ${sitios.length === 1 ? 'sitio' : `${sitios.length} sitios`} con señal de pérdida 2021–2025 que conviene revisar primero: suman <b>${haCorto(sitios.reduce((s2, x) => s2 + x.area_ha, 0))}</b>${tres ? `, y en ${tres === 1 ? 'uno' : tres} coinciden las tres fuentes` : ''}.</p>
+          <table class="fi-rp-tabla"><thead><tr><th>Sitio</th><th>Latitud, longitud</th><th>Superficie</th><th>Fuentes</th></tr></thead><tbody>${sitios.map((x, i) => `<tr><th scope="row">${i + 1}</th><td>${number(x.lat, 5)}, ${number(x.lon, 5)}</td><td>${haCorto(x.area_ha)}</td><td>${x.fuentes} de 3</td></tr>`).join('')}</tbody></table>
+          ${aviso('La alerta es conservadora: en la evaluación preliminar de toda la cuenca, 4 de cada 10 alertas se confirmaron en imágenes de 10 m y se escaparon cambios pequeños. La pérdida real puede ser mayor que la mapeada.')}
+          <p class="fi-rp-param">Manchas de 0.5 ha o más con señal de JRC, Hansen o ESRI, ordenadas por fuentes coincidentes y superficie | centro de cada mancha en WGS 84</p>`,
+        mapa: 'Sitios sobre las señales de pérdida coincidentes',
+        leyenda: '<span><i style="background:#ffe08a"></i>1 fuente</span><span><i style="background:#f28e2b"></i>2 fuentes</span><span><i style="background:#c62828"></i>3 fuentes</span><span><i class="num">1</i>Sitio</span>',
+        dibujar: (div) => {
+          const m = mapaRespuesta(div, t);
+          (t.poligono ? t.poligono.ids : [t.id]).forEach((id) => { const x = st.data.territorios[id]; if (x?.mapas?.capas?.includes('coincidencia')) L.imageOverlay(mapFile(id, 'coincidencia.png'), x.mapas.limites, { opacity: 0.9 }).addTo(m); });
+          sitios.forEach((x, i) => L.marker([x.lat, x.lon], { icon: L.divIcon({ className: 'fi-rp-sitio', html: String(i + 1), iconSize: [18, 18] }), interactive: false }).addTo(m));
+          m._borde.bringToFront();
+          return m;
+        },
+      });
+    }
+    // 2. Bosque oficial 2021 frente a 2023
+    let c = null;
+    if (!t.poligono) { try { c = await (await fetch(window.CHCP.cobFile(`comparacion/${t.id}.json`))).json(); } catch (_) { c = null; } }
+    if (c?.anios?.['2021'] && c.anios['2023']) {
+      const a = c.anios['2021'], b = c.anios['2023'];
+      const fila = (n, k, dec, u = '') => { const d = (b[k] ?? 0) - (a[k] ?? 0); return `<tr><th scope="row">${n}</th><td>${number(a[k], dec)}${u}</td><td>${number(b[k], dec)}${u}</td><td>${Math.abs(d) < (dec ? 0.05 : 0.5) ? 'igual' : `${d > 0 ? '+' : '−'}${number(Math.abs(d), dec)}${u}`}</td></tr>`; };
+      const masParches = b.numero_parches > a.numero_parches, medioMenor = b.area_media_parche_ha < a.area_media_parche_ha;
+      const forma = masParches && medioMenor ? 'más dividido: más parches y más pequeños' : !masParches && !medioMenor && b.numero_parches !== a.numero_parches ? 'menos dividido: menos parches y más grandes' : 'con una fragmentación parecida';
+      B.push({
+        html: `<h2>¿Cambió el bosque oficial entre 2021 y 2023?</h2>
+          <p>El mapa 2023 muestra <b>${haCorto(b.bosque_ha)}</b> de bosque en ${suj}, frente a <b>${haCorto(a.bosque_ha)}</b> en 2021, y el bosque aparece ${forma}.${c.cambio ? ` Coinciden ${haCorto(c.cambio.en_ambos_ha)}; ${haCorto(c.cambio.solo_2021_ha)} son bosque solo en 2021 y ${haCorto(c.cambio.solo_2023_ha)} solo en 2023.` : ''}</p>
+          <table class="fi-rp-tabla"><thead><tr><th>Indicador</th><th>2021</th><th>2023</th><th>Diferencia</th></tr></thead><tbody>${fila('Bosque', 'bosque_ha', 0, ' ha')}${fila('Parches', 'numero_parches', 0)}${fila('Tamaño medio del parche', 'area_media_parche_ha', 1, ' ha')}${fila('Redes separadas', 'redes_separadas', 0)}</tbody></table>
+          ${aviso('Los dos mapas son de MiAMBIENTE pero se hicieron con métodos distintos (vector 1:25 000 en 2021, ráster de 10 m en 2023). La diferencia mezcla cambios reales con diferencias de método: no mide pérdida ni ganancia.')}
+          <p class="fi-rp-param">Categoría «Bosques y otras tierras boscosas» en los dos años | malla común de ${number(c.pixel_m, 0)} m | redes con parches a ${number(c.umbral_m, 0)} m o menos</p>`,
+        mapa: 'Dónde difieren los dos mapas',
+        leyenda: CLASES_2021_2023.map((x) => `<span><i style="background:${x.color}"></i>${esc(x.etiqueta)}</span>`).join(''),
+        figura: { id: 'cmp', tipo: 'valores', archivo: window.CHCP.cobFile(`mapas/${t.id}/bosque_2021_2023.v.png`), limites: c.limites, clases: CLASES_2021_2023 },
+      });
+    }
+    // 3. Resiliencia ecológica (ERI)
+    const e = t.eri;
+    if (e?.valor != null) {
+      const nombres = { integridad_estructural: 'Integridad estructural', conectividad: 'Conectividad local', estabilidad_topografica: 'Estabilidad del relieve', proximidad_riparia: 'Cercanía a ríos' };
+      const comp = e.componentes ? Object.entries(e.componentes) : [];
+      const debil = comp.length ? comp.slice().sort((x, y) => x[1] - y[1])[0][0] : null;
+      const eriFig = figuraCapa(t, 'eri');
+      B.push({
+        html: `<h2>¿Qué tan resiliente es el paisaje?</h2>
+          <p>La resiliencia ecológica de ${suj} es <b>${esc(String(e.clase || '').toLowerCase())}</b>, con <b>${number(e.valor * 100, 0)} de 100</b>.${debil ? ` Su componente más débil es la ${esc(nombres[debil].toLowerCase())} (${number(e.componentes[debil] * 100, 0)}/100): es donde la restauración aportaría más estabilidad.` : ''}</p>
+          ${comp.length ? bars(comp.map(([k, v]) => ({ l: nombres[k] || k, v: v * 100, c: k === debil ? '#f28e2b' : '#76b72a' })), (v) => `${number(v, 0)}/100`) : `<p class="fi-rp-sub">Valor medio de los píxeles del área; los componentes se calculan por subcuenca.</p>`}
+          ${aviso('Es un índice indicativo: combina dosel, bosque alrededor, pendiente y cercanía a ríos, pero no está calibrado con mediciones de campo y no modifica la preevaluación.')}
+          <p class="fi-rp-param">Dynamic World, GEDI, Copernicus DEM y MERIT Hydro | pesos 35, 25, 20 y 20 % | año de referencia ${e.anio_referencia || 2024}</p>`,
+        mapa: 'Resiliencia ecológica indicativa (ERI)',
+        leyenda: eriFig ? leyendaFigura(eriFig) : '',
+        figura: eriFig,
+      });
+    }
+    // 4. Ríos y franjas riparias
+    const r = t.riparia, rp = r?.poligono;
+    if (rp || r?.sin_bosque_por_pendiente) {
+      const ripFig = figuraCapa(t, 'riparia');
+      const filas = rp ? [{ l: 'Pendiente < 30 %', v: rp.sin_suave, c: '#f4a261' }, { l: 'Pendiente ≥ 30 %', v: rp.sin_empinado, c: '#c62828' }]
+        : r.sin_bosque_por_pendiente.map((x) => ({ l: `Pendiente ${x.pendiente}`, v: x.area_ha, c: /≥ 30/.test(x.pendiente) ? '#c62828' : /15/.test(x.pendiente) ? '#f4a261' : '#ffd08a' }));
+      const sin = filas.reduce((s2, x) => s2 + x.v, 0), empinado = filas.find((x) => /≥/.test(x.l))?.v || 0;
+      const f30 = rip30(t);
+      B.push({
+        html: `<h2>¿Tienen bosque las orillas de los ríos?</h2>
+          <p>${rp ? `En la franja de 50 m a cada lado de los cauces que cruzan ${suj}, <b>${pct(rp.con / ((rp.con + sin) || 1) * 100, 0)}</b> tiene bosque oficial.` : `${Suj} tiene unos <b>${number(r.longitud_cauces_km, 0)} km de cauces</b>${f30?.bosque_sinia_pct != null ? `, y el <b>${pct(f30.bosque_sinia_pct, 0)}</b> de la franja de 30 m a cada lado tiene bosque oficial` : ''}.`} Hay <b>${haCorto(sin)}</b> de franja de 50 m sin bosque${empinado ? `, de ellas <b>${haCorto(empinado)}</b> en pendientes de 30 % o más, las primeras que conviene revegetar` : ''}.</p>
+          <h3>Franja de 50 m sin bosque, por pendiente</h3>${bars(filas, (v) => haCorto(v))}
+          ${aviso('Es una clasificación descriptiva, no un modelo de erosión ni de caudal. Los cauces y distancias son aproximados y conviene confirmarlos con la hidrografía local.')}
+          <p class="fi-rp-param">${rp ? 'Cauces del IGNTG' : 'Cauces MERIT Hydro (90 m) con drenaje de 1 km² o más'} | franjas de 30 y 50 m a cada lado | bosque oficial SINIA 2021</p>`,
+        mapa: 'Franja riparia de 50 m',
+        leyenda: ripFig ? leyendaFigura(ripFig) : '',
+        figura: ripFig,
+      });
+    }
+    // 5. Corredores y puntos críticos
+    const corr = (t.corredores?.lista || []).slice().sort((x, y) => y.interseccion_ha - x.interseccion_ha);
+    const feature = featureDe(t);
+    const puntos = (st.territory.critical_points?.features || []).filter((q) => feature && RED && RED.puntoEnPoligono(q.geometry.coordinates, feature.geometry || feature.features?.[0]?.geometry));
+    if (corr.length || puntos.length) {
+      B.push({
+        html: `<h2>¿Qué corredores biológicos cruza?</h2>
+          <p>El <b>${pct(t.corredores?.porcentaje, 0)}</b> de ${suj} (${haCorto(t.corredores?.area_ha)}) está dentro de ${corr.length === 1 ? 'un corredor publicado' : `${corr.length} corredores publicados`}${t.corredores?.intersecta_mesoamericano ? ', incluido el Corredor Biológico Mesoamericano' : ''}. ${puntos.length ? `Hay <b>${puntos.length === 1 ? 'un punto crítico' : `${puntos.length} puntos críticos`}</b> del Almanaque Azul dentro.` : 'No hay puntos críticos del Almanaque Azul dentro.'}</p>
+          <table class="fi-rp-tabla"><thead><tr><th>Corredor</th><th>Conectividad</th><th>Superficie dentro</th></tr></thead><tbody>${corr.slice(0, 6).map((x) => `<tr><th scope="row">${esc(limpiarNombre(x.nombre))}</th><td>${esc(x.categoria || '—')}</td><td>${haCorto(x.interseccion_ha)}</td></tr>`).join('')}</tbody></table>
+          ${puntos.length ? `<p class="fi-rp-sub"><b>Puntos críticos:</b> ${esc(puntos.slice(0, 4).map((q) => limpiarNombre(q.properties.notas || q.properties.nombre || 'Punto crítico')).join('; '))}${puntos.length > 4 ? '; y otros en la ficha completa' : ''}.</p>` : ''}
+          ${aviso('Las categorías de conectividad y los puntos críticos son los publicados por el Almanaque Azul; el geoportal no los modifica ni los valida en campo.')}
+          <p class="fi-rp-param">Almanaque Azul (2024) | superficie calculada sobre el límite de ${t.poligono ? 'el área' : t.id === 'chcp' ? 'la cuenca' : 'la subcuenca'}</p>`,
+        mapa: 'Corredores y puntos críticos',
+        leyenda: (st.figuras || []).find((f) => f.id === 'corredores')?.leyenda?.replace(/^<div class="fi-legend">|<\/div>$/g, '') || '',
+        figura: (st.figuras || []).find((f) => f.id === 'corredores'),
+      });
+    }
+    // 6. Parches clave para la red (dIIC)
+    const diic = (t.estructura_2021?.metricas_paisaje?.diic_principales || []).slice(0, 5);
+    if (diic.length && st.geoFicha?.id === t.id) {
+      const puentes = diic.filter((x) => x.es_puente).length, siguen = diic.slice(1, 3);
+      B.push({
+        html: `<h2>¿Qué parches sostienen la red de bosque?</h2>
+          <p>El parche <b>#${diic[0].parche_id}</b> (${haCorto(diic[0].area_ha)}) sostiene el <b>${pct(diic[0].diic_pct, 0)}</b> de la conectividad del bosque${siguen.length ? `; le ${siguen.length === 1 ? 'sigue el' : 'siguen los'} ${enumerar(siguen.map((x) => `#${x.parche_id} (${pct(x.diic_pct, 0)})`))}` : ''}. Cada porcentaje es lo que bajaría la conectividad si se perdiera ese parche, por eso no se suman.${puentes ? ` ${puentes === 1 ? 'Uno funciona' : `${puentes} funcionan`} como puente entre grupos de bosque: si se pierden, la red se divide.` : ''}</p>
+          <table class="fi-rp-tabla"><thead><tr><th>Parche</th><th>Superficie</th><th>Aporte a la conectividad</th><th>Función</th></tr></thead><tbody>${diic.map((x) => `<tr><th scope="row">#${x.parche_id}</th><td>${haCorto(x.area_ha)}</td><td>${pct(x.diic_pct, 1)}</td><td>${x.es_puente ? 'Puente entre grupos' : 'Gran hábitat'}</td></tr>`).join('')}</tbody></table>
+          ${aviso('Es conectividad estructural: mide cuánto bajaría la conectividad potencial si se perdiera cada parche, no demuestra que la fauna lo use. El resultado depende de la distancia de análisis.')}
+          <p class="fi-rp-param">dIIC (Pascual-Hortal y Saura, 2006) | parches a ${number(t.estructura_2021?.metricas_paisaje?.umbral_m || 500, 0)} m o menos conectados | bosque oficial SINIA 2021</p>`,
+        mapa: 'Dónde están los parches clave',
+        leyenda: '<span><i style="background:#1b5e20;outline:1.5px solid #ffeb3b"></i>Parche clave (con su número)</span><span><i style="background:#c5e1a5"></i>Otros parches</span>',
+        dibujar: (div) => {
+          const m = mapaRespuesta(div, t), top = new Set(diic.map((x) => x.parche_id));
+          L.geoJSON(st.geoFicha.g.parches, {
+            style: (f) => (top.has(f.properties.patch_id) ? { color: '#ffeb3b', weight: 1.2, fillColor: '#1b5e20', fillOpacity: 0.95 } : { color: '#8bc34a', weight: 0.4, fillColor: '#c5e1a5', fillOpacity: 0.6 }),
+            onEachFeature: (f, l) => { if (top.has(f.properties.patch_id)) l.bindTooltip(`#${f.properties.patch_id}`, { permanent: true, direction: 'center', className: 'fi-diic-et' }); },
+          }).addTo(m);
+          m._borde.bringToFront();
+          return m;
+        },
+      });
+    }
+    return B;
+  }
   async function construirResumen(t) {
     const caja = document.getElementById('fi-resumen');
     const p = t.preevaluacion;
@@ -895,6 +1038,9 @@
     let filasHansen = porAnio ? Object.entries(porAnio).map(([a, v]) => ({ anio: Number(a), v: Number(v) || 0 })).filter((f) => f.anio >= 2001).sort((x, y) => x.anio - y.anio) : [];
     if (!filasHansen.length) filasHansen = (t.serie_anual || []).filter((x) => x.hansen_perdida_ha != null).map((x) => ({ anio: x.anio, v: x.hansen_perdida_ha }));
     const totalHansen = filasHansen.reduce((s2, f) => s2 + f.v, 0);
+    const bloques = await bloquesRespuesta(t);
+    // Hasta tres respuestas por hoja, repartidas parejo (4 respuestas = 2 + 2, no 3 + 1).
+    const hojasResp = Math.ceil(bloques.length / 3), POR_HOJA = Math.ceil(bloques.length / (hojasResp || 1)), hojas = 2 + hojasResp;
     // Suma de la preevaluación: una barra con el peso de cada fuente; las que suman van en color.
     const barra = Object.entries(PESOS_FUENTE).map(([k, [, w]]) => `<i style="flex:${w}" class="${p.senales?.[k] ? 'si' : ''}"></i>`).join('');
     const suman = Object.entries(PESOS_FUENTE).filter(([k]) => p.senales?.[k]).map(([k, [nom]]) => `${nom} ${number(p.aportes?.[k] ?? 0, 1)}`);
@@ -903,8 +1049,8 @@
       ['Superficie', hectares(t.area_ha)], ['Datos del', esc(fechaLarga(st.data.generado))], ['Método', esc(metodo)],
       t.poligono ? ['Cálculo', `malla de ${number(t.poligono.pixel_m, 0)} m`] : null,
     ].filter(Boolean).map(([a, b]) => `<div><dt>${a}</dt><dd>${b}</dd></div>`).join('');
-    const marca = (pag) => `<div class="fi-rp-marca"><img src="${img}/emblema_blanco.svg" alt="" width="34" height="34"><div><b>Geoportal CHCP</b><span>Conectividad ecológica de la Cuenca del Canal de Panamá</span></div><p><b>${t.poligono ? 'Ficha resumen de un área dibujada' : 'Ficha resumen'}</b>${pag === 2 ? `<span>${esc(t.nombre)}</span>` : ''}</p></div>`;
-    const pie = (n) => `<footer class="fi-rp-pie"><span>Resultados indicativos calculados con imágenes satelitales y cartografía oficial: orientan la revisión técnica y la visita de campo, no la reemplazan.</span><span>Hoja ${n} de 2</span></footer>`;
+    const marca = (pag) => `<div class="fi-rp-marca"><img src="${img}/emblema_blanco.svg" alt="" width="34" height="34"><div><b>Geoportal CHCP</b><span>Conectividad ecológica de la Cuenca del Canal de Panamá</span></div><p><b>${t.poligono ? 'Ficha resumen de un área dibujada' : 'Ficha resumen'}</b>${pag > 1 ? `<span>${esc(t.nombre)}</span>` : ''}</p></div>`;
+    const pie = (n) => `<footer class="fi-rp-pie"><span>Resultados indicativos calculados con imágenes satelitales y cartografía oficial: orientan la revisión técnica y la visita de campo, no la reemplazan.</span><span>Hoja ${n} de ${hojas}</span></footer>`;
     const leyendaPrincipal = t.id === 'chcp'
       ? '<span><i class="borde"></i>Límite de la cuenca</span><span><i class="sub"></i>Subcuencas</span>'
       : `<span><i style="background:#1b5e20"></i>Parche clave</span><span><i style="background:#66bb6a"></i>Importancia media</span><span><i style="background:#c5e1a5"></i>Importancia baja</span><span><i class="dash"></i>Brecha candidata</span>${st.rios ? '<span><i class="rio"></i>Ríos</span>' : ''}<span><i class="borde"></i>${t.poligono ? 'Área dibujada' : 'Límite de la subcuenca'}</span>`;
@@ -942,12 +1088,27 @@
           <div><h2>Qué conviene hacer</h2><div class="fi-rp-acc">${acc.map((a) => `<article>${icon(a.i, 20)}<div><b>${esc(a.t)}</b><p>${esc(a.why)}</p><p><em>Qué hacer:</em> ${esc(a.how)}</p></div></article>`).join('')}</div></div>
         </div>
         ${pie(2)}
-      </section>`;
+      </section>
+      ${Array.from({ length: hojas - 2 }, (_, h) => `<section class="fi-rp">
+        <header class="fi-rp-banda fi-rp-banda-s">${marca(h + 3)}</header>
+        <div class="fi-rp-cuerpo">
+          ${h === 0 ? `<div class="fi-rp-tit"><h2>Respuestas a las preguntas clave</h2><p class="fi-rp-sub">Cada respuesta trae la cifra, la advertencia principal y los parámetros usados.</p></div>` : ''}
+          ${bloques.slice(h * POR_HOJA, (h + 1) * POR_HOJA).map((b, i) => `<article class="fi-rp-resp" data-bloque="${h * POR_HOJA + i}"><div class="fi-rp-resp-txt">${b.html}</div>
+            <figure class="fi-rp-resp-map"><figcaption><b>${esc(b.mapa)}</b></figcaption><div class="fi-mini"${b.figura ? ` data-rb="${b.figura.id}"` : ''}></div>${/^<div/.test(b.leyenda || '') ? b.leyenda : `<div class="fi-legend">${b.leyenda || ''}</div>`}</figure></article>`).join('')}
+        </div>
+        ${pie(h + 3)}
+      </section>`).join('')}`;
     caja.hidden = false;
     // Mapas de la hoja 2
     (st.resumen || []).forEach((x) => x.remove());
     st.resumen = [];
     dibujarMinis(t, caja, st.resumen, '.fi-mini[data-fig]', figs);
+    // Mapas de las respuestas: los de capas con dibujarMinis y los propios (sitios, parches clave) aparte.
+    bloques.forEach((b, i) => {
+      const art = caja.querySelector(`[data-bloque="${i}"]`);
+      if (b.figura) dibujarMinis(t, art, st.resumen, '.fi-mini[data-rb]', [b.figura]);
+      else if (b.dibujar) st.resumen.push(b.dibujar(art.querySelector('.fi-mini')));
+    });
     // Mapa principal de la hoja 1, con escala gráfica.
     const map = L.map(document.getElementById('fi-res-principal'), { zoomControl: false, attributionControl: false, scrollWheelZoom: false, zoomSnap: 0.1 });
     window.CHCP.mapaBase(map, { defecto: 'satelite', control: false });

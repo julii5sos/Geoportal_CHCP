@@ -1187,6 +1187,31 @@ html.fi-pdf .fi-rp .leaflet-control-container, .fi-rp .leaflet-control-container
   .fi-rp { margin:0; box-shadow:none; break-after:page; }
   .fi-rp:last-child { break-after:auto; }
 }
+/* Hojas de respuestas: pregunta, frase con cifras, tabla o gráfico, advertencia, parámetros y mapa */
+.fi-rp-resp { flex:1; min-height:0; display:grid; grid-template-columns:minmax(0,1.3fr) minmax(0,1fr); gap:6mm; padding-top:3.5mm; border-top:1px solid var(--azul-linea); }
+.fi-rp-tit + .fi-rp-resp, .fi-rp-cuerpo > .fi-rp-resp:first-child { border-top:0; padding-top:0; }
+.fi-rp-resp h2 { margin:0 0 1.5mm; font-size:14px; }
+.fi-rp-resp h3 { margin:1.5mm 0 .5mm; font-size:10px; color:var(--azul-tinta); }
+.fi-rp-resp-txt > p { margin:0 0 2mm; font-size:10.5px; line-height:1.45; color:#24332b; }
+.fi-rp-resp-txt b { color:var(--azul-tinta); }
+.fi-rp-resp-txt .fi-rp-sub { margin:1.5mm 0 0; font-size:9px; line-height:1.35; }
+.fi-rp-resp .fi-rp-tabla th, .fi-rp-resp .fi-rp-tabla td { padding:.6mm 1.5mm; }
+.fi-rp-resp .fi-rp-tabla tbody th { white-space:normal; }
+.fi-rp-resp .fi-bars > div { grid-template-columns:38mm 1fr 18mm; gap:2mm; font-size:9.5px; padding:.5mm 0; }
+.fi-rp-resp .fi-bars i { height:8px; }
+.fi-rp-resp .fi-resp-aviso { margin:2mm 0 1.5mm; padding:1.8mm 2.5mm; gap:2mm; }
+.fi-rp-resp .fi-resp-aviso p { font-size:9px; line-height:1.38; }
+.fi-rp-resp-txt > p.fi-rp-param, .fi-rp-param { margin:0; font-size:8.5px; line-height:1.35; color:var(--muted); }
+.fi-rp-resp-map { margin:0; min-height:0; display:flex; flex-direction:column; gap:1mm; }
+.fi-rp-resp-map figcaption b { font-size:10px; color:var(--azul-tinta); }
+.fi-rp-resp-map .fi-mini { flex:1; min-height:0; height:auto; border-radius:8px; border:1px solid var(--azul-linea); }
+.fi-rp-resp-map .fi-legend { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:.5mm 3mm; margin:0; font-size:8px; line-height:1.2; }
+.fi-rp-resp-map .fi-legend span { align-items:flex-start; }
+.fi-rp-resp-map .fi-legend i { width:8px; height:8px; }
+.fi-rp-resp-map .fi-ramp { margin:0; } .fi-rp-resp-map .fi-ramp span { font-size:8px; }
+.fi-rp .fi-legend i.num { width:12px; height:12px; border-radius:50%; background:#0a221c; color:#fff; font-size:7px; font-style:normal; font-weight:700; display:inline-flex; align-items:center; justify-content:center; }
+.fi-rp-sitio { display:flex !important; align-items:center; justify-content:center; border-radius:50%; background:#0a221c; border:1.5px solid #fff; color:#fff; font:700 10px/1 var(--f); box-shadow:0 1px 3px rgba(0,0,0,.4); }
+.fi-rp .leaflet-tooltip.fi-diic-et { font-size:9px; padding:0 5px; }
 /* Ficha completa de la cuenca: los indicadores que solo existen por subcuenca no se imprimen vacíos. */
 html.fi-pdf .fi-ind-vacio { display:none; }
 
