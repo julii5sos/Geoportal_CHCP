@@ -528,6 +528,31 @@
     return [p1.join(' '), p2.join(' '), p3].filter(Boolean);
   }
 
+  /** Qué significan las cifras de fragmentación, en palabras, y qué dicen de este territorio. */
+  function lecturaFragmentacion(t) {
+    const e = t.estructura_2021, mc = e?.metricas_clase, mr = e?.metricas_red, mp = e?.metricas_paisaje;
+    if (!mc || !mr) return '';
+    const umbral = number(mr.umbral_m || st.data.umbral_conectividad_m || 500, 0);
+    const lugar = t.poligono ? 'el área' : esc(t.nombre);
+    const partes = [`En ${lugar}, el bosque oficial 2021 forma ${number(mc.numero_parches, 0)} parches; el mayor ocupa el ${pct(mc.indice_parche_mayor_pct, 0)} del ${t.poligono ? 'área' : 'paisaje'}.`];
+    partes.push(mr.numero_componentes === 1 ? `Todos quedan a ${umbral} m o menos de otro parche, así que por cercanía forman una sola red.` : `Quedan en ${number(mr.numero_componentes, 0)} redes que no se tocan a ${umbral} m: entre ellas haría falta restaurar para unirlas.`);
+    if (mp?.enn_medio_m != null) partes.push(`En promedio, cada parche está a ${number(mp.enn_medio_m, 0)} m de su vecino${mp.enn_medio_m <= 100 ? ', muy cerca' : mp.enn_medio_m <= 300 ? '' : ', bastante lejos'}.`);
+    if (mp?.porcentaje_bosque_nucleo != null) partes.push(`El ${pct(mp.porcentaje_bosque_nucleo, 0)} del bosque está a más de 100 m de un borde: ${mp.porcentaje_bosque_nucleo >= 60 ? 'buena parte del bosque está protegida del efecto de borde' : mp.porcentaje_bosque_nucleo >= 35 ? 'una parte importante está expuesta a los bordes' : 'la mayor parte está expuesta a los bordes, donde entran más luz, viento y perturbaciones'}.`);
+    const def = [
+      ['Parches', 'Bloques continuos de bosque. Muchos parches pequeños indican un bosque más dividido.'],
+      ['Bosque', 'Superficie total de bosque oficial 2021 (MiAMBIENTE) en el territorio.'],
+      ['Redes separadas', `Grupos de parches a ${umbral} m o menos unos de otros. Una sola red significa que, por cercanía, todo el bosque está conectado.`],
+      ['Conexiones', `Pares de parches a ${umbral} m o menos. Más conexiones son más caminos posibles entre parches.`],
+      ['Aislados', `Parches sin ningún vecino a ${umbral} m. Son los más difíciles de conectar.`],
+      ['Cohesión', 'De 0 a 100: qué tan agrupado y continuo es el bosque. Cerca de 100, el bosque forma bloques compactos.'],
+      ['IIC', 'Índice integral de conectividad, de 0 a 1. Combina el tamaño de los parches y sus conexiones: cerca de 1, el paisaje está muy conectado.'],
+      ['Distancia entre parches', 'Distancia media de cada parche a su vecino más cercano, de borde a borde.'],
+      ['Bosque interior', 'Bosque a más de cierta distancia del borde (50, 100 o 200 m). Es el hábitat de las especies que evitan los bordes.'],
+    ];
+    return `<div class="fi-frag-leer"><p class="fi-frag-res"><b>Qué dicen estas cifras.</b> ${partes.join(' ')}</p>
+      <details open><summary>Qué significa cada dato</summary><dl>${def.map(([a, b]) => `<dt>${a}</dt><dd>${b}</dd>`).join('')}</dl>
+      <p class="fi-note">Es conectividad estructural: describe cómo está dispuesto el bosque, no demuestra que la fauna se mueva entre parches.</p></details></div>`;
+  }
   // ------------------------------------------------------------ render
   function render(t) {
     const p = t.preevaluacion, e = t.estructura_2021, mp = e?.metricas_paisaje, serie = t.serie_anual || [];
@@ -562,6 +587,7 @@
       ${seccionEri(t)}
       <section class="fi-sec" id="fi-estructura"><h2>${icon('network', 22)} Fragmentación y conectividad · bosque oficial 2021</h2>
         ${e ? `<div class="fi-kv"><div><span>Parches</span><b>${number(e.metricas_clase.numero_parches, 0)}</b></div><div><span>Bosque</span><b>${hectares(e.metricas_clase.area_total_bosque_ha)}</b></div><div><span>Redes separadas</span><b>${number(e.metricas_red.numero_componentes, 0)}</b></div><div><span>Conexiones</span><b>${number(e.metricas_red.numero_aristas, 0)}</b></div><div><span>Aislados</span><b>${number(e.metricas_red.numero_parches_aislados, 0)}</b></div><div><span>Cohesión</span><b>${mp?.cohesion == null ? '—' : number(mp.cohesion, 1)}</b></div><div><span>IIC</span><b>${mp?.iic == null ? '—' : number(mp.iic, 4)}</b></div><div><span>Distancia entre parches</span><b>${mp?.enn_medio_m == null ? '—' : `${number(mp.enn_medio_m, 0)} m`}</b></div></div>
+        ${lecturaFragmentacion(t)}
         <h3>Bosque interior (área núcleo)</h3>${nucleoTabla}
         ${diic.length ? `<h3>Parches más importantes para la red (dIIC)</h3><table class="fi-table" id="fi-diic-tabla"><thead><tr><th>Parche</th><th>Superficie</th><th>Aporte a la conectividad</th><th>Función</th></tr></thead><tbody>${diic.map((x) => `<tr><td><a href="${enlaceParche(t.id, x.parche_id)}" title="Ver el parche en la Plataforma">#${x.parche_id}</a></td><td>${hectares(x.area_ha)}</td><td>${pct(x.diic_pct)}</td><td>${x.es_puente ? 'Puente entre grupos' : 'Gran hábitat'}</td></tr>`).join('')}</tbody></table><p class="fi-note">dIIC: cuánto bajaría el índice integral de conectividad si se perdiera el parche (Pascual-Hortal y Saura, 2006). Distancia umbral ${number(mp.umbral_m, 0)} m.</p>
         <h3>Dónde están estos parches</h3><div id="fi-diic-map" class="fi-diic-map"></div><p class="fi-note no-print">Los parches resaltados son los de la tabla. Haga clic en uno (o en su número en la tabla) para abrirlo en la Plataforma y acercarse.</p>` : ''}` : '<p>Sin estructura calculada.</p>'}</section>
@@ -688,7 +714,15 @@
       // En toda la cuenca la red de ríos es tan densa que se confunde con límites internos: solo el borde exterior.
       // Los ríos solo van en el mapa principal de la ficha; aquí taparían la capa de la fuente.
       referencias(m, false, false);
-      const borde = L.geoJSON(feature, { style: { color: '#263238', weight: 1.6, fill: false }, interactive: false }).addTo(m);
+      // En los mapas de corredores y de franja riparia los colores de la capa se confunden con un
+      // límite oscuro fino: ahí el límite va negro con un halo blanco, para que resalte.
+      const resaltar = f.id === 'corredores' || f.id === 'riparia';
+      const borde = resaltar
+        ? L.featureGroup([
+          L.geoJSON(feature, { style: { color: '#ffffff', weight: 5.5, opacity: 0.95, fill: false }, interactive: false }),
+          L.geoJSON(feature, { style: { color: '#111111', weight: 2.2, fill: false }, interactive: false }),
+        ]).addTo(m)
+        : L.geoJSON(feature, { style: { color: '#263238', weight: 1.6, fill: false }, interactive: false }).addTo(m);
       m._borde = borde;
       encuadre(m, borde.getBounds(), 4);
       // El velo va después del encuadre: Leaflet necesita la vista antes de dibujar el polígono.
