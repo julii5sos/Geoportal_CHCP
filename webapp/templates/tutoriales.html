@@ -2,70 +2,92 @@
 {% from "_macros.html" import hero %}
 {% block title %}Tutoriales · Geoportal de Conectividad Ecológica de la CHCP{% endblock %}
 {%- set tutoriales = [
-  ('Portada', '2 min', 'Responder una pregunta sobre una zona', url_for('index') ~ '#in-preguntas', 'Ir a las preguntas', [
+  ('help', 'Portada', '2 min', 'Responder una pregunta sobre una zona', url_for('index') ~ '#in-preguntas', 'Ir a las preguntas', [
      'En la portada, elija el área: toda la cuenca o una subcuenca.',
      'Pulse la pregunta que le interesa, por ejemplo «¿Ha perdido bosque esta zona?».',
      'Se abre la herramienta que la responde, con una respuesta escrita arriba: la pregunta, una frase con las cifras, un gráfico, un mapa, la advertencia principal y los datos usados.',
      'Debajo de la respuesta están todos los resultados de esa zona, por si quiere ver más detalle.']),
-  ('Ficha técnica', '4 min', 'Leer la ficha de una subcuenca y descargarla en PDF', url_for('ficha'), 'Abrir la ficha técnica', [
+  ('pdf', 'Ficha técnica', '4 min', 'Leer la ficha de una subcuenca y descargarla en PDF', url_for('ficha'), 'Abrir la ficha técnica', [
      'Abra la ficha desde el menú Panel o con el botón «Ficha técnica» de la Plataforma, y elija la subcuenca en la lista.',
      'Empiece por «En pocas palabras» y la tarjeta de preevaluación; al final está la conclusión, que resume lo que dicen los datos.',
      'Pulse «Descargar PDF» y elija «Resumen» (diagnóstico, seis mapas, respuestas a las preguntas clave y conclusión) o «Ficha completa» (todos los análisis).',
      'Se abre el cuadro de impresión del navegador: elija «Guardar como PDF». También puede bajar el límite en GeoJSON para abrirlo en QGIS.']),
-  ('Plataforma', '3 min', 'Ver cómo cambió el bosque año a año', url_for('platform'), 'Ir a la plataforma', [
+  ('trend', 'Plataforma', '3 min', 'Ver cómo cambió el bosque año a año', url_for('platform'), 'Ir a la plataforma', [
      'En la pestaña «Temas», elija una fuente: JRC, Hansen, ESRI o NDVI.',
      'Mueva la barra de años bajo el mapa o pulse reproducir para ver la secuencia.',
      'Las gráficas de la derecha muestran la superficie de cada clase por año; pase el cursor sobre ellas para ver los valores.']),
-  ('Plataforma', '4 min', 'Analizar su propia área y obtener su ficha', url_for('platform') ~ '?geometria=1', 'Ir a «Mi geometría»', [
+  ('polygon', 'Plataforma', '4 min', 'Analizar su propia área y obtener su ficha', url_for('platform') ~ '?geometria=1', 'Ir a «Mi geometría»', [
      'Abra la pestaña «Mi geometría».',
      'Pulse «Dibujar en el mapa» (un clic por vértice y «Terminar») o «Subir archivo» con un GeoJSON o KML en WGS 84.',
      'Pulse «Analizar este polígono»: verá las señales de pérdida, la fragmentación y las series por año dentro del área.',
      'Pulse «Ficha técnica del área»: se abre la misma ficha que tienen las subcuencas, calculada para su polígono, y se descarga en PDF igual.',
      'En áreas pequeñas o muy irregulares el resultado es aproximado; la ficha lo avisa.']),
-  ('Plataforma', '3 min', 'Hacer varios análisis a la vez', url_for('platform'), 'Ir a la plataforma', [
+  ('layers', 'Plataforma', '3 min', 'Hacer varios análisis a la vez', url_for('platform'), 'Ir a la plataforma', [
      'Pulse «Realizar análisis».',
      'Marque una o varias preguntas, elija el territorio y revise el resumen.',
      'El panel de la derecha muestra un resultado por pregunta, numerados («resultado 1 de 3»). Pase de uno a otro con los números o con «Siguiente resultado».',
      'Cada análisis queda guardado en «Sus análisis» para volver a él.']),
-  ('Panel', '3 min', 'Comparar las subcuencas', url_for('panel'), 'Ir al panel', [
+  ('chart', 'Panel', '3 min', 'Comparar las subcuencas', url_for('panel'), 'Ir al panel', [
      'Abra el Panel y elija la cuenca o una subcuenca.',
      'Revise la preevaluación, el cambio de cobertura, la conectividad y los corredores.',
      'Para un diagnóstico descargable con mapas, abra la ficha técnica de la subcuenca.']),
-  ('Simulador', '4 min', 'Probar dónde restaurar para reconectar el bosque', url_for('restauracion'), 'Ir al simulador', [
+  ('route', 'Simulador', '4 min', 'Probar dónde restaurar para reconectar el bosque', url_for('restauracion'), 'Ir al simulador', [
      'Elija la subcuenca.',
      'En «Restaurar brechas», haga clic en una línea roja del mapa para sumarla al escenario, o pulse «Proponer un plan de 8 enlaces».',
      'Arme los escenarios A y B y compare cuánto mejora la conexión del bosque en cada uno.',
      'En «Rutas al Corredor Mesoamericano», haga clic en un parche para ver por dónde conectaría.']),
-  ('Campo', '3 min', 'Registrar una visita de campo', url_for('campo'), 'Ir a verificación de campo', [
+  ('clipboard', 'Campo', '3 min', 'Registrar una visita de campo', url_for('campo'), 'Ir a verificación de campo', [
      'Filtre los sitios por subcuenca y estado. Son los mismos sitios que la ficha lista en «¿Dónde conviene verificar en campo?».',
      'Elija un sitio y pulse «Registrar visita»: se abre un formulario con el identificador y las coordenadas ya completados.',
      'Indique la fecha, el estado, la causa observada y la confianza, agregue fotografías y envíe. Se necesita una cuenta gratuita de GitHub.']),
-  ('Conceptos', '3 min', 'Leer la prioridad de la preevaluación', url_for('methodology') ~ '#preevaluacion', 'Ver en Metodología', [
+  ('shield', 'Conceptos', '3 min', 'Leer la prioridad de la preevaluación', url_for('methodology') ~ '#preevaluacion', 'Ver en Metodología', [
      'Cada fuente suma puntos si muestra pérdida o deterioro: JRC y Hansen 2, ESRI 1,5, GEDI y NDVI 0,5 (máximo 6,5).',
      'Alta: 3 o más. Media: 1,5 o más. Preventiva: 0,5 o más. Baja: menos de 0,5.',
      'La prioridad indica dónde conviene verificar primero; no confirma deforestación.',
      'En subcuencas la prioridad y la visita casi siempre salen altas: son áreas de miles de hectáreas y basta que una parte tenga señales. Para comparar subcuencas entre sí, use el puesto en pérdida reciente de la ficha; el botón «!» junto a la visita lo explica.']),
-  ('Conceptos', '4 min', 'Leer la fragmentación y la conectividad', url_for('ficha') ~ '?id=s23#fi-estructura', 'Ver en la ficha', [
+  ('network', 'Conceptos', '4 min', 'Leer la fragmentación y la conectividad', url_for('ficha') ~ '?id=s23#fi-estructura', 'Ver en la ficha', [
      'Un parche es un bloque continuo de bosque. Muchos parches pequeños indican un bosque más dividido.',
      'Los parches a 500 m o menos unos de otros forman una red. Una sola red significa que, por cercanía, todo el bosque está conectado; varias redes indican dónde haría falta restaurar.',
      'El bosque interior es el que está a más de 100 m de un borde: el hábitat de las especies que evitan los bordes. Cuanto más bajo, más expuesto está el bosque.',
      'Es conectividad estructural: describe cómo está dispuesto el bosque, no demuestra que la fauna se mueva. En la ficha, «Qué significa cada dato» explica cada cifra.']),
 ] -%}
+{%- set grupos = [
+  ('empezar', 'Para empezar', 'Las dos formas más rápidas de obtener una respuesta: una pregunta desde la portada o la ficha de una subcuenca.', ['Portada', 'Ficha técnica']),
+  ('explorar', 'Explorar y analizar', 'Ver los mapas año a año, analizar su propia área o varias preguntas a la vez, y comparar las subcuencas.', ['Plataforma', 'Panel']),
+  ('actuar', 'Pasar a la acción', 'Probar dónde restaurar para reconectar el bosque y registrar lo que se encuentra en campo.', ['Simulador', 'Campo']),
+  ('entender', 'Entender los resultados', 'Dos guías para leer bien las cifras sin ser especialista: la prioridad y la fragmentación.', ['Conceptos']),
+] -%}
 {% block body %}<main>{% call hero('Tutoriales', 'Guías cortas para las tareas más comunes. Cada una toma pocos minutos y enlaza a la página donde se hace.', small=True) %}<a class="btn btn-w" href="{{ url_for('platform') }}">Abrir la plataforma</a>{% endcall %}
-<section class="sec"><div class="wrap">
-  <div class="sec-c"><span class="eyebrow">Paso a paso</span><h2>¿Qué quiere hacer?</h2><p>En la plataforma, la ficha y el simulador también puede pulsar «? Cómo se usa» o «? Cómo leer la ficha» para un recorrido guiado sobre la propia pantalla.</p></div>
+{% set candado %}<svg class="candado" viewBox="0 0 16 16" width="13" height="13" aria-hidden="true"><rect x="3" y="7" width="10" height="7" rx="1.5" fill="currentColor"/><path d="M5 7V5a3 3 0 0 1 6 0v2" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>{% endset %}
+<section class="sec tut-intro"><div class="wrap">
+  <div class="sec-c"><span class="eyebrow">Paso a paso</span><h2>¿Qué quiere hacer?</h2><p>Elija un grupo o baje por la página. Cada guía dice cuánto toma y le lleva al lugar donde se hace.</p></div>
   <div class="tut-tabs" role="tablist" aria-label="Formato de los tutoriales">
     <button type="button" role="tab" aria-selected="true" class="tut-tab">Guías paso a paso</button>
-    <button type="button" role="tab" aria-selected="false" aria-disabled="true" class="tut-tab tut-tab-bloq" title="Próximamente: clips de 15 a 30 segundos de las tareas principales"><svg class="candado" viewBox="0 0 16 16" width="13" height="13" aria-hidden="true"><rect x="3" y="7" width="10" height="7" rx="1.5" fill="currentColor"/><path d="M5 7V5a3 3 0 0 1 6 0v2" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>Videos<small>Próximamente</small></button>
-    <button type="button" role="tab" aria-selected="false" aria-disabled="true" class="tut-tab tut-tab-bloq" lang="en" title="Coming soon: tutorials in English"><svg class="candado" viewBox="0 0 16 16" width="13" height="13" aria-hidden="true"><rect x="3" y="7" width="10" height="7" rx="1.5" fill="currentColor"/><path d="M5 7V5a3 3 0 0 1 6 0v2" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>English<small>Coming soon</small></button>
+    <button type="button" role="tab" aria-selected="false" aria-disabled="true" class="tut-tab tut-tab-bloq" title="Próximamente: clips de 15 a 30 segundos de las tareas principales">{{ candado }}Videos<small>Próximamente</small></button>
+    <button type="button" role="tab" aria-selected="false" aria-disabled="true" class="tut-tab tut-tab-bloq" lang="en" title="Coming soon: tutorials in English">{{ candado }}English<small>Coming soon</small></button>
   </div>
-  <div class="tut-grid">
-  {%- for modulo, dur, titulo, destino, accion, pasos in tutoriales %}
-    <article class="tut-card"><span>{{ modulo }} · {{ dur }}</span><h3>{{ titulo }}</h3><ol>{% for p in pasos %}<li>{{ p }}</li>{% endfor %}</ol><a class="tut-ir" href="{{ destino }}">{{ accion }} →</a></article>
+  <nav class="tut-indice" aria-label="Grupos de guías">
+  {%- for clave, nombre, desc, modulos in grupos %}
+    <a href="#tut-{{ clave }}"><b>{{ nombre }}</b><small>{{ tutoriales | selectattr(1, 'in', modulos) | list | length }} guías</small></a>
   {%- endfor %}
-  {%- if sitio_estatico %}
-    <article class="tut-card"><span>Sin conexión · 2 min</span><h3>Abrir el geoportal sin internet</h3><ol><li>Descargue la versión sin conexión (.zip) desde el enlace al pie de cualquier página.</li><li>Descomprímala y abra «Abrir Geoportal (Windows).bat», o el archivo .command en Mac o Linux.</li><li>El geoportal se abre en su navegador. No abra index.html con doble clic: el navegador bloquea los datos.</li></ol><a class="tut-ir" href="descargas/Geoportal_CHCP_sin_conexion.zip" download>Descargar (.zip) →</a></article>
-  {%- endif %}
+  </nav>
+</div></section>
+{%- for clave, nombre, desc, modulos in grupos %}
+<section class="sec tut-grupo{% if loop.index is odd %} gris{% endif %}" id="tut-{{ clave }}"><div class="wrap">
+  <div class="tut-grupo-cab"><h2>{{ nombre }}</h2><p>{{ desc }}</p></div>
+  <div class="tut-grid">
+  {%- for icono, modulo, dur, titulo, destino, accion, pasos in tutoriales if modulo in modulos %}
+    <article class="tut-card"><div class="tut-card-cab"><span class="in-ic" data-icon="{{ icono }}" aria-hidden="true"></span><span class="tut-mod">{{ modulo }}</span><span class="tut-dur">{{ dur }}</span></div>
+      <h3>{{ titulo }}</h3><ol>{% for paso in pasos %}<li>{{ paso }}</li>{% endfor %}</ol><a class="tut-ir" href="{{ destino }}">{{ accion }} <span aria-hidden="true">→</span></a></article>
+  {%- endfor %}
   </div>
 </div></section>
+{%- endfor %}
+<section class="in-ini tut-cierre"><div class="wrap in-ini-in">
+  <h2>¿Prefiere que se lo muestren en pantalla?</h2>
+  <p class="in-ini-lead">En la Plataforma, la ficha técnica y el simulador hay un recorrido guiado: pulse «? Cómo se usa» o «? Cómo leer la ficha» y el geoportal le señala cada parte sobre la propia página.</p>
+  <div class="in-ini-dos"><div><p>Para usarlo sin internet, por ejemplo en campo, descargue la versión sin conexión, descomprímala y abra «Abrir Geoportal (Windows).bat» o el archivo .command en Mac o Linux. No abra index.html con doble clic: el navegador bloquea los datos.</p>{% if sitio_estatico %}<a class="btn btn-w" href="descargas/Geoportal_CHCP_sin_conexion.zip" download>Descargar sin conexión (.zip)</a>{% endif %}</div>
+    <div><p>¿Dudas sobre una cifra o una fuente? La Metodología explica cada cálculo, sus períodos y sus limitaciones.</p><a class="btn btn-o" href="{{ url_for('methodology') }}">Ir a Metodología</a></div></div>
+</div></section>
 </main>{% endblock %}
+{% block scripts %}<script>document.querySelectorAll('[data-icon]').forEach((el) => { el.innerHTML = window.CHCP_ICON ? window.CHCP_ICON(el.dataset.icon, 22) : ''; });</script>{% endblock %}
