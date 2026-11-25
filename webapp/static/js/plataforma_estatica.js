@@ -205,6 +205,15 @@
       const huecos = (st.vistaPol ? P.poligonos(pg.geo) : f.geometry.type === 'Polygon' ? [f.geometry.coordinates] : f.geometry.coordinates).map((p) => p[0].map(([x, y]) => [y, x]));
       st.capas.mascara = L.polygon([[[-90, -180], [-90, 180], [90, 180], [90, -180]], ...huecos], { pane: 'mascara', stroke: false, fillColor: '#eef1f4', fillOpacity: 0.9, interactive: false }).addTo(map);
     }
+    // Parche elegido desde la ficha (?parche=N): un marcador con su número, sin cambiar el color de
+    // los parches, y una entrada en la leyenda para quitarlo. Se mantiene al cambiar de tema.
+    if (st.parcheSel && (st.vistaPol ? false : st.id === st.parcheSel.id)) {
+      const ps = st.parcheSel;
+      st.capas.parcheSel = L.layerGroup([
+        L.geoJSON(ps.f, { style: { color: '#ffffff', weight: 2, dashArray: '5 4', fill: false }, interactive: false }),
+        L.marker(ps.centro, { icon: L.divIcon({ className: 'pe-pin', html: `<span>#${ps.n}</span>`, iconSize: null }), interactive: false }),
+      ]).addTo(map);
+    }
     const aviso = $('#pe-aviso');
     const hayMapa = orden.some((c) => c.k.startsWith('r:'));
     const reutiliza = !st.vistaPol && st.id !== 'chcp' && fuente.id === 'chcp' && hayMapa;
@@ -260,11 +269,12 @@
       return `<div class="pe-lg"><div><i style="background:${c.color}"></i>${esc(c.nombre)}</div></div>`;
     });
     const aux = catalogo().filter((c) => AUXILIARES.includes(c.k));
-    $('#pe-legend').innerHTML = `<button type="button" class="legend-head" aria-expanded="true"><b>${esc(T.t)}</b><i class="chev"></i></button><div class="legend-body">${cuerpo}${bloques.join('')}
+    $('#pe-legend').innerHTML = `<button type="button" class="legend-head" aria-expanded="true"><b>${esc(T.t)}</b><i class="chev"></i></button><div class="legend-body">${cuerpo}${bloques.join('')}${st.parcheSel && st.id === st.parcheSel.id && !st.vistaPol ? `<div class="pe-lg pe-lg-sel"><div><i class="pe-pin-ley"></i>Parche #${st.parcheSel.n} elegido en la ficha (${hectares(st.parcheSel.f.properties.area_ha)})</div><button type="button" data-quitar-parche>Quitar marca</button></div>` : ''}
       <label class="pe-op">Opacidad <output>${Math.round(st.opacidad * 100)} %</output><input type="range" id="pe-op" min="20" max="100" step="5" value="${st.opacidad * 100}"></label>
       <details class="pe-aux" ${st.aux.size ? 'open' : ''}><summary>Capas auxiliares${st.aux.size ? ` (${st.aux.size})` : ''}</summary>${aux.map((c) => `<label class="pe-lg-cl ${c.disponible ? '' : 'layer-disabled'}"><input type="checkbox" data-aux="${c.k}" ${st.aux.has(c.k) ? 'checked' : ''} ${c.disponible ? '' : 'disabled'}><i style="background:${c.color}"></i>${esc(c.nombre)}</label>`).join('')}</details></div>`;
     $('#pe-legend .legend-head').addEventListener('click', (e) => { const b = e.currentTarget; const o = b.getAttribute('aria-expanded') === 'true'; b.setAttribute('aria-expanded', String(!o)); b.nextElementSibling.hidden = o; });
     $$('#pe-legend [data-cl]').forEach((x) => x.addEventListener('change', () => { const s = (st.ocultas[prod] ||= new Set()); const v = Number(x.dataset.cl); x.checked ? s.delete(v) : s.add(v); dibujar(); }));
+    $('#pe-legend [data-quitar-parche]')?.addEventListener('click', () => { st.parcheSel = null; dibujar(); });
     $$('#pe-legend [data-cp]').forEach((b) => b.addEventListener('click', () => { st.colorParches = b.dataset.cp; dibujar(); }));
     $$('#pe-legend [data-aux]').forEach((x) => x.addEventListener('change', () => { x.checked ? st.aux.add(x.dataset.aux) : st.aux.delete(x.dataset.aux); dibujar(); }));
     $('#pe-op')?.addEventListener('input', (e) => { st.opacidad = e.target.value / 100; e.target.previousElementSibling.textContent = `${e.target.value} %`; Object.entries(st.capas).forEach(([k, l]) => (k.startsWith('r:') || k.startsWith('s:') || k.startsWith('v:')) && l.eachLayer((x) => x.setOpacity?.(st.opacidad))); });
@@ -351,8 +361,13 @@
     const acciones = poli
       ? `<button class="btn btn-s btn-p" id="pg-ficha-btn" type="button">${icon('doc', 16)} Ficha técnica del área</button><button class="btn btn-s" id="pg-json" type="button">${icon('download', 16)} Resultados (JSON)</button><button class="btn btn-s" id="pg-geo" type="button">${icon('map', 16)} Polígono (GeoJSON)</button>`
       : `<a class="btn btn-s" href="${enlace('ficha')}?id=${encodeURIComponent(x.id)}">${icon('doc', 16)} Ficha técnica</a>${x.id !== 'chcp' ? `<a class="btn btn-s" href="${enlace('restauracion')}?id=${encodeURIComponent(x.id)}">${icon('route', 16)} Simular restauración</a>` : ''}`;
-    const partes = st.modo?.tipos?.length > 1 ? `<nav class="pe-nav pe-partes" aria-label="Preguntas de este análisis">${st.modo.tipos.map((tp) => `<button type="button" data-parte="${tp}" aria-current="${tp === st.modo.actual}">${esc(tp === 'comparar' ? `Comparar ${prodInfo(st.modo.prod)?.corto || ''}` : TIPOS[tp].t)}</button>`).join('')}</nav>` : '';
-    $('#pe-res-b').innerHTML = `${partes}${proc}${html}<div class="pe-acc pe-acc-fila">${acciones}</div><p class="hint-p small">Evaluación preliminar con datos satelitales: orienta una revisión y no sustituye la verificación de campo.</p>`;
+    // Varias preguntas: pestañas numeradas con «resultado n de N» y, al final, el paso al siguiente,
+    // para que se vea que el análisis trae una respuesta por pregunta.
+    const nombreParte = (tp) => esc(tp === 'comparar' ? `Comparar ${prodInfo(st.modo.prod)?.corto || ''}` : TIPOS[tp].t);
+    const tps = st.modo?.tipos || [], iAct = tps.indexOf(st.modo?.actual), sig = tps[iAct + 1];
+    const partes = tps.length > 1 ? `<div class="pe-partes-caja"><p class="pe-partes-t">Su análisis tiene <b>${tps.length} resultados</b>, uno por pregunta. Está viendo el ${iAct + 1} de ${tps.length}.</p><nav class="pe-nav pe-partes" aria-label="Resultados de este análisis">${tps.map((tp, i) => `<button type="button" data-parte="${tp}" aria-current="${tp === st.modo.actual}"><span class="pe-num">${i + 1}</span>${nombreParte(tp)}</button>`).join('')}</nav></div>` : '';
+    const siguiente = tps.length > 1 ? `<div class="pe-sig">${sig ? `<button type="button" class="btn btn-p btn-s" data-parte="${sig}">Siguiente resultado: ${nombreParte(sig)}</button>` : `<button type="button" class="btn btn-s" data-parte="${tps[0]}">Volver al primer resultado</button>`}</div>` : '';
+    $('#pe-res-b').innerHTML = `${partes}${proc}${html}${siguiente}<div class="pe-acc pe-acc-fila">${acciones}</div><p class="hint-p small">Evaluación preliminar con datos satelitales: orienta una revisión y no sustituye la verificación de campo.</p>`;
     G.activarTooltips($('#pe-res-b'));
     enlazarPanel();
     $('#pe-res').classList.remove('closed'); $('#pe-reopen').hidden = true;
@@ -362,7 +377,7 @@
     $$('#pe-res-b [data-cmp]').forEach((s) => s.addEventListener('change', () => { const prod = TEMA[st.tema].prod; const c = (st.comparar[prod] ||= {}); c[s.dataset.cmp] = Number(s.value); renderPanel(); }));
     $('#pe-rank-cl')?.addEventListener('change', (e) => { st.rankClase[TEMA[st.tema].prod] = Number(e.target.value); renderPanel(); });
     $$('#pe-res-b [data-ir-tema]').forEach((b) => b.addEventListener('click', () => elegirTema(b.dataset.irTema)));
-    $$('#pe-res-b [data-parte]').forEach((b) => b.addEventListener('click', () => elegirTema(temaDe(b.dataset.parte))));
+    $$('#pe-res-b [data-parte]').forEach((b) => b.addEventListener('click', () => { elegirTema(temaDe(b.dataset.parte)); $('#pe-res-b').scrollTop = 0; }));
     if (st.vistaPol && pg.resultado) {
       const bajar = (nombre, texto, tipo) => { const el = document.createElement('a'); el.href = URL.createObjectURL(new Blob([texto], { type: tipo })); el.download = nombre; el.click(); URL.revokeObjectURL(el.href); };
       $('#pg-json')?.addEventListener('click', () => { const { acc, ...resto } = pg.resultado; bajar('analisis_poligono.json', JSON.stringify({ procesamiento: { tipo: 'C', descripcion: 'Estimación local derivada de resultados precalculados (tipo B)', base: st.data.procesamiento, error_borde_estimado: pg.resultado.error_borde, pixel_m: pg.resultado.pixel_m }, metodologia: st.data.metodologia, datos: st.data.generado, poligono: pg.geo, ...resto, series_anuales: pg.series, superficies_ha: { jrc: acc.jrc, hansen_por_anio: acc.hansen, esri: acc.esri, sinia_2021: acc.sinia, coincidencia: acc.coincidencia, riparia: acc.riparia } }, null, 1), 'application/json'); });
@@ -556,7 +571,7 @@
     $('#pe-stp').innerHTML = pasos.map((n, k) => `<li class="${k === wiz.paso ? 'cur' : k < wiz.paso ? 'ok' : ''}"><i>${k < wiz.paso ? '✓' : k + 1}</i>${n}</li>`).join('');
     let html = '';
     if (paso === 'Preguntas') {
-      html = `<h3>¿Qué quiere saber?</h3><p class="wz-ayuda">Puede marcar varias preguntas: verá una pestaña de resultados por cada una.</p><div class="wz-tipos">${Object.entries(TIPOS).map(([k, x]) => `<label class="opt wz-t"><input type="checkbox" name="wz-tipo" value="${k}" ${wiz.tipos.has(k) ? 'checked' : ''}>${icon(x.i, 22)}<div><b>${x.q}</b><span><em>${x.t}.</em> ${x.d}</span></div></label>`).join('')}</div>`;
+      html = `<h3>¿Qué quiere saber?</h3><p class="wz-ayuda">El análisis reúne en un solo panel la respuesta a cada pregunta que marque, con su mapa y sus gráficas. Si marca varias, verá un resultado numerado por pregunta y podrá pasar de uno a otro. Con su propio polígono, los resultados se calculan dentro de él.</p><div class="wz-tipos">${Object.entries(TIPOS).map(([k, x]) => `<label class="opt wz-t"><input type="checkbox" name="wz-tipo" value="${k}" ${wiz.tipos.has(k) ? 'checked' : ''}>${icon(x.i, 22)}<div><b>${x.q}</b><span><em>${x.t}.</em> ${x.d}</span></div></label>`).join('')}</div>`;
     } else if (paso === 'Fuente y años') {
       const disp = ['jrc', 'esri', 'ndvi'].filter((k) => st.series?.productos?.[k]);
       if (!disp.includes(wiz.prod)) wiz.prod = disp[0] || 'jrc';
@@ -651,6 +666,7 @@
       <div class="pe-ms">${tarjeta('ESRI árboles → otra clase', hectares(x.esri?.esri_salida, 1), '2017 → 2024')}${tarjeta('ESRI otra clase → árboles', hectares(x.esri?.esri_ganancia, 1), '2017 → 2024')}${tarjeta('NDVI medio', `${number(x.ndvi?.ndvi_inicial_medio, 2)} → ${number(x.ndvi?.ndvi_final_medio, 2)}`, '2020 → 2025')}${tarjeta('Descenso fuerte de NDVI', hectares(x.ndvi?.ndvi_disminucion, 1), '≥ 0,15')}</div>`; },
     fragmentacion: (x) => { const e = x.estructura_2021; if (!e) return '<p class="fi-pending">Sin estructura calculada para este territorio.</p>'; const c = e.metricas_clase, mp = e.metricas_paisaje;
       return `<div class="pe-ms">${tarjeta('Parches de bosque 2021', number(c.numero_parches, 0))}${tarjeta('Bosque oficial 2021', hectares(c.area_total_bosque_ha, 0))}${tarjeta('Parche mayor', pct(c.indice_parche_mayor_pct, 1), 'del paisaje')}${tarjeta('Densidad de borde', `${number(c.densidad_borde_m_ha, 1)} m/ha`)}${tarjeta('Bosque interior (100 m)', mp?.porcentaje_bosque_nucleo == null ? '—' : pct(mp.porcentaje_bosque_nucleo, 1), 'del bosque')}${tarjeta('Distancia media entre parches', mp?.enn_medio_m == null ? '—' : `${number(mp.enn_medio_m, 0)} m`)}${tarjeta('Cohesión', mp?.cohesion == null ? '—' : number(mp.cohesion, 1), '0–100')}</div>
+      <details class="pe-explica" open><summary>Qué significan estas cifras</summary><p><b>Parches:</b> bloques continuos de bosque; muchos y pequeños indican un bosque más dividido. <b>Parche mayor:</b> parte del paisaje que ocupa el bloque más grande. <b>Densidad de borde:</b> metros de borde por hectárea; más borde, bosque más recortado. <b>Bosque interior:</b> bosque a más de 100 m de un borde, hábitat de las especies que evitan los bordes. <b>Distancia entre parches:</b> media de cada parche a su vecino más cercano. <b>Cohesión:</b> de 0 a 100, qué tan agrupado y continuo es el bosque.</p></details>
       ${mp?.area_nucleo?.por_profundidad ? tabla(['Profundidad de borde', 'Bosque interior', '% del bosque'], mp.area_nucleo.por_profundidad.map((r) => [`${r.profundidad_m} m`, hectares(r.area_nucleo_ha, 0), pct(r.porcentaje_bosque_nucleo, 1)])) : `<p class="hint-p small">Área núcleo, distancia entre parches y cohesión: se calculan ${window.CHCP.pendiente()}.</p>`}`; },
     conectividad: (x) => { const e = x.estructura_2021; if (!e) return '<p class="fi-pending">Sin red calculada para este territorio.</p>'; const r = e.metricas_red, mp = e.metricas_paisaje;
       return `<div class="pe-ms">${tarjeta('Redes separadas', number(r.numero_componentes, 0), `umbral ${number(r.umbral_m || st.data.umbral_conectividad_m || 500, 0)} m`)}${tarjeta('Conexiones', number(r.numero_aristas, 0))}${tarjeta('Parches aislados', number(r.numero_parches_aislados, 0))}${tarjeta('IIC', mp?.iic == null ? '—' : number(mp.iic, 4), 'conectividad integral 0–1')}</div>
@@ -999,9 +1015,10 @@
   if (nParche && st.geo?.parches?.features) {
     const f = st.geo.parches.features.find((x) => x.properties.patch_id === nParche);
     if (f) {
-      const resalte = L.geoJSON(f, { style: { color: '#ffeb3b', weight: 4, fill: false }, interactive: false }).addTo(st.map);
-      st.map.fitBounds(resalte.getBounds(), { padding: [60, 60], maxZoom: 16 });
-      resalte.bindTooltip(`Parche #${nParche} · ${hectares(f.properties.area_ha)}`, { permanent: true, direction: 'top' }).openTooltip();
+      const b = L.geoJSON(f).getBounds();
+      st.parcheSel = { id: st.id, n: nParche, f, centro: b.getCenter() };
+      st.map.fitBounds(b, { padding: [60, 60], maxZoom: 16 });
+      dibujar();
     }
   }
 })();
