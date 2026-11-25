@@ -1119,24 +1119,5 @@ html.fi-pdf-resumen .fi-doc { display:none; }
   .fi-res-page:last-child { break-after:auto; }
 }
 
-/* Ficha del polígono (Plataforma): mismas hojas A4 del resumen de la ficha */
-.pg-ficha[hidden] { display:none; }
-html.pg-pdf body > *:not(#pg-ficha) { display:none !important; }
-html.pg-pdf body { overflow:auto; height:auto; background:#e9eef2; }
-html.pg-pdf #pg-ficha { display:block; padding:12px 0; }
-.pg-proc { margin:2px 0 0; font-size:10.5px; color:var(--muted); }
-.pg-sen { list-style:none; margin:0 0 8px; padding:0; display:grid; gap:4px; }
-.pg-sen li { display:grid; grid-template-columns:auto 1fr; gap:0 8px; padding:4px 8px; border-radius:6px; background:#f4f7f5; font-size:10.5px; }
-.pg-sen li.on { background:#fdecea; }
-.pg-sen b { color:var(--azul-tinta); }
-.pg-sen span { justify-self:end; font-weight:700; color:var(--muted); }
-.pg-sen li.on span { color:var(--alerta); }
-.pg-sen small { grid-column:1 / -1; color:#3f4f47; font-size:10px; }
-.pg-tablas { display:grid; grid-template-columns:1.4fr 1fr; gap:6mm; }
-.pg-tablas h2 { margin-bottom:4px; font-size:13px; }
-.pg-leer { background:var(--azul-suave); border-radius:8px; padding:8px 12px; }
-.pg-leer h2 { font-size:13px; margin-bottom:4px; }
-.pg-leer p { margin:0 0 4px; font-size:10.5px; line-height:1.45; color:#3f4f47; }
-.pg-tablas .fi-table { font-size:10.5px; }
-.pg-tablas .fi-table th, .pg-tablas .fi-table td { padding:3px 6px; }
-@media print { html.pg-pdf body { background:#fff; padding:0; } html.pg-pdf #pg-ficha { padding:0; } }
+/* Ficha de un área dibujada: aviso de resultado aproximado */
+.fi-aviso-pol { margin:8px 0 0; padding:8px 12px; border-radius:8px; background:#fff4e5; color:#7a4100; font-size:13px; }
