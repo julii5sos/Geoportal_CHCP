@@ -139,7 +139,11 @@
     if (rip30(t)?.bosque_sinia_pct != null) frases.push(`<b>Ríos.</b> Unos ${number(t.riparia.longitud_cauces_km, 0)} km de cauces; el ${pct(rip30(t).bosque_sinia_pct, 0)} de la franja de 30 m a cada lado tiene bosque oficial.`);
     frases.push(`<b>Corredores.</b> ${pct(t.corredores?.porcentaje, 0)} del territorio está dentro de corredores publicados${t.corredores?.intersecta_mesoamericano ? ', incluido el Corredor Biológico Mesoamericano' : ''}.`);
     if (t.eri?.clase) frases.push(`<b>Resiliencia (ERI, indicativo).</b> Clase ${esc(t.eri.clase)} (${number(t.eri.valor * 100, 0)}/100)${t.eri.componente_limitante_etiqueta ? `; el componente más débil es ${esc(t.eri.componente_limitante_etiqueta.toLowerCase())}` : ''}.`);
-    frases.push(`<b>Preevaluación.</b> ${number(p.puntaje, 1)} de ${number(p.puntaje_maximo, 1)} puntos (prioridad ${esc(p.prioridad)}); prioridad de visita ${esc(p.prioridad_visita || '—')}. Fuentes con señal de deterioro: ${esc((p.fuentes_deterioro || []).join(', ') || 'ninguna')}.`);
+    // Todas las fuentes que suman, con sus puntos, para que la suma se pueda comprobar a mano.
+    const NOMBRE_FUENTE = { tmf: 'JRC TMF', hansen: 'Hansen GFC', esri: 'ESRI LULC', gedi: 'GEDI', ndvi: 'NDVI Sentinel-2' };
+    const suman = Object.keys(NOMBRE_FUENTE).filter((k) => p.senales?.[k]).map((k) => `${NOMBRE_FUENTE[k]} (${number(p.aportes?.[k] ?? 0, 1)})`);
+    const lista = suman.length > 1 ? `${suman.slice(0, -1).join(', ')} y ${suman[suman.length - 1]}` : suman[0];
+    frases.push(`<b>Preevaluación.</b> ${number(p.puntaje, 1)} de ${number(p.puntaje_maximo, 1)} puntos (prioridad ${esc(p.prioridad)}); prioridad de visita ${esc(p.prioridad_visita || '—')}. ${suman.length ? `Suman puntos: ${esc(lista)}.` : 'Ninguna fuente supera su umbral.'}`);
     const pr = t.id === 'chcp' ? null : puesto(t, 'perdida_reciente_pct_anual');
     if (pr) frases.push(`<b>Frente a las demás subcuencas.</b> Por pérdida reciente en proporción a su bosque ocupa el puesto ${pr.pos} de ${pr.n}: ${tercio(pr)}. Esta comparación distingue mejor entre subcuencas que la prioridad, que en territorios extensos casi siempre es Alta.`);
     return frases;
@@ -351,7 +355,7 @@
       </header>
       <section class="fi-sec"><h2>${icon('info', 22)} En pocas palabras</h2>${diagnostico(t).map((f) => `<p>${f}</p>`).join('')}</section>
       <section class="fi-sec fi-map-sec"><h2>${icon('map', 22)} ${t.poligono ? 'Mapa del área' : t.id === 'chcp' ? 'Mapa de la cuenca' : 'Mapa de la subcuenca'}</h2><div id="fi-map"></div><p class="fi-pending" id="fi-map-nota" hidden></p>
-        <div class="fi-legend"><span><i style="background:#1b5e20"></i>Parche clave (conectividad alta)</span><span><i style="background:#66bb6a"></i>Parche de importancia media</span><span><i style="background:#c5e1a5"></i>Parche de importancia baja</span><span><i class="dash"></i>Brecha candidata a reconexión</span>${t.id === 'chcp' ? '' : `<span><i style="background:#1f78b4;height:3px"></i>Ríos (${esc(t.mapas?.rios_fuente || 'IGNTG 2022 · hidrografía 1:25 000')})</span>`}</div></section>
+        ${t.id === 'chcp' ? '<div class="fi-legend"><span><i style="background:transparent;border:2px solid #ffffff;outline:1px solid #263238"></i>Límite de la cuenca</span></div><p class="fi-note">Los parches de bosque, las brechas y los ríos se ven en la ficha de cada subcuenca: en toda la cuenca serían demasiado pequeños para leerse.</p>' : `<div class="fi-legend"><span><i style="background:#1b5e20"></i>Parche clave (conectividad alta)</span><span><i style="background:#66bb6a"></i>Parche de importancia media</span><span><i style="background:#c5e1a5"></i>Parche de importancia baja</span><span><i class="dash"></i>Brecha candidata a reconexión</span><span><i style="background:#1f78b4;height:3px"></i>Ríos (${esc(t.mapas?.rios_fuente || 'IGNTG 2022, hidrografía 1:25 000')})</span></div>`}</section>
       <section class="fi-sec fi-gal-sec"><h2>${icon('layers', 22)} Mapas temáticos</h2><p class="fi-note">Cada mapa muestra una fuente distinta sobre el mismo territorio, con los colores que usa cada fuente. Los ríos están en el mapa de la subcuenca y los corredores del Almanaque Azul tienen su propio mapa. El mapa base se cambia con el selector del mapa de arriba.</p>${seccionGaleria(t)}</section>
       <section class="fi-sec" id="fi-indicadores"><h2>${icon('chart', 22)} Indicadores y comparación con las demás subcuencas</h2><p class="fi-note">Verde: mejor que la mayoría de subcuencas; ámbar: intermedio; rojo: entre las más desfavorables. La comparación es relativa a la CHCP, no un umbral normativo.</p><div class="fi-inds">${indicadores}</div></section>
       ${seccionRelativa(t)}
@@ -702,8 +706,8 @@
         <div class="fi-res-cuerpo">
           <div class="fi-res-texto"><h2>En pocas palabras</h2>${frases.map((f) => `<p>${f}</p>`).join('')}</div>
           <figure class="fi-res-mapa"><div class="fi-mini" id="fi-res-principal"></div>
-            <div class="fi-legend"><span><i style="background:#1b5e20"></i>Parche clave</span><span><i style="background:#66bb6a"></i>Importancia media</span><span><i style="background:#c5e1a5"></i>Importancia baja</span><span><i class="dash"></i>Brecha candidata</span></div>
-            <figcaption>${t.id === 'chcp' ? 'La cuenca' : 'La subcuenca'} sobre imagen satelital, con los parches de bosque oficial 2021 según su importancia para la conectividad.</figcaption></figure>
+            ${t.id === 'chcp' ? '<figcaption>La cuenca sobre imagen satelital. Los parches de bosque y las brechas están en la ficha de cada subcuenca.</figcaption></figure>' : `<div class="fi-legend"><span><i style="background:#1b5e20"></i>Parche clave</span><span><i style="background:#66bb6a"></i>Importancia media</span><span><i style="background:#c5e1a5"></i>Importancia baja</span><span><i class="dash"></i>Brecha candidata</span></div>
+            <figcaption>${t.poligono ? 'El área' : 'La subcuenca'} sobre imagen satelital, con los parches de bosque oficial 2021 según su importancia para la conectividad.</figcaption></figure>`}
         </div>
       </section>
       <section class="fi-res-page">
