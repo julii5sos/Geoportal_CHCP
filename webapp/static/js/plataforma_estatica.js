@@ -349,7 +349,7 @@
     if (turno !== turnoPanel) return;
     const proc = poli && R0 ? window.CHCP.procedencia(st.data, 'C', null, `<span>Malla de ${number(R0.pixel_m, 0)} m · error de borde ${number(R0.error_borde * 100, 1)} %</span>`) : window.CHCP.procedencia(st.data, 'B', x);
     const acciones = poli
-      ? `<button class="btn btn-s" id="pg-json" type="button">${icon('download', 16)} Resultados (JSON)</button><button class="btn btn-s" id="pg-geo" type="button">${icon('map', 16)} Polígono (GeoJSON)</button>`
+      ? `<button class="btn btn-s btn-p" id="pg-ficha-btn" type="button">${icon('doc', 16)} Ficha del polígono (PDF)</button><button class="btn btn-s" id="pg-json" type="button">${icon('download', 16)} Resultados (JSON)</button><button class="btn btn-s" id="pg-geo" type="button">${icon('map', 16)} Polígono (GeoJSON)</button>`
       : `<a class="btn btn-s" href="${enlace('ficha')}?id=${encodeURIComponent(x.id)}">${icon('doc', 16)} Ficha técnica</a>${x.id !== 'chcp' ? `<a class="btn btn-s" href="${enlace('restauracion')}?id=${encodeURIComponent(x.id)}">${icon('route', 16)} Simular restauración</a>` : ''}`;
     const partes = st.modo?.tipos?.length > 1 ? `<nav class="pe-nav pe-partes" aria-label="Preguntas de este análisis">${st.modo.tipos.map((tp) => `<button type="button" data-parte="${tp}" aria-current="${tp === st.modo.actual}">${esc(tp === 'comparar' ? `Comparar ${prodInfo(st.modo.prod)?.corto || ''}` : TIPOS[tp].t)}</button>`).join('')}</nav>` : '';
     $('#pe-res-b').innerHTML = `${partes}${proc}${html}<div class="pe-acc pe-acc-fila">${acciones}</div><p class="hint-p small">Evaluación preliminar con datos satelitales: orienta una revisión y no sustituye la verificación de campo.</p>`;
@@ -366,6 +366,7 @@
     if (st.vistaPol && pg.resultado) {
       const bajar = (nombre, texto, tipo) => { const el = document.createElement('a'); el.href = URL.createObjectURL(new Blob([texto], { type: tipo })); el.download = nombre; el.click(); URL.revokeObjectURL(el.href); };
       $('#pg-json')?.addEventListener('click', () => { const { acc, ...resto } = pg.resultado; bajar('analisis_poligono.json', JSON.stringify({ procesamiento: { tipo: 'C', descripcion: 'Estimación local derivada de resultados precalculados (tipo B)', base: st.data.procesamiento, error_borde_estimado: pg.resultado.error_borde, pixel_m: pg.resultado.pixel_m }, metodologia: st.data.metodologia, datos: st.data.generado, poligono: pg.geo, ...resto, series_anuales: pg.series, superficies_ha: { jrc: acc.jrc, hansen_por_anio: acc.hansen, esri: acc.esri, sinia_2021: acc.sinia, coincidencia: acc.coincidencia, riparia: acc.riparia } }, null, 1), 'application/json'); });
+      $('#pg-ficha-btn')?.addEventListener('click', () => fichaPoligono());
       $('#pg-geo')?.addEventListener('click', () => bajar('poligono.geojson', JSON.stringify({ type: 'Feature', properties: { area_ha: pg.resultado.area_dibujada_ha }, geometry: pg.geo }), 'application/geo+json'));
     }
   }
@@ -562,7 +563,7 @@
       const anios = prodInfo(wiz.prod)?.anios || [];
       if (!anios.includes(wiz.a)) wiz.a = PERIODO_COMPARAR[wiz.prod]?.[0] ?? anios[0];
       if (!anios.includes(wiz.b)) wiz.b = PERIODO_COMPARAR[wiz.prod]?.[1] ?? anios[anios.length - 1];
-      html = disp.length ? `<h3>¿Qué fuente y qué años compara?</h3><div class="wz-tipos">${disp.map((k) => `<label class="opt"><input type="radio" name="wz-prod" value="${k}" ${wiz.prod === k ? 'checked' : ''}>${icon(TEMA[k].i, 20)}<div><b>${esc(prodInfo(k).nombre)}</b><span>${prodInfo(k).anios[0]}–${prodInfo(k).anios.slice(-1)[0]} · ${prodInfo(k).resolucion_m} m</span></div></label>`).join('')}</div>
+      html = disp.length ? `<h3>¿Qué fuente y qué años compara?</h3><p class="wz-ayuda">Este paso aparece porque marcó «¿Cómo cambió entre dos años?». Es una pregunta aparte de la preevaluación: muestra cuánto cambió cada clase entre los dos años que elija. Si no la necesita, vuelva atrás y desmárquela.</p><div class="wz-tipos">${disp.map((k) => `<label class="opt"><input type="radio" name="wz-prod" value="${k}" ${wiz.prod === k ? 'checked' : ''}>${icon(TEMA[k].i, 20)}<div><b>${esc(prodInfo(k).nombre)}</b><span>${prodInfo(k).anios[0]}–${prodInfo(k).anios.slice(-1)[0]} · ${prodInfo(k).resolucion_m} m</span></div></label>`).join('')}</div>
         <div class="pc-sel wz-anios"><label>Desde<select id="wz-a">${anios.map((a) => `<option ${a === wiz.a ? 'selected' : ''}>${a}</option>`).join('')}</select></label><label>Hasta<select id="wz-b">${anios.map((a) => `<option ${a === wiz.b ? 'selected' : ''}>${a}</option>`).join('')}</select></label></div>`
         : '<p class="pc-aviso">Las series por año aún no se han generado (flujo «Series anuales» de GitHub Actions). Vuelva atrás y desmarque «¿Cómo cambió entre dos años?» por ahora.</p>';
     } else if (paso === 'Territorio') {
@@ -883,6 +884,145 @@
     st.vistaPol = pg.vista = { ids: subs.map((f) => f.properties.id), geo: mapaP.parches.length ? { parches: { type: 'FeatureCollection', features: mapaP.parches }, brechas: { type: 'FeatureCollection', features: mapaP.brechas } } : null };
     pg.resultado = { ...P.evaluar(acc, estructura), acc, estructura, fragmentacion: frag, error_borde: errorBorde, perimetro_m: perimetro, area_dibujada_ha: P.areaHa(pg.geo), subcuencas: subs.map((f) => f.properties.nombre), sin_datos: sinDatos.map((f) => f.properties.nombre), pixel_m: acc.pixeles_m.length ? Math.max(...acc.pixeles_m) : null };
     $('#pg-busy').hidden = true;
+  }
+  // ------------------------------------------------------------ ficha del polígono (PDF de 2 páginas)
+  // Reúne en dos hojas A4 los resultados del polígono dibujado (estimación local, tipo C) y mapas
+  // recortados al polígono. Se imprime con el cuadro del navegador («Guardar como PDF»).
+  const MESES = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
+  const fechaTexto = (d) => `${d.getDate()} de ${MESES[d.getMonth()]} de ${d.getFullYear()}`;
+  const MAPAS_FICHA_POL = ['sinia_2021', 'jrc_2025', 'hansen', 'coincidencia', 'esri_cambio', 'eri'];
+  const COLOR_IMP = { Alta: '#1b5e20', Media: '#66bb6a', Baja: '#c5e1a5' };
+  const tituloSinPunto = (x) => esc(x).replace(/ · (.+)$/, ' <small class="fi-fuente">$1</small>');
+  function leyendaCapa(c) {
+    if (c.tipo === 'continuo') return `<div class="fi-ramp"><i style="background:linear-gradient(90deg,${c.paleta.join(',')})"></i><span>${c.leyenda.map((x) => `<em>${esc(x.etiqueta)}</em>`).join('')}</span></div>`;
+    return `<div class="fi-legend">${c.leyenda.map((x) => `<span><i style="background:${x.color}"></i>${esc(x.etiqueta)}</span>`).join('')}</div>`;
+  }
+  function velo(m, opacidad) {
+    const mundo = [[-90, -180], [-90, 180], [90, 180], [90, -180]];
+    const huecos = P.poligonos(pg.geo).map((partes) => partes[0].map(([x, y]) => [y, x]));
+    L.polygon([mundo, ...huecos], { stroke: false, fillColor: '#ffffff', fillOpacity: opacidad, interactive: false }).addTo(m);
+  }
+  function mapaFicha(div, base, relleno) {
+    const m = L.map(div, { zoomControl: false, attributionControl: false, scrollWheelZoom: false, dragging: false, zoomSnap: 0.1 });
+    // Primero la vista: Leaflet necesita el encuadre antes de dibujar capas vectoriales.
+    m.fitBounds(L.geoJSON(pg.geo).getBounds(), { padding: [relleno, relleno] });
+    const b = BASES.find((x) => x[0] === base) || BASES[0];
+    L.tileLayer(b[2], { maxZoom: 19, crossOrigin: true }).addTo(m);
+    return m;
+  }
+  function esperarCarga(mapas, ms = 8000) {
+    const pend = [];
+    mapas.forEach((m) => m.eachLayer((l) => {
+      if (l instanceof L.TileLayer && l.isLoading && l.isLoading()) pend.push(new Promise((ok) => l.once('load', ok)));
+      if (l instanceof L.ImageOverlay && l._image && !l._image.complete) pend.push(new Promise((ok) => { l._image.addEventListener('load', ok, { once: true }); l._image.addEventListener('error', ok, { once: true }); }));
+    }));
+    return Promise.race([Promise.all(pend), new Promise((ok) => setTimeout(ok, ms))]);
+  }
+  async function fichaPoligono() {
+    const R0 = pg.resultado;
+    if (!R0 || !pg.geo) return;
+    window.CHCP.toast?.('Preparando la ficha del polígono…');
+    if (!R0.fragmentacion) { try { R0.fragmentacion = await fragmentacionPoligono(); } catch (_) { /* sin parches */ } }
+    const m = R0.metricas, a = R0.acc, area = m.area_ha || 1, f = R0.fragmentacion, v = R0.visita;
+    const ha = (x, d) => hectares(x || 0, d ?? ((x || 0) < 10 ? 2 : 1));
+    const subs = R0.subcuencas || [];
+    const subsTxt = subs.length > 4 ? `${subs.slice(0, 4).join(', ')} y ${subs.length - 4} más` : subs.join(', ');
+    const tono = { Alta: 'bad', Media: 'mid', Preventiva: 'mid', Baja: 'good' }[R0.prioridad] || 'na';
+    const aprox = R0.error_borde > 0.10;
+    const fuentes = [
+      ['tmf', 'JRC TMF', `Deforestado ${ha(m.tmf_deforestacion_ha)} y degradado ${ha(m.tmf_degradacion_ha)} (estado a 2025)`],
+      ['hansen', 'Hansen GFC', `Pérdida de cobertura arbórea 2021–2025: ${ha(m.hansen_post_2020_ha)}`],
+      ['esri', 'ESRI LULC', `Árboles que pasaron a otra clase entre 2017 y 2024: ${ha(m.esri_salida_arboles_ha)} (${pct(m.esri_salida_arboles_pct, 1)})`],
+      ['gedi', 'GEDI', R0.disponibilidad.gedi ? `Altura media del dosel: ${number(m.gedi_altura_media_m, 1)} m` : 'Sin cobertura suficiente de GEDI'],
+      ['ndvi', 'NDVI Sentinel-2', R0.disponibilidad.ndvi ? `Descenso fuerte del vigor: ${ha(m.ndvi_disminucion_ha)}` : 'Sin cobertura suficiente de NDVI'],
+    ];
+    const n100 = f?.area_nucleo?.find((x) => x.profundidad_m === 100);
+    const kpi = [
+      ['Bosque oficial 2021', pct((a.sinia[1] || 0) / area * 100, 0), ha(a.sinia[1])],
+      ['Pérdida arbórea 2021–2025', ha(m.hansen_post_2020_ha), 'Hansen GFC'],
+      ['Deforestado a 2025', ha(m.tmf_deforestacion_ha), 'JRC TMF'],
+      ['Degradado a 2025', ha(m.tmf_degradacion_ha), 'JRC TMF'],
+      ['Dentro de corredores', pct(R0.corredores.porcentaje_aoi_en_corredores, 0), R0.corredores.intersecta_mesoamericano ? 'incluye el Mesoamericano' : 'Almanaque Azul'],
+      ['ERI medio', R0.eri_medio == null ? '—' : `${number(R0.eri_medio * 100, 0)}/100`, 'resiliencia indicativa'],
+    ];
+    const capas = MAPAS_FICHA_POL.map((k) => (st.data.capas_mapa || []).find((c) => c.clave === k)).filter(Boolean);
+    const filaT = (cab, filas) => `<table class="fi-table"><thead><tr>${cab.map((c) => `<th>${c}</th>`).join('')}</tr></thead><tbody>${filas.map((r) => `<tr>${r.map((c) => `<td>${c}</td>`).join('')}</tr>`).join('')}</tbody></table>`;
+    let caja = document.getElementById('pg-ficha');
+    if (!caja) { caja = document.createElement('div'); caja.id = 'pg-ficha'; caja.className = 'fi-res pg-ficha'; document.body.appendChild(caja); }
+    caja.innerHTML = `
+      <section class="fi-res-page">
+        <header class="fi-head">
+          <div class="fi-head-txt"><span class="fi-kicker">Ficha del polígono</span><h1>Polígono de ${ha(R0.area_dibujada_ha)}</h1>
+            <dl class="fi-meta"><div><dt>Subcuencas que toca</dt><dd>${esc(subsTxt || '—')}</dd></div><div><dt>Fecha del análisis</dt><dd>${fechaTexto(new Date())}</dd></div><div><dt>Datos del</dt><dd>${fechaTexto(new Date(st.data.generado))}</dd></div><div><dt>Método</dt><dd>${esc(String(st.data.metodologia || '').split('-').slice(0, 2).join('-'))}</dd></div></dl>
+            <p class="pg-proc">Estimación local sobre los mapas precalculados (malla de ${number(R0.pixel_m, 0)} m; error de borde ${number(R0.error_borde * 100, 1)} %).${aprox ? ' <b>Resultado aproximado: la categoría no es concluyente.</b>' : ''}</p></div>
+          <div class="fi-score" data-tone="${tono}"><span>Preevaluación</span><b>${number(R0.puntaje, 1)}<small>/ 6.5</small></b><em>${esc(R0.prioridad)}</em><small>Visita: ${esc(v.prioridad_visita)}</small></div>
+        </header>
+        <div class="fi-res-kpi">${kpi.map(([k, x, n]) => `<div><span>${k}</span><b>${x}</b><small>${n}</small></div>`).join('')}</div>
+        <div class="fi-res-cuerpo">
+          <div class="fi-res-texto">
+            <h2>Señales de la preevaluación</h2>
+            <ul class="pg-sen">${fuentes.map(([k, n, d]) => `<li class="${R0.senales[k] ? 'on' : ''}"><b>${n}</b><span>${R0.senales[k] ? `señal, +${number(R0.aportes[k], 1)}` : 'sin señal'}</span><small>${esc(d)}</small></li>`).join('')}</ul>
+            <p><b>Lectura.</b> ${esc(R0.consistencia.nivel)}${R0.consistencia.fuentes_recuperacion.length ? `; también hay señales de recuperación (${esc(R0.consistencia.fuentes_recuperacion.join(', '))})` : ''}. Prioridad de visita ${esc(v.prioridad_visita)}: ${esc(v.combinacion_territorial.toLowerCase())}.</p>
+            <h2>Fragmentación y conectividad</h2>
+            ${f ? `<p>El bosque oficial 2021 ocupa ${ha(f.area_bosque_ha)} (${pct(f.porcentaje_bosque, 0)}) en ${number(f.numero_fragmentos, 0)} fragmentos; el mayor tiene ${ha(f.fragmento_mayor_ha)}${n100 ? ` y el ${pct(n100.porcentaje_bosque_nucleo, 0)} del bosque es interior (a más de 100 m de un borde)` : ''}.</p>` : '<p>Sin parches de bosque calculados para esta zona.</p>'}
+            <p>Toca ${number(R0.estructura.numero_parches, 0)} parches de la red de su subcuenca, en ${number(R0.estructura.numero_componentes || 0, 0)} redes separadas (${esc(v.contexto_estructural.estado.toLowerCase())}).</p>
+            <h2>Corredores y ríos</h2>
+            <p>${R0.corredores.porcentaje_aoi_en_corredores > 0 ? `El ${pct(R0.corredores.porcentaje_aoi_en_corredores, 1)} del polígono está dentro de corredores del Almanaque Azul${R0.corredores.intersecta_mesoamericano ? ', incluido el Corredor Biológico Mesoamericano' : ''}.` : 'El polígono no toca corredores del Almanaque Azul.'} En la franja de 50 m de los ríos hay ${ha(a.riparia?.[1])} con bosque y ${ha((a.riparia?.[2] || 0) + (a.riparia?.[3] || 0))} sin bosque.</p>
+          </div>
+          <figure class="fi-res-mapa"><div class="fi-mini" id="pg-f-principal"></div>
+            <div class="fi-legend"><span><i style="background:${COLOR_IMP.Alta}"></i>Parche clave</span><span><i style="background:${COLOR_IMP.Media}"></i>Importancia media</span><span><i style="background:${COLOR_IMP.Baja}"></i>Importancia baja</span></div>
+            <figcaption>El polígono sobre imagen satelital, con los parches de bosque oficial 2021 según su importancia para la conectividad de su subcuenca.</figcaption></figure>
+        </div>
+      </section>
+      <section class="fi-res-page">
+        <h2>Mapas dentro del polígono</h2>
+        <div class="fi-res-gal">${capas.map((c) => `<figure class="fi-fig"><figcaption>${tituloSinPunto(c.titulo)}</figcaption><div class="fi-mini" data-pgcapa="${c.clave}"></div>${leyendaCapa(c)}</figure>`).join('')}</div>
+        <div class="pg-tablas">
+          <div><h2>Estado del bosque húmedo en 2025</h2>${filaT(['JRC TMF', 'Superficie', '%'], [[1, 'Bosque sin perturbación'], [2, 'Degradado'], [3, 'Deforestado'], [4, 'Regeneración'], [5, 'Agua'], [6, 'Otra cobertura']].map(([k, n]) => [n, ha(a.jrc[k]), pct((a.jrc[k] || 0) / area * 100, 1)]))}</div>
+          <div><h2>Pérdida arbórea por año</h2>${filaT(['Hansen GFC', 'Superficie'], [21, 22, 23, 24, 25].map((y) => [`20${y}`, ha(a.hansen[y])]))}</div>
+        </div>
+        <div class="pg-leer"><h2>Cómo leer esta ficha</h2>
+          <p>Cada fuente suma puntos solo si supera su umbral (JRC 2,0; Hansen 2,0; ESRI 1,5; GEDI 0,5; NDVI 0,5; máximo 6,5). Los umbrales están en Metodología. El puntaje dice dónde conviene mirar primero, no cuánto bosque se perdió.</p>
+          <p>Las cifras se calculan sobre mapas con píxeles de ${number(R0.pixel_m, 0)} m. Cuanto más pequeño o irregular es el polígono, más pesa el borde: con un error de borde mayor de 10 % el resultado es aproximado y la categoría no es concluyente.</p>
+          <p>Los fragmentos de bosque se miden dentro del polígono; los parches y redes de conectividad son los de su subcuenca completa, porque la conectividad depende del bosque de alrededor.</p></div>
+        <footer class="fi-res-pie"><p>Resultados indicativos: se estiman en el navegador a partir de los mapas que el geoportal precalcula con Earth Engine para cada subcuenca, con la misma metodología (${esc(String(st.data.metodologia || ''))}). Orientan la revisión técnica y la visita de campo; no reemplazan la verificación en terreno.</p>
+          <p>Fuentes: MiAMBIENTE (cobertura oficial 2021), JRC TMF, Hansen GFC, ESRI LULC, Sentinel-2, GEDI, IGNTG y Almanaque Azul.</p></footer>
+      </section>`;
+    document.documentElement.classList.add('pg-pdf');
+    caja.hidden = false;
+    await new Promise((ok) => requestAnimationFrame(() => requestAnimationFrame(ok)));
+    (pg.mapasFicha || []).forEach((x) => x.remove());
+    pg.mapasFicha = [];
+    // Mapa principal: satélite, parches que toca y velo fuera del polígono.
+    const mp = mapaFicha(document.getElementById('pg-f-principal'), 'satelite', 10);
+    const parches = pg.vista?.geo?.parches;
+    if (parches) L.geoJSON(parches, { style: (ft) => ({ color: '#0b3d17', weight: 0.5, fillColor: COLOR_IMP[ft.properties.prioridad_conectividad] || '#9ccc65', fillOpacity: 0.85 }), interactive: false }).addTo(mp);
+    velo(mp, 0.55);
+    L.geoJSON(pg.geo, { style: { color: '#ffd600', weight: 2.5, fill: false }, interactive: false }).addTo(mp);
+    pg.mapasFicha.push(mp);
+    $$('[data-pgcapa]', caja).forEach((div) => {
+      const clave = div.dataset.pgcapa;
+      const mm = mapaFicha(div, 'gris', 6);
+      (pg.vista?.ids || []).forEach((id) => {
+        const x = st.data.territorios[id];
+        if (x?.mapas?.capas?.includes(clave)) L.imageOverlay(mapFile(id, `${clave}.png`), x.mapas.limites, { opacity: 0.95 }).addTo(mm);
+      });
+      velo(mm, 0.85);
+      L.geoJSON(pg.geo, { style: { color: '#263238', weight: 1.6, fill: false }, interactive: false }).addTo(mm);
+      pg.mapasFicha.push(mm);
+    });
+    await esperarCarga(pg.mapasFicha);
+    const titulo = document.title;
+    document.title = `Ficha_poligono_${String(Math.round(R0.area_dibujada_ha))}_ha_Geoportal_CHCP`;
+    const salir = () => {
+      document.documentElement.classList.remove('pg-pdf');
+      caja.hidden = true;
+      document.title = titulo;
+      st.map.invalidateSize();
+      window.removeEventListener('afterprint', salir);
+    };
+    window.addEventListener('afterprint', salir);
+    window.print();
   }
   function mostrarError(texto) {
     $('#pe-res-eyebrow').textContent = 'Polígono'; $('#pe-res-title').textContent = 'No se pudo analizar'; $('#pe-res-sub').textContent = '';
