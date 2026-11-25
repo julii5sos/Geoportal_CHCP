@@ -553,6 +553,9 @@
       <details open><summary>Qué significa cada dato</summary><dl>${def.map(([a, b]) => `<dt>${a}</dt><dd>${b}</dd>`).join('')}</dl>
       <p class="fi-note">Es conectividad estructural: describe cómo está dispuesto el bosque, no demuestra que la fauna se mueva entre parches.</p></details></div>`;
   }
+  // La prioridad de visita usa umbrales pensados para predios: en una subcuenca de miles de
+  // hectáreas basta una parte con señales para que salga alta o muy alta.
+  const AVISO_VISITA = 'En una subcuenca o en toda la cuenca, la visita casi siempre sale alta o muy alta: son áreas de miles de hectáreas y basta que una parte tenga señales de cambio o esté en un corredor. No quiere decir que toda el área esté en mal estado. Para comparar subcuencas use el puesto en pérdida reciente; para revisar un lugar concreto, dibuje su área en la Plataforma.';
   // ------------------------------------------------------------ render
   function render(t) {
     const p = t.preevaluacion, e = t.estructura_2021, mp = e?.metricas_paisaje, serie = t.serie_anual || [];
@@ -568,7 +571,7 @@
         <img class="fi-logo" src="${window.CHCP_STATIC ? 'static' : '/static'}/img/emblema.svg" alt="Geoportal CHCP" width="64" height="64">
         <div class="fi-head-txt"><span class="fi-kicker">${t.poligono ? 'Ficha técnica de un área dibujada' : 'Ficha técnica'}</span><h1>${esc(t.nombre)}</h1>
         <dl class="fi-meta">${t.id === 'chcp' ? '' : `<div><dt>${t.poligono ? 'Subcuencas que toca' : 'Forma parte de'}</dt><dd>${esc(t.grupo)}</dd></div>`}<div><dt>Superficie</dt><dd>${hectares(t.area_ha)}</dd></div><div><dt>Datos del</dt><dd>${esc(fechaLarga(st.data.generado))}</dd></div><div><dt>Método</dt><dd>${esc(String(st.data.metodologia || '').split('-').slice(0, 2).join('-'))}</dd></div><div><dt>Proyecto</dt><dd>Clúster Copernicus Centroamérica AFOLU II</dd></div></dl>${t.poligono ? `${window.CHCP.procedencia(st.data, 'C', null, `<span>Malla de ${number(t.poligono.pixel_m, 0)} m</span><span>Error de borde ${number(t.poligono.error_borde * 100, 1)} %</span>`)}${t.poligono.error_borde > 0.10 ? '<p class="fi-aviso-pol"><b>Resultado aproximado:</b> el área es pequeña o irregular para la malla de los mapas (error de borde mayor de 10 %), así que la categoría no es concluyente.</p>' : ''}` : window.CHCP.procedencia(st.data, 'B', t)}</div>
-        <div class="fi-score" data-tone="${toneP}"><span>Preevaluación</span><b>${number(p.puntaje, 1)}<small>/ ${number(p.puntaje_maximo, 1)}</small></b><em>${esc(p.prioridad)}</em><small>Visita: ${esc(p.prioridad_visita || '—')}</small>${((r) => (r ? `<a class="fi-score-rel" href="#fi-relativa">Puesto ${r.pos} de ${r.n} en pérdida reciente</a>` : ''))(t.id === 'chcp' ? null : puesto(t, 'perdida_reciente_pct_anual'))}</div>
+        <div class="fi-score" data-tone="${toneP}"><span>Preevaluación</span><b>${number(p.puntaje, 1)}<small>/ ${number(p.puntaje_maximo, 1)}</small></b><em>${esc(p.prioridad)}</em><small class="fi-visita">Visita: ${esc(p.prioridad_visita || '—')}${t.poligono ? '' : `<button type="button" class="fi-info-btn" aria-expanded="false" aria-controls="fi-visita-nota" aria-label="Por qué la visita sale alta" title="Por qué la visita sale alta">!</button>`}</small>${t.poligono ? '' : `<p class="fi-visita-nota" id="fi-visita-nota" hidden>${AVISO_VISITA}</p>`}${((r) => (r ? `<a class="fi-score-rel" href="#fi-relativa">Puesto ${r.pos} de ${r.n} en pérdida reciente</a>` : ''))(t.id === 'chcp' ? null : puesto(t, 'perdida_reciente_pct_anual'))}</div>
       </header>
       <section class="fi-resp" id="fi-respuesta" hidden></section>
       <section class="fi-sec"><h2>${icon('info', 22)} En pocas palabras</h2>${diagnostico(t).map((f) => `<p>${f}</p>`).join('')}</section>
@@ -613,6 +616,8 @@
         <dt>IIC / dIIC</dt><dd>Índice de conectividad del paisaje y cuánto aporta cada parche a ella.</dd><dt>NDVI</dt><dd>Índice de vigor de la vegetación calculado con imágenes Sentinel-2.</dd><dt>ERI</dt><dd>Índice indicativo de resiliencia ecológica (0–100).</dd><dt>Franja riparia</dt><dd>Faja de terreno a cada lado de un río o quebrada.</dd><dt>Almanaque Azul</dt><dd>Atlas que publica los corredores de conectividad y puntos críticos usados como referencia.</dd><dt>Conectividad estructural</dt><dd>Basada en la disposición del bosque; no demuestra que la fauna se desplace.</dd></dl></section>
       <footer class="fi-foot"><p>Datos: JRC TMF, Hansen GFC, ESRI LULC, Copernicus Sentinel-2, GEDI, SINIA–MiAMBIENTE y Almanaque Azul. Procesado en Google Earth Engine (proyecto ${esc(st.data.proyecto)}).</p><p>Preevaluación indicativa: no predice deforestación ni certifica cumplimiento.</p></footer>`;
     sinPuntos(document.getElementById('fi-doc'));
+    const bv = $('#fi-doc .fi-info-btn');
+    bv?.addEventListener('click', () => { const n = $('#fi-visita-nota'), abrir = n.hidden; n.hidden = !abrir; bv.setAttribute('aria-expanded', String(abrir)); });
     responder(t, PREGUNTA);
     drawMap(t);
     if (location.hash && /^#fi-/.test(location.hash)) requestAnimationFrame(() => document.querySelector(location.hash)?.scrollIntoView({ block: 'start' }));
@@ -1224,7 +1229,7 @@
             <div class="fi-rp-lead"><h2>En pocas palabras</h2><p>${respuestaCorta(t, acc)}</p>${aviso}</div>
             <div class="fi-rp-score" data-tone="${toneP}"><span>Preevaluación</span><b>${number(p.puntaje, 1)}<small>de ${number(p.puntaje_maximo, 1)}</small></b><em>Prioridad ${esc(p.prioridad.toLowerCase())}</em>
               <div class="fi-rp-barra">${barra}</div><small>${suman.length ? `Suman: ${esc(enumerar(suman))}.` : 'Ninguna fuente supera su umbral.'}</small>
-              <small>Visita de campo: ${esc((p.prioridad_visita || '—').toLowerCase())}.${pr ? ` Puesto ${pr.pos} de ${pr.n} en pérdida reciente.` : ''}</small></div>
+              <small>Visita de campo: ${esc((p.prioridad_visita || '—').toLowerCase())}.${pr ? ` Puesto ${pr.pos} de ${pr.n} en pérdida reciente.` : ''}</small>${t.poligono ? '' : '<small class="fi-rp-visita">(!) En áreas tan grandes la visita casi siempre sale alta: basta una parte con señales.</small>'}</div>
           </div>
           <div class="fi-rp-hall">${hallazgos(t)}</div>
           <figure class="fi-rp-mapa">
