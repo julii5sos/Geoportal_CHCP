@@ -48,6 +48,16 @@ def reescribir_enlaces(html: str, app_completa: str) -> str:
     # Incluye las rutas dentro de srcset ("a.png 1x, /static/b.png 2x") y url(...):
     # en GitHub Pages el sitio vive en /Geoportal_CHCP/, así que /static/ daría 404.
     html = re.sub(r'(["\'(,\s])/static/', r'\1static/', html)
+    # Huella del contenido en CSS y JS (?v=...): tras cada publicación el navegador baja la versión
+    # nueva en vez de mezclar un estilo viejo guardado en caché con un script nuevo.
+    import hashlib
+
+    def huella(m):
+        archivo = RAIZ / "webapp" / m.group(1)
+        if not archivo.exists():
+            return m.group(0)
+        return f'{m.group(1)}?v={hashlib.sha1(archivo.read_bytes()).hexdigest()[:10]}{m.group(2)}'
+    html = re.sub(r'(static/(?:css|js)/[\w./-]+\.(?:css|js))(["\'])', huella, html)
     destinos = {"": "index.html", "panel": "panel.html", "platform": "plataforma.html", "coberturas": "coberturas.html",
                 "methodology": "metodologia.html", "about": "acerca.html", "tutoriales": "tutoriales.html", "ficha": "ficha.html",
                 "restauracion": "restauracion.html", "validacion": "metodologia.html#exactitud", "campo": "campo.html"}

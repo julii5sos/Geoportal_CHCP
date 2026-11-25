@@ -1287,3 +1287,18 @@ html.fi-pdf .fi-frag-res, html.fi-pdf .fi-frag-leer dl { font-size:11px; }
 .pe-explica { margin:10px 0; padding:8px 12px; border-radius:8px; background:#f3f8f1; border:1px solid #d6e7cf; font-size:12.5px; line-height:1.5; }
 .pe-explica summary { cursor:pointer; font-weight:700; color:var(--verde-osc); }
 .pe-explica p { margin:6px 0 0; } .pe-explica b { color:var(--azul-tinta); }
+
+/* Ficha resumen: hoja final (conclusión, qué hacer y cómo citar) */
+.fi-rp-final { gap:6mm; }
+.fi-rp-concl-g { padding:7mm 8mm; }
+.fi-rp-concl-g h2 { font-size:18px; margin-bottom:3mm; }
+.fi-rp-concl-g p { font-size:12.5px; line-height:1.6; margin:0 0 2.5mm; }
+.fi-rp-hacer .fi-rp-acc { grid-template-columns:1fr; gap:3mm; }
+.fi-rp-hacer .fi-rp-acc article { padding:3.5mm 4mm; }
+.fi-rp-hacer .fi-rp-acc b { font-size:12px; }
+.fi-rp-hacer .fi-rp-acc p { font-size:10.5px; line-height:1.45; }
+.fi-rp-cierre { margin-top:auto; padding:4mm 5mm; border-radius:10px; background:var(--azul-suave); display:grid; gap:2mm; }
+.fi-rp-cierre p { margin:0; font-size:9.5px; line-height:1.45; }
+.fi-rp-cierre b { color:var(--azul-tinta); }
+/* Dos respuestas por hoja: más espacio para el mapa */
+.fi-rp-resp-map .fi-mini { min-height:70mm; }
