@@ -68,7 +68,9 @@ def reescribir_enlaces(html: str, app_completa: str) -> str:
             return f'href="{app_completa}/platform{ancla}"' if app_completa else f'href="plataforma.html{ancla if ancla != "#results-body" else ""}"'
         return f'href="{destinos.get(ruta, "index.html")}{ancla}"' if ruta in destinos else m.group(0)
 
-    return re.sub(r'href="/([a-z]*)(#[^"]*)?(?:\?[^"]*)?"', cambiar, html)
+    # Conserva la consulta y el ancla (?geometria=1, ?id=s23#fi-estructura): los tutoriales llevan
+    # directo al lugar de la página.
+    return re.sub(r'href="/([a-z]*)((?:\?[^"#]*)?(?:#[^"]*)?)"', cambiar, html)
 
 
 def construir(destino: Path, app_completa: str, repo_url: str) -> list[str]:
