@@ -651,9 +651,9 @@ html.app #main-content:has(.pg) { overflow-y:auto; background:#f3f6fa; }
 .tour-invitacion { position:fixed; right:22px; bottom:22px; z-index:4000; }
 .tour-invitacion[hidden] { display:none; }
 .tour-ventana { display:flex; align-items:stretch; background:#fff; border-radius:16px; box-shadow:0 18px 44px rgba(6,30,22,.32), 0 0 0 1px rgba(6,30,22,.06); animation:tour-entra .45s cubic-bezier(.2,.9,.3,1.2) .6s both; }
-.tour-ventana.llama { animation:tour-entra .45s cubic-bezier(.2,.9,.3,1.2) .6s both, tour-llama 5s ease-in-out 2.5s 8; }
+.tour-ventana.llama { animation:tour-entra .45s cubic-bezier(.2,.9,.3,1.2) .6s both, tour-llama 5s ease-in-out 2.5s infinite; }
 .tour-ventana.llama:hover, .tour-ventana.llama:focus-within { animation-play-state:running, paused; }
-.tour-ventana.llama .tour-v-ic::after { content:""; position:absolute; inset:-5px; border-radius:50%; border:2px solid var(--verde); opacity:0; animation:tour-onda 5s ease-out 2.5s 8; }
+.tour-ventana.llama .tour-v-ic::after { content:""; position:absolute; inset:-5px; border-radius:50%; border:2px solid var(--verde); opacity:0; animation:tour-onda 5s ease-out 2.5s infinite; }
 .tour-v-abrir { display:flex; align-items:center; gap:12px; border:0; background:none; cursor:pointer; text-align:left; padding:14px 8px 14px 14px; border-radius:16px 0 0 16px; font:inherit; color:inherit; }
 .tour-v-ic { position:relative; flex:none; display:inline-flex; align-items:center; justify-content:center; width:40px; height:40px; border-radius:50%; background:var(--verde); }
 .tour-v-ic svg { width:18px; height:18px; fill:var(--azul-tinta); margin-left:2px; }
@@ -664,10 +664,14 @@ html.app #main-content:has(.pg) { overflow-y:auto; background:#f3f6fa; }
 .tour-v-min { align-self:flex-start; border:0; background:none; cursor:pointer; color:var(--muted); font-size:18px; line-height:1; padding:8px 10px 6px 4px; border-radius:0 16px 0 8px; }
 .tour-v-min:hover { color:var(--azul-tinta); }
 .tour-v-abrir:focus-visible, .tour-v-min:focus-visible, .tour-r-btn:focus-visible { outline:3px solid var(--verde); outline-offset:2px; }
-.tour-r-btn { width:44px; height:44px; border-radius:50%; border:0; cursor:pointer; background:var(--verde); color:var(--azul-tinta); font-weight:800; font-size:18px; box-shadow:0 10px 26px rgba(6,30,22,.3); animation:tour-entra .3s ease both; }
+.tour-r-btn { position:relative; width:48px; height:48px; border-radius:50%; border:0; cursor:pointer; background:var(--verde); color:var(--azul-tinta); font-weight:800; font-size:19px; box-shadow:0 10px 26px rgba(6,30,22,.3); animation:tour-entra .3s ease both, tour-llama 6s ease-in-out 2s infinite; }
+.tour-r-btn::after { content:""; position:absolute; inset:-6px; border-radius:50%; border:2px solid var(--verde); opacity:0; animation:tour-onda 6s ease-out 2s infinite; pointer-events:none; }
+.tour-r-btn:hover, .tour-r-btn:focus-visible, .tour-r-btn:hover::after { animation-play-state:paused; }
+/* Ya hecho el recorrido, la ventanita no salta pero sigue marcando con la onda cada pocos segundos. */
+.tour-ventana:not(.llama) .tour-v-ic::after { content:""; position:absolute; inset:-5px; border-radius:50%; border:2px solid var(--verde); opacity:0; animation:tour-onda 6s ease-out 3s infinite; }
 @keyframes tour-llama { 0%, 14%, 100% { transform:none; } 3% { transform:translateY(-10px) rotate(-1.5deg); } 6% { transform:translateY(0) rotate(1deg); } 9% { transform:translateY(-4px); } 12% { transform:translateY(0); } }
 @keyframes tour-onda { 0% { opacity:.9; transform:scale(1); } 18% { opacity:0; transform:scale(1.7); } 100% { opacity:0; } }
-@media (prefers-reduced-motion: reduce) { .tour-ventana, .tour-ventana.llama, .tour-ventana.llama .tour-v-ic::after, .tour-r-btn { animation:none; } }
+@media (prefers-reduced-motion: reduce) { .tour-ventana, .tour-ventana.llama, .tour-ventana .tour-v-ic::after, .tour-r-btn, .tour-r-btn::after { animation:none; } }
 @media (max-width:600px) { .tour-invitacion { right:12px; bottom:12px; } .tour-v-txt small { display:none; } }
 @keyframes tour-entra { from { transform:translateY(20px); opacity:0; } to { transform:none; opacity:1; } }
 .ayuda-btn { display:inline-flex; align-items:center; gap:6px; border:1px solid var(--azul-linea); background:#fff; color:var(--azul); border-radius:999px; padding:5px 12px; font-size:12.5px; font-weight:700; cursor:pointer; }
