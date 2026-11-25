@@ -1197,8 +1197,8 @@
     const totalHansen = filasHansen.reduce((s2, f) => s2 + f.v, 0);
     const bloques = await bloquesRespuesta(t);
     // Hasta tres respuestas por hoja, repartidas parejo (4 respuestas = 2 + 2, no 3 + 1).
-    // La conclusión ocupa el lugar de una respuesta en la última hoja, así que nunca se encima a ellas.
-    const hojasResp = Math.ceil((bloques.length + 1) / 3), POR_HOJA = Math.max(1, Math.ceil(bloques.length / hojasResp)), hojas = 2 + hojasResp;
+    // Dos respuestas por hoja, con mapas grandes; la última hoja es la conclusión con qué hacer.
+    const POR_HOJA = 2, hojasResp = Math.ceil(bloques.length / POR_HOJA), hojas = 3 + hojasResp;
     // Suma de la preevaluación: una barra con el peso de cada fuente; las que suman van en color.
     const barra = Object.entries(PESOS_FUENTE).map(([k, [, w]]) => `<i style="flex:${w}" class="${p.senales?.[k] ? 'si' : ''}"></i>`).join('');
     const suman = Object.entries(PESOS_FUENTE).filter(([k]) => p.senales?.[k]).map(([k, [nom]]) => `${nom} ${number(p.aportes?.[k] ?? 0, 1)}`);
@@ -1243,20 +1243,28 @@
             <div><h2>Indicadores clave</h2>${indicadoresClave(t)}</div>
             <div><h2>Pérdida de cobertura arbórea por año</h2>${filasHansen.length ? `${columnas(filasHansen)}<p class="fi-rp-sub">${filasHansen.length > 5 ? `De ${filasHansen[0].anio} a ${filasHansen[filasHansen.length - 1].anio} se perdieron ${haCorto(totalHansen)}. ` : ''}Hansen GFC incluye la cosecha de plantaciones y no indica la causa.</p>` : '<p class="fi-rp-sub">Sin serie anual para este territorio.</p>'}<div class="fi-rp-leer"><p><b>Cómo se calcula la prioridad.</b> Cada fuente suma puntos si supera su umbral: JRC TMF y Hansen GFC 2, ESRI LULC 1.5, GEDI y NDVI 0.5. Prioridad alta desde 3 puntos.</p><p><b>Qué es la conectividad.</b> Es estructural: los parches a ${number(st.data.umbral_conectividad_m || 500, 0)} m o menos forman una red. No demuestra que la fauna se desplace.</p><p><b>Fuentes.</b> MiAMBIENTE (2021), JRC TMF, Hansen GFC, ESRI LULC, Sentinel-2, GEDI, IGNTG y Almanaque Azul. ${enLinea ? `Ficha completa en línea: <span class="fi-rp-url">${esc(enLinea)}</span>` : 'La ficha completa del área se abre desde la Plataforma del geoportal.'}</p></div></div>
           </div>
-          <div><h2>Qué conviene hacer</h2><div class="fi-rp-acc">${acc.map((a) => `<article>${icon(a.i, 20)}<div><b>${esc(a.t)}</b><p>${esc(a.why)}</p><p><em>Qué hacer:</em> ${esc(a.how)}</p></div></article>`).join('')}</div></div>
         </div>
         ${pie(2)}
       </section>
-      ${Array.from({ length: hojas - 2 }, (_, h) => `<section class="fi-rp">
+      ${Array.from({ length: hojasResp }, (_, h) => `<section class="fi-rp">
         <header class="fi-rp-banda fi-rp-banda-s">${marca(h + 3)}</header>
         <div class="fi-rp-cuerpo">
           ${h === 0 ? `<div class="fi-rp-tit"><h2>Respuestas a las preguntas clave</h2><p class="fi-rp-sub">Cada respuesta trae la cifra, la advertencia principal y los parámetros usados.</p></div>` : ''}
           ${bloques.slice(h * POR_HOJA, (h + 1) * POR_HOJA).map((b, i) => (`<article class="fi-rp-resp" data-bloque="${h * POR_HOJA + i}"><div class="fi-rp-resp-txt">${b.html}</div>
             <figure class="fi-rp-resp-map"><figcaption><b>${esc(b.mapa)}</b></figcaption><div class="fi-mini"${b.figura ? ` data-rb="${b.figura.id}"` : ''}></div>${/^<div/.test(b.leyenda || '') ? b.leyenda : `<div class="fi-legend">${b.leyenda || ''}</div>`}</figure></article>`)).join('')}
-          ${h === hojas - 3 ? `<section class="fi-rp-concl"><h2>Conclusión</h2>${conclusion(t).map((x) => `<p>${x}</p>`).join('')}</section>` : ''}
         </div>
         ${pie(h + 3)}
-      </section>`).join('')}`;
+      </section>`).join('')}
+      <section class="fi-rp">
+        <header class="fi-rp-banda fi-rp-banda-s">${marca(hojas)}</header>
+        <div class="fi-rp-cuerpo fi-rp-final">
+          <section class="fi-rp-concl fi-rp-concl-g"><h2>Conclusión</h2>${conclusion(t).map((x) => `<p>${x}</p>`).join('')}</section>
+          <div class="fi-rp-hacer"><h2>Qué conviene hacer</h2><div class="fi-rp-acc">${acc.map((a) => `<article>${icon(a.i, 20)}<div><b>${esc(a.t)}</b><p>${esc(a.why)}</p><p><em>Qué hacer:</em> ${esc(a.how)}</p></div></article>`).join('')}</div></div>
+          <div class="fi-rp-cierre"><p><b>Cómo usar esta ficha.</b> Los resultados son indicativos: combinan imágenes satelitales y cartografía oficial para orientar la revisión técnica y la visita de campo, no para decidir el manejo por sí solos. Las cifras de cada fuente tienen su propia resolución y su propio período.</p>
+            <p><b>Cómo citarla.</b> Geoportal CHCP (${esc(String(st.data.generado || '').slice(0, 4))}). Ficha resumen: ${esc(t.nombre)}. Datos del ${esc(fechaLarga(st.data.generado))}, método ${esc(metodo)}.${enLinea ? ` <span class="fi-rp-url">${esc(enLinea)}</span>` : ''}</p></div>
+        </div>
+        ${pie(hojas)}
+      </section>`;
     caja.hidden = false;
     // Mapas de la hoja 2
     (st.resumen || []).forEach((x) => x.remove());
