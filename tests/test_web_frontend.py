@@ -168,7 +168,8 @@ class WebFrontendTests(unittest.TestCase):
     def test_about_page_explains_modules_audience_and_limits(self):
         html = self.client.get("/about").get_data(as_text=True)
         self.assertIn("Dirigido a", html)
-        self.assertIn("Qué calcula cada módulo", html)
+        self.assertIn("De dónde sale", html)
+        self.assertIn("Qué puede hacer con el geoportal", html)
         self.assertIn("Qué no hace", html)
 
 
