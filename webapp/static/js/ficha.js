@@ -712,6 +712,17 @@
     document.addEventListener('click', (e) => { if (!menu.hidden && !menu.contains(e.target)) abrir(false); });
     document.addEventListener('keydown', (e) => { if (e.key === 'Escape') abrir(false); });
     $$('[data-pdf]', menu).forEach((b) => b.addEventListener('click', () => { abrir(false); descargar(b.dataset.pdf); }));
+    $('[data-geo]', menu)?.addEventListener('click', () => {
+      abrir(false);
+      const t = st.actual, f = t && featureDe(t);
+      if (!f) return;
+      const geo = { type: 'Feature', properties: { id: t.id, nombre: t.nombre, area_ha: t.area_ha, fuente: f.properties?.fuente || 'Límite de la Cuenca Hidrográfica del Canal de Panamá usado por el Geoportal CHCP' }, geometry: f.geometry || f };
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(new Blob([JSON.stringify(geo)], { type: 'application/geo+json' }));
+      a.download = `${nombreArchivo(t, 'limite').replace(/^Ficha_tecnica/, 'Limite')}.geojson`;
+      document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+    });
     // Ctrl+P sin pasar por el menú: se imprime la ficha completa con el mismo formato.
     window.addEventListener('beforeprint', () => {
       if (document.documentElement.classList.contains('fi-pdf')) return;

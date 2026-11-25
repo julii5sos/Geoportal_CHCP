@@ -1,0 +1,43 @@
+# Audita los datos publicados sin usar Earth Engine (no gasta cuota): completitud, MT-2026.7
+# recalculado, rangos, coherencia, mapas y complementos. El informe aparece en el resumen de
+# la ejecución (pestaña Actions, abrir la ejecución) y como archivo descargable.
+name: Auditoría de datos
+
+on:
+  workflow_dispatch:
+  workflow_run:
+    workflows: ["Actualizar datos con Earth Engine", "Coberturas SINIA (mapas y superficies)", "Series anuales (mapas y superficies por año)"]
+    types: [completed]
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  auditar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: requirements-web.txt
+      - run: pip install -r requirements-web.txt pytest
+      - name: Auditar los datos publicados
+        run: python scripts/auditar_datos.py --json auditoria_datos.json --markdown auditoria_datos.md
+      - name: Publicar el informe en el resumen de la ejecución
+        if: always()
+        run: test -f auditoria_datos.md && cat auditoria_datos.md >> "$GITHUB_STEP_SUMMARY" || true
+      - name: Pruebas del código
+        if: always()
+        run: python -m pytest -q
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: auditoria-datos
+          path: |
+            auditoria_datos.json
+            auditoria_datos.md

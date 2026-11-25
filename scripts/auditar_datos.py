@@ -11,8 +11,10 @@ No usa Earth Engine: revisa lo que ya está calculado y guardado.
   4. Coherencia interna: suma de subcuencas frente a la cuenca, clases JRC frente al área,
      valores repetidos en dos lugares del registro.
   5. Mapas: capas generadas, errores, mapas ERI pendientes, sitios de verificación.
+  6. Complementos: comparación del bosque oficial 2021 y 2023 (data/coberturas/comparacion),
+     mapas ERI provisionales y evaluación de exactitud (data/validacion).
 
-Uso: python scripts/auditar_datos.py [--json salida.json]
+Uso: python scripts/auditar_datos.py [--json salida.json] [--markdown informe.md]
 Sale con código 1 si hay hallazgos de severidad «error».
 """
 from __future__ import annotations
@@ -194,7 +196,76 @@ def auditar(datos: dict) -> Auditoria:
         meta = json.loads(entorno.read_text(encoding="utf-8"))
         au.revisar("mapas", meta.get("margen_m", 0) >= 25_000, "entorno",
                    f"entorno a {meta.get('margen_m', 0) / 1000:.0f} km; el tramo oeste necesita 25 km (modo «solo-entorno»)", "aviso")
+    # ---------------------------------------------------------------- 6. complementos
+    dir_cmp = RAIZ / "data" / "coberturas" / "comparacion"
+    dir_est = RAIZ / "data" / "coberturas" / "estadisticas"
+    for ident in T:
+        ruta = dir_cmp / f"{ident}.json"
+        au.revisar("complementos", ruta.exists(), ident, "sin comparación del bosque oficial 2021 y 2023")
+        if not ruta.exists():
+            continue
+        c = json.loads(ruta.read_text(encoding="utf-8"))
+        est = json.loads((dir_est / f"{ident}.json").read_text(encoding="utf-8")) if (dir_est / f"{ident}.json").exists() else {}
+        for anio, prod in (("2021", "2021_general"), ("2023", "2023_general")):
+            a = c.get("anios", {}).get(anio, {})
+            nativo = next((x["area_ha"] for x in est.get(prod, {}).get("classes", []) if x["code"] == 1), None)
+            au.revisar("complementos", nativo is not None and _num(a.get("bosque_ha")) and abs(a["bosque_ha"] - nativo) <= 0.1,
+                       ident, f"bosque {anio} de la comparación {a.get('bosque_ha')} ≠ estadística oficial {nativo}")
+            au.revisar("complementos", _num(a.get("numero_parches")) and a["numero_parches"] >= 0
+                       and _entre(a.get("pct_bosque_red_mayor"), 0, 100.0001), ident, f"métricas de parches {anio} fuera de rango")
+        cam = c.get("cambio") or {}
+        au.revisar("complementos", all(_num(cam.get(k)) and cam[k] >= 0 for k in ("en_ambos_ha", "solo_2021_ha", "solo_2023_ha")),
+                   ident, f"superficies del mapa de diferencias inválidas: {cam}")
+        au.revisar("complementos", (RAIZ / "data" / "coberturas" / "mapas" / ident / "bosque_2021_2023.v.png").exists(),
+                   ident, "sin mapa de diferencias 2021–2023")
+    provisionales = sorted(i for i, t in T.items() if (t.get("mapas") or {}).get("eri_origen") == "cuenca")
+    au.revisar("complementos", not provisionales, "—",
+               f"{len(provisionales)} subcuencas con mapa ERI provisional (recorte del ERI de la cuenca); "
+               "se reemplazan con el modo «solo-mapa-eri»", "aviso")
+    val = RAIZ / "data" / "validacion" / "senal_perdida" / "resultados.json"
+    au.revisar("complementos", val.exists(), "—", "sin resultados de la evaluación de exactitud")
+    if val.exists():
+        v = json.loads(val.read_text(encoding="utf-8"))
+        r = v.get("resultado") or {}
+        au.revisar("complementos", _entre(r.get("exactitud_global"), 0, 1), "—", "exactitud global fuera de 0–1")
+        cc = v.get("control_calidad") or {}
+        au.revisar("complementos", (cc.get("revisados_segundo_interprete") or 0) > 0, "—",
+                   "evaluación de exactitud preliminar: ningún punto revisado por un segundo intérprete", "aviso")
     return au
+
+
+TEMAS = {
+    "completitud": "Están los 54 territorios, con la versión de datos vigente, todos los campos, geometrías y mapas.",
+    "metodologia": "Señales, puntaje, prioridad y prioridad de visita recalculados con MT-2026.7 a partir de las métricas guardadas.",
+    "rangos": "Superficies, porcentajes, NDVI, GEDI, ERI e índices de conectividad dentro de valores posibles.",
+    "coherencia": "Las subcuencas suman la cuenca, las clases suman el área y los valores repetidos coinciden.",
+    "mapas": "Cada territorio tiene sus capas y sitios de verificación, sin errores de generación.",
+    "complementos": "Comparación 2021–2023, mapas ERI provisionales y evaluación de exactitud.",
+}
+
+NOMBRES = {"completitud": "Completitud", "metodologia": "Metodología", "rangos": "Rangos", "coherencia": "Coherencia",
+           "mapas": "Mapas", "complementos": "Complementos"}
+
+
+def informe_markdown(au: Auditoria, datos: dict) -> str:
+    T = datos.get("territorios") or {}
+    errores = [h for h in au.hallazgos if h["severidad"] == "error"]
+    avisos = [h for h in au.hallazgos if h["severidad"] == "aviso"]
+    estado = "Sin errores" if not errores else f"{len(errores)} errores"
+    out = [f"## Auditoría de datos: {estado}", "",
+           f"Datos del {str(datos.get('generado', ''))[:10]}, {datos.get('metodologia')}, versión de datos {datos.get('version_datos')}. "
+           f"{len(T)} territorios, {sum(au.revisiones.values())} comprobaciones, {len(errores)} errores y {len(avisos)} avisos.", "",
+           "| Tema | Qué se comprueba | Comprobaciones | Errores | Avisos |", "|---|---|---:|---:|---:|"]
+    for tema, que in TEMAS.items():
+        hs = [h for h in au.hallazgos if h["tema"] == tema]
+        out.append(f"| {NOMBRES[tema]} | {que} | {au.revisiones[tema]} | {sum(h['severidad'] == 'error' for h in hs)} | {sum(h['severidad'] == 'aviso' for h in hs)} |")
+    if au.hallazgos:
+        out += ["", "### Hallazgos", "", "| Severidad | Tema | Territorio | Detalle |", "|---|---|---|---|"]
+        nombres = {i: t.get("nombre", i) for i, t in T.items()}
+        for h in sorted(au.hallazgos, key=lambda h: (h["severidad"] != "error", h["tema"])):
+            out.append(f"| {h['severidad'].capitalize()} | {NOMBRES[h['tema']]} | {nombres.get(h['territorio'], h['territorio'])} | {h['detalle']} |")
+    out += ["", "Un error indica un dato que no cumple la metodología o es imposible; un aviso, algo que conviene revisar o que es provisional."]
+    return "\n".join(out)
 
 
 def informe(au: Auditoria, datos: dict) -> str:
@@ -203,7 +274,7 @@ def informe(au: Auditoria, datos: dict) -> str:
     avisos = [h for h in au.hallazgos if h["severidad"] == "aviso"]
     lineas = [f"Datos del {str(datos.get('generado', ''))[:19]} · {datos.get('metodologia')} · versión de datos {datos.get('version_datos')}",
               f"Territorios: {len(T)} · comprobaciones: {sum(au.revisiones.values())} · errores: {len(errores)} · avisos: {len(avisos)}", ""]
-    for tema in ("completitud", "metodologia", "rangos", "coherencia", "mapas"):
+    for tema in TEMAS:
         hs = [h for h in au.hallazgos if h["tema"] == tema]
         lineas.append(f"[{tema}] {au.revisiones[tema]} comprobaciones · {len(hs)} hallazgos")
         for h in hs:
@@ -214,10 +285,13 @@ def informe(au: Auditoria, datos: dict) -> str:
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument("--json", type=Path, help="Guardar los hallazgos en JSON")
+    parser.add_argument("--markdown", type=Path, help="Guardar un informe en Markdown (resumen de GitHub Actions)")
     args = parser.parse_args()
     datos = json.loads(DATOS.read_text(encoding="utf-8"))
     au = auditar(datos)
     print(informe(au, datos))
+    if args.markdown:
+        args.markdown.write_text(informe_markdown(au, datos) + "\n", encoding="utf-8")
     if args.json:
         args.json.write_text(json.dumps({"revisiones": au.revisiones, "hallazgos": au.hallazgos}, ensure_ascii=False, indent=1), encoding="utf-8")
     return 1 if any(h["severidad"] == "error" for h in au.hallazgos) else 0

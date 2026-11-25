@@ -115,6 +115,7 @@ mes siguiente. Eso pasó en noviembre de 2026.
 | Auditoría de paridad de procesamiento | Sí |
 | Auditoría SINIA 2012 controlada | Sí |
 | Publicar sitio estático | No |
+| Auditoría de datos | No |
 
 Para correr Earth Engine desde su computadora, la persona necesita acceso al proyecto en
 Google Cloud, que se da en la consola de Google Cloud y no en GitHub. Lo que corra ahí gasta
@@ -135,6 +136,10 @@ python -m http.server 8000 -d /tmp/sitio # abrir http://localhost:8000 y revisar
 
 Revise en el navegador que las páginas que cambió cargan sin errores en la consola, tanto en
 pantalla ancha como en celular.
+
+En GitHub, el flujo «Auditoría de datos» corre la misma auditoría en cada *pull request* y no gasta
+cuota de Earth Engine. Para revisar los resultados a fondo, siga
+[docs/auditoria/COMO_AUDITAR.md](auditoria/COMO_AUDITAR.md).
 
 ## 7. Dónde está cada cosa
 
