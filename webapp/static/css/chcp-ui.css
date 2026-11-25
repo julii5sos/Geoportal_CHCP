@@ -362,7 +362,7 @@
 .fi-foot { margin-top:18px; font-size:11.5px; color:var(--muted); border-top:1px solid var(--line); padding-top:10px; }
 @media (max-width:760px) { .fi-two { grid-template-columns:1fr; } .fi-head { flex-direction:column; } .fi-doc { padding:18px; } .fi-gloss dl { grid-template-columns:1fr; } }
 @media print {
-  @page { size:A4; margin:12mm; }
+  @page { size:A4; margin:0; }
   header.nav, footer.foot, .skip-link, .no-print, .leaflet-control-container { display:none !important; }
   body { background:#fff; }
   #v-ficha { padding:0; max-width:none; }
@@ -1021,3 +1021,96 @@ body.chcp-arrastrando-y, body.chcp-arrastrando-y * { cursor:row-resize !importan
 @media (max-width:980px) { .fi-cmp-maps { grid-template-columns:1fr 1fr; } }
 @media (max-width:860px) { .fi-cmp, .fi-cmp-maps { grid-template-columns:1fr; } }
 @media print { .fi-cmp { grid-template-columns:1fr 1fr; } .fi-cmp-maps { grid-template-columns:repeat(3,1fr); } .fi-cmp-maps .fi-mini { height:200px; } }
+
+/* ---------------------------------------------------------------- PDF de la ficha
+   Menú de descarga y dos formatos: resumen de 2 páginas y ficha completa. Al preparar el PDF
+   la ficha toma el ancho de una hoja A4 (html.fi-pdf), en pantalla y al imprimir, para que el
+   PDF se vea igual que la página. @page sin márgenes quita el encabezado del navegador; el
+   margen lo pone el relleno de la ficha, repetido en cada hoja (box-decoration-break). */
+.fi-descarga { position:relative; }
+.fi-descarga-m { position:absolute; z-index:1200; top:calc(100% + 6px); left:0; width:290px; background:#fff; border:1px solid var(--azul-linea); border-radius:12px; box-shadow:0 14px 34px rgba(6,30,22,.18); padding:6px; display:grid; gap:2px; }
+.fi-descarga-m[hidden] { display:none; }
+.fi-descarga-m button { display:grid; gap:2px; text-align:left; border:0; background:none; padding:10px 12px; border-radius:8px; cursor:pointer; font:inherit; color:inherit; }
+.fi-descarga-m button:hover, .fi-descarga-m button:focus-visible { background:var(--azul-suave); outline:none; }
+.fi-descarga-m b { color:var(--azul-tinta); font-size:14px; }
+.fi-descarga-m small { color:var(--muted); font-size:12px; }
+.fi-descarga-m p { margin:4px 12px 6px; font-size:11.5px; color:var(--muted); }
+.fi-fuente { font-weight:500; color:var(--muted); font-size:.8em; margin-left:4px; }
+.fi-foot p { margin:0 0 3px; }
+
+html.fi-pdf #v-ficha { padding:0; max-width:none; }
+html.fi-pdf .fi-doc { width:210mm; box-sizing:border-box; margin:0 auto; padding:12mm 13mm; border-radius:0; font-size:12.5px; box-decoration-break:clone; -webkit-box-decoration-break:clone; }
+html.fi-pdf .fi-head { flex-direction:row; }
+html.fi-pdf .fi-head h1 { font-size:26px; }
+html.fi-pdf .fi-sec { padding:12px 0 4px; }
+html.fi-pdf .fi-sec h2 { font-size:16px; margin-bottom:8px; }
+html.fi-pdf .fi-sec p, html.fi-pdf .fi-list { font-size:11.5px; line-height:1.45; margin-bottom:6px; }
+html.fi-pdf .fi-note { font-size:10.5px; }
+html.fi-pdf #fi-map { height:68mm; }
+html.fi-pdf .fi-sec:first-of-type p { font-size:11px; line-height:1.4; margin-bottom:4px; }
+html.fi-pdf .fi-head .procedencia { margin-top:6px; }
+html.fi-pdf .fi-gal, html.fi-pdf .fi-cmp-maps { grid-template-columns:repeat(3,minmax(0,1fr)); gap:8px; }
+html.fi-pdf .fi-fig { padding:7px 8px; border-radius:8px; }
+html.fi-pdf .fi-fig figcaption { font-size:11.5px; margin-bottom:4px; line-height:1.3; }
+html.fi-pdf .fi-gal .fi-mini, html.fi-pdf .fi-cmp-maps .fi-mini { height:52mm; }
+html.fi-pdf .fi-fig .fi-legend { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); font-size:9px; gap:1px 6px; margin-top:5px; line-height:1.25; }
+html.fi-pdf .fi-fig .fi-legend span { align-items:flex-start; }
+html.fi-pdf .fi-fig .fi-legend i { width:10px; height:10px; }
+html.fi-pdf .fi-fig .fi-note { font-size:9.5px; line-height:1.35; margin:4px 0 0; }
+html.fi-pdf .fi-ramp span { font-size:9.5px; }
+html.fi-pdf .fi-inds { grid-template-columns:repeat(3,1fr); gap:8px; }
+html.fi-pdf .fi-ind { padding:8px 10px; }
+html.fi-pdf .fi-ind b { font-size:19px; }
+html.fi-pdf .fi-two { grid-template-columns:1fr 1fr; gap:18px; }
+html.fi-pdf .fi-cmp { grid-template-columns:minmax(0,1.1fr) minmax(0,1fr); }
+html.fi-pdf .fi-diic-map { height:80mm; }
+html.fi-pdf .fi-table { font-size:11.5px; }
+html.fi-pdf .fi-table th, html.fi-pdf .fi-table td { padding:4px 7px; }
+html.fi-pdf .chcp-divisor, html.fi-pdf .chcp-base, html.fi-pdf .leaflet-control-container { display:none !important; }
+html.fi-pdf .fi-map-sec, html.fi-pdf #fi-map, html.fi-pdf .fi-diic-map, html.fi-pdf .fi-donut, html.fi-pdf .fi-head { break-inside:avoid; }
+html.fi-pdf .fi-ind, html.fi-pdf .fi-action, html.fi-pdf .fi-table tr, html.fi-pdf .fi-fig, html.fi-pdf .fi-res-acc > div { break-inside:avoid; }
+
+/* Resumen de 2 páginas: hojas A4 fijas */
+html.fi-pdf-resumen .fi-doc { display:none; }
+.fi-res[hidden] { display:none; }
+.fi-res-page { width:210mm; height:297mm; box-sizing:border-box; padding:12mm 13mm 11mm; margin:0 auto 12px; background:#fff; display:flex; flex-direction:column; gap:5mm; overflow:hidden; font-size:11.5px; color:var(--ink); box-shadow:0 2px 10px rgba(10,40,90,.08); }
+.fi-res-page h2 { font-size:15px; color:var(--azul-tinta); margin:0; }
+.fi-res-page .fi-head { padding-bottom:10px; }
+.fi-res-page .fi-head h1 { font-size:26px; margin:2px 0 4px; }
+.fi-res-page .fi-logo { width:52px; height:52px; }
+.fi-res-page .fi-score { min-width:140px; padding:8px 12px; }
+.fi-res-page .fi-score b { font-size:28px; }
+.fi-res-puesto { font-size:10.5px; color:var(--azul-tinta); font-weight:600; }
+.fi-res-kpi { display:grid; grid-template-columns:repeat(6,minmax(0,1fr)); gap:6px; }
+.fi-res-kpi div { background:var(--azul-suave); border-radius:8px; padding:7px 8px; display:grid; gap:1px; }
+.fi-res-kpi span { font-size:10px; font-weight:700; color:var(--azul-tinta); line-height:1.25; }
+.fi-res-kpi b { font-size:17px; color:var(--ink); }
+.fi-res-kpi small { font-size:9.5px; color:var(--muted); }
+.fi-res-cuerpo { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1.05fr); gap:6mm; flex:1; min-height:0; }
+.fi-res-texto h2 { margin-bottom:6px; }
+.fi-res-texto p { margin:0 0 6px; font-size:11px; line-height:1.45; }
+.fi-res-mapa { margin:0; display:flex; flex-direction:column; gap:4px; min-height:0; }
+.fi-res-mapa .fi-mini { flex:1; min-height:0; height:auto; border-radius:8px; }
+.fi-res-mapa .fi-legend { font-size:9.5px; gap:2px 10px; margin-top:4px; }
+.fi-res-mapa figcaption { font-size:10px; color:var(--muted); }
+.fi-res-gal { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:6px; }
+.fi-res-gal .fi-fig { padding:6px 7px; border-radius:8px; }
+.fi-res-gal figcaption { font-size:11px; margin-bottom:4px; line-height:1.25; }
+.fi-res-gal .fi-mini { height:46mm; }
+.fi-res-gal .fi-legend { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); font-size:8.5px; gap:1px 6px; margin-top:4px; line-height:1.25; }
+.fi-res-gal .fi-legend span { align-items:flex-start; }
+.fi-res-gal .fi-legend i { width:9px; height:9px; }
+.fi-res-gal .fi-ramp span { font-size:8.5px; }
+.fi-res-acc { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:6px; }
+.fi-res-acc > div { border:1px solid var(--line); border-left:4px solid var(--verde); border-radius:8px; padding:7px 9px; }
+.fi-res-acc b { color:var(--azul-tinta); font-size:11.5px; }
+.fi-res-acc p { margin:3px 0 0; font-size:10px; line-height:1.4; }
+.fi-res-acc em { font-style:normal; font-weight:700; color:var(--azul-tinta); }
+.fi-res-pie { margin-top:auto; border-top:1px solid var(--line); padding-top:6px; font-size:9.5px; color:var(--muted); }
+.fi-res-pie p { margin:0 0 2px; overflow-wrap:anywhere; }
+@media print {
+  .toast { display:none !important; }
+  html.fi-pdf .fi-doc { border:0; box-shadow:none; }
+  .fi-res-page { margin:0; box-shadow:none; break-after:page; }
+  .fi-res-page:last-child { break-after:auto; }
+}
