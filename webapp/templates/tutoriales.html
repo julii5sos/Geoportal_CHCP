@@ -54,6 +54,11 @@
 {% block body %}<main>{% call hero('Tutoriales', 'Guías cortas para las tareas más comunes. Cada una toma pocos minutos y enlaza a la página donde se hace.', small=True) %}<a class="btn btn-w" href="{{ url_for('platform') }}">Abrir la plataforma</a>{% endcall %}
 <section class="sec"><div class="wrap">
   <div class="sec-c"><span class="eyebrow">Paso a paso</span><h2>¿Qué quiere hacer?</h2><p>En la plataforma, la ficha y el simulador también puede pulsar «? Cómo se usa» o «? Cómo leer la ficha» para un recorrido guiado sobre la propia pantalla.</p></div>
+  <div class="tut-tabs" role="tablist" aria-label="Formato de los tutoriales">
+    <button type="button" role="tab" aria-selected="true" class="tut-tab">Guías paso a paso</button>
+    <button type="button" role="tab" aria-selected="false" aria-disabled="true" class="tut-tab tut-tab-bloq" title="Próximamente: clips de 15 a 30 segundos de las tareas principales"><svg class="candado" viewBox="0 0 16 16" width="13" height="13" aria-hidden="true"><rect x="3" y="7" width="10" height="7" rx="1.5" fill="currentColor"/><path d="M5 7V5a3 3 0 0 1 6 0v2" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>Videos<small>Próximamente</small></button>
+    <button type="button" role="tab" aria-selected="false" aria-disabled="true" class="tut-tab tut-tab-bloq" lang="en" title="Coming soon: tutorials in English"><svg class="candado" viewBox="0 0 16 16" width="13" height="13" aria-hidden="true"><rect x="3" y="7" width="10" height="7" rx="1.5" fill="currentColor"/><path d="M5 7V5a3 3 0 0 1 6 0v2" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>English<small>Coming soon</small></button>
+  </div>
   <div class="tut-grid">
   {%- for modulo, dur, titulo, destino, accion, pasos in tutoriales %}
     <article class="tut-card"><span>{{ modulo }} · {{ dur }}</span><h3>{{ titulo }}</h3><ol>{% for p in pasos %}<li>{{ p }}</li>{% endfor %}</ol><a class="tut-ir" href="{{ destino }}">{{ accion }} →</a></article>
