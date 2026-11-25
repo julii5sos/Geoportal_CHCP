@@ -102,10 +102,12 @@
     document.querySelectorAll('[data-destino]').forEach((a) => {
       const d = a.dataset.destino;
       let href = ruta[d];
-      if (d === 'ficha') href += `?id=${encodeURIComponent(id)}${a.dataset.ancla || ''}`;
-      else if (d === 'restauracion') href += `?${id === 'chcp' ? '' : `id=${encodeURIComponent(id)}`}${a.dataset.modo ? `${id === 'chcp' ? '' : '&'}modo=${a.dataset.modo}` : ''}`;
+      // Cada tarjeta lleva su pregunta: el destino abre con una respuesta escrita antes de los resultados.
+      const preg = a.dataset.pregunta ? `pregunta=${a.dataset.pregunta}` : '';
+      if (d === 'ficha') href += `?id=${encodeURIComponent(id)}${preg ? `&${preg}` : ''}${a.dataset.ancla || ''}`;
+      else if (d === 'restauracion') href += `?${[id === 'chcp' ? '' : `id=${encodeURIComponent(id)}`, a.dataset.modo ? `modo=${a.dataset.modo}` : '', preg].filter(Boolean).join('&')}`;
       else if (d === 'panel') href += `#${encodeURIComponent(id === 'chcp' ? 'chcp' : nombre)}`;
-      else if (d === 'coberturas' && nombre) href += `#${encodeURIComponent(nombre)}`;
+      else if (d === 'coberturas') href += `${preg ? `?${preg}` : ''}${nombre ? `#${encodeURIComponent(nombre)}` : ''}`;
       else if (d === 'platform') {
         const q = new URLSearchParams();
         if (id !== 'chcp') q.set('id', id);

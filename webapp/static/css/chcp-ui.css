@@ -1121,3 +1121,27 @@ html.fi-pdf-resumen .fi-doc { display:none; }
 
 /* Ficha de un área dibujada: aviso de resultado aproximado */
 .fi-aviso-pol { margin:8px 0 0; padding:8px 12px; border-radius:8px; background:#fff4e5; color:#7a4100; font-size:13px; }
+
+/* Respuesta a la pregunta de la portada (ficha, Coberturas y simulador), al estilo de Global Forest Watch:
+   pregunta, frase con las cifras clave, gráfico, mapa, advertencia y parámetros. */
+.fi-resp { display:grid; grid-template-columns:minmax(0,1.25fr) minmax(0,1fr); gap:22px; align-items:start; margin:18px 0 6px; padding:20px 22px; border-radius:14px; background:#f3f8f1; border:1px solid #d6e7cf; }
+.fi-resp[hidden] { display:none; }
+.fi-resp-q { display:block; font-size:12px; font-weight:700; color:var(--verde-osc); margin-bottom:2px; }
+.fi-resp h2 { margin:0 0 10px; font-size:22px; color:var(--azul-tinta); }
+.fi-resp h3 { margin:14px 0 6px; font-size:14px; color:var(--azul-tinta); }
+.fi-resp-txt > p { margin:0 0 8px; font-size:15.5px; line-height:1.6; color:#24332b; }
+.fi-resp-txt b { color:var(--azul-tinta); }
+.fi-resp-aviso { display:flex; gap:10px; align-items:flex-start; margin:14px 0 6px; padding:10px 12px; border:1.5px solid #9ccc65; border-radius:8px; background:#fff; }
+.fi-resp-aviso svg { flex:none; color:#7cb342; margin-top:2px; }
+.fi-resp-aviso p { margin:0; font-size:13px; line-height:1.5; color:#33433a; }
+.fi-resp-txt > p.fi-resp-param { margin:4px 0 6px; font-size:12px; line-height:1.4; color:var(--muted); }
+.fi-resp-map { margin:0; background:#fff; }
+.fi-resp-map .fi-mini { height:320px; }
+.fi-cols rect:hover { opacity:.8; }
+@media (max-width:860px) { .fi-resp { grid-template-columns:1fr; } }
+html.fi-pdf .fi-resp { grid-template-columns:minmax(0,1.25fr) minmax(0,1fr); break-inside:avoid; }
+html.fi-pdf .fi-resp-map .fi-mini { height:70mm; }
+.rs-resp, .cob-resp { grid-template-columns:1fr; margin:0 0 12px; padding:16px 18px; }
+.rs-resp h2, .cob-resp h2 { font-size:19px; }
+.rs-resp .fi-resp-txt > p, .cob-resp .fi-resp-txt > p { font-size:14.5px; }
+.cob-resp .fi-bars span small { color:var(--muted); font-weight:400; }

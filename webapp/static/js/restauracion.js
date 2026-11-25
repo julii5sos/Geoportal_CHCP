@@ -45,7 +45,7 @@
   const efectividadEscenario = (s) => { const l = st.escenarios[s]; const L0 = l.reduce((t, x) => t + x.d, 0); return L0 ? l.reduce((t, x) => t + x.d * efectividad(x.ancho), 0) / L0 : 1; };
   function guardarHash() {
     const cod = (s) => st.escenarios[s].map((x) => `${x.a}-${x.b}-${Math.round(x.d)}-${x.ancho}`).join('_');
-    history.replaceState(null, '', `${location.pathname}?id=${encodeURIComponent(st.id)}${st.escenarios.A.length ? `&A=${cod('A')}` : ''}${st.escenarios.B.length ? `&B=${cod('B')}` : ''}`);
+    history.replaceState(null, '', `${location.pathname}?id=${encodeURIComponent(st.id)}${location.search.match(/[?&](modo=rutas)/) ? '&modo=rutas' : ''}${((q) => (q ? `&pregunta=${q}` : ''))(new URLSearchParams(location.search).get('pregunta'))}${st.escenarios.A.length ? `&A=${cod('A')}` : ''}${st.escenarios.B.length ? `&B=${cod('B')}` : ''}`);
   }
   function leerHash() {
     const q = new URLSearchParams(location.search);
@@ -515,6 +515,7 @@
     });
     st.rutas.capa = L.layerGroup(capas).addTo(st.map);
     aplicarVisibilidad();
+    responderRutas();
     if (lineas.length && !u.encuadrado) { st.map.fitBounds(L.latLngBounds(lineas).extend(st.borde.getBounds()), { padding: [24, 24] }); u.encuadrado = true; }
     const filas = u.rutas.map((r, k) => {
       if (!r.alcanzable) return `<tr><td>${esc(r.tramo.nombre)}</td><td colspan="5">Sin ruta posible dentro del área evaluada.</td></tr>`;
@@ -739,7 +740,68 @@
     prioridades();
     actualizar();
     await calcularCruces();
-    if (st.id === id) { prioridades(); actualizar(); }
+    if (st.id === id) { prioridades(); actualizar(); responderRestaurar(); rutasDelParcheMayor(); }
+  }
+
+  // ---------------------------------------------------------------- respuesta a la pregunta de la portada
+  // «¿Dónde restaurar para reconectarlo?» y «¿Cómo conectar un bosque con el Corredor Mesoamericano?»:
+  // una frase con las cifras de la subcuenca, la advertencia y los parámetros, como en la ficha.
+  const PREGUNTA = new URLSearchParams(location.search).get('pregunta');
+  function cajaRespuesta(titulo) {
+    let caja = document.getElementById('rs-respuesta');
+    if (!caja) { caja = document.createElement('section'); caja.id = 'rs-respuesta'; caja.className = 'rs-block fi-resp rs-resp'; $('#rs-paso1').after(caja); }
+    caja.dataset.titulo = titulo;
+    return caja;
+  }
+  function pintarRespuesta(caja, titulo, frases, aviso, param) {
+    caja.innerHTML = `<div class="fi-resp-txt"><span class="fi-resp-q">Su pregunta</span><h2>${titulo}</h2>${frases.map((f) => `<p>${f}</p>`).join('')}
+      <div class="fi-resp-aviso">${window.CHCP_ICON ? window.CHCP_ICON('warning', 18) : ''}<p>${aviso}</p></div><p class="fi-resp-param">${param}</p></div>`;
+  }
+  function responderRestaurar() {
+    if (PREGUNTA !== 'restaurar' || !st.areas) return;
+    const t = st.data.territorios[st.id], nombre = esc(t?.nombre || '');
+    const base = R.analizar(st.areas, st.aristas, st.paisaje);
+    const ev = (st.evaluados && st.evaluados.length ? st.evaluados : evaluar()).filter((c) => !c.excluido && c.por_ha > 0);
+    const ancho = Number($('#rs-ancho').value);
+    const pasos = ev.length ? R.planVoraz(st.areas, st.aristas, ev.map((c) => ({ ...c, efectividad: efectividad(ancho) })), { pasos: 8 }) : [];
+    const ult = pasos[pasos.length - 1], top = ev[0];
+    const frases = [`En ${nombre}, el bosque oficial 2021 forma <b>${number(base.redes, 0)} ${base.redes === 1 ? 'red continua' : 'redes separadas'}</b> a ${number(st.umbral, 0)} m de distancia${ev.length ? `, y hay <b>${ev.length === 1 ? 'una brecha' : `${number(ev.length, 0)} brechas`}</b> que valdría la pena cerrar` : ''}.`];
+    if (top) {
+      frases.push(`La brecha que más mejora la conectividad por hectárea une los parches <b>#${top.a} y #${top.b}</b>: mide <b>${number(top.d, 0)} m</b> y necesita unas <b>${hectares(top.ha, 2)}</b> de franja de ${number(ancho, 0)} m.`);
+      if (ult) frases.push(`${pasos.length === 1 ? 'Cerrarla' : `Un plan de <b>${number(pasos.length, 0)} franjas</b> (${hectares(ult.ha_acumuladas, 1)} en total)`} aumentaría la conectividad del bosque (IIC) en <b>${gpct(ult.acumulado_pct)}</b>. Las brechas aparecen en rojo en el mapa${pasos.length > 1 ? '; «Proponer un plan de 8 enlaces» las muestra en orden' : ''}.`);
+    } else frases.push('No hay brechas que convenga cerrar: el bosque ya forma una sola red, los parches están demasiado lejos o las brechas cruzan agua o zonas construidas. Las rutas al Corredor Mesoamericano pueden mostrar otras opciones.');
+    pintarRespuesta(cajaRespuesta('restaurar'), '¿Dónde restaurar para reconectar el bosque?', frases,
+      'Es un escenario hipotético: mide la conectividad estructural del bosque, no cuántos animales pasarían. Antes de restaurar hay que verificar en campo, la tenencia de la tierra y el uso actual.',
+      `Bosque oficial SINIA 2021 | distancia de ${number(st.umbral, 0)} m | franja de ${number(ancho, 0)} m | índice integral de conectividad (IIC)`);
+  }
+  function responderRutas() {
+    if (PREGUNTA !== 'corredor') return;
+    const u = st.rutas.ultimo, t = st.data.territorios[st.id], nombre = esc(t?.nombre || '');
+    const caja = cajaRespuesta('corredor');
+    if (!u) { pintarRespuesta(caja, '¿Cómo conectar un bosque con el Corredor Mesoamericano?', ['Calculando las rutas desde el parche de bosque más grande de la subcuenca…'], 'Las rutas son hipotéticas.', ''); return; }
+    const alc = u.rutas.filter((r) => r.alcanzable);
+    const dentro = alc.find((r) => r.dentro), mejor = alc.find((r) => !r.dentro);
+    const frases = [];
+    if (dentro) frases.push(`El parche <b>#${u.id}</b> de ${nombre} (${hectares(u.area)}) ya está dentro del tramo <b>${esc(dentro.tramo.nombre)}</b> del Corredor Biológico Mesoamericano.`);
+    if (mejor) {
+      const x = mejor.resumen;
+      frases.push(`Desde el parche <b>#${u.id}</b> de ${nombre} (${hectares(u.area)}), la ruta de menor costo llega al tramo <b>${esc(mejor.tramo.nombre)}</b> en <b>${number(x.longitud_km, 1)} km</b>: ${x.fuera_bosque_km >= 0.05 ? `${number(x.por_bosque_km, 1)} km van por bosque y <b>${number(x.fuera_bosque_km, 1)} km</b> están fuera del bosque, que serían los que habría que restaurar.` : 'todo el recorrido va por bosque, así que en ese trayecto no haría falta restaurar: conviene proteger el bosque por donde pasa.'}`);
+      const otras = alc.filter((r) => !r.dentro && r !== mejor);
+      if (otras.length) frases.push(`También hay ruta ${otras.map((r) => `al tramo ${esc(r.tramo.nombre)} (${number(r.resumen.longitud_km, 1)} km)`).join(' y ')}. Haga clic en otro parche del mapa para ver sus rutas.`);
+    }
+    if (!dentro && !mejor) frases.push(`No hay ruta posible desde el parche #${u.id} hasta el Corredor Mesoamericano dentro del área evaluada.`);
+    pintarRespuesta(caja, '¿Cómo conectar un bosque con el Corredor Mesoamericano?', frases,
+      'Es una ruta hipotética de menor costo, calculada con resistencias supuestas para cada cobertura: no es un corredor oficial ni garantiza que la fauna la use. Antes de restaurar hay que verificar en campo.',
+      'Cobertura SINIA 2021, JRC 2025 y ESRI 2024 | ríos del IGNTG | entorno de 25 km alrededor de la cuenca | tramos del corredor: Almanaque Azul');
+  }
+  /** Al llegar con la pregunta del corredor, las rutas se calculan solas desde el parche más grande. */
+  function rutasDelParcheMayor() {
+    if (PREGUNTA !== 'corredor' || !st.areas || !st.rutas.activo) return;
+    const ids = [...(st.objetivo || st.areas.keys())].filter((id) => st.areas.has(id));
+    if (!ids.length) return;
+    const mayor = ids.reduce((a, b) => (st.areas.get(b) > st.areas.get(a) ? b : a));
+    responderRutas();
+    rutasDesde(mayor);
   }
 
   // ---------------------------------------------------------------- inicio
@@ -801,7 +863,7 @@
   // red_disponible indica si existe la red de parches precalculada de la subcuenca.
   const pendiente = (t) => (t.red_disponible === undefined ? (t.version_datos ?? 0) < 0 : !t.red_disponible);
   function disponibles() { return subs.filter((t) => !pendiente(t)); }
-  function elegir(id) { st.escenarios = { A: [], B: [] }; history.replaceState(null, '', `${location.pathname}?id=${id}`); cargar(id); }
+  function elegir(id) { st.escenarios = { A: [], B: [] }; history.replaceState(null, '', `${location.pathname}?id=${id}${PREGUNTA ? `&pregunta=${PREGUNTA}` : ''}`); cargar(id); }
   const opcion = (t) => `<option value="${t.id}">${esc(t.nombre)}${pendiente(t) ? ' · pendiente' : ''}</option>`;
   const listas = disponibles(), faltan = subs.filter(pendiente);
   $('#rs-select').innerHTML = listas.length && faltan.length
@@ -838,7 +900,7 @@
     if (st.areas) dibujar();
   });
   $('#rs-limpiar').addEventListener('click', () => { st.escenarios[st.esc] = []; if (st.areas) actualizar(); });
-  $('#rs-ancho').addEventListener('change', () => { if (st.areas) { prioridades(); actualizar(); } });
+  $('#rs-ancho').addEventListener('change', () => { if (st.areas) { prioridades(); actualizar(); responderRestaurar(); } });
   $('#rs-cob-chk').addEventListener('change', (e) => alternarCobertura(e.target.checked));
   $('#rs-rib-chk').addEventListener('change', (e) => alternarRibera(e.target.checked));
   $('#rs-umbral-sel').addEventListener('change', (e) => { if (!st.areas) return; st.umbral = Number(e.target.value); construirRed(st.id, false); });
@@ -849,7 +911,7 @@
   const parametros = new URLSearchParams(location.search), pedido = parametros.get('id');
   const conRed = listas.find((t) => (t.estructura_2021?.metricas_red?.numero_componentes || 0) > 1) || listas[0] || subs[0];
   await cargar(st.data.territorios[pedido] ? pedido : conRed.id);
-  if (parametros.get('modo') === 'rutas' && !$('#rs-rutas-btn').disabled) modo(true);
+  if (parametros.get('modo') === 'rutas' && !$('#rs-rutas-btn').disabled) { modo(true); rutasDelParcheMayor(); }
 
   // ---------------------------------------------------------------- recorrido guiado
   const PASOS = [

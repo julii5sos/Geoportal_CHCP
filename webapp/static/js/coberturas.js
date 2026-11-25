@@ -92,6 +92,32 @@
   // ------------------------------------------------------------- mapas precalculados (sitio estático)
   // data/coberturas: un PNG de códigos por territorio y producto (255 = sin dato), coloreado
   // aquí con la leyenda; filtrar categorías o ver grupos derivados no requiere recalcular.
+  // Respuesta a «¿Qué dice la cartografía oficial?» (al llegar desde la portada con ?pregunta=cartografia):
+  // la frase con las cifras, el gráfico por año, la advertencia y los parámetros, como en la ficha.
+  const PRODUCTOS_RESPUESTA = ['1992_historico', '2000_historico', '2012_binario', '2019_general', '2021_general', '2023_general'];
+  async function responderCartografia() {
+    if (new URLSearchParams(location.search).get('pregunta') !== 'cartografia') return;
+    let caja = document.getElementById('cob-respuesta');
+    if (!caja) { caja = document.createElement('section'); caja.id = 'cob-respuesta'; caja.className = 'fi-resp cob-resp'; $('#cob-results').prepend(caja); }
+    const id = territorioId(), nombre = $('#cob-area').value || 'la cuenca';
+    let datos = null;
+    try { datos = await (await fetch(cobFile(`estadisticas/${id}.json`))).json(); } catch (_) { datos = null; }
+    const filas = PRODUCTOS_RESPUESTA.filter((k) => datos?.[k] && st.catalog.forest_masks?.[k]).map((k) => {
+      const codigos = new Set(st.catalog.forest_masks[k].codes);
+      const total = datos[k].classes.reduce((s2, c) => s2 + c.area_ha, 0);
+      const bosque = datos[k].classes.filter((c) => codigos.has(c.code)).reduce((s2, c) => s2 + c.area_ha, 0);
+      return { k, anio: product(k).anio, escala: product(k).escala_cartografica || `${number(product(k).resolucion_m, 0)} m`, bosque, pct: total ? bosque / total * 100 : null };
+    }).filter((f) => f.pct != null);
+    const f21 = filas.find((f) => f.k === '2021_general'), f23 = filas.find((f) => f.k === '2023_general');
+    const rango = filas.length ? [Math.min(...filas.map((f) => f.pct)), Math.max(...filas.map((f) => f.pct))] : null;
+    const n = (v, d = 0) => number(v, d);
+    caja.innerHTML = `<div class="fi-resp-txt"><span class="fi-resp-q">Su pregunta</span><h2>¿Qué dice la cartografía oficial?</h2>
+      ${f21 ? `<p>Según el mapa oficial de cobertura 2021 de MiAMBIENTE, el <b>${n(f21.pct)} %</b> de ${esc(nombre)} es bosque y otras tierras boscosas (<b>${hectares(f21.bosque)}</b>).${f23 ? ` El mapa más reciente, de 2023, da <b>${n(f23.pct)} %</b>.` : ''}</p>` : '<p>No hay superficies oficiales precalculadas para esta área.</p>'}
+      ${rango ? `<p>Los ${filas.length} mapas oficiales desde ${filas[0].anio} dan entre <b>${n(rango[0])} %</b> y <b>${n(rango[1])} %</b> de bosque. Cada uno se hizo con un método y una escala distintos, así que las diferencias entre años no miden pérdida ni ganancia de bosque.</p>` : ''}
+      ${filas.length ? `<h3>Bosque en cada mapa oficial (% de la superficie cartografiada)</h3><div class="fi-bars">${filas.map((f) => `<div><span>${f.anio}<small> ${esc(f.escala)}</small></span><i><b style="width:${Math.max(1, f.pct)}%;background:#237A4B"></b></i><em>${n(f.pct)} %</em></div>`).join('')}</div>` : ''}
+      <div class="fi-resp-aviso">${window.CHCP_ICON ? window.CHCP_ICON('warning', 18) : ''}<p>Para saber si el bosque se perdió o se recuperó hay que usar series hechas con un mismo método, como JRC y Hansen, que están en la ficha. Los mapas de 1992 y 2000 son de escala 1:250.000 y no cubren todos los detalles.</p></div>
+      <p class="fi-resp-param">MiAMBIENTE (SINIA), mapas de ${filas.map((f) => f.anio).join(', ')} | bosque según la máscara forestal de cada producto | superficie por categoría en el panel de abajo</p></div>`;
+  }
   const territorioId = () => { const n = $('#cob-area').value; return n ? st.territory.subbasins.features.find((f) => f.properties.nombre === n)?.properties.id : 'chcp'; };
   const cobFile = (ruta) => `datos/coberturas/${ruta}`;
   const cacheCodigos = new Map();
@@ -331,7 +357,7 @@
   $$('input[name="cob-view"]').forEach((r) => r.addEventListener('change', () => { st.view = r.value; renderLegend(); loadTiles(); if (st.stats) renderStats(st.stats); }));
   $('#cob-all').addEventListener('click', () => { st.active[st.a] = new Set(legendOf(st.a).map((r) => r.codigo)); renderLegend(); scheduleTiles(); });
   $('#cob-none').addEventListener('click', () => { st.active[st.a] = new Set(); renderLegend(); scheduleTiles(); });
-  $('#cob-area').addEventListener('change', () => { drawArea(); if (window.CHCP_STATIC) loadTiles(); history.replaceState(null, '', $('#cob-area').value ? `#${encodeURIComponent($('#cob-area').value)}` : location.pathname); });
+  $('#cob-area').addEventListener('change', () => { responderCartografia(); drawArea(); if (window.CHCP_STATIC) loadTiles(); history.replaceState(null, '', $('#cob-area').value ? `#${encodeURIComponent($('#cob-area').value)}` : location.pathname); });
   $('#cob-stats').addEventListener('click', computeStats);
   $('#cob-csv').addEventListener('click', exportCsv);
 
@@ -342,6 +368,6 @@
       : 'Versión publicada sin Earth Engine: superficies precalculadas de 2019, 2021 y 2023 por subcuenca. Los mapas de los ocho productos se añadirán al ejecutar «Coberturas SINIA (mapas y superficies)».';
   }
   basinLayer = L.geoJSON(st.territory.basin, { pane: 'paneRef', style: { color: '#0a4393', weight: 1, dashArray: '4 4', fill: false }, interactive: false }).addTo(map);
-  renderLegend(); renderProductInfo(); drawArea(); loadTiles();
+  renderLegend(); renderProductInfo(); drawArea(); loadTiles(); responderCartografia();
   window.CHCP_COBERTURAS = { renderStats, map };
 })();
