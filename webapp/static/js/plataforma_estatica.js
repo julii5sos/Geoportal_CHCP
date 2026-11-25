@@ -977,7 +977,18 @@
   $('#pe-ayuda')?.addEventListener('click', recorridoPe);
   setTimeout(() => window.CHCP_TOUR?.invitar('plataforma', 'Le mostramos cómo usar la plataforma en 1 minuto.', recorridoPe), 1500);
   const params = new URLSearchParams(location.search);
-  if (params.has('geometria')) $('.side-tabs [data-s="poligono"]').click();
+  if (params.has('geometria')) {
+    $('.side-tabs [data-s="poligono"]').click();
+    // Respuesta a «¿Y si quiero analizar mi propia área?» de la portada: qué se puede hacer y cómo.
+    if (params.get('pregunta') === 'area' || params.get('geometria') === '1') {
+      const icono = window.CHCP_ICON ? window.CHCP_ICON('warning', 18) : '';
+      $('#s-poligono').insertAdjacentHTML('afterbegin', `<section class="fi-resp rs-resp pe-resp"><div class="fi-resp-txt"><span class="fi-resp-q">Su pregunta</span><h2>¿Y si quiero analizar mi propia área?</h2>
+        <p class="fi-resp-corta">Sí: dibuje su área o suba un archivo, y el geoportal calcula dentro de ella el mismo análisis que para una subcuenca.</p>
+        <p>1. Pulse <b>«Dibujar en el mapa»</b> o <b>«Subir archivo»</b> (KML o GeoJSON). 2. Pulse <b>«Analizar este polígono»</b> y elija qué ver: pérdida de bosque, señales coincidentes, vigor, fragmentación y corredores. 3. Con <b>«Ficha técnica del área»</b> obtiene la ficha completa, que se descarga en PDF.</p>
+        <div class="fi-resp-aviso">${icono}<p>En áreas pequeñas o muy irregulares el resultado es aproximado: los mapas tienen píxeles de 10 a 30 m, y la ficha avisa cuando el error de borde pasa del 10 %.</p></div>
+        <p class="fi-resp-param">Polígono, KML o GeoJSON | solo la parte dentro de la CHCP | el cálculo se hace en su navegador</p></div></section>`);
+    }
+  }
   if (params.get('tema') && TEMA[params.get('tema')]) st.tema = params.get('tema');
   renderTemas();
   if (params.get('parche') && !params.get('tema')) st.tema = 'frag';
