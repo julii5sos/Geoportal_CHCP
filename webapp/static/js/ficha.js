@@ -369,11 +369,18 @@
       return c;
     } catch (_) { return null; }
   }
+  /** Un bloque de la respuesta, como los de Global Forest Watch: título, frase con cifras, gráfico, advertencia y parámetros. */
+  const bloqueGfw = (titulo, frase, grafico, aviso, param) => `<div class="fi-resp-w"><h3>${titulo}</h3>${frase}${grafico || ''}${aviso ? `<div class="fi-resp-aviso">${icon('warning', 18)}<p>${aviso}</p></div>` : ''}${param ? `<p class="fi-resp-param">${param}</p>` : ''}</div>`;
+  async function comparacionDe(t) {
+    if (t.poligono) return null;
+    try { const c = await (await fetch(window.CHCP.cobFile(`comparacion/${t.id}.json`))).json(); return c?.anios?.['2021'] ? c : null; } catch (_) { return null; }
+  }
   async function responder(t, clave) {
     const sec = document.getElementById('fi-respuesta');
     if (!sec || !PREGUNTAS[clave]) return;
     const p = t.preevaluacion, e = t.estructura_2021, mc = e?.metricas_clase, mr = e?.metricas_red, mp = e?.metricas_paisaje;
-    let frase = '', grafico = '', aviso = '', param = '', fig = null, detalle = '';
+    const s21 = sinia(t, 2021), zona = t.poligono ? 'área' : 'territorio';
+    let corta = '', bloques = [], fig = null, detalle = '';
     if (clave === 'perdida') {
       let porAnio = t.hansen_por_anio || null, base2000 = null;
       if (!porAnio && !t.poligono) {
@@ -384,53 +391,141 @@
       const reciente = t.hansen_post_2020_ha ?? filas.filter((f) => f.anio >= 2021).reduce((s2, f) => s2 + f.v, 0);
       const pico = filas.filter((f) => f.anio >= 2021).reduce((a, b) => (b.v > (a?.v ?? -1) ? b : a), null);
       const pr = t.id === 'chcp' || t.poligono ? null : puesto(t, 'perdida_reciente_pct_anual');
-      frase = `<p>${filas.length ? `Entre ${filas[0].anio} y ${filas[filas.length - 1].anio}, ${sujeto(t)} perdió <b>${hectares(total)}</b> de cobertura arbórea${base2000 ? `, el <b>${pct(total / base2000 * 100, 1)}</b> de la que tenía en 2000` : ''}. ` : ''}En los últimos cinco años (2021–2025) la pérdida fue de <b>${hectares(reciente)}</b>${pico && pico.v > 0 ? `, con el mayor valor en <b>${pico.anio}</b> (${hectares(pico.v)})` : ''}.</p>
-        <p>JRC TMF clasifica <b>${hectares(t.jrc_ha.tmf_deforestacion)}</b> como deforestadas y <b>${hectares(t.jrc_ha.tmf_degradacion)}</b> como degradadas a 2025. Es el estado acumulado desde 1990, no solo lo reciente.${pr ? ` Por pérdida reciente en proporción a su bosque, ocupa el <b>puesto ${pr.pos} de ${pr.n}</b> subcuencas: ${tercio(pr)}.` : ''}</p>`;
-      grafico = filas.length ? `<h3>Pérdida de cobertura arbórea por año</h3>${columnas(filas)}` : '';
-      aviso = 'La pérdida de cobertura arbórea no siempre es deforestación: incluye la cosecha de plantaciones y las perturbaciones naturales. Hansen tampoco descuenta la cobertura que se recupera en el mismo período.';
-      param = 'Hansen GFC v1.13, 30 m, copa mayor de 30 % en 2000 | JRC TMF 2025';
+      corta = `${Sujeto(t)} ${reciente > 0.05 ? 'sí ha perdido bosque' : 'casi no muestra pérdida reciente'}: <b>${haCorto(reciente)}</b> de cobertura arbórea entre 2021 y 2025${s21?.forest_ha ? `, el equivalente al <b>${pct(reciente / s21.forest_ha * 100, 1)}</b> de su bosque oficial 2021` : ''}.${pr ? ` En proporción a su bosque, ocupa el <b>puesto ${pr.pos} de ${pr.n}</b> subcuencas: ${tercio(pr)}.` : ''}`;
+      bloques.push(bloqueGfw('Pérdida de cobertura arbórea por año',
+        `<p>${filas.length ? `Entre ${filas[0].anio} y ${filas[filas.length - 1].anio}, ${sujeto(t)} perdió <b>${haCorto(total)}</b> de cobertura arbórea${base2000 ? `, el <b>${pct(total / base2000 * 100, 1)}</b> de la que tenía en 2000` : ''}. ` : ''}En 2021–2025 fueron <b>${haCorto(reciente)}</b>${pico && pico.v > 0 ? `, con el mayor valor en <b>${pico.anio}</b> (${haCorto(pico.v)})` : ''}.</p>`,
+        filas.length ? columnas(filas) : '',
+        'La pérdida de cobertura arbórea no siempre es deforestación: incluye la cosecha de plantaciones y las perturbaciones naturales, y no descuenta lo que se recupera.',
+        'Hansen GFC v1.13 | 30 m | copa mayor de 30 % en 2000'));
+      const jrc = [{ l: 'Bosque sin perturbación', v: t.jrc_ha.tmf_estable, c: '#005a00' }, { l: 'Degradado', v: t.jrc_ha.tmf_degradacion, c: '#649b23' }, { l: 'Deforestado', v: t.jrc_ha.tmf_deforestacion, c: '#ff870f' }, { l: 'Regeneración', v: t.jrc_ha.tmf_recuperacion, c: '#d2fa3c' }, { l: 'Agua', v: t.jrc_ha.tmf_agua, c: '#008cbe' }, { l: 'Otra cobertura', v: t.jrc_ha.tmf_otra_cobertura, c: '#ececec' }];
+      bloques.push(bloqueGfw('Estado del bosque húmedo en 2025',
+        `<p>A 2025, JRC clasifica <b>${haCorto(t.jrc_ha.tmf_deforestacion)}</b> como deforestadas y <b>${haCorto(t.jrc_ha.tmf_degradacion)}</b> como degradadas, y <b>${haCorto(t.jrc_ha.tmf_estable)}</b> (${pct(t.jrc_ha.tmf_estable / t.area_ha * 100, 0)} del ${zona}) siguen como bosque sin perturbación.</p>`,
+        donut(jrc, hectares(t.area_ha, 0)),
+        'JRC acumula desde 1990: un píxel deforestado hace años sigue contando hoy. Lo nuevo de cada año se ve mejor en la pérdida anual de Hansen.',
+        'JRC Tropical Moist Forest | 30 m | estado a diciembre de 2025'));
+      if (t.esri?.esri_salida != null) bloques.push(bloqueGfw('Árboles que cambiaron de clase, 2017–2024',
+        `<p>Según ESRI, <b>${haCorto(t.esri.esri_salida)}</b> pasaron de árboles a otra clase y <b>${haCorto(t.esri.esri_ganancia)}</b> de otra clase a árboles; ${haCorto(t.esri.esri_estable)} se mantuvieron con árboles.</p>`,
+        bars([{ l: 'Salida de árboles', v: t.esri.esri_salida, c: '#e8862a' }, { l: 'Ganancia de árboles', v: t.esri.esri_ganancia, c: '#2c8fc9' }], (v) => haCorto(v)),
+        'Es una clasificación automática: los bordes y los mosaicos agrícolas generan errores, y «árboles» no es la misma definición de bosque que la oficial.',
+        'ESRI Land Use/Land Cover | 10 m | 2017 y 2024'));
       fig = ['hansen_todo', 'hansen']; detalle = '#fi-dinamica';
     } else if (clave === 'coincidencia') {
       const c = await contarCoincidencia(t);
       const dos = c ? (c[2] || 0) + (c[3] || 0) : null;
-      frase = c ? `<p>En ${sujeto(t)}, <b>${hectares(dos)}</b> (${pct(dos / t.area_ha * 100, 1)} del ${t.poligono ? 'área' : 'territorio'}) tienen señal de pérdida en dos o más fuentes entre 2021 y 2025, y <b>${hectares(c[3] || 0)}</b> en las tres (JRC, Hansen y ESRI). Otras <b>${hectares(c[1] || 0)}</b> aparecen en una sola fuente.</p><p>Cuantas más fuentes coinciden, más confiable es la señal. ${(p.fuentes_deterioro || []).length >= 2 ? `En la preevaluación, ${esc(`${p.fuentes_deterioro.slice(0, -1).join(', ')} y ${p.fuentes_deterioro[p.fuentes_deterioro.length - 1]}`)} superan su umbral.` : (p.fuentes_deterioro || []).length === 1 ? `En la preevaluación, solo ${esc(p.fuentes_deterioro[0])} supera su umbral.` : 'En la preevaluación, ninguna fuente de pérdida supera su umbral.'}</p>`
-        : '<p>El mapa de señales coincidentes de este territorio todavía no está disponible.</p>';
-      grafico = c ? `<h3>Superficie según cuántas fuentes coinciden</h3>${bars([{ l: '1 fuente', v: c[1] || 0, c: '#ffe08a' }, { l: '2 fuentes', v: c[2] || 0, c: '#f28e2b' }, { l: '3 fuentes', v: c[3] || 0, c: '#c62828' }], (v) => hectares(v))}` : '';
-      aviso = 'La alerta por coincidencia es conservadora: en la evaluación preliminar, 4 de cada 10 alertas se confirmaron en imágenes de 10 m y se escapan cambios pequeños. JRC y Hansen usan las mismas imágenes Landsat, así que no son del todo independientes.';
-      param = `Señal de pérdida 2021–2025 de JRC TMF, Hansen GFC y ESRI LULC | malla de ${number(t.mapas?.tamano_pixel_m || t.poligono?.pixel_m || 0, 0)} m | superficies aproximadas`;
+      const fd = p.fuentes_deterioro || [];
+      corta = c ? `${dos > 0.05 ? 'Sí' : 'Casi no'}: en <b>${haCorto(dos)}</b> (${pct(dos / t.area_ha * 100, 1)} del ${zona}) coinciden dos o más fuentes, y en <b>${haCorto(c[3] || 0)}</b> coinciden las tres. Ahí la señal de pérdida es más confiable.` : 'El mapa de señales coincidentes de este territorio todavía no está disponible.';
+      if (c) bloques.push(bloqueGfw('Superficie según cuántas fuentes coinciden',
+        `<p>Entre 2021 y 2025, <b>${haCorto(c[1] || 0)}</b> tienen señal en una sola fuente, <b>${haCorto(c[2] || 0)}</b> en dos y <b>${haCorto(c[3] || 0)}</b> en las tres (JRC, Hansen y ESRI).</p>`,
+        bars([{ l: '1 fuente', v: c[1] || 0, c: '#ffe08a' }, { l: '2 fuentes', v: c[2] || 0, c: '#f28e2b' }, { l: '3 fuentes', v: c[3] || 0, c: '#c62828' }], (v) => haCorto(v)),
+        'La alerta es conservadora: en la evaluación preliminar, 4 de cada 10 alertas se confirmaron en imágenes de 10 m y se escapan cambios pequeños. JRC y Hansen usan las mismas imágenes Landsat, así que no son del todo independientes.',
+        `Señal de pérdida 2021–2025 de JRC TMF, Hansen GFC y ESRI LULC | malla de ${number(t.mapas?.tamano_pixel_m || t.poligono?.pixel_m || 0, 0)} m | superficies aproximadas`));
+      const pesos = Object.entries(PESOS_FUENTE);
+      bloques.push(bloqueGfw('Qué fuentes suman en la preevaluación',
+        `<p>${fd.length ? `${esc(enumerar(fd))} ${fd.length === 1 ? 'supera' : 'superan'} su umbral de pérdida.` : 'Ninguna fuente de pérdida supera su umbral.'} En total, ${sujeto(t)} suma <b>${number(p.puntaje, 1)} de ${number(p.puntaje_maximo, 1)} puntos</b> (prioridad ${esc(p.prioridad.toLowerCase())}).</p>`,
+        bars(pesos.map(([k, [nom, w]]) => ({ l: nom, v: p.aportes?.[k] ?? 0, c: p.senales?.[k] ? '#c62828' : '#cfd8dc', w })), (v) => `${number(v, 1)} pt`),
+        'Los umbrales de MT-2026.7 están pensados para predios: en subcuencas grandes casi siempre se activan, por eso conviene mirar también la superficie y el puesto entre subcuencas.',
+        'Preevaluación MT-2026.7 | JRC y Hansen 2 puntos, ESRI 1.5, GEDI y NDVI 0.5'));
       fig = ['coincidencia']; detalle = '#fi-indicadores';
     } else if (clave === 'salud') {
       const n = t.ndvi || {}, d = n.ndvi_delta_medio ?? (n.ndvi_final_medio != null ? n.ndvi_final_medio - n.ndvi_inicial_medio : null);
-      const vigor = d == null ? 'no tiene datos de vigor suficientes' : d <= -0.05 ? 'perdió vigor de forma apreciable' : d >= 0.05 ? 'ganó vigor' : 'mantuvo su vigor';
+      const vigor = d == null ? null : d <= -0.05 ? 'perdió vigor de forma apreciable' : d >= 0.05 ? 'ganó vigor' : 'mantuvo su vigor';
       const g = t.gedi_altura_m;
-      frase = `<p>Entre 2020 y 2025, la vegetación de ${sujeto(t)} <b>${vigor}</b>${n.ndvi_inicial_medio != null ? `: el NDVI medio pasó de <b>${number(n.ndvi_inicial_medio, 2)}</b> a <b>${number(n.ndvi_final_medio, 2)}</b>` : d != null ? ` (cambio medio del NDVI ${d > 0 ? '+' : ''}${number(d, 3)})` : ''}.${n.ndvi_disminucion ? ` <b>${hectares(n.ndvi_disminucion)}</b> (${pct(n.ndvi_disminucion / t.area_ha * 100, 1)}) tuvieron un descenso fuerte.` : ''}</p>
-        <p>${g == null ? 'GEDI no tiene muestras suficientes de altura del dosel.' : `La altura media del dosel es de <b>${number(g, 1)} m</b> (GEDI): ${g >= 20 ? 'dosel alto, típico de bosque maduro' : g >= 10 ? 'dosel intermedio, de bosque secundario o mezclado' : 'dosel bajo, de bosque joven, rastrojo o zonas abiertas'}.`}${t.eri?.clase ? ` La resiliencia ecológica es <b>${esc(t.eri.clase)}</b> (${number(t.eri.valor * 100, 0)}/100)${t.eri.componente_limitante_etiqueta ? `; su componente más débil es ${esc(t.eri.componente_limitante_etiqueta.toLowerCase())}` : ''}.` : ''}</p>`;
-      grafico = n.ndvi_inicial_medio != null ? `<h3>Vigor medio de la vegetación (NDVI)</h3>${bars([{ l: '2020', v: n.ndvi_inicial_medio, c: '#a6d96a' }, { l: '2025', v: n.ndvi_final_medio, c: d < 0 ? '#d8b365' : '#1a9850' }], (v) => number(v, 2))}` : '';
-      aviso = 'El NDVI mide el verdor, no el estado del bosque: baja con la cosecha, la sequía o nubes residuales. GEDI mide la altura por muestreo de huellas, no en toda el área.';
-      param = 'Sentinel-2, medianas anuales sin nubes de 2020 y 2025 | GEDI L2A | ERI indicativo';
+      const dosel = g == null ? null : g >= 20 ? 'dosel alto, típico de bosque maduro' : g >= 10 ? 'dosel intermedio, de bosque secundario o mezclado' : 'dosel bajo, de bosque joven, rastrojo o zonas abiertas';
+      corta = `${vigor ? `Entre 2020 y 2025 la vegetación de ${sujeto(t)} <b>${vigor}</b>` : `${Sujeto(t)} no tiene datos de vigor suficientes`}${dosel ? `, pero lo que queda tiene ${dosel} (<b>${number(g, 1)} m</b> de media)` : ''}${t.eri?.clase ? `, y su resiliencia ecológica es <b>${esc(t.eri.clase.toLowerCase())}</b>` : ''}.`;
+      if (n.ndvi_inicial_medio != null || d != null) bloques.push(bloqueGfw('Vigor de la vegetación (NDVI)',
+        `<p>${n.ndvi_inicial_medio != null ? `El NDVI medio pasó de <b>${number(n.ndvi_inicial_medio, 2)}</b> en 2020 a <b>${number(n.ndvi_final_medio, 2)}</b> en 2025.` : `Cambio medio del NDVI: ${d > 0 ? '+' : ''}${number(d, 3)}.`}${n.ndvi_disminucion ? ` <b>${haCorto(n.ndvi_disminucion)}</b> (${pct(n.ndvi_disminucion / t.area_ha * 100, 1)}) tuvieron un descenso fuerte, de 0.15 o más.` : ''}</p>`,
+        n.ndvi_inicial_medio != null ? bars([{ l: '2020', v: n.ndvi_inicial_medio, c: '#a6d96a' }, { l: '2025', v: n.ndvi_final_medio, c: d < 0 ? '#d8b365' : '#1a9850' }], (v) => number(v, 2)) : '',
+        'El NDVI mide el verdor, no el estado del bosque: baja con la cosecha, la sequía o nubes residuales.',
+        'Sentinel-2 | 10 m | medianas anuales sin nubes de 2020 y 2025'));
+      if (g != null) bloques.push(bloqueGfw('Altura del dosel',
+        `<p>La altura media del dosel es de <b>${number(g, 1)} m</b>: ${dosel}.</p>`, '',
+        'GEDI mide la altura por huellas de láser dispersas, no en toda el área; las zonas sin huellas válidas quedan sin dato.',
+        'GEDI L2A (NASA) | huellas de 25 m'));
+      if (t.eri?.valor != null) {
+        const nombres = { integridad_estructural: 'Integridad estructural', conectividad: 'Conectividad local', estabilidad_topografica: 'Estabilidad del relieve', proximidad_riparia: 'Cercanía a ríos' };
+        const comp = t.eri.componentes ? Object.entries(t.eri.componentes) : [];
+        const debil = comp.length ? comp.slice().sort((x, y) => x[1] - y[1])[0][0] : null;
+        bloques.push(bloqueGfw('Resiliencia ecológica (ERI)',
+          `<p>Clase <b>${esc(t.eri.clase.toLowerCase())}</b>, con <b>${number(t.eri.valor * 100, 0)} de 100</b>.${debil ? ` El componente más débil es la ${esc(nombres[debil].toLowerCase())}.` : ''}</p>`,
+          comp.length ? bars(comp.map(([k, v]) => ({ l: nombres[k] || k, v: v * 100, c: k === debil ? '#f28e2b' : '#76b72a' })), (v) => `${number(v, 0)}/100`) : '',
+          'Índice indicativo: no está calibrado con mediciones de campo y no modifica la preevaluación.',
+          `Dynamic World, GEDI, Copernicus DEM y MERIT Hydro | año de referencia ${t.eri.anio_referencia || 2024}`));
+      }
       fig = ['ndvi_cambio', 'ndvi_anio']; detalle = '#fi-vigor';
     } else if (clave === 'fragmentacion') {
+      const c = await comparacionDe(t), a21 = c?.anios?.['2021'], a23 = c?.anios?.['2023'];
+      const umbral = number(mr?.umbral_m || st.data.umbral_conectividad_m || 500, 0);
       if (mc) {
         const brec = brechas(e);
-        frase = `<p>El bosque oficial 2021 de ${sujeto(t)} está dividido en <b>${number(mc.numero_parches, 0)} parches</b>. El mayor ocupa el <b>${pct(mc.indice_parche_mayor_pct, 0)}</b> del ${t.poligono ? 'área' : 'paisaje'}${mp?.porcentaje_bosque_nucleo != null ? ` y solo el <b>${pct(mp.porcentaje_bosque_nucleo, 0)}</b> del bosque es interior (a más de 100 m de un borde)` : ''}.</p>
-          <p>A ${number(mr?.umbral_m || st.data.umbral_conectividad_m || 500, 0)} m de distancia, los parches${t.poligono ? ' de la subcuenca que toca el área' : ''} forman <b>${number(mr?.numero_componentes || 0, 0)} ${mr?.numero_componentes === 1 ? 'red continua' : 'redes separadas'}</b>${brec ? `, con <b>${brec === 1 ? 'una brecha candidata' : `${number(brec, 0)} brechas candidatas`}</b> a reconexión` : ''}.${t.id !== 'chcp' && !t.poligono && (mr?.numero_componentes > 1 || brec) ? ' El simulador permite probar dónde restaurar para unirlas.' : ''}</p>`;
-        grafico = mp?.area_nucleo?.por_profundidad ? `<h3>Bosque interior según la distancia al borde</h3>${bars(mp.area_nucleo.por_profundidad.map((x) => ({ l: `A más de ${number(x.profundidad_m, 0)} m`, v: x.porcentaje_bosque_nucleo, c: '#1b5e20' })), (v) => pct(v, 0))}` : '';
-      } else frase = '<p>La fragmentación de este territorio se mide por subcuenca: elija una subcuenca para ver la respuesta.</p>';
-      aviso = 'Es conectividad estructural por cercanía: no demuestra que la fauna se mueva entre parches, y el resultado depende de la distancia de análisis elegida.';
-      param = `Bosque oficial SINIA 2021 (MiAMBIENTE) | distancia de ${number(st.data.umbral_conectividad_m || 500, 0)} m | borde de 100 m`;
-      fig = ['red']; detalle = '#fi-estructura';
+        // La red se calcula con los parches vecinos de fuera del límite, que también conectan; el
+        // simulador, en cambio, cuenta solo lo de adentro. Se dice para que las cifras no parezcan contradecirse.
+        const vecinos = (mr?.numero_parches_contexto || 0) > mc.numero_parches ? ', contando los parches vecinos de fuera del límite' : '';
+        const interior = mp?.porcentaje_bosque_nucleo != null ? `, y solo el <b>${pct(mp.porcentaje_bosque_nucleo, 0)}</b> es bosque interior` : '';
+        corta = mr?.numero_componentes === 1
+          ? `Está dividido en parches, pero conectados: el bosque oficial 2021 de ${sujeto(t)} forma <b>${number(mc.numero_parches, 0)} parches</b> que a ${umbral} m quedan en <b>una sola red</b>${vecinos}${interior}.`
+          : `Sí, está dividido: el bosque oficial 2021 de ${sujeto(t)} forma <b>${number(mc.numero_parches, 0)} parches</b> que a ${umbral} m quedan en <b>${number(mr?.numero_componentes || 0, 0)} redes separadas</b>${vecinos}${interior}.`;
+        bloques.push(bloqueGfw('Parches y bosque interior',
+          `<p>El parche mayor ocupa el <b>${pct(mc.indice_parche_mayor_pct, 0)}</b> del ${t.poligono ? 'área' : 'paisaje'} y hay <b>${number(mc.densidad_borde_m_ha, 0)} m de borde</b> por hectárea.${mp?.enn_medio_m != null ? ` Cada parche está, en promedio, a ${number(mp.enn_medio_m, 0)} m de su vecino.` : ''}</p>`,
+          mp?.area_nucleo?.por_profundidad ? bars(mp.area_nucleo.por_profundidad.map((x) => ({ l: `A más de ${number(x.profundidad_m, 0)} m del borde`, v: x.porcentaje_bosque_nucleo, c: '#1b5e20' })), (v) => pct(v, 0)) : '',
+          'El bosque interior depende de la profundidad de borde elegida; 100 m es una referencia de análisis, no un valor comprobado para una especie.',
+          'Bosque oficial SINIA 2021 (MiAMBIENTE) | métricas de paisaje'));
+        const top = (mp?.diic_principales || []).slice(0, 3);
+        bloques.push(bloqueGfw('Red de conectividad',
+          `<p>A ${umbral} m de distancia hay <b>${number(mr?.numero_componentes || 0, 0)} ${mr?.numero_componentes === 1 ? 'red' : 'redes'}</b>, ${number(mr?.numero_parches_aislados || 0, 0)} ${mr?.numero_parches_aislados === 1 ? 'parche aislado' : 'parches aislados'}${brec ? ` y <b>${brec === 1 ? 'una brecha candidata' : `${number(brec, 0)} brechas candidatas`}</b> a reconexión` : ''}.${top.length ? ` El parche que más sostiene la red es el <b>#${top[0].parche_id}</b> (${pct(top[0].diic_pct, 0)} de la conectividad).` : ''}${t.id !== 'chcp' && !t.poligono && (mr?.numero_componentes > 1 || brec) ? ' El simulador permite probar dónde restaurar para unirlas.' : ''}</p>`, '',
+          'Es conectividad estructural por cercanía: no demuestra que la fauna se mueva entre parches, y el resultado depende de la distancia de análisis.',
+          `Distancia de ${umbral} m | índice integral de conectividad (IIC) y dIIC`));
+      } else if (a21) {
+        corta = `Sí, está dividido: el bosque oficial 2021 de ${sujeto(t)} forma <b>${number(a21.numero_parches, 0)} parches</b> que a ${number(c.umbral_m, 0)} m quedan en <b>${number(a21.redes_separadas, 0)} redes separadas</b>. El parche mayor tiene ${haCorto(a21.parche_mayor_ha)} y ${number(a21.parches_menores_1ha, 0)} parches miden menos de 1 ha.`;
+        bloques.push(bloqueGfw('Parches de bosque en toda la cuenca',
+          `<p>El tamaño medio de un parche es de <b>${haCorto(a21.area_media_parche_ha)}</b>, pero el mayor reúne <b>${pct(a21.parche_mayor_ha / a21.bosque_ha * 100, 0)}</b> del bosque: la cuenca tiene un gran bloque continuo y muchos parches pequeños alrededor.</p>`,
+          bars([{ l: 'Parche mayor', v: a21.parche_mayor_ha, c: '#1b5e20' }, { l: 'Resto del bosque', v: a21.bosque_ha - a21.parche_mayor_ha, c: '#66bb6a' }], (v) => haCorto(v)),
+          'En toda la cuenca los parches se miden sobre una malla común; las métricas detalladas de borde, bosque interior y red se calculan en la ficha de cada subcuenca.',
+          `Bosque oficial SINIA 2021 | malla de ${number(c.pixel_m, 0)} m | redes con parches a ${number(c.umbral_m, 0)} m o menos`));
+      } else corta = 'La fragmentación de este territorio todavía no está calculada.';
+      if (a21 && a23) bloques.push(bloqueGfw('Cómo cambia entre los mapas oficiales 2021 y 2023',
+        `<p>El mapa 2023 muestra <b>${number(a23.numero_parches, 0)} parches</b> frente a ${number(a21.numero_parches, 0)} en 2021, con un tamaño medio de ${haCorto(a23.area_media_parche_ha)} frente a ${haCorto(a21.area_media_parche_ha)}, y ${number(a23.redes_separadas, 0)} redes separadas frente a ${number(a21.redes_separadas, 0)}.</p>`, '',
+        'Los dos mapas se hicieron con métodos distintos (vector 1:25 000 en 2021, ráster de 10 m en 2023): la diferencia no mide pérdida ni ganancia de bosque.',
+        `MiAMBIENTE 2021 y 2023 | malla común de ${number(c.pixel_m, 0)} m`));
+      fig = t.id === 'chcp' ? ['sinia_2021'] : ['red']; detalle = '#fi-estructura';
     }
-    const f = fig && (st.figuras || []).find((x) => fig.includes(x.id));
-    sec.innerHTML = `<div class="fi-resp-txt"><span class="fi-resp-q">Su pregunta</span><h2>${PREGUNTAS[clave]}</h2>${frase}${grafico}
-        <div class="fi-resp-aviso">${icon('warning', 18)}<p>${aviso}</p></div><p class="fi-resp-param">${param}</p>
+    // En la cuenca, la cobertura oficial general (3 clases): la detallada tiene demasiadas clases para este tamaño.
+    const f = fig && (fig[0] === 'sinia_2021' ? figuraCapa(t, 'sinia_2021') : (st.figuras || []).find((x) => fig.includes(x.id)));
+    sec.innerHTML = `<div class="fi-resp-txt"><span class="fi-resp-q">Su pregunta</span><h2>${PREGUNTAS[clave]}</h2><p class="fi-resp-corta">${corta}</p>${bloques.join('')}
         <p class="no-print"><a href="${detalle}">Ver el detalle en la ficha</a></p></div>
       ${f ? `<figure class="fi-fig fi-resp-map"><figcaption>${esc(f.titulo)}</figcaption><div class="fi-mini" data-rfig="${f.id}"></div>${leyendaFigura(f)}</figure>` : ''}`;
     sinPuntos(sec);
     sec.hidden = false;
     (st.respMapas || []).forEach((m) => m.remove());
     st.respMapas = [];
-    if (f) dibujarMinis(t, sec, st.respMapas, '.fi-mini[data-rfig]');
+    if (f) dibujarMinis(t, sec, st.respMapas, '.fi-mini[data-rfig]', [f]);
     if (!/^#fi-/.test(location.hash)) sec.scrollIntoView({ block: 'start' });
+  }
+
+  /**
+   * Conclusión: lo que dicen los datos en conjunto, en el orden estado, presión, estructura y qué
+   * hacer. Solo usa cifras de la ficha; las palabras («más de la mitad», «menos de un cuarto»)
+   * describen esas cifras, no son categorías nuevas.
+   */
+  function conclusion(t) {
+    const s21 = sinia(t, 2021), e = t.estructura_2021, mc = e?.metricas_clase, mr = e?.metricas_red, mp = e?.metricas_paisaje;
+    const acc = acciones(t), pr = t.id === 'chcp' || t.poligono ? null : puesto(t, 'perdida_reciente_pct_anual');
+    const b = s21?.forest_pct, perd = t.hansen_post_2020_ha || 0;
+    const parte = b == null ? null : b > 50 ? 'más de la mitad' : b >= 25 ? 'entre un cuarto y la mitad' : 'menos de un cuarto';
+    const p1 = [];
+    if (parte) p1.push(`En ${sujeto(t)}, ${parte} de la superficie es bosque oficial (${pct(b, 0)}).`);
+    p1.push(`Entre 2021 y 2025 se perdieron ${haCorto(perd)} de cobertura arbórea${s21?.forest_ha ? `, el ${pct(perd / s21.forest_ha * 100, 1)} de ese bosque` : ''}${pr ? ` (puesto ${pr.pos} de ${pr.n} subcuencas por pérdida relativa: ${tercio(pr)})` : ''}.`);
+    const fd = t.preevaluacion.fuentes_deterioro || [];
+    p1.push(fd.length >= 2 ? `La señal de pérdida es consistente: ${esc(enumerar(fd))} la detectan.` : fd.length === 1 ? `Solo ${esc(fd[0])} detecta pérdida por encima de su umbral, así que la señal necesita verificarse.` : 'Ninguna fuente detecta pérdida por encima de su umbral.');
+    const p2 = [];
+    if (mc && mr) p2.push(`El bosque está dividido en ${number(mc.numero_parches, 0)} parches que forman ${mr.numero_componentes === 1 ? 'una sola red' : `${number(mr.numero_componentes, 0)} redes separadas`}${mp?.porcentaje_bosque_nucleo != null && mp.porcentaje_bosque_nucleo < 50 ? `, y la mayor parte está a menos de 100 m de un borde (solo el ${pct(mp.porcentaje_bosque_nucleo, 0)} es bosque interior)` : ''}.`);
+    const nombres = { integridad_estructural: 'la integridad estructural del bosque', conectividad: 'la conectividad local', estabilidad_topografica: 'la estabilidad del relieve', proximidad_riparia: 'la cercanía a ríos' };
+    const comp = t.eri?.componentes ? Object.entries(t.eri.componentes).sort((x, y) => x[1] - y[1])[0] : null;
+    if (t.eri?.clase) p2.push(`Su resiliencia ecológica es ${esc(t.eri.clase.toLowerCase())}${comp ? `, limitada sobre todo por ${nombres[comp[0]] || 'uno de sus componentes'}` : ''}.`);
+    const r30 = rip30(t), rp = t.riparia?.poligono;
+    const rib = rp ? (rp.con + rp.sin_suave + rp.sin_empinado > 0 ? rp.con / (rp.con + rp.sin_suave + rp.sin_empinado) * 100 : null) : r30?.bosque_sinia_pct;
+    if (rib != null && rib < 50) p2.push(`Menos de la mitad de las orillas de los ríos tiene bosque (${pct(rib, 0)} de la franja ${rp ? 'de 50 m' : 'de 30 m'}).`);
+    const p3 = `Por eso, lo que más conviene es ${esc(enumerar(acc.slice(0, 3).map(fraseAccion)))}. Son conclusiones indicativas, hechas con imágenes satelitales y cartografía oficial: hay que confirmarlas en campo antes de decidir el manejo.`;
+    return [p1.join(' '), p2.join(' '), p3].filter(Boolean);
   }
 
   // ------------------------------------------------------------ render
@@ -453,7 +548,7 @@
       <section class="fi-resp" id="fi-respuesta" hidden></section>
       <section class="fi-sec"><h2>${icon('info', 22)} En pocas palabras</h2>${diagnostico(t).map((f) => `<p>${f}</p>`).join('')}</section>
       <section class="fi-sec fi-map-sec"><h2>${icon('map', 22)} ${t.poligono ? 'Mapa del área' : t.id === 'chcp' ? 'Mapa de la cuenca' : 'Mapa de la subcuenca'}</h2><div id="fi-map"></div><p class="fi-pending" id="fi-map-nota" hidden></p>
-        ${t.id === 'chcp' ? '<div class="fi-legend"><span><i style="background:transparent;border:2px solid #ffffff;outline:1px solid #263238"></i>Límite de la cuenca</span></div><p class="fi-note">Los parches de bosque, las brechas y los ríos se ven en la ficha de cada subcuenca: en toda la cuenca serían demasiado pequeños para leerse.</p>' : `<div class="fi-legend"><span><i style="background:#1b5e20"></i>Parche clave (conectividad alta)</span><span><i style="background:#66bb6a"></i>Parche de importancia media</span><span><i style="background:#c5e1a5"></i>Parche de importancia baja</span><span><i class="dash"></i>Brecha candidata a reconexión</span><span><i style="background:#1f78b4;height:3px"></i>Ríos (${esc(t.mapas?.rios_fuente || 'IGNTG 2022, hidrografía 1:25 000')})</span></div>`}</section>
+        ${t.id === 'chcp' ? '<div class="fi-legend"><span><i style="background:#237A4B"></i>Bosques y otras tierras boscosas (MiAMBIENTE 2021)</span><span><i style="background:#D8C49C"></i>Otras tierras</span><span><i style="background:#388FC4"></i>Cuerpos de agua</span><span><i style="background:transparent;border:1px solid #ffffff;outline:1px solid #78909c"></i>Subcuencas: clic para abrir su ficha</span><span><i style="background:transparent;border:2px solid #ffffff;outline:1px solid #263238"></i>Límite de la cuenca</span></div><p class="fi-note">Los parches de bosque, las brechas y los ríos se ven en la ficha de cada subcuenca: en toda la cuenca serían demasiado pequeños para leerse.</p>' : `<div class="fi-legend"><span><i style="background:#1b5e20"></i>Parche clave (conectividad alta)</span><span><i style="background:#66bb6a"></i>Parche de importancia media</span><span><i style="background:#c5e1a5"></i>Parche de importancia baja</span><span><i class="dash"></i>Brecha candidata a reconexión</span><span><i style="background:#1f78b4;height:3px"></i>Ríos (${esc(t.mapas?.rios_fuente || 'IGNTG 2022, hidrografía 1:25 000')})</span></div>`}</section>
       <section class="fi-sec fi-gal-sec"><h2>${icon('layers', 22)} Mapas temáticos</h2><p class="fi-note">Cada mapa muestra una fuente distinta sobre el mismo territorio, con los colores que usa cada fuente. Los ríos están en el mapa de la subcuenca y los corredores del Almanaque Azul tienen su propio mapa. El mapa base se cambia con el selector del mapa de arriba.</p>${seccionGaleria(t)}</section>
       <section class="fi-sec" id="fi-indicadores"><h2>${icon('chart', 22)} Indicadores y comparación con las demás subcuencas</h2><p class="fi-note">Verde: mejor que la mayoría de subcuencas; ámbar: intermedio; rojo: entre las más desfavorables. La comparación es relativa a la CHCP, no un umbral normativo.</p><div class="fi-inds">${indicadores}</div></section>
       ${seccionRelativa(t)}
@@ -475,6 +570,7 @@
       ${seccionAlmanaque(t)}
       <section class="fi-sec"><h2>${icon('leaf', 22)} Líneas de acción sugeridas</h2><div class="fi-actions">${acc.map((a) => `<div class="fi-action">${icon(a.i, 24)}<div><b>${esc(a.t)}</b><p><em>Por qué:</em> ${esc(a.why)}</p><p><em>Qué hacer:</em> ${esc(a.how)}</p>${a.sim && t.id !== 'chcp' && !t.poligono ? `<p class="no-print"><a href="${window.CHCP_STATIC ? 'restauracion.html' : '/restauracion'}?id=${encodeURIComponent(t.id)}">Simular la restauración en esta subcuenca →</a></p>` : ''}</div></div>`).join('')}</div>${(t.sitios || []).length ? `<h3>Sitios priorizados para verificación de campo</h3><table class="fi-table"><thead><tr><th>Sitio</th><th>Coordenadas</th><th>Superficie con señal</th><th>Fuentes que coinciden</th></tr></thead><tbody>${t.sitios.slice(0, 6).map((x) => `<tr><td>${esc(x.id)}</td><td>${number(x.lat, 5)}, ${number(x.lon, 5)}</td><td>${hectares(x.area_ha)}</td><td>${x.fuentes}</td></tr>`).join('')}</tbody></table><p class="no-print"><a href="${window.CHCP_STATIC ? 'campo.html' : '/campo'}?id=${encodeURIComponent(t.id)}">Ver estado y registrar visitas →</a></p>` : ''}
       <p class="fi-note">Reglas transparentes sobre los indicadores de esta ficha. Orientan la revisión técnica; no sustituyen la verificación de campo ni constituyen una decisión de manejo.</p></section>
+      <section class="fi-sec fi-concl" id="fi-conclusion"><h2>${icon('doc', 22)} Conclusión</h2>${conclusion(t).map((x) => `<p>${x}</p>`).join('')}</section>
       <section class="fi-sec"><h2>${icon('warning', 22)} Confiabilidad e incertidumbre</h2>
         <p><b>Concordancia de fuentes:</b> ${esc(p.consistencia || '—')}. ${(p.fuentes_deterioro || []).length >= 2 ? 'Dos o más fuentes coinciden en señales de deterioro, lo que aumenta la confianza, aunque JRC y Hansen comparten imágenes Landsat y no son totalmente independientes.' : (p.fuentes_deterioro || []).length === 1 ? 'Solo una fuente muestra deterioro: la señal debe verificarse.' : 'Ninguna fuente muestra deterioro significativo.'}</p>
         <table class="fi-table"><thead><tr><th>Fuente</th><th>Qué mide</th><th>Limitación principal</th></tr></thead><tbody>
@@ -551,7 +647,7 @@
     const feature = featureDe(t);
     const porId = new Map((figuras || []).map((f) => [f.id, f]));
     $$(selector, raiz).forEach((div) => {
-      const f = porId.get(div.dataset.fig || div.dataset.rfig);
+      const f = porId.get(div.dataset.fig || div.dataset.rfig || div.dataset.rb);
       if (!f) return;
       // zoomSnap fino: el territorio llena el recuadro en vez de quedar en el nivel entero anterior.
       const m = L.map(div, { zoomControl: false, attributionControl: false, scrollWheelZoom: false, zoomSnap: 0.1 });
@@ -632,7 +728,21 @@
     const area = L.geoJSON(feature, { style: { color: '#ffffff', weight: 3, fill: false } }).addTo(map);
     referencias(map, false, t.id !== 'chcp');
     encuadre(map, area.getBounds(), 12);
-    if (t.id === 'chcp') return;  // la cuenca completa no tiene red de parches propia
+    if (t.id === 'chcp') {
+      // La cuenca no tiene red de parches propia: se muestra el bosque oficial 2021 y las 53
+      // subcuencas, que se abren con un clic.
+      if (t.mapas?.capas?.includes('sinia_2021')) L.imageOverlay(mapFile('chcp', 'sinia_2021.png'), t.mapas.limites, { opacity: 0.8 }).addTo(map);
+      L.geoJSON(st.territory.subbasins, {
+        style: { color: '#ffffff', weight: 1, opacity: 0.9, fillColor: '#ffffff', fillOpacity: 0 },
+        onEachFeature: (f, l) => {
+          l.bindTooltip(`${esc(f.properties.nombre || f.properties.id)}: clic para abrir su ficha`, { sticky: true });
+          l.on('mouseover', () => l.setStyle({ weight: 2.5, fillOpacity: 0.12 })).on('mouseout', () => l.setStyle({ weight: 1, fillOpacity: 0 }));
+          l.on('click', () => select(f.properties.id));
+        },
+      }).addTo(map);
+      area.bringToFront();
+      return;
+    }
     try {
       const g = t.poligono ? await geometriaPoligono(t) : await api(`/api/v1/panel/geometry/${t.id}`);
       const color = { Alta: '#1b5e20', Media: '#66bb6a', Baja: '#c5e1a5' };
@@ -773,6 +883,19 @@
       h.innerHTML = h.innerHTML.replace(/ · ([^<]*)(<span class="exp-tag"|$)/, ' <small class="fi-fuente">$1</small>$2');
     });
   }
+  // Frase de la acción principal para la respuesta corta de la ficha resumen.
+  const ACCION_FRASE = {
+    'Verificación de campo prioritaria': 'verificar en campo los sitios donde coinciden las señales de pérdida',
+    'Restauración para reconectar parches': 'restaurar las brechas que reconectan las redes de bosque',
+    'Proteger los parches clave para la red': 'proteger los parches clave que sostienen la red',
+    'Ampliar el bosque interior': 'ensanchar los parches estrechos para ganar bosque interior',
+    'Restauración riparia': 'revegetar las orillas sin bosque, empezando por las de mayor pendiente',
+    'Revisar franjas riparias': 'revisar la cobertura de las orillas de los ríos',
+    'Revisar descensos de vigor (NDVI)': 'revisar dónde bajó el vigor de la vegetación',
+    'Conservación y monitoreo preventivo': 'mantener la conservación y el monitoreo preventivo',
+    'Seguimiento anual': 'mantener el seguimiento anual',
+  };
+  const fraseAccion = (a) => ACCION_FRASE[a?.t] || (a ? a.t.charAt(0).toLowerCase() + a.t.slice(1) : 'mantener el seguimiento anual');
   // Ficha resumen: dos hojas A4 con el diseño de la página. La primera responde «cómo está este
   // territorio» (respuesta corta, preevaluación, tres hallazgos y el mapa principal con escala,
   // norte y localización). La segunda muestra la evidencia (seis mapas de fuentes distintas, los
@@ -842,7 +965,7 @@
     f.push(`Entre 2021 y 2025 perdió <b>${haCorto(t.hansen_post_2020_ha)}</b> de cobertura arbórea según Hansen, y JRC suma <b>${haCorto(perturbado)}</b> deforestadas o degradadas desde 1990.`);
     if (mc && mr) f.push(`Su bosque está dividido en ${number(mc.numero_parches, 0)} parches que forman ${number(mr.numero_componentes, 0)} ${mr.numero_componentes === 1 ? 'red continua' : 'redes separadas'}${mp?.porcentaje_bosque_nucleo != null ? `, y el ${pct(mp.porcentaje_bosque_nucleo, 0)} es bosque interior` : ''}.`);
     else if (t.corredores?.porcentaje != null) f.push(`El ${pct(t.corredores.porcentaje, 0)} del territorio está dentro de corredores biológicos publicados.`);
-    f.push(`Con ${number(p.puntaje, 1)} de ${number(p.puntaje_maximo, 1)} puntos, la preevaluación le da prioridad <b>${esc(p.prioridad.toLowerCase())}</b>; la primera línea de acción sugerida es ${acc[0] ? `«${esc(acc[0].t.charAt(0).toLowerCase() + acc[0].t.slice(1))}»` : 'el seguimiento anual'}.`);
+    f.push(`Con ${number(p.puntaje, 1)} de ${number(p.puntaje_maximo, 1)} puntos, la preevaluación le da prioridad <b>${esc(p.prioridad.toLowerCase())}</b>: lo primero es ${fraseAccion(acc[0])}.`);
     return f.join(' ');
   }
   function hallazgos(t) {
@@ -880,6 +1003,149 @@
     ].filter((x) => x[1]);
     return `<table class="fi-rp-tabla"><thead><tr><th>Indicador</th><th>Valor</th><th>Fuente</th></tr></thead><tbody>${filas.map(([a, b, c]) => `<tr><th scope="row">${a}</th><td>${b}</td><td>${c}</td></tr>`).join('')}</tbody></table>`;
   }
+  // Preguntas que responde la ficha, con la estructura de Global Forest Watch: la pregunta, una
+  // frase que la responde con las cifras, una tabla o gráfico, la advertencia principal, los
+  // parámetros usados y un mapa. Se arman solo las que tienen datos para el territorio.
+  const limpiarNombre = (x) => String(x || '').replace(/\s*·\s*/g, ' ').replace(/\s+/g, ' ').trim();
+  const aviso = (txt) => `<div class="fi-resp-aviso">${icon('warning', 16)}<p>${txt}</p></div>`;
+  /** Mapa pequeño con fondo gris, límite y encuadre, para los mapas propios de las respuestas. */
+  function mapaRespuesta(div, t) {
+    const m = L.map(div, { zoomControl: false, attributionControl: false, scrollWheelZoom: false, zoomSnap: 0.1 });
+    window.CHCP.mapaBase(m, { defecto: 'gris', control: false });
+    const borde = L.geoJSON(featureDe(t), { style: { color: '#263238', weight: 1.6, fill: false }, interactive: false }).addTo(m);
+    m._borde = borde;
+    encuadre(m, borde.getBounds(), 6);
+    if (t.poligono) velo(m, t, 0.75);
+    return m;
+  }
+  function sitiosDe(t) {
+    if (!t.poligono) return t.sitios || [];
+    const g = t.poligono.feature.geometry;
+    return t.poligono.ids.flatMap((id) => st.data.territorios[id]?.sitios || []).filter((x) => RED?.puntoEnPoligono([x.lon, x.lat], g))
+      .sort((a, b) => b.fuentes - a.fuentes || b.area_ha - a.area_ha);
+  }
+  async function bloquesRespuesta(t) {
+    const B = [], suj = sujeto(t), Suj = Sujeto(t);
+    const p = t.preevaluacion;
+    // 1. Dónde verificar en campo
+    const sitios = sitiosDe(t).slice(0, 5);
+    if (sitios.length) {
+      const tres = sitios.filter((x) => x.fuentes >= 3).length;
+      B.push({
+        html: `<h2>¿Dónde conviene verificar en campo?</h2>
+          <p>La prioridad de visita de ${suj} es <b>${esc((p.prioridad_visita || '—').toLowerCase())}</b>. Estos son los ${sitios.length === 1 ? 'sitio' : `${sitios.length} sitios`} con señal de pérdida 2021–2025 que conviene revisar primero: suman <b>${haCorto(sitios.reduce((s2, x) => s2 + x.area_ha, 0))}</b>${tres ? `, y en ${tres === 1 ? 'uno' : tres} coinciden las tres fuentes` : ''}.</p>
+          <table class="fi-rp-tabla"><thead><tr><th>Sitio</th><th>Latitud, longitud</th><th>Superficie</th><th>Fuentes</th></tr></thead><tbody>${sitios.map((x, i) => `<tr><th scope="row">${i + 1}</th><td>${number(x.lat, 5)}, ${number(x.lon, 5)}</td><td>${haCorto(x.area_ha)}</td><td>${x.fuentes} de 3</td></tr>`).join('')}</tbody></table>
+          ${aviso('La alerta es conservadora: en la evaluación preliminar de toda la cuenca, 4 de cada 10 alertas se confirmaron en imágenes de 10 m y se escaparon cambios pequeños. La pérdida real puede ser mayor que la mapeada.')}
+          <p class="fi-rp-param">Manchas de 0.5 ha o más con señal de JRC, Hansen o ESRI, ordenadas por fuentes coincidentes y superficie | centro de cada mancha en WGS 84</p>`,
+        mapa: 'Sitios sobre las señales de pérdida coincidentes',
+        leyenda: '<span><i style="background:#ffe08a"></i>1 fuente</span><span><i style="background:#f28e2b"></i>2 fuentes</span><span><i style="background:#c62828"></i>3 fuentes</span><span><i class="num">1</i>Sitio</span>',
+        dibujar: (div) => {
+          const m = mapaRespuesta(div, t);
+          (t.poligono ? t.poligono.ids : [t.id]).forEach((id) => { const x = st.data.territorios[id]; if (x?.mapas?.capas?.includes('coincidencia')) L.imageOverlay(mapFile(id, 'coincidencia.png'), x.mapas.limites, { opacity: 0.9 }).addTo(m); });
+          sitios.forEach((x, i) => L.marker([x.lat, x.lon], { icon: L.divIcon({ className: 'fi-rp-sitio', html: String(i + 1), iconSize: [18, 18] }), interactive: false }).addTo(m));
+          m._borde.bringToFront();
+          return m;
+        },
+      });
+    }
+    // 2. Bosque oficial 2021 frente a 2023
+    let c = null;
+    if (!t.poligono) { try { c = await (await fetch(window.CHCP.cobFile(`comparacion/${t.id}.json`))).json(); } catch (_) { c = null; } }
+    if (c?.anios?.['2021'] && c.anios['2023']) {
+      const a = c.anios['2021'], b = c.anios['2023'];
+      const fila = (n, k, dec, u = '') => { const d = (b[k] ?? 0) - (a[k] ?? 0); return `<tr><th scope="row">${n}</th><td>${number(a[k], dec)}${u}</td><td>${number(b[k], dec)}${u}</td><td>${Math.abs(d) < (dec ? 0.05 : 0.5) ? 'igual' : `${d > 0 ? '+' : '−'}${number(Math.abs(d), dec)}${u}`}</td></tr>`; };
+      const masParches = b.numero_parches > a.numero_parches, medioMenor = b.area_media_parche_ha < a.area_media_parche_ha;
+      const forma = masParches && medioMenor ? 'más dividido: más parches y más pequeños' : !masParches && !medioMenor && b.numero_parches !== a.numero_parches ? 'menos dividido: menos parches y más grandes' : 'con una fragmentación parecida';
+      B.push({
+        html: `<h2>¿Cambió el bosque oficial entre 2021 y 2023?</h2>
+          <p>El mapa 2023 muestra <b>${haCorto(b.bosque_ha)}</b> de bosque en ${suj}, frente a <b>${haCorto(a.bosque_ha)}</b> en 2021, y el bosque aparece ${forma}.${c.cambio ? ` Coinciden ${haCorto(c.cambio.en_ambos_ha)}; ${haCorto(c.cambio.solo_2021_ha)} son bosque solo en 2021 y ${haCorto(c.cambio.solo_2023_ha)} solo en 2023.` : ''}</p>
+          <table class="fi-rp-tabla"><thead><tr><th>Indicador</th><th>2021</th><th>2023</th><th>Diferencia</th></tr></thead><tbody>${fila('Bosque', 'bosque_ha', 0, ' ha')}${fila('Parches', 'numero_parches', 0)}${fila('Tamaño medio del parche', 'area_media_parche_ha', 1, ' ha')}${fila('Redes separadas', 'redes_separadas', 0)}</tbody></table>
+          ${aviso('Los dos mapas son de MiAMBIENTE pero se hicieron con métodos distintos (vector 1:25 000 en 2021, ráster de 10 m en 2023). La diferencia mezcla cambios reales con diferencias de método: no mide pérdida ni ganancia.')}
+          <p class="fi-rp-param">Categoría «Bosques y otras tierras boscosas» en los dos años | malla común de ${number(c.pixel_m, 0)} m | redes con parches a ${number(c.umbral_m, 0)} m o menos</p>`,
+        mapa: 'Dónde difieren los dos mapas',
+        leyenda: CLASES_2021_2023.map((x) => `<span><i style="background:${x.color}"></i>${esc(x.etiqueta)}</span>`).join(''),
+        figura: { id: 'cmp', tipo: 'valores', archivo: window.CHCP.cobFile(`mapas/${t.id}/bosque_2021_2023.v.png`), limites: c.limites, clases: CLASES_2021_2023 },
+      });
+    }
+    // 3. Resiliencia ecológica (ERI)
+    const e = t.eri;
+    if (e?.valor != null) {
+      const nombres = { integridad_estructural: 'Integridad estructural', conectividad: 'Conectividad local', estabilidad_topografica: 'Estabilidad del relieve', proximidad_riparia: 'Cercanía a ríos' };
+      const comp = e.componentes ? Object.entries(e.componentes) : [];
+      const debil = comp.length ? comp.slice().sort((x, y) => x[1] - y[1])[0][0] : null;
+      const eriFig = figuraCapa(t, 'eri');
+      B.push({
+        html: `<h2>¿Qué tan resiliente es el paisaje?</h2>
+          <p>La resiliencia ecológica de ${suj} es <b>${esc(String(e.clase || '').toLowerCase())}</b>, con <b>${number(e.valor * 100, 0)} de 100</b>.${debil ? ` Su componente más débil es la ${esc(nombres[debil].toLowerCase())} (${number(e.componentes[debil] * 100, 0)}/100): es donde la restauración aportaría más estabilidad.` : ''}</p>
+          ${comp.length ? bars(comp.map(([k, v]) => ({ l: nombres[k] || k, v: v * 100, c: k === debil ? '#f28e2b' : '#76b72a' })), (v) => `${number(v, 0)}/100`) : `<p class="fi-rp-sub">Valor medio de los píxeles del área; los componentes se calculan por subcuenca.</p>`}
+          ${aviso('Es un índice indicativo: combina dosel, bosque alrededor, pendiente y cercanía a ríos, pero no está calibrado con mediciones de campo y no modifica la preevaluación.')}
+          <p class="fi-rp-param">Dynamic World, GEDI, Copernicus DEM y MERIT Hydro | pesos 35, 25, 20 y 20 % | año de referencia ${e.anio_referencia || 2024}</p>`,
+        mapa: 'Resiliencia ecológica indicativa (ERI)',
+        leyenda: eriFig ? leyendaFigura(eriFig) : '',
+        figura: eriFig,
+      });
+    }
+    // 4. Ríos y franjas riparias
+    const r = t.riparia, rp = r?.poligono;
+    if (rp || r?.sin_bosque_por_pendiente) {
+      const ripFig = figuraCapa(t, 'riparia');
+      const filas = rp ? [{ l: 'Pendiente < 30 %', v: rp.sin_suave, c: '#f4a261' }, { l: 'Pendiente ≥ 30 %', v: rp.sin_empinado, c: '#c62828' }]
+        : r.sin_bosque_por_pendiente.map((x) => ({ l: `Pendiente ${x.pendiente}`, v: x.area_ha, c: /≥ 30/.test(x.pendiente) ? '#c62828' : /15/.test(x.pendiente) ? '#f4a261' : '#ffd08a' }));
+      const sin = filas.reduce((s2, x) => s2 + x.v, 0), empinado = filas.find((x) => /≥/.test(x.l))?.v || 0;
+      const f30 = rip30(t);
+      B.push({
+        html: `<h2>¿Tienen bosque las orillas de los ríos?</h2>
+          <p>${rp ? `En la franja de 50 m a cada lado de los cauces que cruzan ${suj}, <b>${pct(rp.con / ((rp.con + sin) || 1) * 100, 0)}</b> tiene bosque oficial.` : `${Suj} tiene unos <b>${number(r.longitud_cauces_km, 0)} km de cauces</b>${f30?.bosque_sinia_pct != null ? `, y el <b>${pct(f30.bosque_sinia_pct, 0)}</b> de la franja de 30 m a cada lado tiene bosque oficial` : ''}.`} Hay <b>${haCorto(sin)}</b> de franja de 50 m sin bosque${empinado ? `, de ellas <b>${haCorto(empinado)}</b> en pendientes de 30 % o más, las primeras que conviene revegetar` : ''}.</p>
+          <h3>Franja de 50 m sin bosque, por pendiente</h3>${bars(filas, (v) => haCorto(v))}
+          ${aviso('Es una clasificación descriptiva, no un modelo de erosión ni de caudal. Los cauces y distancias son aproximados y conviene confirmarlos con la hidrografía local.')}
+          <p class="fi-rp-param">${rp ? 'Cauces del IGNTG' : 'Cauces MERIT Hydro (90 m) con drenaje de 1 km² o más'} | franjas de 30 y 50 m a cada lado | bosque oficial SINIA 2021</p>`,
+        mapa: 'Franja riparia de 50 m',
+        leyenda: ripFig ? leyendaFigura(ripFig) : '',
+        figura: ripFig,
+      });
+    }
+    // 5. Corredores y puntos críticos
+    const corr = (t.corredores?.lista || []).slice().sort((x, y) => y.interseccion_ha - x.interseccion_ha);
+    const feature = featureDe(t);
+    const puntos = (st.territory.critical_points?.features || []).filter((q) => feature && RED && RED.puntoEnPoligono(q.geometry.coordinates, feature.geometry || feature.features?.[0]?.geometry));
+    if (corr.length || puntos.length) {
+      B.push({
+        html: `<h2>¿Qué corredores biológicos cruza?</h2>
+          <p>El <b>${pct(t.corredores?.porcentaje, 0)}</b> de ${suj} (${haCorto(t.corredores?.area_ha)}) está dentro de ${corr.length === 1 ? 'un corredor publicado' : `${corr.length} corredores publicados`}${t.corredores?.intersecta_mesoamericano ? ', incluido el Corredor Biológico Mesoamericano' : ''}. ${puntos.length ? `Hay <b>${puntos.length === 1 ? 'un punto crítico' : `${puntos.length} puntos críticos`}</b> del Almanaque Azul dentro.` : 'No hay puntos críticos del Almanaque Azul dentro.'}</p>
+          <table class="fi-rp-tabla"><thead><tr><th>Corredor</th><th>Conectividad</th><th>Superficie dentro</th></tr></thead><tbody>${corr.slice(0, 6).map((x) => `<tr><th scope="row">${esc(limpiarNombre(x.nombre))}</th><td>${esc(x.categoria || '—')}</td><td>${haCorto(x.interseccion_ha)}</td></tr>`).join('')}</tbody></table>
+          ${puntos.length ? `<p class="fi-rp-sub"><b>Puntos críticos:</b> ${esc(puntos.slice(0, 4).map((q) => limpiarNombre(q.properties.notas || q.properties.nombre || 'Punto crítico')).join('; '))}${puntos.length > 4 ? '; y otros en la ficha completa' : ''}.</p>` : ''}
+          ${aviso('Las categorías de conectividad y los puntos críticos son los publicados por el Almanaque Azul; el geoportal no los modifica ni los valida en campo.')}
+          <p class="fi-rp-param">Almanaque Azul (2024) | superficie calculada sobre el límite de ${t.poligono ? 'el área' : t.id === 'chcp' ? 'la cuenca' : 'la subcuenca'}</p>`,
+        mapa: 'Corredores y puntos críticos',
+        leyenda: (st.figuras || []).find((f) => f.id === 'corredores')?.leyenda?.replace(/^<div class="fi-legend">|<\/div>$/g, '') || '',
+        figura: (st.figuras || []).find((f) => f.id === 'corredores'),
+      });
+    }
+    // 6. Parches clave para la red (dIIC)
+    const diic = (t.estructura_2021?.metricas_paisaje?.diic_principales || []).slice(0, 5);
+    if (diic.length && st.geoFicha?.id === t.id) {
+      const puentes = diic.filter((x) => x.es_puente).length, siguen = diic.slice(1, 3);
+      B.push({
+        html: `<h2>¿Qué parches sostienen la red de bosque?</h2>
+          <p>El parche <b>#${diic[0].parche_id}</b> (${haCorto(diic[0].area_ha)}) sostiene el <b>${pct(diic[0].diic_pct, 0)}</b> de la conectividad del bosque${siguen.length ? `; le ${siguen.length === 1 ? 'sigue el' : 'siguen los'} ${enumerar(siguen.map((x) => `#${x.parche_id} (${pct(x.diic_pct, 0)})`))}` : ''}. Cada porcentaje es lo que bajaría la conectividad si se perdiera ese parche, por eso no se suman.${puentes ? ` ${puentes === 1 ? 'Uno funciona' : `${puentes} funcionan`} como puente entre grupos de bosque: si se pierden, la red se divide.` : ''}</p>
+          <table class="fi-rp-tabla"><thead><tr><th>Parche</th><th>Superficie</th><th>Aporte a la conectividad</th><th>Función</th></tr></thead><tbody>${diic.map((x) => `<tr><th scope="row">#${x.parche_id}</th><td>${haCorto(x.area_ha)}</td><td>${pct(x.diic_pct, 1)}</td><td>${x.es_puente ? 'Puente entre grupos' : 'Gran hábitat'}</td></tr>`).join('')}</tbody></table>
+          ${aviso('Es conectividad estructural: mide cuánto bajaría la conectividad potencial si se perdiera cada parche, no demuestra que la fauna lo use. El resultado depende de la distancia de análisis.')}
+          <p class="fi-rp-param">dIIC (Pascual-Hortal y Saura, 2006) | parches a ${number(t.estructura_2021?.metricas_paisaje?.umbral_m || 500, 0)} m o menos conectados | bosque oficial SINIA 2021</p>`,
+        mapa: 'Dónde están los parches clave',
+        leyenda: '<span><i style="background:#1b5e20;outline:1.5px solid #ffeb3b"></i>Parche clave (con su número)</span><span><i style="background:#c5e1a5"></i>Otros parches</span>',
+        dibujar: (div) => {
+          const m = mapaRespuesta(div, t), top = new Set(diic.map((x) => x.parche_id));
+          L.geoJSON(st.geoFicha.g.parches, {
+            style: (f) => (top.has(f.properties.patch_id) ? { color: '#ffeb3b', weight: 1.2, fillColor: '#1b5e20', fillOpacity: 0.95 } : { color: '#8bc34a', weight: 0.4, fillColor: '#c5e1a5', fillOpacity: 0.6 }),
+            onEachFeature: (f, l) => { if (top.has(f.properties.patch_id)) l.bindTooltip(`#${f.properties.patch_id}`, { permanent: true, direction: 'center', className: 'fi-diic-et' }); },
+          }).addTo(m);
+          m._borde.bringToFront();
+          return m;
+        },
+      });
+    }
+    return B;
+  }
   async function construirResumen(t) {
     const caja = document.getElementById('fi-resumen');
     const p = t.preevaluacion;
@@ -895,6 +1161,10 @@
     let filasHansen = porAnio ? Object.entries(porAnio).map(([a, v]) => ({ anio: Number(a), v: Number(v) || 0 })).filter((f) => f.anio >= 2001).sort((x, y) => x.anio - y.anio) : [];
     if (!filasHansen.length) filasHansen = (t.serie_anual || []).filter((x) => x.hansen_perdida_ha != null).map((x) => ({ anio: x.anio, v: x.hansen_perdida_ha }));
     const totalHansen = filasHansen.reduce((s2, f) => s2 + f.v, 0);
+    const bloques = await bloquesRespuesta(t);
+    // Hasta tres respuestas por hoja, repartidas parejo (4 respuestas = 2 + 2, no 3 + 1).
+    // La conclusión ocupa el lugar de una respuesta en la última hoja, así que nunca se encima a ellas.
+    const hojasResp = Math.ceil((bloques.length + 1) / 3), POR_HOJA = Math.max(1, Math.ceil(bloques.length / hojasResp)), hojas = 2 + hojasResp;
     // Suma de la preevaluación: una barra con el peso de cada fuente; las que suman van en color.
     const barra = Object.entries(PESOS_FUENTE).map(([k, [, w]]) => `<i style="flex:${w}" class="${p.senales?.[k] ? 'si' : ''}"></i>`).join('');
     const suman = Object.entries(PESOS_FUENTE).filter(([k]) => p.senales?.[k]).map(([k, [nom]]) => `${nom} ${number(p.aportes?.[k] ?? 0, 1)}`);
@@ -903,10 +1173,10 @@
       ['Superficie', hectares(t.area_ha)], ['Datos del', esc(fechaLarga(st.data.generado))], ['Método', esc(metodo)],
       t.poligono ? ['Cálculo', `malla de ${number(t.poligono.pixel_m, 0)} m`] : null,
     ].filter(Boolean).map(([a, b]) => `<div><dt>${a}</dt><dd>${b}</dd></div>`).join('');
-    const marca = (pag) => `<div class="fi-rp-marca"><img src="${img}/emblema_blanco.svg" alt="" width="34" height="34"><div><b>Geoportal CHCP</b><span>Conectividad ecológica de la Cuenca del Canal de Panamá</span></div><p><b>${t.poligono ? 'Ficha resumen de un área dibujada' : 'Ficha resumen'}</b>${pag === 2 ? `<span>${esc(t.nombre)}</span>` : ''}</p></div>`;
-    const pie = (n) => `<footer class="fi-rp-pie"><span>Resultados indicativos calculados con imágenes satelitales y cartografía oficial: orientan la revisión técnica y la visita de campo, no la reemplazan.</span><span>Hoja ${n} de 2</span></footer>`;
+    const marca = (pag) => `<div class="fi-rp-marca"><img src="${img}/emblema_blanco.svg" alt="" width="34" height="34"><div><b>Geoportal CHCP</b><span>Conectividad ecológica de la Cuenca del Canal de Panamá</span></div><p><b>${t.poligono ? 'Ficha resumen de un área dibujada' : 'Ficha resumen'}</b>${pag > 1 ? `<span>${esc(t.nombre)}</span>` : ''}</p></div>`;
+    const pie = (n) => `<footer class="fi-rp-pie"><span>Resultados indicativos calculados con imágenes satelitales y cartografía oficial: orientan la revisión técnica y la visita de campo, no la reemplazan.</span><span>Hoja ${n} de ${hojas}</span></footer>`;
     const leyendaPrincipal = t.id === 'chcp'
-      ? '<span><i class="borde"></i>Límite de la cuenca</span><span><i class="sub"></i>Subcuencas</span>'
+      ? '<span><i style="background:#237A4B"></i>Bosque oficial 2021</span><span><i style="background:#D8C49C"></i>Otras tierras</span><span><i style="background:#388FC4"></i>Agua</span><span><i class="borde"></i>Límite de la cuenca</span><span><i class="sub"></i>Subcuencas</span>'
       : `<span><i style="background:#1b5e20"></i>Parche clave</span><span><i style="background:#66bb6a"></i>Importancia media</span><span><i style="background:#c5e1a5"></i>Importancia baja</span><span><i class="dash"></i>Brecha candidata</span>${st.rios ? '<span><i class="rio"></i>Ríos</span>' : ''}<span><i class="borde"></i>${t.poligono ? 'Área dibujada' : 'Límite de la subcuenca'}</span>`;
     const enLinea = t.poligono ? null : `${location.origin}${location.pathname}?id=${encodeURIComponent(t.id)}`;
     const aviso = t.poligono?.error_borde > 0.10 ? `<p class="fi-rp-aviso"><b>Resultado aproximado:</b> el área es pequeña o irregular para la malla de los mapas (error de borde de ${number(t.poligono.error_borde * 100, 0)} %).</p>` : '';
@@ -925,7 +1195,7 @@
           <div class="fi-rp-hall">${hallazgos(t)}</div>
           <figure class="fi-rp-mapa">
             <div class="fi-rp-lienzo"><div class="fi-mini" id="fi-res-principal"></div>${NORTE}${localizador(t)}</div>
-            <figcaption><div class="fi-legend">${leyendaPrincipal}</div><p>${t.poligono ? 'El área dibujada' : t.id === 'chcp' ? 'La cuenca' : 'La subcuenca'} sobre imagen satelital${t.id === 'chcp' ? ', con sus 53 subcuencas. Los parches de bosque se ven en la ficha de cada subcuenca.' : ', con los parches de bosque oficial 2021 según su importancia para la conectividad (dIIC).'}${t.id === 'chcp' ? '' : ' Recuadro: ubicación en la cuenca.'}</p></figcaption>
+            <figcaption><div class="fi-legend">${leyendaPrincipal}</div><p>${t.poligono ? 'El área dibujada' : t.id === 'chcp' ? 'La cuenca' : 'La subcuenca'} sobre imagen satelital${t.id === 'chcp' ? ', con la cobertura oficial 2021 de MiAMBIENTE y sus 53 subcuencas. Los parches de bosque se ven en la ficha de cada subcuenca.' : ', con los parches de bosque oficial 2021 según su importancia para la conectividad (dIIC).'}${t.id === 'chcp' ? '' : ' Recuadro: ubicación en la cuenca.'}</p></figcaption>
           </figure>
         </div>
         ${pie(1)}
@@ -942,12 +1212,28 @@
           <div><h2>Qué conviene hacer</h2><div class="fi-rp-acc">${acc.map((a) => `<article>${icon(a.i, 20)}<div><b>${esc(a.t)}</b><p>${esc(a.why)}</p><p><em>Qué hacer:</em> ${esc(a.how)}</p></div></article>`).join('')}</div></div>
         </div>
         ${pie(2)}
-      </section>`;
+      </section>
+      ${Array.from({ length: hojas - 2 }, (_, h) => `<section class="fi-rp">
+        <header class="fi-rp-banda fi-rp-banda-s">${marca(h + 3)}</header>
+        <div class="fi-rp-cuerpo">
+          ${h === 0 ? `<div class="fi-rp-tit"><h2>Respuestas a las preguntas clave</h2><p class="fi-rp-sub">Cada respuesta trae la cifra, la advertencia principal y los parámetros usados.</p></div>` : ''}
+          ${bloques.slice(h * POR_HOJA, (h + 1) * POR_HOJA).map((b, i) => (`<article class="fi-rp-resp" data-bloque="${h * POR_HOJA + i}"><div class="fi-rp-resp-txt">${b.html}</div>
+            <figure class="fi-rp-resp-map"><figcaption><b>${esc(b.mapa)}</b></figcaption><div class="fi-mini"${b.figura ? ` data-rb="${b.figura.id}"` : ''}></div>${/^<div/.test(b.leyenda || '') ? b.leyenda : `<div class="fi-legend">${b.leyenda || ''}</div>`}</figure></article>`)).join('')}
+          ${h === hojas - 3 ? `<section class="fi-rp-concl"><h2>Conclusión</h2>${conclusion(t).map((x) => `<p>${x}</p>`).join('')}</section>` : ''}
+        </div>
+        ${pie(h + 3)}
+      </section>`).join('')}`;
     caja.hidden = false;
     // Mapas de la hoja 2
     (st.resumen || []).forEach((x) => x.remove());
     st.resumen = [];
     dibujarMinis(t, caja, st.resumen, '.fi-mini[data-fig]', figs);
+    // Mapas de las respuestas: los de capas con dibujarMinis y los propios (sitios, parches clave) aparte.
+    bloques.forEach((b, i) => {
+      const art = caja.querySelector(`[data-bloque="${i}"]`);
+      if (b.figura) dibujarMinis(t, art, st.resumen, '.fi-mini[data-rb]', [b.figura]);
+      else if (b.dibujar) st.resumen.push(b.dibujar(art.querySelector('.fi-mini')));
+    });
     // Mapa principal de la hoja 1, con escala gráfica.
     const map = L.map(document.getElementById('fi-res-principal'), { zoomControl: false, attributionControl: false, scrollWheelZoom: false, zoomSnap: 0.1 });
     window.CHCP.mapaBase(map, { defecto: 'satelite', control: false });
@@ -959,6 +1245,7 @@
     ]);
     map._borde = borde;
     encuadre(map, borde.getBounds(), 8);
+    if (t.id === 'chcp' && t.mapas?.capas?.includes('sinia_2021')) L.imageOverlay(mapFile('chcp', 'sinia_2021.png'), t.mapas.limites, { opacity: 0.8 }).addTo(map);
     if (t.id === 'chcp') L.geoJSON(st.territory.subbasins, { style: { color: '#ffffff', weight: 0.8, opacity: 0.75, fill: false }, interactive: false }).addTo(map);
     if (t.id !== 'chcp' && st.rios) L.geoJSON(st.rios, { style: { color: '#4fc3f7', weight: 1, opacity: 0.9 }, interactive: false }).addTo(map);
     borde.addTo(map);

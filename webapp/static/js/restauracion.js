@@ -754,6 +754,10 @@
     return caja;
   }
   function pintarRespuesta(caja, titulo, frases, aviso, param) {
+    if (st.ejemplo && st.ejemplo === st.id) {
+      const t = st.data.territorios[st.id];
+      frases = [`<i>La cuenca completa es demasiado grande para simular parche por parche, así que se abrió como ejemplo ${esc(t?.nombre || '')}${PREGUNTA === 'restaurar' ? ', una subcuenca con redes de bosque separadas y brechas que se pueden cerrar' : ''}. Puede elegir otra subcuenca en la lista.</i>`, ...frases];
+    }
     caja.innerHTML = `<div class="fi-resp-txt"><span class="fi-resp-q">Su pregunta</span><h2>${titulo}</h2>${frases.map((f) => `<p>${f}</p>`).join('')}
       <div class="fi-resp-aviso">${window.CHCP_ICON ? window.CHCP_ICON('warning', 18) : ''}<p>${aviso}</p></div><p class="fi-resp-param">${param}</p></div>`;
   }
@@ -765,11 +769,11 @@
     const ancho = Number($('#rs-ancho').value);
     const pasos = ev.length ? R.planVoraz(st.areas, st.aristas, ev.map((c) => ({ ...c, efectividad: efectividad(ancho) })), { pasos: 8 }) : [];
     const ult = pasos[pasos.length - 1], top = ev[0];
-    const frases = [`En ${nombre}, el bosque oficial 2021 forma <b>${number(base.redes, 0)} ${base.redes === 1 ? 'red continua' : 'redes separadas'}</b> a ${number(st.umbral, 0)} m de distancia${ev.length ? `, y hay <b>${ev.length === 1 ? 'una brecha' : `${number(ev.length, 0)} brechas`}</b> que valdría la pena cerrar` : ''}.`];
+    const frases = [`Dentro del límite de ${nombre}, sin contar los parches vecinos de fuera, el bosque oficial 2021 forma <b>${number(base.redes, 0)} ${base.redes === 1 ? 'red continua' : 'redes separadas'}</b> a ${number(st.umbral, 0)} m de distancia${ev.length ? `, y hay <b>${ev.length === 1 ? 'una brecha' : `${number(ev.length, 0)} brechas`}</b> que valdría la pena cerrar` : ''}.`];
     if (top) {
       frases.push(`La brecha que más mejora la conectividad por hectárea une los parches <b>#${top.a} y #${top.b}</b>: mide <b>${number(top.d, 0)} m</b> y necesita unas <b>${hectares(top.ha, 2)}</b> de franja de ${number(ancho, 0)} m.`);
       if (ult) frases.push(`${pasos.length === 1 ? 'Cerrarla' : `Un plan de <b>${number(pasos.length, 0)} franjas</b> (${hectares(ult.ha_acumuladas, 1)} en total)`} aumentaría la conectividad del bosque (IIC) en <b>${gpct(ult.acumulado_pct)}</b>. Las brechas aparecen en rojo en el mapa${pasos.length > 1 ? '; «Proponer un plan de 8 enlaces» las muestra en orden' : ''}.`);
-    } else frases.push('No hay brechas que convenga cerrar: el bosque ya forma una sola red, los parches están demasiado lejos o las brechas cruzan agua o zonas construidas. Las rutas al Corredor Mesoamericano pueden mostrar otras opciones.');
+    } else frases.push(base.redes > 1 ? 'Aun así, no hay brechas cortas que convenga cerrar: las redes están más lejos que la distancia de análisis o las separan agua o zonas construidas. Las rutas al Corredor Mesoamericano pueden mostrar otras opciones.' : 'No hace falta cerrar brechas: el bosque ya forma una sola red. Conviene proteger los parches que la sostienen.');
     pintarRespuesta(cajaRespuesta('restaurar'), '¿Dónde restaurar para reconectar el bosque?', frases,
       'Es un escenario hipotético: mide la conectividad estructural del bosque, no cuántos animales pasarían. Antes de restaurar hay que verificar en campo, la tenencia de la tierra y el uso actual.',
       `Bosque oficial SINIA 2021 | distancia de ${number(st.umbral, 0)} m | franja de ${number(ancho, 0)} m | índice integral de conectividad (IIC)`);
@@ -910,7 +914,16 @@
   fetch(window.CHCP.valFile('indice.json')).then((r) => (r.ok ? r.json() : null)).then((j) => { st.validacion = (j?.mapas || []).find((x) => x.mapa === 'sinia_2021') || null; if (st.areas) actualizar(); }).catch(() => {});
   const parametros = new URLSearchParams(location.search), pedido = parametros.get('id');
   const conRed = listas.find((t) => (t.estructura_2021?.metricas_red?.numero_componentes || 0) > 1) || listas[0] || subs[0];
-  await cargar(st.data.territorios[pedido] ? pedido : conRed.id);
+  // Desde la portada con «toda la cuenca»: la cuenca es muy grande para simular parche por parche, así
+  // que se abre como ejemplo una subcuenca con varias redes de bosque separadas; se prueban de la más pequeña (carga rápido) a la más grande.
+  const redesDe = (t) => t.estructura_2021?.metricas_red?.numero_componentes || 0;
+  // Se prueban en orden hasta encontrar una con brechas que convenga cerrar, para que el ejemplo responda la pregunta.
+  const candidatas = PREGUNTA === 'restaurar' ? listas.filter((t) => redesDe(t) > 1).sort((a, b) => a.area_ha - b.area_ha) : [];
+  const conBrechas = () => (st.areas ? (st.evaluados && st.evaluados.length ? st.evaluados : evaluar()) : []).some((c) => !c.excluido && c.por_ha > 0);
+  if (st.data.territorios[pedido]) await cargar(pedido);
+  else if (PREGUNTA && candidatas.length) {
+    for (const c of candidatas.slice(0, 10)) { st.ejemplo = c.id; await cargar(c.id); if (conBrechas()) break; }
+  } else { st.ejemplo = PREGUNTA ? conRed.id : null; await cargar(conRed.id); }
   if (parametros.get('modo') === 'rutas' && !$('#rs-rutas-btn').disabled) { modo(true); rutasDelParcheMayor(); }
 
   // ---------------------------------------------------------------- recorrido guiado

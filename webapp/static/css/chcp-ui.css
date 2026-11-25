@@ -1187,6 +1187,47 @@ html.fi-pdf .fi-rp .leaflet-control-container, .fi-rp .leaflet-control-container
   .fi-rp { margin:0; box-shadow:none; break-after:page; }
   .fi-rp:last-child { break-after:auto; }
 }
+/* Hojas de respuestas: pregunta, frase con cifras, tabla o gráfico, advertencia, parámetros y mapa */
+.fi-rp-resp { flex:1; min-height:0; display:grid; grid-template-columns:minmax(0,1.3fr) minmax(0,1fr); gap:6mm; padding-top:3.5mm; border-top:1px solid var(--azul-linea); }
+.fi-rp-tit + .fi-rp-resp, .fi-rp-cuerpo > .fi-rp-resp:first-child { border-top:0; padding-top:0; }
+.fi-rp-resp h2 { margin:0 0 1.5mm; font-size:14px; }
+.fi-rp-resp h3 { margin:1.5mm 0 .5mm; font-size:10px; color:var(--azul-tinta); }
+.fi-rp-resp-txt > p { margin:0 0 2mm; font-size:10.5px; line-height:1.45; color:#24332b; }
+.fi-rp-resp-txt b { color:var(--azul-tinta); }
+.fi-rp-resp-txt .fi-rp-sub { margin:1.5mm 0 0; font-size:9px; line-height:1.35; }
+.fi-rp-resp .fi-rp-tabla th, .fi-rp-resp .fi-rp-tabla td { padding:.6mm 1.5mm; }
+.fi-rp-resp .fi-rp-tabla tbody th { white-space:normal; }
+.fi-rp-resp .fi-bars > div { grid-template-columns:38mm 1fr 18mm; gap:2mm; font-size:9.5px; padding:.5mm 0; }
+.fi-rp-resp .fi-bars i { height:8px; }
+.fi-rp-resp .fi-resp-aviso { margin:2mm 0 1.5mm; padding:1.8mm 2.5mm; gap:2mm; }
+.fi-rp-resp .fi-resp-aviso p { font-size:9px; line-height:1.38; }
+.fi-rp-resp-txt > p.fi-rp-param, .fi-rp-param { margin:0; font-size:8.5px; line-height:1.35; color:var(--muted); }
+.fi-rp-resp-map { margin:0; min-height:0; display:flex; flex-direction:column; gap:1mm; }
+.fi-rp-resp-map figcaption b { font-size:10px; color:var(--azul-tinta); }
+.fi-rp-resp-map .fi-mini { flex:1; min-height:0; height:auto; border-radius:8px; border:1px solid var(--azul-linea); }
+.fi-rp-resp-map .fi-legend { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:.5mm 3mm; margin:0; font-size:8px; line-height:1.2; }
+.fi-rp-resp-map .fi-legend span { align-items:flex-start; }
+.fi-rp-resp-map .fi-legend i { width:8px; height:8px; }
+.fi-rp-resp-map .fi-ramp { margin:0; } .fi-rp-resp-map .fi-ramp span { font-size:8px; }
+.fi-rp .fi-legend i.num { width:12px; height:12px; border-radius:50%; background:#0a221c; color:#fff; font-size:7px; font-style:normal; font-weight:700; display:inline-flex; align-items:center; justify-content:center; }
+.fi-rp-sitio { display:flex !important; align-items:center; justify-content:center; border-radius:50%; background:#0a221c; border:1.5px solid #fff; color:#fff; font:700 10px/1 var(--f); box-shadow:0 1px 3px rgba(0,0,0,.4); }
+.fi-rp .leaflet-tooltip.fi-diic-et { font-size:9px; padding:0 5px; }
+/* Conclusión al final de la ficha resumen y de la ficha en pantalla */
+.fi-rp-concl { flex:none; margin-top:auto; padding:3.5mm 4.5mm; border-radius:10px; background:#0a221c; color:#e6efe8; }
+.fi-rp-concl h2 { margin:0 0 1.5mm; color:#9ed48b; font-size:13px; }
+.fi-rp-concl p { margin:0 0 1.5mm; font-size:10px; line-height:1.45; }
+.fi-rp-concl p:last-child { margin-bottom:0; }
+.fi-concl { background:var(--azul-suave); border-radius:12px; padding:16px 20px !important; margin:14px 0; }
+.fi-concl p { font-size:15px; line-height:1.6; margin:0 0 8px; }
+/* Respuesta con varios bloques, como en Global Forest Watch */
+.fi-resp-corta { font-size:17px !important; line-height:1.55 !important; color:var(--azul-tinta) !important; margin:0 0 6px !important; }
+.fi-resp-w { margin-top:16px; padding-top:14px; border-top:1px solid #d6e7cf; }
+.fi-resp-w h3 { margin:0 0 6px !important; font-size:13px !important; text-transform:uppercase; letter-spacing:.04em; color:#33433a !important; }
+.fi-resp-w > p { margin:0 0 8px; font-size:15px; line-height:1.6; color:#24332b; }
+.fi-resp-w .fi-donut svg { width:140px; }
+.fi-resp-w > p.fi-resp-param { margin:4px 0 0; font-size:12px; line-height:1.4; color:var(--muted); }
+.fi-resp-map { position:sticky; top:12px; }
+html.fi-pdf .fi-resp-map { position:static; }
 /* Ficha completa de la cuenca: los indicadores que solo existen por subcuenca no se imprimen vacíos. */
 html.fi-pdf .fi-ind-vacio { display:none; }
 
@@ -1216,3 +1257,4 @@ html.fi-pdf .fi-resp-map .fi-mini { height:70mm; }
 .rs-resp h2, .cob-resp h2 { font-size:19px; }
 .rs-resp .fi-resp-txt > p, .cob-resp .fi-resp-txt > p { font-size:14.5px; }
 .cob-resp .fi-bars span small { color:var(--muted); font-weight:400; }
+.rs-resp .fi-resp-corta, .cob-resp .fi-resp-corta { font-size:15.5px !important; }
