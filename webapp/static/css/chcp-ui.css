@@ -1312,3 +1312,16 @@ html.fi-pdf .fi-frag-res, html.fi-pdf .fi-frag-leer dl { font-size:11px; }
 html.fi-pdf .fi-info-btn { display:none; }
 html.fi-pdf .fi-visita-nota[hidden] { display:block; }
 .fi-rp-score small.fi-rp-visita { color:#7a4100; font-style:italic; }
+
+/* Tutoriales: formatos (los que vienen, bloqueados) */
+.tut-tabs { display:flex; flex-wrap:wrap; gap:8px; margin:0 0 18px; border-bottom:1px solid var(--line); }
+.tut-tab { display:inline-flex; align-items:center; gap:6px; padding:10px 16px; border:0; border-bottom:3px solid transparent; background:none; font:700 14px/1.2 var(--f); color:var(--azul-tinta); cursor:default; }
+.tut-tab[aria-selected=true] { border-bottom-color:var(--verde); }
+.tut-tab-bloq { color:var(--faint); cursor:not-allowed; }
+.tut-tab-bloq small { margin-left:4px; padding:2px 8px; border-radius:999px; background:var(--azul-suave); color:var(--azul-medio); font-size:11px; font-weight:700; }
+.candado { flex:none; }
+/* Menú: idioma (inglés próximamente) */
+.nav-idioma { display:inline-flex; align-items:stretch; border:1.5px solid rgba(255,255,255,.85); border-radius:999px; overflow:hidden; font:700 13px/1 var(--f); }
+.nav-idioma > span { display:inline-flex; align-items:center; gap:4px; padding:9px 12px; }
+.nav-idi-act { background:#fff; color:var(--azul-tinta); }
+.nav-idi-bloq { color:rgba(255,255,255,.55); cursor:not-allowed; }

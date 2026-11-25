@@ -51,7 +51,7 @@
         {%- endfor %}
       </nav>
       <div class="nav-btns">
-        <a class="btn btn-w" href="{{ url_for('platform') }}">Explorar datos <span aria-hidden="true">↗</span></a><span class="btn btn-o" aria-label="Idioma español">ES</span>
+        <a class="btn btn-w" href="{{ url_for('platform') }}">Explorar datos <span aria-hidden="true">↗</span></a><span class="nav-idioma" role="group" aria-label="Idioma"><span class="nav-idi-act" aria-current="true">ES</span><span class="nav-idi-bloq" aria-disabled="true" lang="en" title="English: coming soon"><svg class="candado" viewBox="0 0 16 16" width="13" height="13" aria-hidden="true"><rect x="3" y="7" width="10" height="7" rx="1.5" fill="currentColor"/><path d="M5 7V5a3 3 0 0 1 6 0v2" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>EN</span></span>
         <button class="burger" id="burger" type="button" aria-expanded="false" aria-controls="links">Menú</button>
       </div>
     </div>
